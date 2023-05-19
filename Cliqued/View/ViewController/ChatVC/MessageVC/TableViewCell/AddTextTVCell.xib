@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="67" id="KGk-i7-Jjw" customClass="AddTextTVCell" customModule="SwapItSports" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t3M-yy-SGk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="34A-02-RHm">
+                                <rect key="frame" x="8" y="11" width="251" height="45"/>
+                                <color key="backgroundColor" name="AppGrayColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="iGD-cB-xra"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GyU-lk-yYj">
+                                <rect key="frame" x="267" y="11" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="1ba-96-kfe"/>
+                                    <constraint firstAttribute="width" constant="45" id="ge6-Eg-ILO"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="ic_chat"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" name="AppBlackColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="GyU-lk-yYj" secondAttribute="trailing" constant="8" id="5lq-34-jcH"/>
+                            <constraint firstItem="34A-02-RHm" firstAttribute="centerY" secondItem="t3M-yy-SGk" secondAttribute="centerY" id="Hfy-qz-RyW"/>
+                            <constraint firstItem="GyU-lk-yYj" firstAttribute="centerY" secondItem="t3M-yy-SGk" secondAttribute="centerY" id="avR-iy-Fb7"/>
+                            <constraint firstItem="GyU-lk-yYj" firstAttribute="leading" secondItem="34A-02-RHm" secondAttribute="trailing" constant="8" id="hUd-mz-7Wj"/>
+                            <constraint firstItem="34A-02-RHm" firstAttribute="leading" secondItem="t3M-yy-SGk" secondAttribute="leading" constant="8" id="sY1-lE-Zho"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="t3M-yy-SGk" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="9F9-8S-DIk"/>
+                    <constraint firstAttribute="trailing" secondItem="t3M-yy-SGk" secondAttribute="trailing" id="XPP-5p-INw"/>
+                    <constraint firstAttribute="bottom" secondItem="t3M-yy-SGk" secondAttribute="bottom" id="hsy-Z7-Vuh"/>
+                    <constraint firstItem="t3M-yy-SGk" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="jPx-Mj-mhF"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <point key="canvasLocation" x="139" y="57"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ic_chat" width="47.5" height="47.5"/>
+        <namedColor name="AppBlackColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="AppGrayColor">
+            <color red="0.12941176470588237" green="0.12941176470588237" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

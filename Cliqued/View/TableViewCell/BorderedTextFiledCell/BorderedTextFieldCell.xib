@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="150" id="KGk-i7-Jjw" customClass="BorderedTextFieldCell" customModule="cliqued" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="339" height="103.33333587646484"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="339" height="103.33333587646484"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ygg-or-L8V">
+                        <rect key="frame" x="0.0" y="0.0" width="339" height="103.33333333333333"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKg-NZ-cNW">
+                                <rect key="frame" x="18.000000000000004" y="11.999999999999998" width="41.333333333333343" height="20.333333333333329"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="p4P-F0-ciS">
+                                <rect key="frame" x="18" y="44.333333333333343" width="303" height="47"/>
+                                <color key="tintColor" name="ThemeColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="Hs8-na-btC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0EC-7P-c3C">
+                                <rect key="frame" x="18" y="44.333333333333343" width="303" height="47"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                                <state key="normal" image="ic_dropdown_arrow"/>
+                            </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uSU-6X-Eod">
+                                <rect key="frame" x="279" y="19.666666666666668" width="42" height="21.000000000000004"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="p4P-F0-ciS" secondAttribute="trailing" constant="18" id="0Xk-TX-syr"/>
+                            <constraint firstItem="gKg-NZ-cNW" firstAttribute="leading" secondItem="Ygg-or-L8V" secondAttribute="leading" constant="18" id="GWr-lG-RR7"/>
+                            <constraint firstItem="0EC-7P-c3C" firstAttribute="centerX" secondItem="p4P-F0-ciS" secondAttribute="centerX" id="LcI-AD-TZ7"/>
+                            <constraint firstItem="gKg-NZ-cNW" firstAttribute="top" secondItem="Ygg-or-L8V" secondAttribute="top" constant="12" id="MDm-7k-BeO"/>
+                            <constraint firstItem="0EC-7P-c3C" firstAttribute="bottom" secondItem="p4P-F0-ciS" secondAttribute="bottom" id="Nvg-0i-I02"/>
+                            <constraint firstItem="0EC-7P-c3C" firstAttribute="top" secondItem="p4P-F0-ciS" secondAttribute="top" id="RMZ-3d-brK"/>
+                            <constraint firstItem="uSU-6X-Eod" firstAttribute="centerY" secondItem="gKg-NZ-cNW" secondAttribute="centerY" constant="8" id="b1v-SO-ld9"/>
+                            <constraint firstItem="0EC-7P-c3C" firstAttribute="trailing" secondItem="p4P-F0-ciS" secondAttribute="trailing" id="qzO-AO-8WF"/>
+                            <constraint firstAttribute="bottom" secondItem="p4P-F0-ciS" secondAttribute="bottom" constant="12" id="rb5-lc-Vx9"/>
+                            <constraint firstAttribute="trailing" secondItem="uSU-6X-Eod" secondAttribute="trailing" constant="18" id="tKB-RF-M5l"/>
+                            <constraint firstItem="p4P-F0-ciS" firstAttribute="top" secondItem="gKg-NZ-cNW" secondAttribute="bottom" constant="12" id="uy3-qW-IcF"/>
+                            <constraint firstItem="0EC-7P-c3C" firstAttribute="leading" secondItem="p4P-F0-ciS" secondAttribute="leading" id="w09-T3-Mv7"/>
+                            <constraint firstItem="0EC-7P-c3C" firstAttribute="centerY" secondItem="p4P-F0-ciS" secondAttribute="centerY" id="x2F-RQ-9OR"/>
+                            <constraint firstItem="p4P-F0-ciS" firstAttribute="leading" secondItem="gKg-NZ-cNW" secondAttribute="leading" id="yZc-FM-fJp"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Ygg-or-L8V" secondAttribute="bottom" id="6W4-3v-lNA"/>
+                    <constraint firstItem="Ygg-or-L8V" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="HlH-sa-dFT"/>
+                    <constraint firstAttribute="trailing" secondItem="Ygg-or-L8V" secondAttribute="trailing" id="f6b-Jt-gKl"/>
+                    <constraint firstItem="Ygg-or-L8V" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="qVO-jv-wjo"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="buttonDropDown" destination="0EC-7P-c3C" id="rcl-Su-7GC"/>
+                <outlet property="labelMaxLimit" destination="uSU-6X-Eod" id="rSh-9i-LeJ"/>
+                <outlet property="labelTextFieldTitle" destination="gKg-NZ-cNW" id="Etr-G5-UHg"/>
+                <outlet property="textfiled" destination="p4P-F0-ciS" id="yzp-Ie-hRD"/>
+            </connections>
+            <point key="canvasLocation" x="34.351145038167935" y="4.9295774647887329"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ic_dropdown_arrow" width="9" height="5"/>
+        <namedColor name="ThemeColor">
+            <color red="1" green="0.42745098039215684" blue="0.14509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

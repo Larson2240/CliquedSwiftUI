@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="GoogleSans-Bold.ttf">
+            <string>GoogleSans-Bold</string>
+        </array>
+        <array key="GoogleSans-Medium.ttf">
+            <string>GoogleSans-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImagePreviewViewController" customModule="cliqued" customModuleProvider="target">
+            <connections>
+                <outlet property="buttonCancel" destination="liY-yb-3iE" id="rwu-zN-vT1"/>
+                <outlet property="buttonSend" destination="N1V-2l-IVX" id="YRg-VA-HYD"/>
+                <outlet property="collectionViewMedia" destination="UCj-dL-D8G" id="VCp-j7-r0b"/>
+                <outlet property="labelMediaCount" destination="B7C-1T-XIg" id="6fV-7t-jj3"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="nxf-hP-hsm">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Hj-dN-f3E">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Irg-bf-g42">
+                    <rect key="frame" x="0.0" y="48" width="414" height="45"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="liY-yb-3iE">
+                            <rect key="frame" x="8" y="5" width="70" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="35" id="axG-Ev-UMj"/>
+                                <constraint firstAttribute="width" constant="70" id="wsT-Hc-dgZ"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="ic_back_black">
+                                <color key="titleColor" name="NavigationBarTextColor"/>
+                            </state>
+                            <buttonConfiguration key="configuration" style="plain" image="ic_back_black">
+                                <color key="baseForegroundColor" name="NavigationBarTextColor"/>
+                            </buttonConfiguration>
+                            <connections>
+                                <action selector="buttonCancelAction:" destination="-1" eventType="touchUpInside" id="3Gb-h4-jfn"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N1V-2l-IVX">
+                            <rect key="frame" x="336" y="5" width="70" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="dFN-hQ-PyW"/>
+                                <constraint firstAttribute="height" constant="35" id="kZg-uW-kRQ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GoogleSans-Medium" family="Google Sans" pointSize="17"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Send">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="buttonSendAction:" destination="-1" eventType="touchUpInside" id="NhF-Vm-ZVK"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0/0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B7C-1T-XIg">
+                            <rect key="frame" x="194" y="12" width="26.5" height="21"/>
+                            <fontDescription key="fontDescription" name="GoogleSans-Bold" family="Google Sans" pointSize="18"/>
+                            <color key="textColor" name="NavigationBarTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="AppBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="B7C-1T-XIg" firstAttribute="centerY" secondItem="Irg-bf-g42" secondAttribute="centerY" id="LHH-Bp-q1x"/>
+                        <constraint firstItem="liY-yb-3iE" firstAttribute="leading" secondItem="Irg-bf-g42" secondAttribute="leading" constant="8" id="PEq-ox-ShT"/>
+                        <constraint firstAttribute="height" constant="45" id="bm8-87-yov"/>
+                        <constraint firstItem="N1V-2l-IVX" firstAttribute="centerY" secondItem="Irg-bf-g42" secondAttribute="centerY" id="lAc-ud-tFg"/>
+                        <constraint firstAttribute="trailing" secondItem="N1V-2l-IVX" secondAttribute="trailing" constant="8" id="lua-1R-qxC"/>
+                        <constraint firstItem="B7C-1T-XIg" firstAttribute="centerX" secondItem="Irg-bf-g42" secondAttribute="centerX" id="vvv-xF-Z0u"/>
+                        <constraint firstItem="liY-yb-3iE" firstAttribute="centerY" secondItem="Irg-bf-g42" secondAttribute="centerY" id="xWv-Mb-a14"/>
+                    </constraints>
+                </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="UCj-dL-D8G">
+                    <rect key="frame" x="0.0" y="93" width="414" height="769"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="9l0-XB-EzP">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Irg-bf-g42" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="D2e-lh-K71"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="top" secondItem="3Hj-dN-f3E" secondAttribute="bottom" id="EaF-9h-cGS"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Irg-bf-g42" secondAttribute="trailing" id="Ets-ck-u6Q"/>
+                <constraint firstAttribute="bottom" secondItem="nxf-hP-hsm" secondAttribute="bottom" id="GSH-bi-Kkf"/>
+                <constraint firstItem="nxf-hP-hsm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="H82-LZ-u3L"/>
+                <constraint firstItem="Irg-bf-g42" firstAttribute="top" secondItem="3Hj-dN-f3E" secondAttribute="bottom" id="MXK-OM-8OJ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="3Hj-dN-f3E" secondAttribute="trailing" id="NCT-X7-L03"/>
+                <constraint firstItem="nxf-hP-hsm" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="QEm-SW-Rfk"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="UCj-dL-D8G" secondAttribute="trailing" id="S4N-d4-dLc"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="nxf-hP-hsm" secondAttribute="trailing" id="Y28-yU-uio"/>
+                <constraint firstItem="UCj-dL-D8G" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ecS-Zs-OuG"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="UCj-dL-D8G" secondAttribute="bottom" id="h05-iQ-sD4"/>
+                <constraint firstItem="3Hj-dN-f3E" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="lHV-QH-EbU"/>
+                <constraint firstItem="3Hj-dN-f3E" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="rYv-3D-e26"/>
+                <constraint firstItem="UCj-dL-D8G" firstAttribute="top" secondItem="Irg-bf-g42" secondAttribute="bottom" id="wox-aw-YfB"/>
+            </constraints>
+            <point key="canvasLocation" x="132" y="51"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="background" width="414" height="896"/>
+        <image name="ic_back_black" width="19.5" height="14.5"/>
+        <namedColor name="AppBackgroundColor">
+            <color red="0.99299997091293335" green="0.95999997854232788" blue="0.90799999237060547" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="NavigationBarTextColor">
+            <color red="0.28627450980392155" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Gotham-Book.ttf">
+            <string>Gotham-Book</string>
+        </array>
+        <array key="Gotham-Medium.ttf">
+            <string>Gotham-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="TextFieldCell" customModule="cliqued" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iv9-gf-GmY">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="noA-8a-Vux">
+                                <rect key="frame" x="36" y="12" width="35.666666666666657" height="35"/>
+                                <fontDescription key="fontDescription" name="Gotham-Medium" family="Gotham" pointSize="14.5"/>
+                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info.png" translatesAutoresizingMaskIntoConstraints="NO" id="SHq-9y-s88">
+                                <rect key="frame" x="36" y="61" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="MXv-qU-PMK"/>
+                                    <constraint firstAttribute="height" constant="20" id="b8M-Fg-xzw"/>
+                                </constraints>
+                            </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ROk-A1-sSJ" customClass="UITextFieldPadding" customModule="cliqued" customModuleProvider="target">
+                                <rect key="frame" x="36" y="51" width="248" height="40"/>
+                                <color key="tintColor" name="ThemeColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="qfi-E6-1Px">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="45"/>
+                                    </constraint>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Gotham-Book" family="Gotham" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbb-YT-tKW">
+                                <rect key="frame" x="265" y="62.666666666666657" width="19" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="19" id="Mdg-lX-0PQ"/>
+                                    <constraint firstAttribute="height" constant="17" id="NxQ-qs-Fgl"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Button" image="ic_eye_hide"/>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yiX-tc-Kcq">
+                                <rect key="frame" x="36" y="91" width="248" height="0.6666666666666714"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="0.5" id="q8v-IA-opf"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="qbb-YT-tKW" firstAttribute="trailing" secondItem="ROk-A1-sSJ" secondAttribute="trailing" id="0dz-ZR-onS"/>
+                            <constraint firstAttribute="trailing" secondItem="yiX-tc-Kcq" secondAttribute="trailing" constant="36" id="2WY-P9-LUn"/>
+                            <constraint firstItem="noA-8a-Vux" firstAttribute="top" secondItem="Iv9-gf-GmY" secondAttribute="top" constant="12" id="4dC-LQ-g33"/>
+                            <constraint firstItem="SHq-9y-s88" firstAttribute="centerY" secondItem="ROk-A1-sSJ" secondAttribute="centerY" id="C6g-Ik-7l2"/>
+                            <constraint firstItem="SHq-9y-s88" firstAttribute="leading" secondItem="ROk-A1-sSJ" secondAttribute="leading" id="CVI-kp-w0F"/>
+                            <constraint firstItem="ROk-A1-sSJ" firstAttribute="top" secondItem="noA-8a-Vux" secondAttribute="bottom" constant="4" id="Egv-yP-ehs">
+                                <variation key="heightClass=regular-widthClass=regular" constant="12"/>
+                            </constraint>
+                            <constraint firstAttribute="trailing" secondItem="ROk-A1-sSJ" secondAttribute="trailing" constant="36" id="OVP-R7-YWF"/>
+                            <constraint firstItem="noA-8a-Vux" firstAttribute="leading" secondItem="Iv9-gf-GmY" secondAttribute="leading" constant="36" id="OYo-KX-6Qs"/>
+                            <constraint firstAttribute="bottom" secondItem="ROk-A1-sSJ" secondAttribute="bottom" constant="8" id="VGg-AT-aFB">
+                                <variation key="heightClass=regular-widthClass=regular" constant="8"/>
+                            </constraint>
+                            <constraint firstItem="yiX-tc-Kcq" firstAttribute="top" secondItem="ROk-A1-sSJ" secondAttribute="bottom" id="ZGM-L4-XtF"/>
+                            <constraint firstItem="ROk-A1-sSJ" firstAttribute="leading" secondItem="Iv9-gf-GmY" secondAttribute="leading" constant="36" id="vIw-TW-Ken"/>
+                            <constraint firstItem="qbb-YT-tKW" firstAttribute="centerY" secondItem="ROk-A1-sSJ" secondAttribute="centerY" id="xAx-mG-6XO"/>
+                            <constraint firstItem="yiX-tc-Kcq" firstAttribute="leading" secondItem="Iv9-gf-GmY" secondAttribute="leading" constant="36" id="zGt-fB-Bi0"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Iv9-gf-GmY" secondAttribute="trailing" id="S5A-f3-qmw"/>
+                    <constraint firstAttribute="bottom" secondItem="Iv9-gf-GmY" secondAttribute="bottom" id="V15-YH-Phv"/>
+                    <constraint firstItem="Iv9-gf-GmY" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Xu5-KR-Qn1"/>
+                    <constraint firstItem="Iv9-gf-GmY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Y9v-ga-QXP"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="buttonRightSideIcon" destination="qbb-YT-tKW" id="jSD-GG-uPw"/>
+                <outlet property="imageviewLeftSideIcon" destination="SHq-9y-s88" id="iG2-Cf-enx"/>
+                <outlet property="labelTextFieldTitle" destination="noA-8a-Vux" id="e4F-fS-x4d"/>
+                <outlet property="textfiled" destination="ROk-A1-sSJ" id="wll-7V-D1Y"/>
+            </connections>
+            <point key="canvasLocation" x="20" y="-32"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ic_eye_hide" width="19" height="16"/>
+        <image name="info.png" width="28" height="28"/>
+        <namedColor name="ThemeColor">
+            <color red="1" green="0.42745098039215684" blue="0.14509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

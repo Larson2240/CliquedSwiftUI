@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="GoogleSans-Medium.ttf">
+            <string>GoogleSans-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="73" id="KGk-i7-Jjw" customClass="ReceiverTVCell" customModule="cliqued" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ggy-WL-OUf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_receiver_text_bg" translatesAutoresizingMaskIntoConstraints="NO" id="SIT-iV-8in">
+                                <rect key="frame" x="8" y="8" width="53" height="39"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="iUr-Ip-SYu"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLR-Fb-2py">
+                                <rect key="frame" x="16" y="16" width="37" height="23"/>
+                                <fontDescription key="fontDescription" name="GoogleSans-Medium" family="Google Sans" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r7T-nl-QtF">
+                                <rect key="frame" x="8" y="52" width="29.5" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="n8H-Xk-Uez"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GoogleSans-Medium" family="Google Sans" pointSize="12"/>
+                                <color key="textColor" name="MediumGreyColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="SIT-iV-8in" firstAttribute="top" secondItem="ggy-WL-OUf" secondAttribute="top" constant="8" id="IcK-u8-jxr"/>
+                            <constraint firstItem="CLR-Fb-2py" firstAttribute="top" secondItem="SIT-iV-8in" secondAttribute="top" constant="8" id="KWh-HN-WBp"/>
+                            <constraint firstItem="CLR-Fb-2py" firstAttribute="trailing" secondItem="SIT-iV-8in" secondAttribute="trailing" constant="-8" id="QBZ-EC-FdB"/>
+                            <constraint firstItem="r7T-nl-QtF" firstAttribute="leading" secondItem="ggy-WL-OUf" secondAttribute="leading" constant="8" id="UKq-Fl-d1G"/>
+                            <constraint firstItem="CLR-Fb-2py" firstAttribute="leading" secondItem="SIT-iV-8in" secondAttribute="leading" constant="8" id="Vaw-fP-phz"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="SIT-iV-8in" secondAttribute="trailing" constant="50" id="bXj-IG-gBT"/>
+                            <constraint firstAttribute="bottom" secondItem="r7T-nl-QtF" secondAttribute="bottom" constant="3" id="csj-VJ-5qi"/>
+                            <constraint firstItem="CLR-Fb-2py" firstAttribute="bottom" secondItem="SIT-iV-8in" secondAttribute="bottom" constant="-8" id="fPL-T5-PT0"/>
+                            <constraint firstItem="CLR-Fb-2py" firstAttribute="centerY" secondItem="SIT-iV-8in" secondAttribute="centerY" id="h8i-sy-sV6"/>
+                            <constraint firstItem="SIT-iV-8in" firstAttribute="leading" secondItem="ggy-WL-OUf" secondAttribute="leading" constant="8" id="lvh-cu-QvZ"/>
+                            <constraint firstItem="r7T-nl-QtF" firstAttribute="top" secondItem="SIT-iV-8in" secondAttribute="bottom" constant="5" id="ssx-9S-l4j"/>
+                            <constraint firstItem="CLR-Fb-2py" firstAttribute="centerX" secondItem="SIT-iV-8in" secondAttribute="centerX" id="tE7-8a-9rR"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ggy-WL-OUf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="SMc-lA-MtA"/>
+                    <constraint firstAttribute="bottom" secondItem="ggy-WL-OUf" secondAttribute="bottom" id="YI9-eg-wX0"/>
+                    <constraint firstItem="ggy-WL-OUf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="yVP-Ge-dHy"/>
+                    <constraint firstAttribute="trailing" secondItem="ggy-WL-OUf" secondAttribute="trailing" id="zDf-3E-xoj"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="labelDateTime" destination="r7T-nl-QtF" id="l2M-cW-cKt"/>
+                <outlet property="labelReceiverText" destination="CLR-Fb-2py" id="JgH-EX-fRT"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="76.674107142857139"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ic_receiver_text_bg" width="50" height="14"/>
+        <namedColor name="MediumGreyColor">
+            <color red="0.65098039215686276" green="0.65098039215686276" blue="0.65098039215686276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

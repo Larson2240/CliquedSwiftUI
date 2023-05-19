@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterOptionVC" customModule="cliqued" customModuleProvider="target">
+            <connections>
+                <outlet property="buttonLogin" destination="StT-7G-3aL" id="mYy-WL-a5G"/>
+                <outlet property="buttonSignUp" destination="xYc-Ec-3o6" id="L9D-RE-HpU"/>
+                <outlet property="imageviewBkg" destination="ACH-2e-jl1" id="JN1-6a-yIH"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome_bkg" translatesAutoresizingMaskIntoConstraints="NO" id="ACH-2e-jl1">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_welcome_icon" translatesAutoresizingMaskIntoConstraints="NO" id="K62-ym-TxP">
+                    <rect key="frame" x="60.5" y="103" width="293" height="102"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="102" id="ab9-B5-SAH"/>
+                        <constraint firstAttribute="width" constant="293" id="iJl-fd-nfw"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="StT-7G-3aL">
+                    <rect key="frame" x="41" y="787" width="332" height="55"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="StT-7G-3aL" secondAttribute="height" multiplier="332:55" id="fzb-Ta-jyF"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="btnLogInTap:" destination="-1" eventType="touchUpInside" id="dGM-O3-Jhi"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xYc-Ec-3o6">
+                    <rect key="frame" x="41" y="720" width="332" height="55"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="btnSignUpTap:" destination="-1" eventType="touchUpInside" id="Aqh-r0-tno"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="xYc-Ec-3o6" firstAttribute="leading" secondItem="StT-7G-3aL" secondAttribute="leading" id="1An-rV-Ev6"/>
+                <constraint firstItem="K62-ym-TxP" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="55" id="4Y6-iI-UwN"/>
+                <constraint firstItem="xYc-Ec-3o6" firstAttribute="trailing" secondItem="StT-7G-3aL" secondAttribute="trailing" id="6hA-P5-HlX"/>
+                <constraint firstAttribute="trailing" secondItem="ACH-2e-jl1" secondAttribute="trailing" id="IP7-EQ-nHZ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="StT-7G-3aL" secondAttribute="bottom" constant="20" id="MoF-Ho-MUj"/>
+                <constraint firstItem="StT-7G-3aL" firstAttribute="top" secondItem="xYc-Ec-3o6" secondAttribute="bottom" constant="12" id="RSr-dD-mk6"/>
+                <constraint firstItem="ACH-2e-jl1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WzQ-Tz-uUR"/>
+                <constraint firstItem="ACH-2e-jl1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="YX9-Qu-98q"/>
+                <constraint firstAttribute="bottom" secondItem="ACH-2e-jl1" secondAttribute="bottom" id="d4p-HV-QSx"/>
+                <constraint firstItem="StT-7G-3aL" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="duH-J0-mTP"/>
+                <constraint firstItem="StT-7G-3aL" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="332:414" id="gVW-wt-kJd"/>
+                <constraint firstItem="xYc-Ec-3o6" firstAttribute="height" secondItem="StT-7G-3aL" secondAttribute="height" id="sLe-Nw-iEn"/>
+                <constraint firstItem="K62-ym-TxP" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="y3Q-kn-XuC"/>
+            </constraints>
+            <point key="canvasLocation" x="20.289855072463769" y="-11.383928571428571"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_welcome_icon" width="293" height="101.5"/>
+        <image name="welcome_bkg" width="414" height="896"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

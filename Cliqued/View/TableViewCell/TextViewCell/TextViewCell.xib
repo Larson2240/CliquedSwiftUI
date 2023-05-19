@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="TextViewCell" customModule="cliqued" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="103.33333587646484"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="103.33333587646484"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMA-Uv-OgC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="103.33333333333333"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aVp-61-X5y">
+                                <rect key="frame" x="18.000000000000004" y="11.999999999999998" width="41.333333333333343" height="20.333333333333329"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAv-k1-Wb7" customClass="UILabelPadding" customModule="cliqued" customModuleProvider="target">
+                                <rect key="frame" x="18" y="44.333333333333343" width="284" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="47" id="PF1-RF-t6s"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="rightInset">
+                                        <real key="value" value="18"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUN-wl-oKy">
+                                <rect key="frame" x="18" y="44.333333333333343" width="284" height="47"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="15" maxY="0.0"/>
+                                <state key="normal" image="ic_locationprofileorange"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="QAv-k1-Wb7" firstAttribute="leading" secondItem="vMA-Uv-OgC" secondAttribute="leading" constant="18" id="0o6-em-or2"/>
+                            <constraint firstItem="aUN-wl-oKy" firstAttribute="trailing" secondItem="QAv-k1-Wb7" secondAttribute="trailing" id="1OZ-Le-bZt"/>
+                            <constraint firstItem="aUN-wl-oKy" firstAttribute="top" secondItem="QAv-k1-Wb7" secondAttribute="top" id="5Ll-uk-be7"/>
+                            <constraint firstItem="aVp-61-X5y" firstAttribute="leading" secondItem="vMA-Uv-OgC" secondAttribute="leading" constant="18" id="66K-yD-4kZ"/>
+                            <constraint firstItem="QAv-k1-Wb7" firstAttribute="top" secondItem="aVp-61-X5y" secondAttribute="bottom" constant="12" id="6ew-Ie-rra"/>
+                            <constraint firstItem="aUN-wl-oKy" firstAttribute="bottom" secondItem="QAv-k1-Wb7" secondAttribute="bottom" id="HcZ-6e-NxV"/>
+                            <constraint firstItem="aVp-61-X5y" firstAttribute="top" secondItem="vMA-Uv-OgC" secondAttribute="top" constant="12" id="KFi-6F-E2V"/>
+                            <constraint firstAttribute="bottom" secondItem="QAv-k1-Wb7" secondAttribute="bottom" constant="12" id="OUX-o7-H9F"/>
+                            <constraint firstAttribute="trailing" secondItem="QAv-k1-Wb7" secondAttribute="trailing" constant="18" id="p7I-PN-HjF"/>
+                            <constraint firstItem="aUN-wl-oKy" firstAttribute="leading" secondItem="QAv-k1-Wb7" secondAttribute="leading" id="yam-kj-XqR"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="vMA-Uv-OgC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="HHs-Lu-UwK"/>
+                    <constraint firstAttribute="bottom" secondItem="vMA-Uv-OgC" secondAttribute="bottom" id="IrQ-JK-CdI"/>
+                    <constraint firstAttribute="trailing" secondItem="vMA-Uv-OgC" secondAttribute="trailing" id="b3o-dN-2Va"/>
+                    <constraint firstItem="vMA-Uv-OgC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="iZi-4v-T14"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="buttonClick" destination="aUN-wl-oKy" id="OkK-fY-E2e"/>
+                <outlet property="labelTitle" destination="aVp-61-X5y" id="D8W-bw-kaH"/>
+                <outlet property="labelValue" destination="QAv-k1-Wb7" id="62t-zg-zgH"/>
+            </connections>
+            <point key="canvasLocation" x="53.435114503816791" y="-32.394366197183103"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ic_locationprofileorange" width="14" height="23.666666030883789"/>
+    </resources>
+</document>

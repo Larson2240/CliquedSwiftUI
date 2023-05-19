@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WebviewVC" customModule="cliqued" customModuleProvider="target">
+            <connections>
+                <outlet property="progressview" destination="SO8-HO-XQd" id="WuB-md-yvn"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="viewNavigationBar" destination="x63-Ms-bt5" id="xYt-3A-2sf"/>
+                <outlet property="webview" destination="WMu-Ji-MKI" id="VbX-J7-LYm"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="LGG-Tf-UTP">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UpT-To-q86" customClass="SafeAreaView" customModule="cliqued" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="59"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x63-Ms-bt5" customClass="NavigationView" customModule="cliqued" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="fap-Im-Bqb"/>
+                    </constraints>
+                </view>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SO8-HO-XQd">
+                    <rect key="frame" x="0.0" y="103" width="393" height="2"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="2" id="ulR-Sn-IhA"/>
+                    </constraints>
+                    <color key="progressTintColor" name="ThemeColor"/>
+                </progressView>
+                <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WMu-Ji-MKI">
+                    <rect key="frame" x="0.0" y="105" width="393" height="747"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <wkWebViewConfiguration key="configuration">
+                        <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                        <wkPreferences key="preferences"/>
+                    </wkWebViewConfiguration>
+                </wkWebView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="WMu-Ji-MKI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="DBB-Yf-beM"/>
+                <constraint firstItem="WMu-Ji-MKI" firstAttribute="top" secondItem="SO8-HO-XQd" secondAttribute="bottom" id="GHK-Bz-Mla"/>
+                <constraint firstItem="SO8-HO-XQd" firstAttribute="top" secondItem="x63-Ms-bt5" secondAttribute="bottom" id="JeV-To-Izc"/>
+                <constraint firstItem="x63-Ms-bt5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="KYw-rB-n9O"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="SO8-HO-XQd" secondAttribute="trailing" id="LTh-zD-3ra"/>
+                <constraint firstItem="x63-Ms-bt5" firstAttribute="top" secondItem="UpT-To-q86" secondAttribute="bottom" id="Lke-ZA-Tsj"/>
+                <constraint firstAttribute="bottom" secondItem="WMu-Ji-MKI" secondAttribute="bottom" id="VL9-ek-xRa"/>
+                <constraint firstItem="LGG-Tf-UTP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Vaj-Ih-kZ5"/>
+                <constraint firstItem="SO8-HO-XQd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="WKW-pg-mYP"/>
+                <constraint firstAttribute="trailing" secondItem="UpT-To-q86" secondAttribute="trailing" id="dpJ-KL-vUa"/>
+                <constraint firstItem="x63-Ms-bt5" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="fOu-cp-Ale"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="x63-Ms-bt5" secondAttribute="trailing" id="gaf-su-zX1"/>
+                <constraint firstItem="UpT-To-q86" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hkr-2g-jj4"/>
+                <constraint firstAttribute="bottom" secondItem="LGG-Tf-UTP" secondAttribute="bottom" id="mb7-mz-0Kf"/>
+                <constraint firstItem="LGG-Tf-UTP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="sAy-Wg-Skd"/>
+                <constraint firstAttribute="trailing" secondItem="LGG-Tf-UTP" secondAttribute="trailing" id="sMF-qe-ZXO"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="WMu-Ji-MKI" secondAttribute="trailing" id="xLw-CT-6MH"/>
+                <constraint firstItem="UpT-To-q86" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="xj4-sI-dps"/>
+            </constraints>
+            <point key="canvasLocation" x="6.8702290076335872" y="-32.394366197183103"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="background" width="414" height="896"/>
+        <namedColor name="ThemeColor">
+            <color red="1" green="0.42745098039215684" blue="0.14509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,0 +1,107 @@
+{
+  "identifier" : "0F3B2C4B",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "51AC725C",
+      "localizations" : [
+
+      ],
+      "name" : "Cliqued Premium Plan",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "29",
+          "familyShareable" : true,
+          "groupNumber" : 3,
+          "internalID" : "359E18B2",
+          "introductoryOffer" : {
+            "displayPrice" : "0.99",
+            "internalID" : "E9987ACC",
+            "paymentMode" : "none",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Get unlimited swipes & activity with no ads",
+              "displayName" : "Premium Plan",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.ios.cliqued.month",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Cliqued Premium Plan",
+          "subscriptionGroupID" : "51AC725C",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "96",
+          "familyShareable" : true,
+          "groupNumber" : 2,
+          "internalID" : "0EB5CD2B",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.ios.cliqued.6_months",
+          "recurringSubscriptionPeriod" : "P6M",
+          "referenceName" : "Cliqued Premium Plan",
+          "subscriptionGroupID" : "51AC725C",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "108",
+          "familyShareable" : true,
+          "groupNumber" : 1,
+          "internalID" : "3921782B",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.ios.cliqued.year",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Cliqued Premium Plan",
+          "subscriptionGroupID" : "51AC725C",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}

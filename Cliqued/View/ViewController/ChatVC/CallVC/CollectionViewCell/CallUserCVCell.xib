@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CallUserCVCell" customModule="cliqued" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o3z-0A-vES">
+                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1RI-kv-vEn">
+                                <rect key="frame" x="12" y="12" width="26" height="26"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" name="ThemeColor"/>
+                        <constraints>
+                            <constraint firstItem="1RI-kv-vEn" firstAttribute="leading" secondItem="o3z-0A-vES" secondAttribute="leading" constant="12" id="HFm-PZ-YSA"/>
+                            <constraint firstItem="1RI-kv-vEn" firstAttribute="top" secondItem="o3z-0A-vES" secondAttribute="top" constant="12" id="KZX-Kn-tqX"/>
+                            <constraint firstAttribute="bottom" secondItem="1RI-kv-vEn" secondAttribute="bottom" constant="12" id="cWJ-LK-3VY"/>
+                            <constraint firstAttribute="trailing" secondItem="1RI-kv-vEn" secondAttribute="trailing" constant="12" id="z3L-QQ-UjV"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="o3z-0A-vES" secondAttribute="trailing" id="DtZ-GY-quU"/>
+                <constraint firstItem="o3z-0A-vES" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="IyI-CW-Spq"/>
+                <constraint firstAttribute="bottom" secondItem="o3z-0A-vES" secondAttribute="bottom" id="TY3-nj-PO8"/>
+                <constraint firstItem="o3z-0A-vES" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Z54-Hx-cb7"/>
+            </constraints>
+            <connections>
+                <outlet property="imageUserProfile" destination="1RI-kv-vEn" id="mIf-st-llU"/>
+                <outlet property="mainView" destination="o3z-0A-vES" id="83n-WZ-TLj"/>
+            </connections>
+            <point key="canvasLocation" x="-3.0534351145038165" y="-32.394366197183103"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="ThemeColor">
+            <color red="1" green="0.42745098039215684" blue="0.14509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

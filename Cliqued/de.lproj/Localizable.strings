@@ -1,0 +1,338 @@
+/* 
+  Localizable.strings
+  Cliqued
+
+  Created by C100-132 on 24/02/23.
+  
+*/
+"Chat_section_new_matches" = "It cliqued mit…";
+"Chat_section_messages" = "Nachrichten";
+"title_textview_placeholder" = "Nachricht eingeben...";
+"title_textview_validation" = "Bitte geben Sie hier Text ein";
+"label_noActivityFound" = "Keine Aktivität gefunden";
+"user_create_activity_validation" = "Dein monatliches Limit für die Erstellung von Aktivitäten ist erreicht. Werde Premium-Mitglied, um unlimitierte Anzahl an Aktivitäten zu erstellen.";
+"activity_category_placeholder" = "Aktivitätskategorie auswählen";
+"activity_title_max_limit" = "Max. 30 Zeichen.";
+"activity_description_max_limit" = "Max. 200 Zeichen.";
+"activity_title_validation" = "Bitte geben Sie den Aktivitätstitel ein";
+"activity_description_validation" = "Bitte gib eine Beschreibung der Aktivität ein";
+"activity_date_validation" = "Bitte wähle das Datum der Aktivität";
+"activity_category_validation" = "Bitte wähle eine Aktivitätskategorie";
+"activity_media_validation" = "Bitte wähle ein Bild für deine Aktivität";
+"activity_address_validation" = "Bitte wähle den Ort deiner Aktivität";
+"activity_id_validation" = "Beim Laden der Aktivitätsdetails ist ein Fehler aufgetreten";
+"user_id_validation" = "Beim Laden des Profils ist ein Fehler aufgetreten";
+"title_discover_activity" = "Aktivitäten";
+"alert_title_warning" = "Achtung!";
+"alert_doNotHaveCamera" = "Du hast keine Kamera";
+"title_ok" = "OK";
+"alert_title_setting" = "Einstellungen";
+"Chat_Recording_Failed" = "Aufnahme fehlgeschlagen";
+"record_audio_continue" = "Die Aufnahme beginnt jetzt. Bitte halte das Mikrofon gedrückt, um Deine Aufnahme fortzusetzen.";
+"record_audio_send" = "Willst Du diese Aufzeichnung senden?";
+"discard_title" = "Verwerfen";
+"send_title" = "Senden";
+"open_setting_title" = "Einstellungen öffnen";
+"cancel_title" = "Abbrechen";
+"open_settin_in_device_text" = "Um unsere Voice-Chat-Funktion nutzen zu können, musst Du in den Einstellungen Deines Telefons den Zugriff auf das Mikrofon erlauben.";
+"button_title_unblock" = "Blockierung aufheben";
+"title_blocked_users" = "Blockierte Profile";
+"alert_title_unblock_user" = "Bist Du sicher, dass Du die Blockierung aufheben willst?";
+"counter_user_id_validation" = "Beim Laden des Profils ist ein Fehler aufgetreten";
+"search_title" = "Suche";
+"record_audio_hold" = "Bitte halten Sie das Mikrofon, um Ihre Aufnahme zu starten.";
+"title_email_settings" = "E-Mail Einstellungen";
+"title_email_verification" = "E-Mail Überprüfung";
+"title_email_sub_text" = "Bitte gib den Code ein, den Du über die angegebene E-Mail erhalten hast.";
+"title_didnot_receiver_otp" = "Hast Du keinen Code erhalten?";
+"btn_title_resend_otp" = "Code erneut senden";
+"btn_verify" = "Verifizieren";
+"label_Old_password" = "Altes Passwort";
+"label_new_password" = "Neues Passwort";
+"placeholder_Old_password" = "Altes Passwort";
+"placeholder_New_password" = "Neues Kennwort";
+"title_email_notification" = "E-Mail Benachrichtigungen";
+"title_push_notification" = "Push-Benachrichtigungen";
+"title_delete_account" = "Konto löschen";
+"btn_delete" = "Löschen";
+"validMsg_old_emailId" = "Bitte vorherige E-Mail eingeben";
+"validMsg_otp_emailId" = "Bitte Bestätigungscode eingeben";
+"validMsg_old_password" = "Bitte vorheriges Passwort eingeben";
+"validMsg_new_password" = "Bitte neues Passwort eingeben";
+"title_change_language" = "Sprache ändern";
+"title_english" = "Englisch";
+"title_french"  = "Französisch";
+"title_german" = "Deutsch";
+"title_italian" = "Italienisch";
+"title_select_language"= "Sprache auswählen";
+
+"alert_InternetConnectivity" = "Es besteht keine Verbindung zum Internet";
+"placeholder_email" = "E-Mail";
+"placeholder_password" = "Passwort";
+"placeholder_repeatPassword" = "Passwort wiederholen";
+"placeholder_userName" = "Name";
+"placeholder_name" = "Gib hier Deinen Namen ein";
+"placeholder_shortTitle" = "Gib einen kurzen Titel ein";
+"placeholder_height" = "Deine Körpergrösse";
+"placeholder_activityDescription" = "Beschreibe, was Du gerne unternehmen möchtest";
+"btn_signUp" = "Anmelden";
+"btn_logIn" = "Einloggen";
+"btn_forgotPassword" = "Passwort vergessen?";
+"btn_rememberMe" = "Anmeldedaten speichern";
+"btn_continue" = "Weiter";
+"btn_submit" = "Senden";
+"btn_save" = "Speichern";
+"btn_next" = "Nächste";
+"btn_done" = "Fertig";
+"btn_cancel" = "Abbrechen";
+"btn_logout" = "Abmelden";
+"btn_block" = "Blockieren";
+"btn_saveProfile" = "Profil speichern";
+"btn_startExploring" = "Mehr entdecken";
+"btn_messageNow" = "Jetzt Nachricht senden";
+"btn_messageLater" = "Nachricht später";
+"btn_completeProfile" = "Vervollständige Dein Profil";
+"btn_noThanks" = "Nein danke";
+"btn_dontHaveAccount" = "Du hast noch kein Konto? Anmelden";
+"btn_alreadyHaveAccount" = "Du hast bereits ein Konto? Einloggen";
+"btn_male" = "Männlich";
+"btn_female" = "Weiblich";
+"btn_romance" = "Liebesbeziehung";
+"btn_friendship" = "Freundschaft";
+"btn_women" = "Frauen";
+"btn_men" = "Männer";
+
+
+"btn_enableNotification" = "Benachrichtigungen aktivieren";
+"btn_disableNotification" = "Benachrichtigungen ausschalten";
+"btn_goToCurrentLocation" = "Zum aktuellen Standort gehen";
+"btn_reportUser" = "Benutzer melden";
+"btn_blockUser" = "Benutzer blockieren";
+"btn_addActivity" = "Aktivität hinzufügen";
+"btn_startDiscovering" = "Mehr entdecken";
+"btn_editProfile" = "Dein Profil bearbeiten";
+"btn_changeEmail" = "E-Mail ändern";
+"btn_changePassword" = "Passwort ändern";
+"btn_skip" = "Überspringen";
+"btn_disable" = "Deaktivieren";
+"btn_send" = "Senden";
+
+"screenTitle_signUp" = "Anmelden";
+"screenTitle_forgotPwd" = "Passwort vergessen?";
+"screenTitle_welcome" = "Willkommen";
+"screenTitle_activities" = "Aktivitäten";
+"screenTitle_createActivity" = "Erstelle Deine Aktivität";
+"screenTitle_editActivity" = "Bearbeite Deine Aktivität";
+"screenTitle_chat" = "Chat";
+"screenTitle_editProfile" = "Profil bearbeiten";
+"screenTitle_connectedAccount" = "Verbundene Konten";
+"screenTitle_emailSettings" = "E-Mail Einstellungen";
+"screenTitle_passwordSettings" = "Passwort Einstellungen";
+
+"screenTitle_name" = "Name";
+"screenTitle_age" = "Alter";
+"screenTitle_gender" = "Geschlecht";
+"screenTitle_relationship" = "Beziehungspräferenzen";
+"screenTitle_pickActivity" = "Aktivität auswählen";
+"screenTitle_pickSubactivity" = "Unterkategorie für Aktivitäten auswählen";
+"screenTitle_selectPictures" = "Bilder auswählen";
+"screenTitle_setYourLocation" = "Standort festlegen";
+"screenTitle_notification" = "Benachrichtigung";
+"screenTitle_settings" = "Einstellungen";
+"label_appName" = "cliqued";
+"label_noDataFound" = "Keine Daten gefunden";
+"label_appWelcomeTitle" = "Willkommen bei cliqued";
+"label_appWelcomeSubTitle" = "Bevor Du Leute kennenlernen kannst, benötigen wir einige grundlegende Informationen, um Dein Profil zu vervollständigen und Dein App-Erlebnis zu verbessern";
+"label_email" = "E-Mail";
+"label_password" = "Passwort";
+"label_repeatPassword" = "Passwort wiederholen";
+"label_or" = "ODER";
+"label_tabHome" = "Startseite";
+"label_tabActivities" = "Aktivitäten";
+"label_tabChat" = "Chat";
+"label_tabProfile" = "Profil";
+"label_with" = "mit";
+"label_name" = "Name";
+"label_aboutMe" = "Über mich";
+"label_favoriteActivities" = "Bevorzugte Aktivitäten";
+"label_myFavoriteActivities" = "Meine Lieblingsaktivitäten";
+"label_apple" = "Apple";
+"label_facebook" = "Facebook";
+"label_Google" = "Google";
+
+"label_lookingFor" = "Suche nach";
+"label_location" = "Ort";
+"label_height" = "Körpergrösse";
+"label_kids" = "Kinder";
+"label_smoking" = "Rauchen";
+"label_reportUser" = "Benutzer melden";
+"label_reportReasonTitle" = "Was ist der Grund für Deine Meldung?";
+"label_reportThankYouTitle" = "Danke, dass Du uns das mitteilst!";
+"label_matchScreenText" = "Ihr könnt Euch jetzt gegenseitig Nachrichten schicken!";
+"label_yourActivities" = "Deine Aktivitäten";
+"label_otherUserActivities" = "Aktivitäten anderer Nutzer";
+"label_activityCategory" = "Aktivitätskategorie";
+"label_shortTitle" = "Kurzer Titel";
+"label_photo" = "Foto";
+"label_date" = "Datum";
+"label_description" = "Beschreibung";
+"label_photoDescription" = "Aktivitäten mit Bildern werden schneller bemerkt.";
+"label_distancePreference" = "Bevorzugte Entfernung";
+"label_agePreference" = "Bevorzugtes Alter";
+"label_emailSentMessage" = "Verifizierungs-E-Mail erfolgreich gesendet. Bitte überprüfe Deinen Posteingang und bestätige.";
+"label_notificationDisableTitle" = "Bist Du Dir sicher?";
+"label_notificationDisableMessage" = "Wenn Du die Benachrichtigung deaktivierst, verpasst Du Nachrichten und die Chance, neue Leute zu treffen.";
+
+
+"label_logoutAlertMsg" = "Bist Du sicher, dass Du Dich abmelden willst?";
+"label_blockAlertMsg" = "Bist Du sicher, dass Du Diesen Benutzer blockieren willst?";
+
+"label_planBenefitText1" = "Entdecke, wer Dich kennenlernen möchte";
+"label_planBenefitText2" = "Unbegrenzt viele Profile sehen";
+"label_planBenefitText3" = "Unbegrenzte Anzahl an Aktivitäten erstellen";
+"label_planBenefitText4" = "Unbegrenzt 'Smiles' senden";
+"label_planBenefitText5" = "Rückgängig-Funktion beim Durchscrollen von Profilen";
+"label_planBenefitText6" = "Keine Werbung";
+
+"labelSettingSectionTitle_accountSetting" = "Kontoeinstellungen";
+"labelSettingSectionTitle_subscription" = "Abonnement";
+"labelSettingSectionTitle_connections" = "Verbindungen";
+"labelSettingSectionTitle_activeStatus" = "Chat Status";
+"labelSettingSectionTitle_notifications" = "Benachrichtigungen";
+"labelSettingSectionTitle_otherSettings" = "Andere Einstellungen";
+"labelSettingSectionTitle_contactUs" = "Kontakt";
+"labelSettingSectionTitle_community" = "Community-Richtlinien";
+"labelSettingSectionTitle_privacy" = "Datenschutzrichtlinien";
+"labelSettingSectionTitle_legal" = "Rechtliches";
+
+"labelSettingRowTitle_email" = "E-Mail";
+"labelSettingRowTitle_password" = "Passwort";
+"labelSettingRowTitle_connetedAccounts" = "Verbundene Konten";
+"labelSettingRowTitle_inAppPurchase" = "In-App-Käufe";
+"labelSettingRowTitle_blockedContacts" = "Blockierte Kontakte";
+"labelSettingRowTitle_onlineNow" = "Online Status";
+"labelSettingRowTitle_lastSeenStatus" = "Zuletzt gesehen Status";
+"labelSettingRowTitle_emailNotifications" = "E-Mail Benachrichtigungen";
+"labelSettingRowTitle_pushNotifications" = "Push Benachrichtigungen";
+"labelSettingRowTitle_restorePurchase" = "Kauf wiederherstellen";
+"labelSettingRowTitle_inviteFriends" = "Freunde einladen";
+"labelSettingRowTitle_helpAndSupport" = "Hilfe";
+"labelSettingRowTitle_communityGuidelines" = "Community-Richtlinien";
+"labelSettingRowTitle_safetyTips" = "Sicherheitstipps";
+"labelSettingRowTitle_safetyCenter" = "Sicherheitszentrum";
+"labelSettingRowTitle_cookiePolicy" = "Cookie-Richtlinie";
+"labelSettingRowTitle_privacyPolicy" = "Datenschutzrichtlinien";
+"labelSettingRowTitle_privacyPreference" = "Datenschutz-Präferenzen";
+"labelSettingRowTitle_termsOfService" = "AGB";
+"labelSettingRowTitle_licenses" = "Lizenzen";
+      
+"label_termsMessage" = "Wenn Du fortfährst, erklärst Du Dich mit den Allgemeinen Geschäftsbedingungen von Cliqued einverstanden. Wir verwalten Deine Daten wie in unserer Datenschutzrichtlinie und Cookie-Richtlinie beschrieben.";
+
+"label_ForgotPwdScreenDescription" = "Gib Deine E-Mail-Adresse ein, um Anweisungen zum Zurücksetzen Deines Passworts zu erhalten.";
+
+"label_nameScreenTitle" = "Lass uns Dein Profil einrichten! Wie lautet Dein Name?";
+"label_nameScreenSubTitle" = "So werden Dich andere Mitglieder sehen";
+
+"label_ageScreenTitleBeforName" = "Schön, Dich kennenzulernen!";
+"label_ageScreenTitleAfterName" = "Wann ist Dein Geburtstag?";
+"label_ageScreenSubTitle" = "Wir nutzen diese Information, um Dir passende Profile anzuzeigen.";
+
+"label_genderScreenTitle" = "Super! Jetzt verrate uns Dein Geschlecht";
+"label_genderScreenSubTitle" = "So können wir Dir die richtigen Profile vorschlagen";
+
+"label_relationshipScreenTitle" = "Sag uns, an welcher Art von Beziehung Du interessiert bist und wen Du gerne treffen würdest!";
+"label_relationshipScreenSubTitle" = "So schlagen wir Dir die richtigen Leute zum Kennenlernen vor.";
+
+"label_pickActivityScreenTitle" = "Wähle jetzt Deine Lieblingsaktivitäten und lerne Gleichgesinnte kennen!";
+"label_pickActivityScreenSubTitle" = "Wähle mindestens drei Aktivitäten.";
+
+"label_pickSubActivityScreenTitle" = "Kannst Du uns mehr Details verraten?";
+"label_pickSubActivityScreenSubTitle" = "Wähle mindestens eine Unterkategorie für jede Aktivität.";
+
+"label_selectPictureScreenTitle" = "Sehr gut! Wähle jetzt Bilder und Videos für Dein Profil aus.";
+"label_selectPictureScreenSubTitle" = "Bitte wähle mindestens zwei Bilder aus.";
+
+"label_setLocationScreenSubTitle" = "Fast geschafft! Teile uns jetzt Deinen Standort mit, damit wir Dir Leute in Deiner Nähe vorschlagen können!";
+"label_setLocationScreenDescription" = "Lege die Entfernung fest, nach der wir auswählen, wen Du sehen kannst. Du kannst das später jederzeit ändern.";
+
+"label_notificationScreenSubTitle" = "Verpasse nie wieder eine Nachricht von einem tollen Menschen!";
+
+"label_startExploringSubTitle" = "Jetzt kannst Du anfangen, neue Leute kennenzulernen!";
+
+"label_reportUserDescriptionFirst" = "Wir kümmern uns um Deine Sicherheit. Alles, was Du uns hier mitteilst, bleibt vertraulich.";
+"label_reportUserDescriptionSecond" = "Wenn Du Dich in unmittelbarer Gefahr befindest, wende Dich an Deine örtlichen Behörden.";
+"label_reportThankYouDescription" = "Dein Bericht hilft uns, einen sicheren Ort für unsere Mitglieder zu schaffen. Wir werden Deinen Bericht in den nächsten 24 Stunden überprüfen.";
+"label_LogoutMsg" = "Bist Du sicher, dass Du Dich abmelden willst?";
+"label_connectedAccountDescription" = "Aktuelles Konto mit Social Media-Konto verknüpfen";
+"validMsg_emailId" = "Bitte gib Deine E-Mail ein";
+"validMsg_invalidEmail" = "Bitte gib eine gültige E-Mail Adresse ein";
+"validMsg_password" = "Bitte gib Dein Passwort ein";
+"validMsg_repeatPassword" = "Bitte wiederhole Dein Passwort";
+"validMsg_passwordNotMatche" = "Passwörter stimmen nicht überein. Versuche es bitte noch einmal.";
+"validMsg_invalidPassword" = "Das Passwort muss mindestens einen Grossbuchstaben und eine Zahl enthalten. Das Passwort muss mindestens sechs Zeichen lang sein.";
+"validMsg_passwordLengthCount" = "Das Passwort muss mindestens sechs Zeichen lang sein.";
+"validMsg_name" = "Bitte gib Deinen Namen ein.";
+"validMsg_validName" = "Bitte gib einen gültigen Namen ein.";
+"validMsg_emailNotVerified" = "Deine E-Mail wurde noch nicht verifiziert. Bitte überprüfe deinen Posteingang und bestätige, um fortzufahren.";
+"validMsg_age" = "Leider bist Du nicht berechtigt, unsere Community zu nutzen. Du musst mindestens 45 Jahre alt sein.";
+"validMsg_gender" = "Bitte wähle Dein Geschlecht aus.";
+"validMsg_pickActivity" = "Bitte wähle mindestens drei Aktivitäten aus.";
+"validMsg_pickSubActivity" = "Bitte wähle mindestens eine Unterkategorie für jede Aktivität aus.";
+"validMsg_relationship" = "Bitte verrate uns, an welcher Art von Beziehung Du interessiert bist.";
+"validMsg_selectPicture" = "Bitte wähle mindestens zwei Bilder aus.";
+"validMsg_selectImage" = "Bitte wähle mindestens ein Bild aus.";
+"validMsg_faceDetection" = "Leider wurde auf dem ausgewählten Bild kein Gesicht erkannt. Versuche es erneut.";
+"validMsg_wrongPasswordAttempt" = "Du hast Dein Passwort zu oft eingegeben. Bitte setze Dein Passwort zurück, um fortzufahren.";
+"validMsg_profileSetup" = "Dein Profil ist unvollständig. Bitte vervollständige Dein Profil für ein optimales App- Erlebnis.";
+"validMsg_blockedAccount" = "Dein Konto ist gesperrt. Bitte kontaktiere uns über das Kontaktformular unter 'Einstellungen'.";
+"validMsg_reportReason" = "Bitte wähle den Grund für die Meldung.";
+"validMsg_profileIncompleteMsg" = "Dein Profil ist nicht vollständig. Füge fehlende Details hinzu, um neue Leute treffen zu können";
+"alertCancelled" = "Abgebrochen.";
+"alertAuthorizationFailed" = "Autorisierung fehlgeschlagen";
+"alertInvalidResponse" = "Die Autorisierung hat eine ungültige Antwort geliefert.";
+"alertAuthorizationNotHandeled" = "Autorisierung fehlgeschlagen";
+"alertUnknownResponseFromAppleAuth" = "Unbekannter Fehler für appleID auth.";
+"alertUnknownErrorCode" = "Nicht unterstützter Fehlercode.";
+"warningIOSVersion" = "Dein Gerät unterstützt Apple Login nicht";
+
+"title_report_now" = "Benutzer jetzt melden?";
+"btn_yes" = "Ja";
+"title_alert_for_block_by_user_chat" = "Du hast diesen Benutzer blockiert.";
+"title_alert_for_block_by_admin_chat" = "Dieser Benutzer wurde vom Administrator blockiert.";
+"title_alert_for_deleted_user" = "Dieser Account wurde gelöscht.";
+
+"label_deleteAlertMsg" = "Bist Du sicher, dass Du dieses Konto löschen möchtest?";
+"label_subscriptionTerms" = "Indem Du fortfährst, stimmst Du unseren AGB zu und Dein Konto wird über App Store belastet. Dein Abonnement wird zum gleichen Preis und für die gleiche Laufzeit automatisch verlängert, bis Du es in den App Store-Einstellungen kündigst.";
+"label_monthTitle" = "Monat";
+"label_bestValueTitle" = "Bestes Angebot";
+"validMsg_profileIncompleteMsg" = "Dein Profil ist fast vollständig! Wir benötigen nur noch ein paar weitere Informationen, um Dein Erlebnis individuell anzupassen.";
+"label_noPlanAvailable" = "Abonnement nicht verfügbar";
+"label_titleYes" = "Ja";
+"label_titleNo" = "Nein";
+"validMsg_alredyHaveEmailId" = "Diese E-Mail ist bereits vorhanden, bitte gib eine neue E-Mail ein.";
+"label_newEmailTitle" = "Bitte gib eine neue E-Mail ein";
+"btn_unsubscribe" = "Alle abmelden";
+"btn_subscribe" = "Alle abonnieren";
+"label_activityMatchScreenTitle" = "möchte, dass du an teilnimmst.";
+
+"title_today_text" = "Heute";
+"title_yesterday_text" = "Gestern";
+"title_online_text" = "Online";
+"title_last_seen_text" = "Zuletzt gesehen";
+"title_login_detected" = "Es wurde eine Anmeldung für dieses Profil auf einem anderen Gerät festgestellt. Bitte logge Dich aus und versuche erneut, Dich anzumelden.";
+
+
+
+"title_connecting_text" = "Connecting...";
+"title_chat_no_data_text" = "Tap on user profile to start conversation.";
+"title_camera_permission_text" = "cliqued would like to access the camera to capture profile image, upload media for chat.";
+"title_user_who_liked_me_text" = "Users who liked you";
+"title_login_detected" = "There was a login detected for this user in another device. Please logout and try to login again.";
+"title_active_text" = "Active";
+"title_ago_text" = "ago";
+"title_hr_text" = "hr";
+"title_hrs_text" = "hrs";
+"title_min_text" = "min";
+"title_mins_text" = "mins";
+"title_sec_text" = "second";
+"validation_media_upload" = "The media file that you have selected is larger than 50 MB. Unable to send file.";
