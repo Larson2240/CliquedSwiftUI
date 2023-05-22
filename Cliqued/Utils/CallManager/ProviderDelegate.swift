@@ -24,7 +24,6 @@ func isCallKitSupported() -> Bool {
 }
 
 class ProviderDelegate: NSObject {
-    
     private var provider: CXProvider!
     
     override init() {
@@ -35,7 +34,7 @@ class ProviderDelegate: NSObject {
         }
     }
     
-    static var configuration : CXProviderConfiguration = {
+    static var configuration: CXProviderConfiguration = {
         let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String
         let config = CXProviderConfiguration(localizedName: appName ?? "")
         config.supportsVideo = true
@@ -56,13 +55,13 @@ class ProviderDelegate: NSObject {
         update.remoteHandle = CXHandle.init(type: .phoneNumber, value: callername)
         update.hasVideo = !hasVideo
         update.supportsHolding = false
-         
+        
         Calling.room_sid = temp.room_sid
         Calling.room_Name = temp.room_Name
         Calling.sender_access_token  = temp.sender_access_token
         Calling.call_id = temp.callId
         Calling.is_privateRoom = temp.privateRoom
-        Calling.is_host = temp.isHost        
+        Calling.is_host = temp.isHost
         Calling.uuid = temp.uuid
         Calling.receiver_name = temp.sender_name
         Calling.otherUserProfile = temp.sender_profile
@@ -70,31 +69,23 @@ class ProviderDelegate: NSObject {
         Calling.is_audio_call = temp.is_audio_call
         
         provider.reportNewIncomingCall(with: uuid, update: update) { error in
-            if error == nil {
-            }
             completion?(error)
         }
     }
     
     func Providerinvalide(uuid: UUID) {
-        
-        self.provider.reportCall(with: uuid, endedAt: Date(), reason: .remoteEnded)
+        provider.reportCall(with: uuid, endedAt: Date(), reason: .remoteEnded)
         provider.invalidate()
     }
 }
 // MARK: - CXProviderDelegate
 extension ProviderDelegate: CXProviderDelegate {
-    
-    func providerDidReset(_ provider: CXProvider) {
-       
-    }
+    func providerDidReset(_ provider: CXProvider) {}
     
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
-        
         APP_DELEGATE.timerCallDeclined?.invalidate()
         UserDefaults.standard.set("\(action.callUUID)", forKey: USER_DEFAULT_KEYS.OLD_CALL_UUID)
-        let deviceName = UIDevice.current.name
-       
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             NotificationCenter.default.post(name: .incomingCall, object:nil)
         }
@@ -132,10 +123,10 @@ extension ProviderDelegate
         
         if callStatus == enumCallStatus.unanswered.rawValue {
             APP_DELEGATE.isCallOn = false
-            self.Providerinvalide(uuid: UUID(uuidString: Calling.uuid) ?? UUID())
+            Providerinvalide(uuid: UUID(uuidString: Calling.uuid) ?? UUID())
         } else if callStatus == enumCallStatus.ended.rawValue {
             APP_DELEGATE.isCallOn = false
-            self.Providerinvalide(uuid: UUID(uuidString: Calling.uuid) ?? UUID())
+            Providerinvalide(uuid: UUID(uuidString: Calling.uuid) ?? UUID())
         }
         
         data["call_status"] = callStatus
@@ -151,12 +142,12 @@ extension ProviderDelegate
         data["uuid"] = Calling.uuid
         data["call_duration"] = "00:00:00"
         data["is_audio_call"] = Calling.is_audio_call
-               
+        
         APP_DELEGATE.socketIOHandler?.updateCallStatusParticipants(data: data, response: {
-           
+            
         }, error: {
             
         })
-
+        
     }
 }

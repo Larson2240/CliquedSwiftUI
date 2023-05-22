@@ -9,7 +9,6 @@ import UIKit
 import SocketIO
 
 class ChatVC: UIViewController {
-
     //MARK: IBOutlet
     @IBOutlet weak var viewNavigationBar: NavigationView!
     @IBOutlet var viewCollection: UIView!
@@ -28,8 +27,11 @@ class ChatVC: UIViewController {
             labelNewMatchesTitle.showAnimatedGradientSkeleton()
         }
     }
+    
     @IBOutlet var collectionViewPeople: UICollectionView!
+    
     @IBOutlet var tableViewMessage: UITableView!
+    
     @IBOutlet var labelMessageSectionTitle: UILabel! {
         didSet {
             labelMessageSectionTitle.text = Constants_Message.Chat_section_messages
@@ -42,7 +44,7 @@ class ChatVC: UIViewController {
             labelMessageSectionTitle.showAnimatedGradientSkeleton()
         }
     }
-
+    
     @IBOutlet var searchView: UIView! {
         didSet {
             searchView.layer.cornerRadius = searchView.frame.height / 2
@@ -59,8 +61,8 @@ class ChatVC: UIViewController {
         }
     }
     
-    
     @IBOutlet weak var viewProfileNotComplete: UIView!
+    
     @IBOutlet weak var labelProfileMsg: UILabel!{
         didSet{
             labelProfileMsg.text = Constants.validMsg_profileIncompleteMsg
@@ -68,6 +70,7 @@ class ChatVC: UIViewController {
             labelProfileMsg.textColor = Constants.color_DarkGrey
         }
     }
+    
     @IBOutlet weak var buttonCompleteProfile: UIButton!
     
     @IBOutlet var labelNoDataFound: UILabel! {
@@ -88,7 +91,7 @@ class ChatVC: UIViewController {
     
     @IBOutlet var matchViewHeightConstraint: NSLayoutConstraint!
     
-
+    
     //MARK: Variable
     var dataSource : ChatDataSource?
     var viewModel = ChatViewModel()
@@ -99,6 +102,7 @@ class ChatVC: UIViewController {
     
     var favoriteActivity = [UserInterestedCategory]()
     var favoriteCategoryActivity = [UserInterestedCategory]()
+    private let profileSetupType = ProfileSetupType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -117,7 +121,7 @@ class ChatVC: UIViewController {
             self.viewModel.setUserId(value: user_id)
             self.labelNoDataFound.isHidden = true
             APP_DELEGATE.socketIOHandler?.delegate = self
-           
+            
             self.viewModel.callUserLikesListAPI()
             
             self.viewModel.setSenderId(value: self.user_id)
@@ -180,7 +184,7 @@ class ChatVC: UIViewController {
             tableViewMessage.isHidden = true
         }
     }
-  
+    
     @IBAction func textFieldValueChanged(_ sender: UITextField) {
         if sender.text!.count > 0 {
             viewModel.arrConversation.removeAll()
@@ -229,11 +233,13 @@ extension ChatVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
-        viewModel.isUserDataGet.bind { isSuccess in
+        viewModel.isUserDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if UIApplication.getTopViewController() is ChatVC {
                     if self.viewModel.arrayOfMainUserList.count > 0 {
@@ -244,11 +250,13 @@ extension ChatVC {
                         self.navigationController?.pushViewController(activityuserdetailsvc, animated: true)
                     }
                 }
-            }            
+            }
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 self.labelNewMatchesTitle.hideSkeleton()
                 if self.viewModel.arrUserMatchesList.count > 0 {
@@ -275,7 +283,9 @@ extension ChatVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -313,44 +323,44 @@ extension ChatVC {
             strCount = "\(profile_setup_count)"
         }
         switch strCount {
-        case ProfileSetupType.name:
+        case profileSetupType.name:
             let namevc = NameVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: namevc)
             
-        case ProfileSetupType.birthdate:
+        case profileSetupType.birthdate:
             let agevc = AgeVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController =  UINavigationController(rootViewController: agevc)
             
-        case ProfileSetupType.gender:
+        case profileSetupType.gender:
             let gendervc = GenderVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: gendervc)
             
-        case ProfileSetupType.relationship:
+        case profileSetupType.relationship:
             let relationshipvc = RelationshipVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: relationshipvc)
             
-        case ProfileSetupType.category:
+        case profileSetupType.category:
             let pickactivityvc = PickActivityVC.loadFromNib()
             pickactivityvc.arrayOfActivity = self.favoriteActivity
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: pickactivityvc)
             
-        case ProfileSetupType.sub_category:
+        case profileSetupType.sub_category:
             let picksubactivityvc = PickSubActvityVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: picksubactivityvc)
             
-        case ProfileSetupType.profile_images:
+        case profileSetupType.profile_images:
             let selectpicturevc = SelectPicturesVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: selectpicturevc)
             
-        case ProfileSetupType.location:
+        case profileSetupType.location:
             let locationvc = SetLocationVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: locationvc)
             
-        case ProfileSetupType.notification_enable:
+        case profileSetupType.notification_enable:
             let notificationvc = NotificationPermissionVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: notificationvc)
             
-        case ProfileSetupType.completed:
+        case profileSetupType.completed:
             let tabbarvc = TabBarVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
         default:
@@ -367,7 +377,7 @@ extension ChatVC {
                 self.favoriteActivity = interestedActivity
             }
         }
-
+        
         //MARK: Managed multiple same category object in one category object
         var arrayOfActivityIds = [Int]()
         if userData.userInterestedCategory?.count ?? 0 > 0 {
@@ -402,19 +412,16 @@ extension ChatVC : SocketIOHandlerDelegate {
         fetchFromLocal()
     }
     
-    func reloadUserChatStatus(sender_id:Int, receiver_id:Int, is_delete:String) {
-        
-        let strPredicate = NSString(format: "(senderId = %d AND receiverId = %d) OR (senderId = %d AND receiverId = %d)",sender_id,receiver_id,receiver_id,sender_id)
+    func reloadUserChatStatus(sender_id: Int, receiver_id: Int, is_delete: String) {
+        let strPredicate = NSString(format: "(senderId = %d AND receiverId = %d) OR (senderId = %d AND receiverId = %d)", sender_id, receiver_id, receiver_id, sender_id)
         
         let arr = CoreDataAdaptor.sharedDataAdaptor.fetchListWhere(predicate: NSPredicate (format: strPredicate as String))
         
         if arr.count > 0 {
-            
             let obj = arr[0]
             var strLastSeen = ""
             
             if obj.lastSeen != nil {
-                
                 let dateFormate = DateFormatter()
                 dateFormate.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 let ldate = dateFormate.string(from: obj.lastSeen!)
@@ -431,7 +438,6 @@ extension ChatVC : SocketIOHandlerDelegate {
             } else if obj.isBlockedBySender == "1" {
                 self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
             } else {
-                
                 if UIApplication.getTopViewController() is ChatVC {
                     let vc = MessageVC.loadFromNib()
                     vc.hidesBottomBarWhenPushed = true
@@ -450,13 +456,12 @@ extension ChatVC : SocketIOHandlerDelegate {
                     vc.receiver_is_last_seen_enable = "\(obj.isLastSeenEnabled ?? "")"
                     vc.recevier_chat_status = "\(obj.chatStatus ?? "")"
                     vc.is_blocked = obj.isBlockedByReceiver == "1" ? true : false
-                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                    navigationController?.pushViewController(vc, animated: true)
                 }
             }
-           
-            
         } else {
-        
+            
             if self.viewModel.arrMatchesList.count > 0 || self.viewModel.arrSingleLikesList.count > 0  {
                 let obj = selectedSection == 0 ? self.viewModel.arrSingleLikesList[selectedUser] : self.viewModel.arrMatchesList[selectedUser]
                 
@@ -483,10 +488,11 @@ extension ChatVC : SocketIOHandlerDelegate {
                         vc.conversation_id = Int(obj.conversationId ?? 0)
                         vc.receiver_is_last_seen_enable = "\(obj.isLastSeenEnabled ?? "")"
                         vc.recevier_chat_status = "\(obj.chatStatus ?? "")"
-                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                        navigationController?.pushViewController(vc, animated: true)
                     }
                 }
-            }          
+            }
         }
     }
 }

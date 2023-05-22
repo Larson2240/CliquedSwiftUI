@@ -44,6 +44,9 @@ class InterestedActivityVC: UIViewController {
     private var selectedIndextValue = -1
     var isLikeLimitFinish: Bool = false
     var ifFromDiscoveryAcitivy: Bool = false
+    private let isMeetup = IsMeetupIds()
+    private let isPremium = IsPremium()
+    private let interestedActivityStatus = InterestedActivityStatus()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -93,28 +96,32 @@ extension InterestedActivityVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self]isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 self.viewActivityCard.countOfVisibleCards = self.viewModel.getNumberOfInterestedUser()
                 self.viewActivityCard.reloadData()
             }
         }
         
-        viewModel.isLikdDislikeSuccess.bind { isSuccess in
+        viewModel.isLikdDislikeSuccess.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if self.viewModel.arrayOfFollowersList.count > 0 {
                     let followersData = self.viewModel.arrayOfFollowersList[0]
-                    if followersData.isMeetup == isMeetup.Matched  {
+                    if followersData.isMeetup == self.isMeetup.Matched  {
                       
                     } else {
                         if self.viewModel.getLikesLimit() != 0 {
                             if !self.isLikeLimitFinish {
-                                if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+                                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
                                     self.showGoogleAds()
                                 }
                             }
@@ -124,18 +131,22 @@ extension InterestedActivityVC {
             }
         }
         
-        viewModel.isViewLimitFinish.bind { isSuccess in
+        viewModel.isViewLimitFinish.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
                     self.labelNoActivityAvailable.text = Constants.label_noDataFound
                     self.showSubscriptionPlanScreen()
                 }
             }
         }
         
-        viewModel.isLikeLimitFinish.bind { isSuccess in
+        viewModel.isLikeLimitFinish.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
                     self.isLikeLimitFinish = true
                     self.viewActivityCard.revertAction()
                     self.showSubscriptionPlanScreen()
@@ -143,7 +154,9 @@ extension InterestedActivityVC {
             }
         }
         
-        viewModelDiscoveryAcvitiy.isUserDataGet.bind { isSuccess in
+        viewModelDiscoveryAcvitiy.isUserDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if self.viewModel.arrayOfInterestedUserList.count > 0 {
                     let activityuserdetailsvc = ActivityUserDetailsVC.loadFromNib()
@@ -156,7 +169,9 @@ extension InterestedActivityVC {
         }
         
         //Loader hide & show
-        viewModelDiscoveryAcvitiy.isLoaderShow.bind { isLoader in
+        viewModelDiscoveryAcvitiy.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -165,7 +180,9 @@ extension InterestedActivityVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -321,8 +338,8 @@ extension InterestedActivityVC: KolodaViewDataSource {
                     }
                 }
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.imageviewLikeDislikeIcon.isHidden = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                self?.imageviewLikeDislikeIcon.isHidden = true
             }
         }
     }

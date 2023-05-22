@@ -56,6 +56,7 @@ class AddActivityDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     var newPin = MKPointAnnotation()
     var isLocationChangedByUser = false
     private var mapChangedFromUserInteraction = false
+    private let isPremium = IsPremium()
 
     
     //MARK:- Init
@@ -131,9 +132,9 @@ class AddActivityDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         
-        DispatchQueue.global().async {
+        DispatchQueue.global().async { [weak self] in
             if CLLocationManager.locationServicesEnabled() {
-                self.locationManager.startUpdatingLocation()
+                self?.locationManager.startUpdatingLocation()
             }
         }
     }
@@ -585,7 +586,9 @@ extension AddActivityDataSource: CLLocationManagerDelegate,MKMapViewDelegate {
         
         
         ceo.reverseGeocodeLocation(loc, completionHandler:
-                                    {(placemarks, error) in
+                                    { [weak self] (placemarks, error) in
+            guard let self = self else { return }
+            
             if (error != nil)
             {
                 print("reverse geodcode fail: \(error!.localizedDescription)")

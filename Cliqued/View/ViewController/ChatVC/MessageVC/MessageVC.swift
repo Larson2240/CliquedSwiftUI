@@ -182,7 +182,9 @@ class MessageVC: UIViewController,AVAudioRecorderDelegate, AVAudioPlayerDelegate
     //MARK: Button Method
     @IBAction func buttonSettingAction(_ sender: UIButton) {
         self.textView.endEditing(true)
-        self.alertCustom(btnNo:Constants.btn_cancel, btnYes:Constants.btn_block, title: "", message: Constants.label_blockAlertMsg) {
+        self.alertCustom(btnNo:Constants.btn_cancel, btnYes:Constants.btn_block, title: "", message: Constants.label_blockAlertMsg) { [weak self] in
+            guard let self = self else { return }
+            
             let activityUserId = self.viewModel.getReceiverId()
             self.viewModelBlockedUser.callBlcokUserAPI(counterUserId: activityUserId)
         }
@@ -389,7 +391,8 @@ class MessageVC: UIViewController,AVAudioRecorderDelegate, AVAudioPlayerDelegate
                     self.showAlertPopup(message: Constants_Message.validation_media_upload)
                 } else {
                 
-                    alertCustom(btnNo: Constants_Message.discard_title, btnYes: Constants_Message.send_title, title: "", message: Constants_Message.record_audio_send) {
+                    alertCustom(btnNo: Constants_Message.discard_title, btnYes: Constants_Message.send_title, title: "", message: Constants_Message.record_audio_send) { [weak self] in
+                        guard let self = self else { return }
                         
                         self.viewModel.removeAllChatMedia()
                         self.viewModel.removeAllThumbnailMedia()
@@ -488,12 +491,14 @@ extension MessageVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModelBlockedUser.isDataGet.bind { [self] isSuccess in
+        viewModelBlockedUser.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 
                 let dict:NSMutableDictionary = NSMutableDictionary()
@@ -514,7 +519,9 @@ extension MessageVC {
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             let vc = VideoCallVC.loadFromNib()
             vc.sender_id = "\(self.sender_id)"
             vc.receiver_id = "\(self.receiver_id)"
@@ -526,7 +533,9 @@ extension MessageVC {
             self.navigationController?.pushViewController(vc, animated: false)
         }
         
-        viewModel.isUserDataGet.bind { isSuccess in
+        viewModel.isUserDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 
                 if self.viewModel.arrayOfMainUserList.count > 0 {
@@ -539,12 +548,14 @@ extension MessageVC {
             }
         }
         
-        viewModel.isMessageAdded.bind { isSuccess in
-            self.dataSource!.reloadMessagesFromLocal()
+        viewModel.isMessageAdded.bind { [weak self] isSuccess in
+            self?.dataSource!.reloadMessagesFromLocal()
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -561,8 +572,8 @@ extension MessageVC: UINavigationControllerDelegate, UIImagePickerControllerDele
     func requestCameraPermission() {
         AVCaptureDevice.requestAccess(for: .video, completionHandler: {accessGranted in
             guard accessGranted == true else { return }
-            DispatchQueue.main.async {
-                self.openCamera()
+            DispatchQueue.main.async { [weak self] in
+                self?.openCamera()
             }
         })
     }
@@ -673,7 +684,9 @@ extension MessageVC : TLPhotosPickerViewControllerDelegate {
     }
     
     func openTLPhotoPicker() {
-        checkPhotoLibraryPermission(completion: {(value) -> Void in
+        checkPhotoLibraryPermission(completion: { [weak self] (value) -> Void in
+            guard let self = self else { return }
+            
             if value {
                 let photoViewController = TLPhotosPickerViewController()
                 photoViewController.delegate = self
@@ -920,7 +933,9 @@ extension MessageVC: SocketIOHandlerDelegate {
         viewModel.setMessageText(value: "")
         self.dataSource!.reloadMessagesFromLocal()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            guard let self = self else { return }
+            
             let dict:NSMutableDictionary = NSMutableDictionary()
             dict.setValue("\(self.sender_id)", forKey: "receiver_id")
             dict.setValue("0", forKey: "message_id")
@@ -933,7 +948,9 @@ extension MessageVC: SocketIOHandlerDelegate {
     func InitialMessage(array: [CDMessage]) {
         dataSource!.reloadMessagesFromLocal()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            guard let self = self else { return }
+            
             let dict:NSMutableDictionary = NSMutableDictionary()
             dict.setValue("\(self.sender_id)", forKey: "receiver_id")
             dict.setValue("0", forKey: "message_id")

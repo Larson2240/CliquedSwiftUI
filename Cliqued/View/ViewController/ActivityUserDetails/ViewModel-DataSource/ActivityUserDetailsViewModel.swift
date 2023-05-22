@@ -14,6 +14,9 @@ class ActivityUserDetailsViewModel {
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     
     var isDataLoad: Bool = false
+    private let apiParams = ApiParams()
+    private let preferenceTypeIds = PreferenceTypeIds()
+    private let isBlock = Block()
     
     //MARK: Variable
     private struct activityUserDetails {
@@ -96,11 +99,11 @@ class ActivityUserDetailsViewModel {
             var arrayOfPreference = [UserPreferences]()
             arrayOfPreference = userData.userPreferences ?? []
         
-            if let objOfSmoking = arrayOfPreference.filter({$0.typesOfPreference == PreferenceTypeIds.smoking}).first {
+            if let objOfSmoking = arrayOfPreference.filter({$0.typesOfPreference == preferenceTypeIds.smoking}).first {
                 setSmoking(value: objOfSmoking.preferenceOptionTitle ?? "")
             }
             
-            if let objOfKid = arrayOfPreference.filter({$0.typesOfPreference == PreferenceTypeIds.kids}).first {
+            if let objOfKid = arrayOfPreference.filter({$0.typesOfPreference == preferenceTypeIds.kids}).first {
                 setKids(value: objOfKid.preferenceOptionTitle ?? "")
             }
         }
@@ -143,17 +146,19 @@ class ActivityUserDetailsViewModel {
     func callBlcokUserAPI(counterUserId: String) {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.counterUserId : counterUserId,
-            APIParams.isBlock : isBlock.Block,
-            APIParams.blockType : "0"
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.counterUserId : counterUserId,
+            apiParams.isBlock : isBlock.Block,
+            apiParams.blockType : "0"
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.BlcokUser, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.BlcokUser, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""

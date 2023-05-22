@@ -20,14 +20,16 @@ class SubmitReportReasonViewModel {
     private var isRefresh: Bool = false
     private var reportReasonId = ""
     private var reportedUserId = ""
-    
+    private let apiParams = ApiParams()
     
     //MARK: Call Get Report List Data API
     func callGetReportListAPI() {
         
         if(Connectivity.isConnectedToInternet()) {
             self.arrayOfReportList.removeAll()
-            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetMasterPreferenceAPI) { response, error, message in
+            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetMasterPreferenceAPI) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.setIsDataLoad(value: true)
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -72,16 +74,18 @@ class SubmitReportReasonViewModel {
             self.isMessage.value = Constants.validMsg_reportReason
         } else {
             let params: NSDictionary = [
-                APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-                APIParams.reportedUserId : self.getReportedUserId(),
-                APIParams.reportReasonId : self.getReportReasonId()
+                apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+                apiParams.reportedUserId : self.getReportedUserId(),
+                apiParams.reportReasonId : self.getReportReasonId()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.AddReportForUser, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.AddReportForUser, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""

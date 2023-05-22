@@ -8,13 +8,13 @@
 import UIKit
 
 class SubscriptionPlanBestValueCVCell: UICollectionViewCell {
-
     @IBOutlet weak var viewMain: UIView!{
         didSet {
             viewMain.layer.cornerRadius = 8.0
             viewMain.backgroundColor = Constants.color_themeColor
         }
     }
+    
     @IBOutlet weak var labelBestValueTitle: UILabel!{
         didSet {
             labelBestValueTitle.text = Constants.label_bestValueTitle
@@ -22,6 +22,7 @@ class SubscriptionPlanBestValueCVCell: UICollectionViewCell {
             labelBestValueTitle.textColor = Constants.color_white
         }
     }
+    
     @IBOutlet weak var viewSubview: UIView!{
         didSet {
             viewSubview.layer.cornerRadius = 8.0
@@ -60,7 +61,6 @@ class SubscriptionPlanBestValueCVCell: UICollectionViewCell {
     }
     
     @IBOutlet weak var imageviewdotedline: UIImageView!
-    
     @IBOutlet weak var constraintSubviewTop: NSLayoutConstraint!
     @IBOutlet weak var constraintSubviewTrailing: NSLayoutConstraint!
     @IBOutlet weak var constraintSubviewLeading: NSLayoutConstraint!
@@ -71,17 +71,6 @@ class SubscriptionPlanBestValueCVCell: UICollectionViewCell {
         labelPlanName.adjustsFontSizeToFitWidth = true
         labelPlanName.minimumScaleFactor = 0.5
     }
-    
-//    func hideAnimation() {
-//        viewMain.hideSkeleton()
-//        labelBestValueTitle.isHidden = false
-//        labelPlanName.isHidden = false
-//        labelMonthTitle.isHidden = false
-//        labelMonthValue.isHidden = false
-//        labelPlanPrice.isHidden = false
-//        imageviewdotedline.isHidden = false
-//        viewSubview.isHidden = false
-//    }
     
     //MARK: Setup Normal Plan Cell UI
     func setupNormalPlanCell() {

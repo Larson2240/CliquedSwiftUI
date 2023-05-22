@@ -30,89 +30,96 @@ class SubscriptionPlanViewModel {
     }
     
     private var structsubscriptionPlanParamsValue = subscriptionPlanParams()
+    private let apiParams = ApiParams()
     
     func callGetSubscriptionPlanAPI() {
         
-        if(Connectivity.isConnectedToInternet()) {
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
-            }
-            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetSubscriptionPlanList) { response, error, message in
-                self.isLoaderShow.value = false
-                self.setIsDataLoad(value: true)
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
-                } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    let msg = json?[API_MESSAGE] as? String
+        guard Connectivity.isConnectedToInternet() else {
+            isMessage.value = Constants.alert_InternetConnectivity
+            return
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.isLoaderShow.value = true
+        }
+        
+        RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetSubscriptionPlanList) { [weak self] response, error, message in
+            guard let self = self else { return }
+            
+            self.isLoaderShow.value = false
+            self.setIsDataLoad(value: true)
+            if error != nil && response == nil {
+                self.isMessage.value = message ?? ""
+            } else {
+                let json = response as? NSDictionary
+                let status = json?[API_STATUS] as? Int
+                let msg = json?[API_MESSAGE] as? String
                 
-                    if status == SUCCESS {
-                        if let planArray = json?["subscription_list"] as? NSArray {
-                            if planArray.count > 0 {
-                                for planInfo in planArray {
-                                    let dicPlan = planInfo as! NSDictionary
-                                    let decoder = JSONDecoder()
-                                    do {
-                                        let jsonData = try JSONSerialization.data(withJSONObject:dicPlan)
-                                        let planData = try decoder.decode(SubscriptionPlanClass.self, from: jsonData)
-                                        self.arrayOfPlan.append(planData)
-                                    } catch {
-                                        print(error.localizedDescription)
-                                    }
+                if status == SUCCESS {
+                    if let planArray = json?["subscription_list"] as? NSArray {
+                        if planArray.count > 0 {
+                            for planInfo in planArray {
+                                let dicPlan = planInfo as! NSDictionary
+                                let decoder = JSONDecoder()
+                                do {
+                                    let jsonData = try JSONSerialization.data(withJSONObject:dicPlan)
+                                    let planData = try decoder.decode(SubscriptionPlanClass.self, from: jsonData)
+                                    self.arrayOfPlan.append(planData)
+                                } catch {
+                                    print(error.localizedDescription)
                                 }
-                                self.isDataGet.value = true
-                            } else {
-                                self.isDataGet.value = true
                             }
+                            self.isDataGet.value = true
+                        } else {
+                            self.isDataGet.value = true
                         }
-                    } else {
-                        self.isMessage.value = msg ?? ""
                     }
+                } else {
+                    self.isMessage.value = msg ?? ""
                 }
             }
-        } else {
-            self.isMessage.value = Constants.alert_InternetConnectivity
         }
     }
     
     //MARK: Social Login API
     func callAddSubscriptionDetailsAPI() {
-        
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.subscriptionId : self.getSubscriptionId(),
-            APIParams.transactionId : self.getTransactionId(),
-            APIParams.amount : self.getAmount(),
-            APIParams.transactionStartDate : self.getPlanStartDate(),
-            APIParams.transactionEndDate : self.getPlanEndDate(),
-            APIParams.isActive : self.getIsActive()
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.subscriptionId : self.getSubscriptionId(),
+            apiParams.transactionId : self.getTransactionId(),
+            apiParams.amount : self.getAmount(),
+            apiParams.transactionStartDate : self.getPlanStartDate(),
+            apiParams.transactionEndDate : self.getPlanEndDate(),
+            apiParams.isActive : self.getIsActive()
         ]
         
-        if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
-            }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.addUserSubscriptionDetails, parameters: params) { response, error, message in
-                self.isLoaderShow.value = false
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
+        guard Connectivity.isConnectedToInternet() else { return }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.isLoaderShow.value = true
+        }
+        
+        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.addUserSubscriptionDetails, parameters: params) { [weak self] response, error, message in
+            guard let self = self else { return }
+            
+            self.isLoaderShow.value = false
+            if error != nil && response == nil {
+                self.isMessage.value = message ?? ""
+            } else {
+                let json = response as? NSDictionary
+                let status = json?[API_STATUS] as? Int
+                let message = json?[API_MESSAGE] as? String
+                
+                if status == SUCCESS {
+                    self.isDataPurchased.value = true
                 } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    let message = json?[API_MESSAGE] as? String
-
-                    if status == SUCCESS {
-                        self.isDataPurchased.value = true
-                    } else {
-                        self.isMessage.value = message ?? ""
-                    }
+                    self.isMessage.value = message ?? ""
                 }
             }
         }
     }
-    
 }
+
 //MARK: getter/setter method
 extension SubscriptionPlanViewModel {
     

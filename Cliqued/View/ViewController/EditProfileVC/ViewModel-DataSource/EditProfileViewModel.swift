@@ -49,6 +49,7 @@ class EditProfileViewModel {
     }
     private var structUserDetailsValue = structUserDetails()
     private var arrayAgePreferenceParam = [structAgePreferenceParam]()
+    private let apiParams = ApiParams()
     
     //MARK: Bind data on screen from the user object.
     func bindUserDetailsData() {
@@ -123,24 +124,26 @@ class EditProfileViewModel {
         
         if checkValidation() {
             let params: NSDictionary = [
-                APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-                APIParams.profile_setup_type : self.getProfileSetupType(),
-                APIParams.name : self.getName(),
-                APIParams.about_me : self.getAboutMe(),
-                APIParams.height : self.getHeight(),
-                APIParams.kids_preference_id : self.getKidsPrefId(),
-                APIParams.kids_option_id : self.getKidsOptionId(),
-                APIParams.smoking_preference_id : self.getSmokingPrefId(),
-                APIParams.smoking_option_id : self.getSmokingOptionId(),
-                APIParams.distance_pref : self.convertDistanceParamStructToString(),
-                APIParams.age_pref : self.convertAgePreferenceParamStructToString(),
+                apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+                apiParams.profile_setup_type : self.getProfileSetupType(),
+                apiParams.name : self.getName(),
+                apiParams.about_me : self.getAboutMe(),
+                apiParams.height : self.getHeight(),
+                apiParams.kids_preference_id : self.getKidsPrefId(),
+                apiParams.kids_option_id : self.getKidsOptionId(),
+                apiParams.smoking_preference_id : self.getSmokingPrefId(),
+                apiParams.smoking_option_id : self.getSmokingOptionId(),
+                apiParams.distance_pref : self.convertDistanceParamStructToString(),
+                apiParams.age_pref : self.convertAgePreferenceParamStructToString(),
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateProfile, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateProfile, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""
@@ -333,8 +336,8 @@ extension EditProfileViewModel {
         var optionlist = [String]()
         if !self.getDistance().distancePreferenceOptionId.isEmpty {
             let dict : NSMutableDictionary = [
-                APIParams.distancePrefOptionId : self.getDistance().distancePreferenceOptionId,
-                APIParams.distancePrefId : self.getDistance().distancePreferenceId
+                apiParams.distancePrefOptionId : self.getDistance().distancePreferenceOptionId,
+                apiParams.distancePrefId : self.getDistance().distancePreferenceId
             ]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
@@ -352,10 +355,10 @@ extension EditProfileViewModel {
         
         if !self.getAgePreference().age_start_id.isEmpty {
             let dict : NSMutableDictionary = [
-                APIParams.ageStartId : self.getAgePreference().age_start_id ,
-                APIParams.ageStartPrefId : self.getAgePreference().age_start_pref_id,
-                APIParams.ageEndId : self.getAgePreference().age_end_id,
-                APIParams.ageEndPrefId : self.getAgePreference().age_end_pref_id
+                apiParams.ageStartId : self.getAgePreference().age_start_id ,
+                apiParams.ageStartPrefId : self.getAgePreference().age_start_pref_id,
+                apiParams.ageEndId : self.getAgePreference().age_end_id,
+                apiParams.ageEndPrefId : self.getAgePreference().age_end_pref_id
             ]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])

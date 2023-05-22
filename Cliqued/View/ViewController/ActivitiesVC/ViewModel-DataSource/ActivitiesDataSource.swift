@@ -17,6 +17,7 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
     private let viewController: ActivitiesVC
     private let tableView: UITableView
     private let viewModel: ActivitiesViewModel
+    private let isPremium = IsPremium()
        
     //MARK:- Init
     init(tableView: UITableView, viewModel: ActivitiesViewModel, viewController: ActivitiesVC) {
@@ -41,14 +42,16 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
         tableView.registerNib(nibNames: [YourActivitiesCell.identifier])
         tableView.reloadData()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.setupPullToRefresh()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            self?.setupPullToRefresh()
         }
     }
     
     //MARK: Pull To Refresh
     func setupPullToRefresh() {      
-        viewController.pullToRefreshHeaderSetUpForTableview(tableview: tableView, strStatus: "") {
+        viewController.pullToRefreshHeaderSetUpForTableview(tableview: tableView, strStatus: "") { [weak self] in
+            guard let self = self else { return }
+            
             self.viewModel.setIsRefresh(value: true)
             self.viewModel.setOffset(value: "0")
             self.viewModel.callAllActivityListAPI()
@@ -58,8 +61,8 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
     //MARK: Hide header loader
     func hideHeaderLoader() {
         if viewController.isHeaderRefreshingForTableView(tableview: tableView) {
-            DispatchQueue.main.async {
-                self.tableView.mj_header!.endRefreshing(completionBlock: { })
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.mj_header!.endRefreshing(completionBlock: { })
             }
         }
     }
@@ -103,10 +106,12 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
             cell.buttonActivity.tag = enumActivitiesTableRow.yourActivities.rawValue
             cell.buttonActivity.addTarget(self, action: #selector(buttonAddActivityTap(_:)), for: .touchUpInside)
             
-            cell.callbackForButtonClick = { isEditButton, isClick, selectedIndex in
+            cell.callbackForButtonClick = { [weak self] isEditButton, isClick, selectedIndex in
+                guard let self = self else { return }
+                
                 if isEditButton {
                     if isClick {
-                        if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+                        if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
                             let subscriptionplanvc = SubscriptionPlanVC.loadFromNib()
                             subscriptionplanvc.isFromOtherScreen = true
                             self.viewController.present(subscriptionplanvc, animated: true)
@@ -132,7 +137,9 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
                 }
             }
             
-            cell.callbackForDidSelectClick = { isClick, selectedIndex in
+            cell.callbackForDidSelectClick = { [weak self] isClick, selectedIndex in
+                guard let self = self else { return }
+                
                 if isClick {
                     
                     let isIndexValid = self.viewModel.arrMyActivities.indices.contains(selectedIndex)
@@ -189,7 +196,9 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
             
             cell.buttonActivity.tag = enumActivitiesTableRow.othersActivities.rawValue
             
-            cell.callbackForDidSelectClick = { isClick, selectedIndex in
+            cell.callbackForDidSelectClick = { [weak self] isClick, selectedIndex in
+                guard let self = self else { return }
+                
                 if isClick {
                     
                     let isIndexValid = self.viewModel.arrOtherActivities.indices.contains(selectedIndex)

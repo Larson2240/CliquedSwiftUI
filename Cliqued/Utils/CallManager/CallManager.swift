@@ -10,7 +10,6 @@ import Foundation
 import CallKit
 
 class CallManager {
-    
     var callsChangedHandler: (() -> Void)?
     private let callController = CXCallController()
     

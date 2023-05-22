@@ -45,6 +45,8 @@ class NameVC: UIViewController {
     //MARK: Variable
     var selectedDate: String?
     lazy var viewModel = SignUpProcessViewModel()
+    private let profileSetupType = ProfileSetupType()
+    private let loginTypeModel = LoginType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -76,7 +78,7 @@ class NameVC: UIViewController {
     //MARK: Button Countinue Tap
     @IBAction func btnContinueTap(_ sender: Any) {
         view.endEditing(true)
-        viewModel.setProfileSetupType(value: ProfileSetupType.name)
+        viewModel.setProfileSetupType(value: profileSetupType.name)
         if viewModel.getName().trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             showAlertPopup(message: Constants.validMsg_name)
         } else {
@@ -99,7 +101,7 @@ extension NameVC {
         
         //Check for social login
         if let loginType = Constants.loggedInUser?.connectedAccount?[0].loginType {
-            if loginType == LoginType.APPLE || loginType == LoginType.FACEBOOK || loginType == LoginType.GOOGLE {
+            if loginType == loginTypeModel.APPLE || loginType == loginTypeModel.FACEBOOK || loginType == loginTypeModel.GOOGLE {
                 prefilledNameForSocialLoginUser()
             }
         }
@@ -131,7 +133,7 @@ extension NameVC {
     }
     //MARK: Prefilled name for social login
     func prefilledNameForSocialLoginUser() {
-        let userName = userDefaults.string(forKey: UserDefaultKey.userName)
+        let userName = UserDefaults.standard.string(forKey: UserDefaultKey().userName)
         viewModel.setName(value: userName ?? "")
         if userName != "" {
             self.textfiledName.text = userName
@@ -148,12 +150,14 @@ extension NameVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 let agevc = AgeVC.loadFromNib()
                 agevc.name = self.viewModel.getName()
@@ -162,7 +166,9 @@ extension NameVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

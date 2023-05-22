@@ -137,8 +137,8 @@ import UIKit
         
         let label = labels[selectedIndex]
         label.textColor = selectedLabelColor
-        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, animations: {
-            self.thumbView.frame = label.frame
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, animations: { [weak self] in
+            self?.thumbView.frame = label.frame
         }, completion: nil)
     }
     

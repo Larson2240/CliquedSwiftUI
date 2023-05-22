@@ -13,6 +13,8 @@ class ChangePasswordViewModel {
     var isLoaderShow: Dynamic<Bool> = Dynamic(true)
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     
+    private let apiParams = ApiParams()
+    
     //MARK: Variables
     private struct changePasswordParams {
         var userId = ""
@@ -51,16 +53,18 @@ class ChangePasswordViewModel {
         
         if checkUpdateValidation() {
             let params: NSDictionary = [
-                APIParams.oldPassword : self.getOldPassword(),
-                APIParams.newPassword : self.getNewPassword(),
-                APIParams.userID : self.getUserId()
+                apiParams.oldPassword : self.getOldPassword(),
+                apiParams.newPassword : self.getNewPassword(),
+                apiParams.userID : self.getUserId()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.ChangePassword, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.ChangePassword, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""

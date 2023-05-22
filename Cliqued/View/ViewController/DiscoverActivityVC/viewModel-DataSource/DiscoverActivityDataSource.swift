@@ -66,8 +66,8 @@ class DiscoverActivityDataSource: NSObject {
     //MARK: Hide header loader
     func hideHeaderLoader() {
         if viewController.isHeaderRefreshingForCollectionview(collectionview: collectionView) {
-            DispatchQueue.main.async {
-                self.collectionView.mj_header!.endRefreshing(completionBlock: { })
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.mj_header!.endRefreshing(completionBlock: { })
             }
         }
     }
@@ -75,8 +75,8 @@ class DiscoverActivityDataSource: NSObject {
     //MARK: Hide footer loader
     func hideFooterLoader() {
         if viewController.isFooterRefreshingForCollectionView(collectionview: collectionView) {
-            DispatchQueue.main.async {
-                self.collectionView.mj_footer!.endRefreshing(completionBlock: { })
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.mj_footer!.endRefreshing(completionBlock: { })
             }
         }
     }

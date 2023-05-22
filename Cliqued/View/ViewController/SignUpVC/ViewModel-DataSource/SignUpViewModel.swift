@@ -13,6 +13,8 @@ class SignUpViewModel {
     var isLoaderShow: Dynamic<Bool> = Dynamic(true)
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     
+    private let apiParams = ApiParams()
+    
     //MARK: Variables
     private var isRememberMe = false
     
@@ -54,16 +56,18 @@ class SignUpViewModel {
         
         if checkValidation() {
             let params: NSDictionary = [
-                APIParams.email : self.getEmail(),
-                APIParams.password : self.getPassword(),
-                APIParams.loginType : self.getLoginType()
+                apiParams.email : self.getEmail(),
+                apiParams.password : self.getPassword(),
+                apiParams.loginType : self.getLoginType()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SignUp, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SignUp, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""
@@ -83,7 +87,7 @@ class SignUpViewModel {
                                         let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
                                         let objUser = try decoder.decode(User.self, from: jsonData)
                                         self.saveUserInfoAndProceed(user: objUser)
-                                        userDefaults.set(userToken, forKey:kUserToken)
+                                        UserDefaults.standard.set(userToken, forKey: kUserToken)
                                         self.isDataGet.value = true
                                     } catch {
                                         print(error.localizedDescription)
@@ -108,16 +112,18 @@ class SignUpViewModel {
     func callSocialLoginAPI() {
         
         let params: NSDictionary = [
-            APIParams.email : self.getEmail(),
-            APIParams.social_id : self.getSocialLoginId(),
-            APIParams.loginType : self.getLoginType()
+            apiParams.email : self.getEmail(),
+            apiParams.social_id : self.getSocialLoginId(),
+            apiParams.loginType : self.getLoginType()
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SocialLogin, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SocialLogin, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -137,8 +143,8 @@ class SignUpViewModel {
                                     let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
                                     let objUser = try decoder.decode(User.self, from: jsonData)
                                     self.saveUserInfoAndProceed(user: objUser)
-                                    userDefaults.set(userToken, forKey:kUserToken)
-                                    userDefaults.set(appToken, forKey:kAppToken)
+                                    UserDefaults.standard.set(userToken, forKey: kUserToken)
+                                    UserDefaults.standard.set(appToken, forKey: kAppToken)
                                     self.isDataGet.value = true
                                 } catch {
                                     print(error.localizedDescription)

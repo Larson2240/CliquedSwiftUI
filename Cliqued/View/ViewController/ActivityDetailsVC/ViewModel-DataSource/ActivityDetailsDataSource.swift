@@ -16,6 +16,7 @@ class ActivityDetailsDataSource: NSObject, UITableViewDelegate, UITableViewDataS
     private let tableView: UITableView
     private let viewModel: ActivityDetailsViewModel
     private let viewModel1: InterestedActivityViewModel
+    private let interestedActivityStatus = InterestedActivityStatus()
     
     enum enumActivityDetailsTableRow: Int, CaseIterable {
         case activityImage = 0

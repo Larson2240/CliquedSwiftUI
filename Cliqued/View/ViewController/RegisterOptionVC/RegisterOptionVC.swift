@@ -8,7 +8,6 @@
 import UIKit
 
 class RegisterOptionVC: UIViewController {
-    
     //MARK: IBOutlet
     @IBOutlet weak var imageviewBkg: UIImageView!
     @IBOutlet weak var buttonSignUp: UIButton!
@@ -17,16 +16,10 @@ class RegisterOptionVC: UIViewController {
     //MARK: Variable
     var context = CIContext(options: nil)
     
-    //MARK: viewDidLoad Method
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        viewDidLoadMethod()
-    }
-    
     //MARK: viewWillAppear Method
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -37,24 +30,11 @@ class RegisterOptionVC: UIViewController {
     
     @IBAction func btnSignUpTap(_ sender: Any) {
         let signupvc = SignUpVC.loadFromNib()
-        self.navigationController?.pushViewController(signupvc, animated: true)
+        navigationController?.pushViewController(signupvc, animated: true)
     }
     
     @IBAction func btnLogInTap(_ sender: Any) {
         let signinvc = SignInVC.loadFromNib()
-        self.navigationController?.pushViewController(signinvc, animated: true)
-    }
-    
-    func isPasswordHasNumberAndCharacter(password: String) -> Bool {
-        let passRegEx = "(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{6,}"
-        let passwordTest = NSPredicate(format: "SELF MATCHES %@", passRegEx)
-        return passwordTest.evaluate(with: password)
-    }
-    
-}
-//MARK: Extension UDF
-extension RegisterOptionVC {
-    
-    func viewDidLoadMethod() {
+        navigationController?.pushViewController(signinvc, animated: true)
     }
 }

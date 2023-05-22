@@ -9,7 +9,6 @@ import UIKit
 import StepSlider
 
 class LocationDistanceCell: UITableViewCell {
-
     @IBOutlet weak var labelDescription: UILabel!{
         didSet {
             labelDescription.text = Constants.label_setLocationScreenDescription
@@ -29,6 +28,7 @@ class LocationDistanceCell: UITableViewCell {
     
     var arrayOfDistance = [String]()
     var callbackForSetDefaultDistance: ((_ prefId: String, _ distId: String) ->Void)?
+    private let preferenceTypeIds = PreferenceTypeIds()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,7 +39,7 @@ class LocationDistanceCell: UITableViewCell {
     func setupSliderData() {
         var arrayOfPreference = [PreferenceClass]()
         var arrayOfTypeOption = [TypeOptions]()
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.distance}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.distance}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
             if arrayOfTypeOption.count > 0 {

@@ -17,7 +17,7 @@ class Dynamic<T> {
     var listener: Listener?
     var value: T {
         didSet {
-            self.fire()
+            fire()
         }
     }
     
@@ -41,7 +41,7 @@ class Dynamic<T> {
     // MARK: -
     
     internal func fire() {
-        self.listener?(value)
+        listener?(value)
     }
     
 }

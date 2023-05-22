@@ -15,6 +15,8 @@ class ChatDataSource: NSObject {
     private let tableView : UITableView
     private let viewModel: ChatViewModel
     var context = CIContext(options: nil)
+    private let isPremium = IsPremium()
+    private let isMeetup = IsMeetupIds()
     
     //MARK:- Init
     init(collectionView: UICollectionView,tableView: UITableView, viewModel: ChatViewModel, viewController: ChatVC) {
@@ -268,12 +270,14 @@ extension ChatDataSource : UICollectionViewDelegateFlowLayout, UICollectionViewD
                         
                         let url = URL(string: strUrl)
                         cell.imageProfile.sd_imageIndicator = SDWebImageActivityIndicator.gray
-                        cell.imageProfile.sd_setImage(with: url) { (image, error, cache, urls) in
+                        cell.imageProfile.sd_setImage(with: url) { [weak self] (image, error, cache, urls) in
+                            guard let self = self else { return }
+                            
                             if (error != nil) {
                                 cell.imageProfile.image = UIImage(named: "placeholder_activity")
                             } else {
                                 if let myimage = image {
-                                    if self.viewModel.getIsPremium() == isPremium.Premium {
+                                    if self.viewModel.getIsPremium() == self.isPremium.Premium {
                                         cell.imageProfile.image = image
                                     } else {
                                         cell.imageProfile.image = self.blurEffect(userImage: myimage)

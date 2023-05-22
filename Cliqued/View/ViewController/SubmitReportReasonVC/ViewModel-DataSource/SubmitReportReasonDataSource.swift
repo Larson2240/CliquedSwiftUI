@@ -37,15 +37,17 @@ class SubmitReportReasonDataSource: NSObject, UITableViewDelegate, UITableViewDa
     func registerTableCell(){
         tableView.registerNib(nibNames: [ReportReasonCell.identifier, NoDataFoundCell.identifier])
         tableView.reloadData()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.setupPullToRefresh()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            self?.setupPullToRefresh()
         }
     }
     
     //MARK: Pull To Refresh
     func setupPullToRefresh() {
         print("setupPullToRefresh")
-        viewController.pullToRefreshHeaderSetUpForTableview(tableview: tableView, strStatus: "") {
+        viewController.pullToRefreshHeaderSetUpForTableview(tableview: tableView, strStatus: "") { [weak self] in
+            guard let self = self else { return }
+            
             self.viewModel.setIsRefresh(value: true)
             self.viewModel.callGetReportListAPI()
         }
@@ -54,8 +56,8 @@ class SubmitReportReasonDataSource: NSObject, UITableViewDelegate, UITableViewDa
     //MARK: Hide header loader
     func hideHeaderLoader() {
         if viewController.isHeaderRefreshingForTableView(tableview: tableView) {
-            DispatchQueue.main.async {
-                self.tableView.mj_header!.endRefreshing(completionBlock: { })
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.mj_header!.endRefreshing(completionBlock: { })
             }
         }
     }

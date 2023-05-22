@@ -41,6 +41,7 @@ class DiscoverActivityViewModel {
     private var isRefresh: Bool = false
     private var isDataLoad: Bool = false
     var arrayOfMainUserList = [User]()
+    private let apiParams = ApiParams()
     
     //MARK: Check Validation
     func checkValidation() -> Bool {
@@ -61,15 +62,17 @@ class DiscoverActivityViewModel {
         
         if checkValidation() {
             let params: NSDictionary = [
-                APIParams.interestedUserId : self.getUserId(),
-                APIParams.activityId : self.getActivityId(),
-                APIParams.isFollow : self.getActivityInterestStatus(),
-                APIParams.ownerId : self.getOwnerId(),
-                APIParams.activityName : self.getActivityName()
+                apiParams.interestedUserId : self.getUserId(),
+                apiParams.activityId : self.getActivityId(),
+                apiParams.isFollow : self.getActivityInterestStatus(),
+                apiParams.ownerId : self.getOwnerId(),
+                apiParams.activityName : self.getActivityName()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.MarkUserActivityAsInterested, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.MarkUserActivityAsInterested, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""
                     } else {
@@ -98,24 +101,26 @@ class DiscoverActivityViewModel {
     func callActivityListAPI() {
                
             let params: NSDictionary = [
-                APIParams.userID : self.getUserId(),
-                APIParams.activityCategoryId: self.getActivityCategoryId(),
-                APIParams.activitySubCategoryId: self.getActivitySubCategoryId(),
-                APIParams.looking_for : self.getLookingForIds(),
-                APIParams.kids_option_id : self.getKidsOptionId(),
-                APIParams.smoking_option_id : self.getSmokingOptionId(),
-                APIParams.ageStartPrefId : self.getAgeStartPrefId(),
-                APIParams.ageEndPrefId : self.getAgeEndPrefId(),
-                APIParams.distancePrefId : self.getDistancePrefId(),
-                APIParams.offset: self.getOffset(),
-                APIParams.isOwnActivity : "0"
+                apiParams.userID : self.getUserId(),
+                apiParams.activityCategoryId: self.getActivityCategoryId(),
+                apiParams.activitySubCategoryId: self.getActivitySubCategoryId(),
+                apiParams.looking_for : self.getLookingForIds(),
+                apiParams.kids_option_id : self.getKidsOptionId(),
+                apiParams.smoking_option_id : self.getSmokingOptionId(),
+                apiParams.ageStartPrefId : self.getAgeStartPrefId(),
+                apiParams.ageEndPrefId : self.getAgeEndPrefId(),
+                apiParams.distancePrefId : self.getDistancePrefId(),
+                apiParams.offset: self.getOffset(),
+                apiParams.isOwnActivity : "0"
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserActivity, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserActivity, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.setIsDataLoad(value: true)
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
@@ -159,15 +164,19 @@ class DiscoverActivityViewModel {
     func callGetUserDetailsAPI(user_id: Int) {
         
         let params: NSDictionary = [
-            APIParams.userID : user_id
+            apiParams.userID : user_id
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = true
                 self.arrayOfMainUserList.removeAll()
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserDetails, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserDetails, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""

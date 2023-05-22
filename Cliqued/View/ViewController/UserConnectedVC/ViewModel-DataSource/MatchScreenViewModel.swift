@@ -13,6 +13,8 @@ class MatchScreenViewModel {
     var isLoaderShow: Dynamic<Bool> = Dynamic(true)
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     
+    private let apiParams = ApiParams()
+    
     //MARK: Variable
     private var isDataLoad: Bool = false
     private struct setFollowStatusParams {
@@ -25,13 +27,15 @@ class MatchScreenViewModel {
     func callSendPushNotificationAPI() {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.counterUserId : self.getCounterUserId(),
-            APIParams.isActivity : self.getIsActivity()
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.counterUserId : self.getCounterUserId(),
+            apiParams.isActivity : self.getIsActivity()
         ]
         
         if(Connectivity.isConnectedToInternet()) {
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SendPushNotificationToMatchedUser, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SendPushNotificationToMatchedUser, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
                 } else {

@@ -26,24 +26,21 @@ class IAPHelper: NSObject {
     public func getProducts(
         ofPackageIds packageIds: Set<String>,
         callbackForProducts: @escaping ((_ products: [SKProduct])->()),
-        callbackForError: @escaping ((_ error: Error)->())) {
-        
+        callbackForError: @escaping ((_ error: Error)->())
+    ) {
         self.callbackForProducts = callbackForProducts
         self.callbackForError = callbackForError
-               
+        
         for productIdentifier in packageIds {
             if let purchasedIds = UserDefaults.standard.value(forKey: "IAP") {
                 if purchasedIds as! String == productIdentifier {
                     purchasedPackagesIds.insert(productIdentifier)
-                    print("Previously purchased: \(productIdentifier)")
-                } else {
-                    //print("Not purchased: \(productIdentifier)")
                 }
             }
         }
         
         SKPaymentQueue.default().add(self)
-
+        
         productsRequest?.cancel()
         let productIdentifiers = NSSet(objects: P_month, P_6months, P_year)
         productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers as! Set<String>)
@@ -79,21 +76,13 @@ class IAPHelper: NSObject {
 // MARK: - SKProductsRequestDelegate
 
 extension IAPHelper: SKProductsRequestDelegate {
-    
-    public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         let products = response.products
         callbackForProducts?(products)
         clearRequestAndHandler()
-        
-        print("Loaded products count: " + products.count.description)
-        for p in products {
-            print("Found product: \(p.productIdentifier) \(p.localizedTitle) \(p.price.floatValue)")
-        }
     }
     
-    public func request(_ request: SKRequest, didFailWithError error: Error) {
-        print("Failed to load list of products.")
-        print("Error: \(error.localizedDescription)")
+    func request(_ request: SKRequest, didFailWithError error: Error) {
         callbackForError?(error)
         clearRequestAndHandler()
     }
@@ -109,16 +98,12 @@ extension IAPHelper: SKProductsRequestDelegate {
 // MARK: - SKPaymentTransactionObserver
 
 extension IAPHelper: SKPaymentTransactionObserver {
-    
-    public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             let state = transaction.transactionState
             
             switch state {
             case .purchased, .failed, .restored:
-                print("transaction state \(state)")
-                print("transaction id \(transaction.transactionIdentifier)")
                 SKPaymentQueue.default().finishTransaction(transaction)
                 UserDefaults.standard.setValue(transaction.payment.productIdentifier, forKey: "IAP")
                 purchasedPackagesIds.insert(transaction.payment.productIdentifier)
@@ -130,7 +115,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
             case .purchasing:
                 break
             default:
-                fatalError("No default action found.")
+                print("No default action found.")
                 break
             }
         }
@@ -145,14 +130,11 @@ extension AppDelegate: SKPaymentTransactionObserver {
             switch transaction.transactionState {
             case .failed:
                 queue.finishTransaction(transaction)
-                print("Transaction Failed \(transaction)")
                 break
             case .purchased, .restored:
                 queue.finishTransaction(transaction)
-                print("Transaction purchased or restored: \(transaction)")
                 break
             case .deferred, .purchasing:
-                print("Transaction in progress: \(transaction)")
                 break
             @unknown default:
                 break
@@ -162,30 +144,27 @@ extension AppDelegate: SKPaymentTransactionObserver {
 }
 
 extension IAPHelper {
-    
     func getReceiptData(
         responseData: @escaping (_ response: NSDictionary) -> Void,
         errorData: @escaping (_ error: String) -> Void
     ) {
-             
-        guard let receiptFileURL = Bundle.main.appStoreReceiptURL,
-              let receiptData = try? Data(contentsOf: receiptFileURL) else {
+        guard
+            let receiptFileURL = Bundle.main.appStoreReceiptURL,
+            let receiptData = try? Data(contentsOf: receiptFileURL)
+        else {
             errorData("Something wen't wrong, Please try again later.")
             return
         }
-        
-//        let receiptString = receiptData.base64EncodedString(options:NSData.Base64EncodingOptions(rawValue: 0))
         
         let receiptString = receiptData.base64EncodedString()
         let allowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
         let allowedCharSet = CharacterSet(charactersIn: allowedCharacters)
         let encodedString = receiptString.addingPercentEncoding(withAllowedCharacters: allowedCharSet)
         
-        let jsonDict: NSDictionary =
-            [
-                "receipt-data" : encodedString ?? "",
-                "password" : IAPHelper.shared.SharedSecretKey
-            ]
+        let jsonDict: NSDictionary = [
+            "receipt-data" : encodedString ?? "",
+            "password" : IAPHelper.shared.SharedSecretKey
+        ]
         
         do {
             let requestData = try JSONSerialization.data(withJSONObject: jsonDict, options: .prettyPrinted)
@@ -245,19 +224,16 @@ enum AppConfiguration: String {
 }
 
 struct SwiftConfig {
-    
-    
-    
     // This is private because the use of 'appConfiguration' is preferred.
     private static let isTestFlight = Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
     
     // This can be used to add debug statements.
     static var isDebug: Bool {
-        #if DEBUG
+#if DEBUG
         return true
-        #else
+#else
         return false
-        #endif
+#endif
     }
     
     static var appConfiguration: AppConfiguration {
@@ -271,10 +247,10 @@ struct SwiftConfig {
     }
     
     static var isSimulator: Bool {
-        #if targetEnvironment(simulator)
+#if targetEnvironment(simulator)
         // we're on the simulator - calculate pretend movement
         return true
-        #endif
+#endif
         
         // we're on a device – use the accelerometer
         return false

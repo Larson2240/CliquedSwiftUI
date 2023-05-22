@@ -26,6 +26,7 @@ class SetLocationDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     var newPin = MKPointAnnotation()
     var isLocationChangedByUser = false
     private var mapChangedFromUserInteraction = false
+    private let preferenceTypeIds = PreferenceTypeIds()
     
     //MARK:- Init
     init(tableView: UITableView, viewModel: SignUpProcessViewModel, viewController: SetLocationVC) {
@@ -124,7 +125,7 @@ class SetLocationDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     @objc func handleSliderValueChange(_ sender: StepSlider) {
         var arrayOfPreference = [PreferenceClass]()
         var arrayOfTypeOption = [TypeOptions]()
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.distance}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.distance}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
             if arrayOfTypeOption.count > 0 {
@@ -139,7 +140,7 @@ class SetLocationDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     func setupDefaultDistantce() {
         var arrayOfPreference = [PreferenceClass]()
         var arrayOfTypeOption = [TypeOptions]()
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.distance}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.distance}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
             if arrayOfTypeOption.count > 0 {
@@ -247,7 +248,9 @@ extension SetLocationDataSource: CLLocationManagerDelegate, MKMapViewDelegate {
         let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
         
         ceo.reverseGeocodeLocation(loc, completionHandler:
-                                    {(placemarks, error) in
+                                    { [weak self] (placemarks, error) in
+            guard let self = self else { return }
+            
             if (error != nil)
             {
                 print("reverse geodcode fail: \(error!.localizedDescription)")
@@ -307,9 +310,9 @@ extension SetLocationDataSource: CLLocationManagerDelegate, MKMapViewDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         
-        DispatchQueue.global().async {
+        DispatchQueue.global().async { [weak self] in
             if CLLocationManager.locationServicesEnabled() {
-                self.locationManager.startUpdatingLocation()
+                self?.locationManager.startUpdatingLocation()
             }
         }
     }

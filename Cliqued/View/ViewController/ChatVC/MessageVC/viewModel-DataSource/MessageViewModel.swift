@@ -15,13 +15,14 @@ struct messageList {
 
 class MessageViewModel {
     
-//    var arrMessages = [CDMessage]()
+    //    var arrMessages = [CDMessage]()
     var arrMessages = NSMutableArray()
     var isMessage: Dynamic<String> = Dynamic(String())
     var isLoaderShow: Dynamic<Bool> = Dynamic(true)
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     var isMessageAdded: Dynamic<Bool> = Dynamic(false)
     var isUserDataGet: Dynamic<Bool> = Dynamic(false)
+    private let apiParams = ApiParams()
     
     //MARK: Variables
     private struct structMessage {
@@ -63,15 +64,18 @@ class MessageViewModel {
     func callGetUserDetailsAPI(user_id: Int) {
         
         let params: NSDictionary = [
-            APIParams.userID : user_id
+            apiParams.userID : user_id
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.isLoaderShow.value = true
                 self.arrayOfMainUserList.removeAll()
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserDetails, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserDetails, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -107,128 +111,134 @@ class MessageViewModel {
     }
     
     func apiAddChatMedia() {
-           let params: NSDictionary = [
-                APIParams.senderId: getSenderId(),
-                APIParams.receiverId:getReceiverId(),
-                APIParams.chatMedia: getChatMediaArray(),
-                APIParams.thumbnail: getThumbnailMediaArray()
-            ]
+        let params: NSDictionary = [
+            apiParams.senderId: getSenderId(),
+            apiParams.receiverId:getReceiverId(),
+            apiParams.chatMedia: getChatMediaArray(),
+            apiParams.thumbnail: getThumbnailMediaArray()
+        ]
+        
+        print(params)
+        
+        if(Connectivity.isConnectedToInternet()){
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
+            }
             
-            print(params)
-            
-            if(Connectivity.isConnectedToInternet()){
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UploadChatMediaUrl, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                    self.isLoaderShow.value = false
                 }
                 
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UploadChatMediaUrl, parameters: params) { response, error, message in
-                    DispatchQueue.main.async {
-                        self.isLoaderShow.value = false
-                    }
+                if(error != nil && response == nil) {
+                    self.isMessage.value = message ?? ""
+                } else {
+                    let json = response as? NSDictionary
+                    let status = json?[API_STATUS] as? Int
+                    let message = json?[API_MESSAGE] as? String
                     
-                    if(error != nil && response == nil) {
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        let json = response as? NSDictionary
-                        let status = json?[API_STATUS] as? Int
-                        let message = json?[API_MESSAGE] as? String
-                        
-                        if status == SUCCESS {
-                            if let mediaIds = json?["media_ids"] as? NSArray, let mediaUrls = json?["media_url"] as? NSArray, let thumbnailUrls = json?["thumbnail_url"] as? NSArray, let arrMediaTypes = json?["media_types"] as? NSArray {
-                                
-                                self.sendMessageForMedia(arrMediaIds: mediaIds, arrMediaUrls: mediaUrls, arrthumbnailUrls: thumbnailUrls,arrMediaTypes: arrMediaTypes)
-                            }                           
-                        } else {
-                            self.isMessage.value = message ?? ""
+                    if status == SUCCESS {
+                        if let mediaIds = json?["media_ids"] as? NSArray, let mediaUrls = json?["media_url"] as? NSArray, let thumbnailUrls = json?["thumbnail_url"] as? NSArray, let arrMediaTypes = json?["media_types"] as? NSArray {
+                            
+                            self.sendMessageForMedia(arrMediaIds: mediaIds, arrMediaUrls: mediaUrls, arrthumbnailUrls: thumbnailUrls,arrMediaTypes: arrMediaTypes)
                         }
+                    } else {
+                        self.isMessage.value = message ?? ""
                     }
                 }
-            } else {
-                self.isMessage.value = Constants.alert_InternetConnectivity
             }
+        } else {
+            self.isMessage.value = Constants.alert_InternetConnectivity
+        }
     }
     
     func apiGetAccessToken() {
-           let params: NSDictionary = [
-                APIParams.userID: getSenderId(),
-                APIParams.room_id:getRoomName(),
-                APIParams.isVideo: getIsVideo()
-            ]
+        let params: NSDictionary = [
+            apiParams.userID: getSenderId(),
+            apiParams.room_id:getRoomName(),
+            apiParams.isVideo: getIsVideo()
+        ]
+        
+        print(params)
+        
+        if(Connectivity.isConnectedToInternet()){
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
+            }
             
-            print(params)
-            
-            if(Connectivity.isConnectedToInternet()){
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetTwilioAccessToken, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                    self.isLoaderShow.value = false
                 }
                 
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetTwilioAccessToken, parameters: params) { response, error, message in
-                    DispatchQueue.main.async {
-                        self.isLoaderShow.value = false
-                    }
+                if(error != nil && response == nil) {
+                    self.isMessage.value = message ?? ""
+                } else {
+                    let json = response as? NSDictionary
+                    let status = json?[API_STATUS] as? Int
+                    let message = json?[API_MESSAGE] as? String
                     
-                    if(error != nil && response == nil) {
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        let json = response as? NSDictionary
-                        let status = json?[API_STATUS] as? Int
-                        let message = json?[API_MESSAGE] as? String
-                        
-                        if status == SUCCESS {
-                            if let strToken = json?["AccessToken"] as? String, !strToken.isEmpty {
-                                self.setAccessToken(value: strToken)
-                                self.isDataGet.value = true
-                            }
-                        } else {
-                            self.isMessage.value = message ?? ""
+                    if status == SUCCESS {
+                        if let strToken = json?["AccessToken"] as? String, !strToken.isEmpty {
+                            self.setAccessToken(value: strToken)
+                            self.isDataGet.value = true
                         }
+                    } else {
+                        self.isMessage.value = message ?? ""
                     }
                 }
-            } else {
-                self.isMessage.value = Constants.alert_InternetConnectivity
             }
+        } else {
+            self.isMessage.value = Constants.alert_InternetConnectivity
+        }
     }
     
     func apiCheckOtherUser() {
-           let params: NSDictionary = [
-                APIParams.userID: getSenderId(),
-                APIParams.counterUserId : getReceiverId(),
-                APIParams.room_id:getRoomName(),
-                APIParams.isVideo: getIsVideo()
-            ]
+        let params: NSDictionary = [
+            apiParams.userID: getSenderId(),
+            apiParams.counterUserId : getReceiverId(),
+            apiParams.room_id:getRoomName(),
+            apiParams.isVideo: getIsVideo()
+        ]
+        
+        print(params)
+        
+        if(Connectivity.isConnectedToInternet()){
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
+            }
             
-            print(params)
-            
-            if(Connectivity.isConnectedToInternet()){
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.CheckCallStatusOfReceiver, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                    self.isLoaderShow.value = false
                 }
                 
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.CheckCallStatusOfReceiver, parameters: params) { response, error, message in
-                    DispatchQueue.main.async {
-                        self.isLoaderShow.value = false
-                    }
+                if(error != nil && response == nil) {
+                    self.isMessage.value = message ?? ""
+                } else {
+                    let json = response as? NSDictionary
+                    let status = json?[API_STATUS] as? Int
+                    let message = json?[API_MESSAGE] as? String
                     
-                    if(error != nil && response == nil) {
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        let json = response as? NSDictionary
-                        let status = json?[API_STATUS] as? Int
-                        let message = json?[API_MESSAGE] as? String
-                        
-                        if status == SUCCESS {
-                            if let strToken = json?["AccessToken"] as? String, !strToken.isEmpty {
-                                self.setAccessToken(value: strToken)
-                                self.isDataGet.value = true
-                            }
-                        } else {
-                            self.isMessage.value = message ?? ""
+                    if status == SUCCESS {
+                        if let strToken = json?["AccessToken"] as? String, !strToken.isEmpty {
+                            self.setAccessToken(value: strToken)
+                            self.isDataGet.value = true
                         }
+                    } else {
+                        self.isMessage.value = message ?? ""
                     }
                 }
-            } else {
-                self.isMessage.value = Constants.alert_InternetConnectivity
             }
+        } else {
+            self.isMessage.value = Constants.alert_InternetConnectivity
+        }
     }
     
     
@@ -236,7 +246,7 @@ class MessageViewModel {
     func sendMessage() {
         
         let strPredicate = "(senderId = \(getSenderId()) and receiverId = \(getReceiverId())) or (senderId = \(getReceiverId()) and receiverId = \(getSenderId()))"
-                  
+        
         let arrayList = CoreDataAdaptor.sharedDataAdaptor.fetchListWhere(predicate: NSPredicate (format: strPredicate as String))
         
         var conversationId = 0
@@ -304,7 +314,7 @@ class MessageViewModel {
         arrayChat.add(dictMsg)
         
         _ = CoreDataAdaptor.sharedDataAdaptor.saveMessage(array: arrayChat)
-//        isMessageAdded.value = true
+        //        isMessageAdded.value = true
         
         let dict = NSMutableDictionary()
         dict.setValue(conversationId, forKey: "conversation_id")
@@ -326,7 +336,7 @@ class MessageViewModel {
         dict.setValue(getCallDuration(), forKey: "call_duration")
         dict.setValue(getThumbnailUrl(), forKey: "thumbnail_url")
         dict.setValue("\(is_blocked)", forKey: "is_blocked")
-       
+        
         APP_DELEGATE.socketIOHandler?.sendMessage(data: dict)
         
         
@@ -335,7 +345,7 @@ class MessageViewModel {
     func sendMessageForMedia(arrMediaIds: NSArray, arrMediaUrls: NSArray, arrthumbnailUrls: NSArray, arrMediaTypes: NSArray) {
         
         let strPredicate = "(senderId = \(getSenderId()) and receiverId = \(getReceiverId())) or (senderId = \(getReceiverId()) and receiverId = \(getSenderId()))"
-                  
+        
         let arrayList = CoreDataAdaptor.sharedDataAdaptor.fetchListWhere(predicate: NSPredicate (format: strPredicate as String))
         
         var conversationId = 0
@@ -371,7 +381,7 @@ class MessageViewModel {
             } else {
                 is_blocked = 0
             }
-
+            
         }
         
         for i in 0..<arrMediaUrls.count {
@@ -437,25 +447,25 @@ class MessageViewModel {
             
         }
         
-//        if arrMediaIds.count > 0 {
-//
-//            let strIds = arrMediaIds.componentsJoined(by: ",")
-//
-//            let dict = NSMutableDictionary()
-//            dict.setValue(conversationId, forKey: "conversation_id")
-//            dict.setValue(getUniqueMessageId(), forKey: "unique_message_id")
-//            dict.setValue("", forKey: "messageText")
-//            dict.setValue(getSenderId(), forKey: "sender_id")
-//            dict.setValue(getReceiverId(), forKey: "receiver_id")
-//            dict.setValue("\(enumMessageType.image.rawValue)", forKey: "message_type")
-//            dict.setValue("\(enumMediaType.image.rawValue)", forKey: "media_type")
-//            dict.setValue(strIds, forKey: "media_ids")
-//            dict.setValue(0, forKey: "parent_message_id")
-//            dict.setValue(0, forKey: "forwarded_id")
-//            dict.setValue("0", forKey: "is_edited")
-//
-//            APP_DELEGATE!.socketIOHandler?.sendMessage(data: dict)
-//        }
+        //        if arrMediaIds.count > 0 {
+        //
+        //            let strIds = arrMediaIds.componentsJoined(by: ",")
+        //
+        //            let dict = NSMutableDictionary()
+        //            dict.setValue(conversationId, forKey: "conversation_id")
+        //            dict.setValue(getUniqueMessageId(), forKey: "unique_message_id")
+        //            dict.setValue("", forKey: "messageText")
+        //            dict.setValue(getSenderId(), forKey: "sender_id")
+        //            dict.setValue(getReceiverId(), forKey: "receiver_id")
+        //            dict.setValue("\(enumMessageType.image.rawValue)", forKey: "message_type")
+        //            dict.setValue("\(enumMediaType.image.rawValue)", forKey: "media_type")
+        //            dict.setValue(strIds, forKey: "media_ids")
+        //            dict.setValue(0, forKey: "parent_message_id")
+        //            dict.setValue(0, forKey: "forwarded_id")
+        //            dict.setValue("0", forKey: "is_edited")
+        //
+        //            APP_DELEGATE!.socketIOHandler?.sendMessage(data: dict)
+        //        }
     }
     
 }
@@ -546,7 +556,7 @@ extension MessageViewModel {
     func getThumbnailUrl() -> String {
         structMessageValue.thumbnail_url
     }
-       
+    
     func getIsOnline() -> String {
         structMessageValue.is_online
     }
@@ -623,7 +633,7 @@ extension MessageViewModel {
     func setMessageStatus(value:String) {
         structMessageValue.message_status = value
     }
-       
+    
     func setUserCallId(value:String) {
         structMessageValue.user_call_id = value
     }

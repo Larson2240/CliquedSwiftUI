@@ -21,6 +21,7 @@ class SignUpVC: UIViewController {
     var dataSource : SignUpDataSource?
     lazy var viewModel = SignUpViewModel()
     var isFromSignInScreen: Bool = false
+    private let loginType = LoginType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -38,15 +39,16 @@ class SignUpVC: UIViewController {
     func handleGoogleSignIn() {
         let config = GIDConfiguration(clientID: Constants.googleSignInKey)
         GIDSignIn.sharedInstance.configuration = config
-        GIDSignIn.sharedInstance.signIn(withPresenting: self) { signInResult, error in
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
+            guard let self = self else { return }
             guard error == nil else { return }
             guard let signInResult = signInResult else { return }
             
             let user = signInResult.user
-            userDefaults.set(user.profile?.givenName, forKey: UserDefaultKey.userName)
+            UserDefaults.standard.set(user.profile?.givenName, forKey: UserDefaultKey().userName)
             self.viewModel.setEmail(value: user.profile?.email ?? "")
             self.viewModel.setSocialLoginId(value: user.userID ?? "")
-            self.viewModel.setLoginType(value: LoginType.GOOGLE)
+            self.viewModel.setLoginType(value: self.loginType.GOOGLE)
             self.viewModel.callSocialLoginAPI()
         }
     }
@@ -80,12 +82,14 @@ extension SignUpVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
                     APP_DELEGATE.socketIOHandler = SocketIOHandler()
@@ -106,7 +110,9 @@ extension SignUpVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -136,10 +142,10 @@ extension SignUpVC: ASAuthorizationControllerDelegate {
             if appleCredential.fullName != nil, appleCredential.email != nil {
                 self.saveCredentialInKeychain(userIdentifier: appleCredential.user, fullName: appleCredential.fullName?.givenName ?? "", email: appleCredential.email ?? "")
             }
-            userDefaults.set(KeychainItem.currentUserFullName, forKey: UserDefaultKey.userName)
+            UserDefaults.standard.set(KeychainItem.currentUserFullName, forKey: UserDefaultKey().userName)
             viewModel.setEmail(value: KeychainItem.currentUserEmail)
             viewModel.setSocialLoginId(value: appleCredential.user)
-            viewModel.setLoginType(value: LoginType.APPLE)
+            viewModel.setLoginType(value: loginType.APPLE)
             viewModel.callSocialLoginAPI()
         }
     }

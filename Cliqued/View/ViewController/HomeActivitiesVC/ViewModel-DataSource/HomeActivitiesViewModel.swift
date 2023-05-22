@@ -26,8 +26,8 @@ class HomeActivitiesViewModel {
     var arrayOfFollowersList = [Followers]()
     var offset = 0
     
-    
     private var isRefresh: Bool = false
+    private let apiParams = ApiParams()
     
     private struct GetUserActivityParams {
         var activityId = ""
@@ -52,24 +52,26 @@ class HomeActivitiesViewModel {
     func callGetUserActivityAPI() {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.activityId : self.getActivityId(),
-            APIParams.activitySubCategoryId : self.getActivitySubCatIds(),
-            APIParams.looking_for : self.getLookingForIds(),
-            APIParams.kids_option_id : self.getKidsOptionId(),
-            APIParams.smoking_option_id : self.getSmokingOptionId(),
-            APIParams.ageStartPrefId : self.getAgeStartPrefId(),
-            APIParams.ageEndPrefId : self.getAgeEndPrefId(),
-            APIParams.distancePrefId : self.getDistancePrefId(),
-            APIParams.offset : self.getOffset(),
-            APIParams.userIds : self.getUserIds()
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.activityId : self.getActivityId(),
+            apiParams.activitySubCategoryId : self.getActivitySubCatIds(),
+            apiParams.looking_for : self.getLookingForIds(),
+            apiParams.kids_option_id : self.getKidsOptionId(),
+            apiParams.smoking_option_id : self.getSmokingOptionId(),
+            apiParams.ageStartPrefId : self.getAgeStartPrefId(),
+            apiParams.ageEndPrefId : self.getAgeEndPrefId(),
+            apiParams.distancePrefId : self.getDistancePrefId(),
+            apiParams.offset : self.getOffset(),
+            apiParams.userIds : self.getUserIds()
         ]
         
         if(Connectivity.isConnectedToInternet()) {
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUsersForActivity, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUsersForActivity, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isDataLoad = true
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
@@ -121,19 +123,21 @@ class HomeActivitiesViewModel {
     func callLikeDislikeUserAPI(isShowLoader: Bool) {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.counterUserId : self.getCounterUserId(),
-            APIParams.isFollow : self.getIsFollow()
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.counterUserId : self.getCounterUserId(),
+            apiParams.isFollow : self.getIsFollow()
         ]
         
         if(Connectivity.isConnectedToInternet()) {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 if isShowLoader {
-                    self.isLoaderShow.value = true
+                    self?.isLoaderShow.value = true
                 }
             }
             self.arrayOfFollowersList.removeAll()
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SetUserFollowStatus, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SetUserFollowStatus, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""

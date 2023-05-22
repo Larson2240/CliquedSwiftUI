@@ -79,7 +79,9 @@ class SelectPicturesDataSource: NSObject {
     }
     
     func openTLPhotoPicker() {
-        checkPhotoLibraryPermission(completion: {(value) -> Void in
+        checkPhotoLibraryPermission(completion: { [weak self] (value) -> Void in
+            guard let self = self else { return }
+            
             if value {
                 let photoViewController = TLPhotosPickerViewController()
                 photoViewController.delegate = self
@@ -205,7 +207,7 @@ extension SelectPicturesDataSource: UICollectionViewDelegate, UICollectionViewDa
 extension SelectPicturesDataSource: TLPhotosPickerViewControllerDelegate {
     func shouldDismissPhotoPicker(withTLPHAssets: [TLPHAsset]) -> Bool {
         // use selected order, fullresolution image
-        for i in withTLPHAssets{
+        for i in withTLPHAssets {
             if i.phAsset?.mediaType == .image {
                 let mediaSize = i.phAsset?.fileSize
                 
@@ -230,7 +232,9 @@ extension SelectPicturesDataSource: TLPhotosPickerViewControllerDelegate {
                 if mediaSize ?? 0 > Float(MEDIA_SIZE) {
                     self.viewController.showAlertPopup(message: Constants_Message.validation_media_upload)
                 } else {
-                    getUrlFromPHAsset(asset: i.phAsset!) { (url) in
+                    getUrlFromPHAsset(asset: i.phAsset!) { [weak self] (url) in
+                        guard let self = self else { return }
+                        
                         self.videoURL = url
                         let selectedImage = UIImage.upOrientationImage(i.fullResolutionImage ?? UIImage())
                         let thumbImage = self.convertThumbMail()

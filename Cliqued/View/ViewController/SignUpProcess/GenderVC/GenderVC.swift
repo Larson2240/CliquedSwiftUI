@@ -34,6 +34,7 @@ class GenderVC: UIViewController {
     var isMaleSelected: Bool = false
     var isAnyoneSelected: Bool = false
     lazy var viewModel = SignUpProcessViewModel()
+    private let profileSetupType = ProfileSetupType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -70,7 +71,7 @@ class GenderVC: UIViewController {
     //MARK: Button Continue Click Event
     @IBAction func btnContinueTap(_ sender: Any) {
         if isAnyoneSelected {
-            viewModel.setProfileSetupType(value: ProfileSetupType.gender)
+            viewModel.setProfileSetupType(value: profileSetupType.gender)
             viewModel.callSignUpProcessAPI()
         } else {
             showAlertPopup(message: Constants.validMsg_gender)
@@ -165,12 +166,14 @@ extension GenderVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 let relationshipvc = RelationshipVC.loadFromNib()
                 self.navigationController?.pushViewController(relationshipvc, animated: true)
@@ -178,7 +181,9 @@ extension GenderVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

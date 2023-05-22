@@ -14,6 +14,8 @@ class UpdateEmailViewModel {
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     var isUserDataGet: Dynamic<Bool> = Dynamic(false)
     
+    private let apiParams = ApiParams()
+    
     //MARK: Variables
     private struct updateEmailParams {
         var userId = ""
@@ -75,16 +77,18 @@ class UpdateEmailViewModel {
         
         if checkOTPValidation() {
             let params: NSDictionary = [
-                APIParams.email : self.getEmailId(),
-                APIParams.userID : self.getUserId(),
-                APIParams.newEmail : self.getNewEmailId()
+                apiParams.email : self.getEmailId(),
+                apiParams.userID : self.getUserId(),
+                apiParams.newEmail : self.getNewEmailId()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SentOTPForEmailID, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SentOTPForEmailID, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""
@@ -111,17 +115,19 @@ class UpdateEmailViewModel {
         
         if checkUpdateValidation() {
             let params: NSDictionary = [
-                APIParams.email : self.getEmailId(),
-                APIParams.userID : self.getUserId(),
-                APIParams.newEmail : self.getNewEmailId(),
-                APIParams.optCode : self.getOTPCode()
+                apiParams.email : self.getEmailId(),
+                apiParams.userID : self.getUserId(),
+                apiParams.newEmail : self.getNewEmailId(),
+                apiParams.optCode : self.getOTPCode()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.VerifyOTPForEmailID, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.VerifyOTPForEmailID, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""
@@ -139,7 +145,7 @@ class UpdateEmailViewModel {
                                         let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
                                         let objUser = try decoder.decode(User.self, from: jsonData)
                                         self.saveUserInfoAndProceed(user: objUser)
-                                        userDefaults.set(true, forKey: UserDefaultKey.isLoggedIn)
+                                        UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
                                         self.isUserDataGet.value = true
                                     } catch {
                                         print(error.localizedDescription)

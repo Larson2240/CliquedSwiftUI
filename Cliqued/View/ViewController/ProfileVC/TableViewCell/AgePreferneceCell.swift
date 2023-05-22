@@ -33,6 +33,8 @@ class AgePreferneceCell: UITableViewCell {
     var selectedMinimumValue = 0.0
     var selectedMaximumValue = 0.0
     
+    private let preferenceTypeIds = PreferenceTypeIds()
+    
     var callbackForAgePreferenceValue: ((_ ageStartId: String, _ ageStartPrefId: String, _ ageEndId: String, _ ageEndPrefId: String) -> Void)?
     
     override func awakeFromNib() {
@@ -51,17 +53,17 @@ class AgePreferneceCell: UITableViewCell {
         var minSeekBarValue = "0"
         var maxSeekBarValue = "0"
         
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.age}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.age}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfSubType = arrayOfPreference[0].subTypes ?? []
             if arrayOfSubType.count > 0 {
-                let subTypesData = arrayOfSubType.filter({$0.typesOfPreference == PreferenceTypeIds.age_start})
+                let subTypesData = arrayOfSubType.filter({$0.typesOfPreference == preferenceTypeIds.age_start})
                 arrayOfTypeOptionStartAge = subTypesData[0].typeOptions ?? []
                 if arrayOfTypeOptionStartAge.count > 0 {
                     minSeekBarValue = arrayOfTypeOptionStartAge.first?.title ?? "0"
                 }
                 
-                let subTypesDataEndAge = arrayOfSubType.filter({$0.typesOfPreference == PreferenceTypeIds.age_end})
+                let subTypesDataEndAge = arrayOfSubType.filter({$0.typesOfPreference == preferenceTypeIds.age_end})
                 arrayOfTypeOptionEndAge = subTypesDataEndAge[0].typeOptions ?? []
                 
                 if arrayOfTypeOptionEndAge.count > 0 {

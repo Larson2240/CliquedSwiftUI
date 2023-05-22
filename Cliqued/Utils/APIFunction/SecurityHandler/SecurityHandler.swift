@@ -28,14 +28,15 @@ let kAutorization = "Authorization"
 let kAppToken = "appToken"
 
 func includeSecurityCredentials() -> NSDictionary {
+    let userDefaults = UserDefaults.standard
     
     let accessKey : String
     let secretKey : String
     
     var isTestData = "0"
-    #if DEBUG
+#if DEBUG
     isTestData = "1"
-    #endif
+#endif
     
     if (userDefaults.value(forKey: kGlobalPassword) != nil) && userDefaults.value(forKey: kUserGUID) != nil {
         
@@ -66,28 +67,25 @@ func includeSecurityCredentials() -> NSDictionary {
 }
 
 func checkSecurity() {
+    let userDefaults = UserDefaults.standard
+    
     if (userDefaults.value(forKey: kTempToken) == nil) {
         getTempToken()
     }
 }
 
-//MARK:- TempToken
+//MARK: - TempToken
 func getTempToken() {
-  
-
+    let userDefaults = UserDefaults.standard
+    
     RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.RefreshToken) { (response, error, messaage) in
-        print(response)
-        if response != nil
-        {
-            //let dicTemp:NSDictionary = (response as! NSDictionary).object(forKey: WSDATA) as! NSDictionary
-            if (response as! NSDictionary).value(forKey: kTempToken) != nil && (response as! NSDictionary)["adminConfig"] != nil {
-                let dicConfig = (response as! NSDictionary)["adminConfig"] as! NSArray;
-
-                userDefaults.set((dicConfig[0] as AnyObject).value(forKey: "globalPassword"), forKey: kGlobalPassword)
-                userDefaults.set((response as! NSDictionary).value(forKey: kTempToken), forKey: kTempToken)
-            }
-        }else {
-            //showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+        guard response != nil else { return }
+        //let dicTemp:NSDictionary = (response as! NSDictionary).object(forKey: WSDATA) as! NSDictionary
+        if (response as! NSDictionary).value(forKey: kTempToken) != nil && (response as! NSDictionary)["adminConfig"] != nil {
+            let dicConfig = (response as! NSDictionary)["adminConfig"] as! NSArray;
+            
+            userDefaults.set((dicConfig[0] as AnyObject).value(forKey: "globalPassword"), forKey: kGlobalPassword)
+            userDefaults.set((response as! NSDictionary).value(forKey: kTempToken), forKey: kTempToken)
         }
     }
 }

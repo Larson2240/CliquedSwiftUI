@@ -23,6 +23,7 @@ class SettingsViewModel {
     }
     
     private var structUserStatusValue = structUserStatus()
+    private let apiParams = ApiParams()
     
     //MARK: Save user data in UserDefault
     func saveUserInfoAndProceed(user: User){
@@ -31,69 +32,73 @@ class SettingsViewModel {
     
     //MARK: - API Call
     func apiUpdateUserChatStatus() {
-           let params: NSDictionary = [
-                APIParams.userID: getUserId(),
-                APIParams.is_online: getIsOnline(),
-                APIParams.last_seen: getIsLastSeen(),
-                APIParams.profile_setup_type : getProfileSetupType()
-            ]
+        let params: NSDictionary = [
+            apiParams.userID: getUserId(),
+            apiParams.is_online: getIsOnline(),
+            apiParams.last_seen: getIsLastSeen(),
+            apiParams.profile_setup_type : getProfileSetupType()
+        ]
+        
+        print(params)
+        
+        if(Connectivity.isConnectedToInternet()){
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
+            }
             
-            print(params)
-            
-            if(Connectivity.isConnectedToInternet()){
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateProfile, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                    self.isLoaderShow.value = false
                 }
                 
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateProfile, parameters: params) { response, error, message in
-                    DispatchQueue.main.async {
-                        self.isLoaderShow.value = false
-                    }
+                if(error != nil && response == nil) {
+                    self.isMessage.value = message ?? ""
+                } else {
+                    let json = response as? NSDictionary
+                    let status = json?[API_STATUS] as? Int
+                    let message = json?[API_MESSAGE] as? String
                     
-                    if(error != nil && response == nil) {
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        let json = response as? NSDictionary
-                        let status = json?[API_STATUS] as? Int
-                        let message = json?[API_MESSAGE] as? String
-                        
-                        if status == SUCCESS {
-                            if let userArray = json?["user"] as? NSArray {
-                                if userArray.count > 0 {
-                                    let dicUser = userArray[0] as! NSDictionary
-                                    let decoder = JSONDecoder()
-                                    do {
-                                        let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
-                                        let objUser = try decoder.decode(User.self, from: jsonData)
-                                        self.saveUserInfoAndProceed(user: objUser)
-                                        self.isDataGet.value = true
-                                    } catch {
-                                        print(error.localizedDescription)
-                                    }
-                                    //self.isDataGet.value = true
+                    if status == SUCCESS {
+                        if let userArray = json?["user"] as? NSArray {
+                            if userArray.count > 0 {
+                                let dicUser = userArray[0] as! NSDictionary
+                                let decoder = JSONDecoder()
+                                do {
+                                    let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
+                                    let objUser = try decoder.decode(User.self, from: jsonData)
+                                    self.saveUserInfoAndProceed(user: objUser)
+                                    self.isDataGet.value = true
+                                } catch {
+                                    print(error.localizedDescription)
                                 }
+                                //self.isDataGet.value = true
                             }
-                        } else {
-                            self.isMessage.value = message ?? ""
                         }
+                    } else {
+                        self.isMessage.value = message ?? ""
                     }
                 }
-            } else {
-                self.isMessage.value = Constants.alert_InternetConnectivity
             }
+        } else {
+            self.isMessage.value = Constants.alert_InternetConnectivity
+        }
     }
     
     //MARK: Call Update Profile API
     func callLogoutAPI() {
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.Logout, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.Logout, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -116,14 +121,15 @@ class SettingsViewModel {
     
     func callDeleteAccountAPI() {
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.DeleteAccount, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.DeleteAccount, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -143,8 +149,6 @@ class SettingsViewModel {
             self.isMessage.value = Constants.alert_InternetConnectivity
         }
     }
-    
-    
 }
 
 extension SettingsViewModel {

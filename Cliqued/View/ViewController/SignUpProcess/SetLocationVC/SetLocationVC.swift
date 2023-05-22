@@ -29,6 +29,7 @@ class SetLocationVC: UIViewController {
     var distancePreference = ""
     var addressId = ""
     var objAddress: UserAddress!
+    private let profileSetupType = ProfileSetupType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -53,9 +54,9 @@ class SetLocationVC: UIViewController {
         if dataSource?.addressDic.latitude != "" && dataSource?.addressDic.longitude != "" && dataSource?.addressDic.city != "" && dataSource?.addressDic.state != "" {
             self.viewModel.setUserAddress(value: dataSource?.addressDic ?? structAddressParam())
             if !isFromEditProfile {
-                viewModel.setProfileSetupType(value: ProfileSetupType.location)
+                viewModel.setProfileSetupType(value: profileSetupType.location)
             } else {
-                viewModel.setProfileSetupType(value: ProfileSetupType.completed)
+                viewModel.setProfileSetupType(value: profileSetupType.completed)
             }
             viewModel.callSignUpProcessAPI()
         } else {
@@ -110,12 +111,14 @@ extension SetLocationVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if !self.isFromEditProfile {
                     let notificationVC = NotificationPermissionVC.loadFromNib()
@@ -130,7 +133,9 @@ extension SetLocationVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

@@ -140,11 +140,11 @@ class SignInDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
         if !viewModel.getRememberMe() {
             cell.buttonRemembarMe.setImage(UIImage(named: "ic_rememberme_selected"), for: .normal)
             viewModel.setRememberMe(value: true)
-            userDefaults.set(true, forKey: UserDefaultKey.isRemeberMe)
+            UserDefaults.standard.set(true, forKey: UserDefaultKey().isRemeberMe)
         } else {
             cell.buttonRemembarMe.setImage(UIImage(named: "ic_rememberme_unselect"), for: .normal)
             viewModel.setRememberMe(value: false)
-            userDefaults.set(false, forKey: UserDefaultKey.isRemeberMe)
+            UserDefaults.standard.set(false, forKey: UserDefaultKey().isRemeberMe)
         }
     }
     
@@ -179,7 +179,9 @@ class SignInDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
         viewController.view.endEditing(true)
         if viewModel.getWrongPasswordCount() >= 3 {
             viewModel.setResetWrongPasswordCount()
-            viewController.showAlerBox("", Constants.validMsg_wrongPasswordAttempt) { _ in
+            viewController.showAlerBox("", Constants.validMsg_wrongPasswordAttempt) { [weak self] _ in
+                guard let self = self else { return }
+                
                 let forgotpwdvc = ForgotPasswordVC.loadFromNib()
                 forgotpwdvc.isResetPassword = true
                 forgotpwdvc.emailId = self.viewModel.getEmail()

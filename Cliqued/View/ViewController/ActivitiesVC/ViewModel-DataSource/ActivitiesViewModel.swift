@@ -13,6 +13,8 @@ class ActivitiesViewModel {
     var isLoaderShow: Dynamic<Bool> = Dynamic(true)
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     
+    private let apiParams = ApiParams()
+    
     //MARK: Variables
     private struct userActivityListParams {
         var user_id = ""
@@ -38,24 +40,28 @@ class ActivitiesViewModel {
     func callAllActivityListAPI() {
                
             let params: NSDictionary = [
-                APIParams.userID : self.getUserId(),
-                APIParams.activityCategoryId: self.getActivityCategoryId(),
-                APIParams.activitySubCategoryId: self.getActivitySubCategoryId(),
-                APIParams.looking_for : self.getLookingForIds(),
-                APIParams.kids_option_id : self.getKidsOptionId(),
-                APIParams.smoking_option_id : self.getSmokingOptionId(),
-                APIParams.ageStartPrefId : self.getAgeStartPrefId(),
-                APIParams.ageEndPrefId : self.getAgeEndPrefId(),
-                APIParams.distancePrefId : self.getDistancePrefId(),
-                APIParams.offset: self.getOffset()                
+                apiParams.userID : self.getUserId(),
+                apiParams.activityCategoryId: self.getActivityCategoryId(),
+                apiParams.activitySubCategoryId: self.getActivitySubCategoryId(),
+                apiParams.looking_for : self.getLookingForIds(),
+                apiParams.kids_option_id : self.getKidsOptionId(),
+                apiParams.smoking_option_id : self.getSmokingOptionId(),
+                apiParams.ageStartPrefId : self.getAgeStartPrefId(),
+                apiParams.ageEndPrefId : self.getAgeEndPrefId(),
+                apiParams.distancePrefId : self.getDistancePrefId(),
+                apiParams.offset: self.getOffset()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    
                     self.arrMyActivities.removeAll()
                     self.arrOtherActivities.removeAll()
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetAllActivityList, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetAllActivityList, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.setIsDataLoad(value: true)
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""

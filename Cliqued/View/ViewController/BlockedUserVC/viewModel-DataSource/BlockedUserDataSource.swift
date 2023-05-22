@@ -32,7 +32,9 @@ class BlockedUserDataSource: NSObject {
         tableView.backgroundColor = .clear
         registerTableCell()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            guard let self = self else { return }
+            
             self.setupPullToRefresh()
             self.setupLoadMore()
         }
@@ -46,7 +48,8 @@ class BlockedUserDataSource: NSObject {
     
     //MARK: Pull To Refresh
     func setupPullToRefresh() {
-        viewController.pullToRefreshHeaderSetUpForTableview(tableview: tableView, strStatus: "") {
+        viewController.pullToRefreshHeaderSetUpForTableview(tableview: tableView, strStatus: "") { [weak self] in
+            guard let self = self else { return }
             self.viewModel.setIsRefresh(value: true)
             self.viewModel.setOffset(value: "0")
             self.viewModel.callUserListAPI()
@@ -55,7 +58,9 @@ class BlockedUserDataSource: NSObject {
     
     //MARK: Load More
     func setupLoadMore() {
-        viewController.loadMoreFooterSetUpForTableview(tableview: tableView) {
+        viewController.loadMoreFooterSetUpForTableview(tableview: tableView) { [weak self] in
+            guard let self = self else { return }
+            
             if self.viewController.isFooterRefreshingForTableView(tableview: self.tableView) {
                 self.tableView.mj_footer?.endRefreshing(completionBlock: {
                     self.viewModel.setIsRefresh(value: true)
@@ -70,8 +75,8 @@ class BlockedUserDataSource: NSObject {
     //MARK: Hide header loader
     func hideHeaderLoader() {
         if viewController.isHeaderRefreshingForTableView(tableview: tableView) {
-            DispatchQueue.main.async {
-                self.tableView.mj_header!.endRefreshing(completionBlock: { })
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.mj_header!.endRefreshing(completionBlock: { })
             }
         }
     }
@@ -79,8 +84,8 @@ class BlockedUserDataSource: NSObject {
     //MARK: Hide footer loader
     func hideFooterLoader() {
         if viewController.isFooterRefreshingForTableView(tableview: tableView) {
-            DispatchQueue.main.async {
-                self.tableView.mj_footer!.endRefreshing(completionBlock: { })
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.mj_footer!.endRefreshing(completionBlock: { })
             }
         }
     }
@@ -88,7 +93,8 @@ class BlockedUserDataSource: NSObject {
     //MARK: Button action for unblock user
     @objc func buttonUnblockAction(_ sender: UIButton) {
         if viewModel.arrBlockedUser.count > 0 {
-            viewController.alertCustom(btnNo: Constants_Message.cancel_title, btnYes: Constants_Message.title_ok, title: "", message: Constants_Message.alert_title_unblock_user) {
+            viewController.alertCustom(btnNo: Constants_Message.cancel_title, btnYes: Constants_Message.title_ok, title: "", message: Constants_Message.alert_title_unblock_user) { [weak self] in
+                guard let self = self else { return }
                 
                 let obj = self.viewModel.arrBlockedUser[sender.tag]
                 self.viewModel.setUserIndex(value: sender.tag)

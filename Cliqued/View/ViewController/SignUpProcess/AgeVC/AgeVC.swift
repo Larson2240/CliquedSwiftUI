@@ -8,8 +8,6 @@
 import UIKit
 
 class AgeVC: UIViewController {
-    
-    
     //MARK: IBOutlet
     @IBOutlet weak var viewNavigationBar: NavigationView!
     @IBOutlet weak var progressView: UIProgressView!
@@ -44,9 +42,10 @@ class AgeVC: UIViewController {
     var name: String?
     var selectedDate: String?
     // Age of 45.
-    let MINIMUM_AGE: Date = Calendar.current.date(byAdding: .year, value: -45, to: Date())!;
+    let MINIMUM_AGE: Date = Calendar.current.date(byAdding: .year, value: -45, to: Date())!
     // Age of 150.
-    let MAXIMUM_AGE: Date = Calendar.current.date(byAdding: .year, value: -150, to: Date())!;
+    let MAXIMUM_AGE: Date = Calendar.current.date(byAdding: .year, value: -150, to: Date())!
+    private let profileSetupType = ProfileSetupType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -76,7 +75,7 @@ class AgeVC: UIViewController {
         if(isValidAge) {
             showAlertPopup(message: Constants.validMsg_age)
         } else {
-            viewModel.setProfileSetupType(value: ProfileSetupType.birthdate)
+            viewModel.setProfileSetupType(value: profileSetupType.birthdate)
             self.viewModel.callSignUpProcessAPI()
         }
     }
@@ -136,12 +135,14 @@ extension AgeVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 let gendervc = GenderVC.loadFromNib()
                 self.navigationController?.pushViewController(gendervc, animated: true)
@@ -149,7 +150,9 @@ extension AgeVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

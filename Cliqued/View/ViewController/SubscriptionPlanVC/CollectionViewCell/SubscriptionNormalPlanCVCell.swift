@@ -8,7 +8,6 @@
 import UIKit
 
 class SubscriptionNormalPlanCVCell: UICollectionViewCell {
-
     @IBOutlet weak var viewMain: UIView!{
         didSet {
             viewMain.layer.cornerRadius = 8.0
@@ -20,7 +19,7 @@ class SubscriptionNormalPlanCVCell: UICollectionViewCell {
         }
     }
     
-    @IBOutlet weak var labelMonthValue: UILabel!{
+    @IBOutlet weak var labelMonthValue: UILabel! {
         didSet {
             labelMonthValue.text = "1"
             labelMonthValue.font = CustomFont.THEME_FONT_Medium(24)
@@ -28,7 +27,7 @@ class SubscriptionNormalPlanCVCell: UICollectionViewCell {
         }
     }
     
-    @IBOutlet weak var labelMonthTitle: UILabel!{
+    @IBOutlet weak var labelMonthTitle: UILabel! {
         didSet {
             labelMonthTitle.text = "Month"
             labelMonthTitle.font = CustomFont.THEME_FONT_Medium(11)
@@ -36,7 +35,7 @@ class SubscriptionNormalPlanCVCell: UICollectionViewCell {
         }
     }
     
-    @IBOutlet weak var labelPlanPrice: UILabel!{
+    @IBOutlet weak var labelPlanPrice: UILabel! {
         didSet {
             labelPlanPrice.text = "CHF 108"
             labelPlanPrice.font = CustomFont.THEME_FONT_Medium(11)
@@ -44,7 +43,7 @@ class SubscriptionNormalPlanCVCell: UICollectionViewCell {
         }
     }
     
-    @IBOutlet weak var labelPlanName: UILabel!{
+    @IBOutlet weak var labelPlanName: UILabel! {
         didSet {
             labelPlanName.text = "CHF 9/month"
             labelPlanName.font = CustomFont.THEME_FONT_Bold(13)
@@ -53,7 +52,6 @@ class SubscriptionNormalPlanCVCell: UICollectionViewCell {
     }
     
     @IBOutlet weak var imageviewdotedline: UIImageView!
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -69,5 +67,4 @@ class SubscriptionNormalPlanCVCell: UICollectionViewCell {
         labelPlanPrice.isHidden = false
         imageviewdotedline.isHidden = false
     }
-
 }

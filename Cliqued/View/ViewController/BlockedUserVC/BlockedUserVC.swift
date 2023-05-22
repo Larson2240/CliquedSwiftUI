@@ -64,12 +64,14 @@ extension BlockedUserVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 self.tableView.reloadData()
                 self.dataSource!.hideHeaderLoader()
@@ -77,7 +79,9 @@ extension BlockedUserVC {
             }
         }
         
-        viewModel.isMarkStatusDataGet.bind { isSuccess in
+        viewModel.isMarkStatusDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 self.viewModel.arrBlockedUser.remove(at: self.viewModel.getUserIndex())
                             
@@ -94,7 +98,9 @@ extension BlockedUserVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

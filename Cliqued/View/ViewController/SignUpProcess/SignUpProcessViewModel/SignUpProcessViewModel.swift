@@ -41,6 +41,8 @@ class SignUpProcessViewModel {
     var isLoaderShow: Dynamic<Bool> = Dynamic(true)
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     
+    private let apiParams = ApiParams()
+    
     //MARK: Variables
     
     //MARK: Struct Main Param's
@@ -72,31 +74,33 @@ class SignUpProcessViewModel {
     func callSignUpProcessAPI() {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.profile_setup_type : self.getProfileSetupType(),
-            APIParams.name : self.getName(),
-            APIParams.birthdate : self.getDateOfBirth(),
-            APIParams.gender : self.getGender(),
-            APIParams.looking_for : self.convertRelationshipStructToString(),
-            APIParams.looking_for_deleted_id : self.getDeletedLookingForIds(),
-            APIParams.activity_selection : self.getActivity(),
-            APIParams.user_profile_image : self.getAllProfileImage(),
-            APIParams.thumbnail : self.getAllThumbnails(),
-            APIParams.userDeletedImageId : self.getDeletedProfileImagesIds(),
-            APIParams.userDeletedCategoryId : self.getDeletedCategoryIds(),
-            APIParams.userDeletedSubCategoryId : self.getDeletedSubCategoryIds(),
-            APIParams.user_address : self.convertUserAddressStructToString(),
-            APIParams.distance_pref : self.convertDistanceParamStructToString(),
-            APIParams.notification_status : self.convertNotificationParamStructToString()
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.profile_setup_type : self.getProfileSetupType(),
+            apiParams.name : self.getName(),
+            apiParams.birthdate : self.getDateOfBirth(),
+            apiParams.gender : self.getGender(),
+            apiParams.looking_for : self.convertRelationshipStructToString(),
+            apiParams.looking_for_deleted_id : self.getDeletedLookingForIds(),
+            apiParams.activity_selection : self.getActivity(),
+            apiParams.user_profile_image : self.getAllProfileImage(),
+            apiParams.thumbnail : self.getAllThumbnails(),
+            apiParams.userDeletedImageId : self.getDeletedProfileImagesIds(),
+            apiParams.userDeletedCategoryId : self.getDeletedCategoryIds(),
+            apiParams.userDeletedSubCategoryId : self.getDeletedSubCategoryIds(),
+            apiParams.user_address : self.convertUserAddressStructToString(),
+            apiParams.distance_pref : self.convertDistanceParamStructToString(),
+            apiParams.notification_status : self.convertNotificationParamStructToString()
         ]
         
 //        print("SignUpPrarams: \(params)")
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateProfile, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateProfile, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -245,9 +249,9 @@ extension SignUpProcessViewModel {
     func convertRelationshipStructToString() -> String {
         var optionlist = [String]()
         for i in getRelationship() {
-            let dict : NSMutableDictionary = [APIParams.preferenceId : i.preference_id ,
-                                              APIParams.preferenceOptionId : i.preference_option_id,
-                                              APIParams.userPreferenceId : i.user_preference_id
+            let dict : NSMutableDictionary = [apiParams.preferenceId : i.preference_id ,
+                                              apiParams.preferenceOptionId : i.preference_option_id,
+                                              apiParams.userPreferenceId : i.user_preference_id
             ]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
@@ -263,14 +267,14 @@ extension SignUpProcessViewModel {
     func convertUserAddressStructToString() -> String {
         var optionlist = [String]()
         for i in getUserAddress() {
-            let dict : NSMutableDictionary = [APIParams.address : i.address ,
-                                              APIParams.latitude : i.latitude,
-                                              APIParams.longitude : i.longitude,
-                                              APIParams.city : i.city,
-                                              APIParams.state : i.state,
-                                              APIParams.country : i.country,
-                                              APIParams.pincode : i.pincode,
-                                              APIParams.addressId : i.address_id
+            let dict : NSMutableDictionary = [apiParams.address : i.address ,
+                                              apiParams.latitude : i.latitude,
+                                              apiParams.longitude : i.longitude,
+                                              apiParams.city : i.city,
+                                              apiParams.state : i.state,
+                                              apiParams.country : i.country,
+                                              apiParams.pincode : i.pincode,
+                                              apiParams.addressId : i.address_id
             ]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
@@ -288,8 +292,8 @@ extension SignUpProcessViewModel {
         
         if !self.getDistance().distancePreferenceOptionId.isEmpty {
             let dict : NSMutableDictionary = [
-                APIParams.distancePrefOptionId : self.getDistance().distancePreferenceOptionId,
-                APIParams.distancePrefId : self.getDistance().distancePreferenceId
+                apiParams.distancePrefOptionId : self.getDistance().distancePreferenceOptionId,
+                apiParams.distancePrefId : self.getDistance().distancePreferenceId
             ]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
@@ -307,8 +311,8 @@ extension SignUpProcessViewModel {
         
         if !self.getNotification().notificationOptionId.isEmpty {
             let dict : NSMutableDictionary = [
-                APIParams.notificationPrefId : self.getNotification().notificationPreferenceId,
-                APIParams.notificationOptionId : self.getNotification().notificationOptionId
+                apiParams.notificationPrefId : self.getNotification().notificationPreferenceId,
+                apiParams.notificationOptionId : self.getNotification().notificationOptionId
             ]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])

@@ -28,6 +28,9 @@ class NotificationPermissionVC: UIViewController {
     lazy var viewModel = SignUpProcessViewModel()
     var isEnableNotification: Bool = false
     var isSystemNotificationEnable: Bool = false
+    private let profileSetupType = ProfileSetupType()
+    private let notificationPermissionTypeIds = NotificationPermissionTypeIds()
+    private let preferenceTypeIds = PreferenceTypeIds()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -41,7 +44,7 @@ class NotificationPermissionVC: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         setupNotification()
         NotificationCenter.default.addObserver(self, selector: #selector(checkNotificationPermission), name: UIApplication.willEnterForegroundNotification, object: nil)
-//        checkNotificationPermission()
+        //        checkNotificationPermission()
     }
     
     //MARK: viewDidLayoutSubviews Method
@@ -52,9 +55,9 @@ class NotificationPermissionVC: UIViewController {
     
     //MARK: Button Continue Click Event
     @IBAction func btnSaveProfileTap(_ sender: Any) {
-        viewModel.setProfileSetupType(value: ProfileSetupType.completed)
-        userDefaults.set(true, forKey: UserDefaultKey.isLoggedIn)
-        userDefaults.set(true, forKey: UserDefaultKey.isRemeberMe)
+        viewModel.setProfileSetupType(value: profileSetupType.completed)
+        UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+        UserDefaults.standard.set(true, forKey: UserDefaultKey().isRemeberMe)
         self.viewModel.callSignUpProcessAPI()
     }
     
@@ -64,7 +67,7 @@ class NotificationPermissionVC: UIViewController {
             if isSystemNotificationEnable {
                 self.isEnableNotification = true
                 self.setupNotificationButtonUI()
-                self.managenotificationValue(typeOfOption: NotificationPermissionTypeIds.Yes)
+                self.managenotificationValue(typeOfOption: notificationPermissionTypeIds.Yes)
             } else {
                 if let appSettings = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(appSettings) {
                     UIApplication.shared.open(appSettings)
@@ -76,11 +79,11 @@ class NotificationPermissionVC: UIViewController {
     //MARK: Button Disable Notification Click
     @IBAction func btnDisableNotificationTap(_ sender: Any) {
         if isEnableNotification {
-            self.alertCustom(btnNo:Constants.btn_cancel, btnYes:Constants.btn_disable, title: Constants.label_notificationDisableTitle, message: Constants.label_notificationDisableMessage)
-            {
+            alertCustom(btnNo:Constants.btn_cancel, btnYes:Constants.btn_disable, title: Constants.label_notificationDisableTitle, message: Constants.label_notificationDisableMessage) { [weak self] in
+                guard let self = self else { return }
                 self.isEnableNotification = false
                 self.setupNotificationButtonUI()
-                self.managenotificationValue(typeOfOption: NotificationPermissionTypeIds.No)
+                self.managenotificationValue(typeOfOption: self.notificationPermissionTypeIds.No)
             }
         }
     }
@@ -89,7 +92,7 @@ class NotificationPermissionVC: UIViewController {
     func managenotificationValue(typeOfOption: String) {
         var arrayOfPreference = [PreferenceClass]()
         var arrayOfTypeOption = [TypeOptions]()
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.notification_enable}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.notification_enable}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
             if arrayOfTypeOption.count > 0 {
@@ -104,16 +107,18 @@ class NotificationPermissionVC: UIViewController {
     //MARK: function check notification permission
     @objc func checkNotificationPermission() {
         let current = UNUserNotificationCenter.current()
-        current.getNotificationSettings(completionHandler: { permission in
+        current.getNotificationSettings(completionHandler: { [weak self] permission in
+            guard let self = self else { return }
+            
             switch permission.authorizationStatus  {
             case .authorized:
                 print("User granted permission for notification")
                 self.isSystemNotificationEnable = true
                 self.isEnableNotification = true
                 self.setupNotificationButtonUI()
-                self.managenotificationValue(typeOfOption: NotificationPermissionTypeIds.Yes)
+                self.managenotificationValue(typeOfOption: self.notificationPermissionTypeIds.Yes)
             case .denied:
-                self.managenotificationValue(typeOfOption: NotificationPermissionTypeIds.No)
+                self.managenotificationValue(typeOfOption: self.notificationPermissionTypeIds.No)
             case .notDetermined:
                 print("Notification permission haven't been asked yet")
             case .provisional:
@@ -228,16 +233,16 @@ extension NotificationPermissionVC {
 extension NotificationPermissionVC: UNUserNotificationCenterDelegate {
     
     func registerForPushNotifications() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
-            (granted, error) in
-            print("Permission granted: \(granted)")
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, error in
+            guard let self = self else { return }
+            
             self.isSystemNotificationEnable = granted
             self.isEnableNotification = granted
             self.setupNotificationButtonUI()
             if granted {
-                self.managenotificationValue(typeOfOption: NotificationPermissionTypeIds.Yes)
+                self.managenotificationValue(typeOfOption: self.notificationPermissionTypeIds.Yes)
             } else {
-                self.managenotificationValue(typeOfOption: NotificationPermissionTypeIds.No)
+                self.managenotificationValue(typeOfOption: self.notificationPermissionTypeIds.No)
             }
         }
     }
@@ -245,7 +250,7 @@ extension NotificationPermissionVC: UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         print("Device Token: \(deviceTokenString)")
-        userDefaults.set(deviceTokenString, forKey: kDeviceToken)
+        UserDefaults.standard.set(deviceTokenString, forKey: kDeviceToken)
     }
     
     func application(_ application: UIApplication,didFailToRegisterForRemoteNotificationsWithError error: Error) {

@@ -81,12 +81,14 @@ extension OtherUserActivityDetailsVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 self.viewNavigationBar.labelNavigationTitle.text = self.viewModel.objActivityDetails?.title
                 if self.viewModel.objActivityDetails?.interestedActivityStatus == nil {
@@ -98,7 +100,9 @@ extension OtherUserActivityDetailsVC {
             }
         }
         
-        viewModel.isUserDataGet.bind { isSuccess in
+        viewModel.isUserDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 
                 if self.viewModel.arrayOfMainUserList.count > 0 {
@@ -113,7 +117,9 @@ extension OtherUserActivityDetailsVC {
         }
         
         
-        viewModel.isMarkStatusDataGet.bind { isSuccess in
+        viewModel.isMarkStatusDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if self.viewModel.getLikesStatus() == 1 {
                     self.callbackForIsLiked?(true)
@@ -125,7 +131,9 @@ extension OtherUserActivityDetailsVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

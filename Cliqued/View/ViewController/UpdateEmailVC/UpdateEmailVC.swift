@@ -54,7 +54,9 @@ class UpdateEmailVC: UIViewController {
     @IBAction func buttonSubmitAction(_ sender: UIButton) {
         view.endEditing(true)
         
-        alertWithTextField(title: "", message: Constants.label_newEmailTitle, placeholder: Constants.placeholder_email) { result in
+        alertWithTextField(title: "", message: Constants.label_newEmailTitle, placeholder: Constants.placeholder_email) { [weak self] result in
+            guard let self = self else { return }
+            
             self.viewModel.setNewEmailId(value: (result.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)))
             self.viewModel.callSendOTPAPI()
         }
@@ -94,12 +96,14 @@ extension UpdateEmailVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 let vc = EmailVerificationVC.loadFromNib()
                 vc.newEmailId = self.viewModel.getNewEmailId()
@@ -108,7 +112,9 @@ extension UpdateEmailVC {
         }
                 
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

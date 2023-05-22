@@ -25,6 +25,8 @@ class UserProfileCell: UITableViewCell {
     
     //MARK: Variable
     var arrayOfUserProfile = [UserProfileImages]()
+    private let mediaType = MediaType()
+    
     var callbackForViewMedia: ((_ isImageMedia: Bool, _ indexValue: Int)->Void)?
     
     override func awakeFromNib() {
@@ -77,7 +79,7 @@ extension UserProfileCell: UICollectionViewDelegate, UICollectionViewDataSource,
             let profileData = arrayOfUserProfile[indexPath.item]
             var mediaName = ""
             
-            if profileData.mediaType == MediaType.image {
+            if profileData.mediaType == mediaType.image {
                 mediaName = profileData.url ?? ""
                 cell.imageviewVideoIcon.isHidden = true
             } else {
@@ -103,7 +105,7 @@ extension UserProfileCell: UICollectionViewDelegate, UICollectionViewDataSource,
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if arrayOfUserProfile.count > 0 {
             let profileData = arrayOfUserProfile[indexPath.item]
-            if profileData.mediaType == MediaType.image {
+            if profileData.mediaType == mediaType.image {
                 callbackForViewMedia?(true, indexPath.item)
             } else {
                 callbackForViewMedia?(false, indexPath.item)

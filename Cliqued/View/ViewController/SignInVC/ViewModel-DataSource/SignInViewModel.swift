@@ -27,6 +27,7 @@ class SignInViewModel {
     private var isRememberMe = false
     private var structSignInValue = loginParams()
     private var wrongPasswordCount = 0
+    private let apiParams = ApiParams()
     
     //MARK: Check Validation
     func checkValidation() -> Bool {
@@ -49,16 +50,18 @@ class SignInViewModel {
         
         if checkValidation() {
             let params: NSDictionary = [
-                APIParams.email : self.getEmail(),
-                APIParams.password : self.getPassword(),
-                APIParams.loginType : self.getLoginType()
+                apiParams.email : self.getEmail(),
+                apiParams.password : self.getPassword(),
+                apiParams.loginType : self.getLoginType()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.Login, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.Login, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""
@@ -78,9 +81,9 @@ class SignInViewModel {
                                         let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
                                         let objUser = try decoder.decode(User.self, from: jsonData)
                                         self.saveUserInfoAndProceed(user: objUser)
-                                        userDefaults.set(userToken, forKey:kUserToken)
-                                        userDefaults.set(appToken, forKey:kAppToken)
-                                        userDefaults.set(true, forKey: UserDefaultKey.isLoggedIn)
+                                        UserDefaults.standard.set(userToken, forKey: kUserToken)
+                                        UserDefaults.standard.set(appToken, forKey: kAppToken)
+                                        UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
                                         self.isDataGet.value = true
                                     } catch {
                                         print(error.localizedDescription)
@@ -108,16 +111,18 @@ class SignInViewModel {
     func callSocialLoginAPI() {
         
         let params: NSDictionary = [
-            APIParams.email : self.getEmail(),
-            APIParams.social_id : self.getSocialLoginId(),
-            APIParams.loginType : self.getLoginType()
+            apiParams.email : self.getEmail(),
+            apiParams.social_id : self.getSocialLoginId(),
+            apiParams.loginType : self.getLoginType()
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SocialLogin, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SocialLogin, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -136,12 +141,12 @@ class SignInViewModel {
                                 do {
                                     let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
                                     let objUser = try decoder.decode(User.self, from: jsonData)
-                                    userDefaults.set(userToken, forKey:kUserToken)
-                                    userDefaults.set(appToken, forKey:kAppToken)
+                                    UserDefaults.standard.set(userToken, forKey: kUserToken)
+                                    UserDefaults.standard.set(appToken, forKey: kAppToken)
                                     self.saveUserInfoAndProceed(user: objUser)
                                     if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
-                                        userDefaults.set(true, forKey: UserDefaultKey.isLoggedIn)
-                                        userDefaults.set(true, forKey: UserDefaultKey.isRemeberMe)
+                                        UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+                                        UserDefaults.standard.set(true, forKey: UserDefaultKey().isRemeberMe)
                                     }
                                     self.isDataGet.value = true
                                 } catch {

@@ -40,6 +40,7 @@ class PickSubActvityVC: UIViewController {
     var isAnimationDone: Bool = true
     var callbackForBackToCategory: ((_ isBackFromSubCat: Bool) -> Void)?
     var categoryIds: String = ""
+    private let profileSetupType = ProfileSetupType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -88,12 +89,12 @@ class PickSubActvityVC: UIViewController {
         if isSubCatSelectedFromEveryCategory {
             viewModelSignUpProcess.setActivity(value: viewModel.convertSubActivityStructToString())
             if !isFromEditProfile {
-                viewModelSignUpProcess.setProfileSetupType(value: ProfileSetupType.sub_category)
+                viewModelSignUpProcess.setProfileSetupType(value: profileSetupType.sub_category)
             } else {
                 if isFromSetupProfile {
-                    viewModelSignUpProcess.setProfileSetupType(value: ProfileSetupType.sub_category)
+                    viewModelSignUpProcess.setProfileSetupType(value: profileSetupType.sub_category)
                 } else {
-                    viewModelSignUpProcess.setProfileSetupType(value: ProfileSetupType.completed)
+                    viewModelSignUpProcess.setProfileSetupType(value: profileSetupType.completed)
                 }
             }
             viewModelSignUpProcess.callSignUpProcessAPI()
@@ -181,21 +182,23 @@ extension PickSubActvityVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
-        viewModelSignUpProcess.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModelSignUpProcess.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isActivityDataGet.bind { isSuccess in
+        viewModel.isActivityDataGet.bind { [weak self] isSuccess in
             if isSuccess {
-                self.collectionview.reloadData()
+                self?.collectionview.reloadData()
             }
         }
         //If API success
-        viewModelSignUpProcess.isDataGet.bind { isSuccess in
+        viewModelSignUpProcess.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if self.isFromEditProfile {
                     if self.isFromSetupProfile {
@@ -215,7 +218,9 @@ extension PickSubActvityVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -223,7 +228,9 @@ extension PickSubActvityVC {
             }
         }
         //Loader hide & show
-        viewModelSignUpProcess.isLoaderShow.bind { isLoader in
+        viewModelSignUpProcess.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

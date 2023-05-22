@@ -44,7 +44,7 @@ class SocketIOHandler: NSObject {
             socket = manager?.defaultSocket
             connectSocketWithStatus()
         }else if socket?.status == .connected {
-            self.callFunctionsAfterConnection()
+            callFunctionsAfterConnection()
         }
     }
     
@@ -55,7 +55,9 @@ class SocketIOHandler: NSObject {
             print(data)
         }
         
-        socket?.on(clientEvent: .statusChange) {data, ack in
+        socket?.on(clientEvent: .statusChange) { [weak self] data, ack in
+            guard let self = self else { return }
+            
             let val = data.first as! SocketIOStatus
             self.delegate?.connectionStatus(status: val)
             switch val {
@@ -69,7 +71,6 @@ class SocketIOHandler: NSObject {
         }
         
         socket?.connect()
-        print(socket?.status)
     }
     
     func callFunctionsAfterConnection()  {
@@ -83,13 +84,13 @@ class SocketIOHandler: NSObject {
     func background(){
         let dict:NSMutableDictionary = NSMutableDictionary()
         dict.setValue(Constants.loggedInUser?.id ?? 0, forKey: "user_id")
-        self.socket?.emit(APIConstant.APISocketBackground, dict)
+        socket?.emit(APIConstant.APISocketBackground, dict)
     }
 
     func foreground(){
         let dict:NSMutableDictionary = NSMutableDictionary()
         dict.setValue(Constants.loggedInUser?.id ?? 0, forKey: "user_id")
-        self.socket?.emit(APIConstant.APISocketForeground, dict)
+        socket?.emit(APIConstant.APISocketForeground, dict)
 
         let dict1:NSMutableDictionary = NSMutableDictionary()
         dict1.setValue("\(Constants.loggedInUser?.id ?? 0)", forKey: "receiver_id")
@@ -148,14 +149,14 @@ class SocketIOHandler: NSObject {
                 if let topVC = UIApplication.getTopViewController(), topVC.isKind(of: MessageVC.self) {
                     
                     if strUserId == Constants.loggedInUser?.id {
-                        if let appToken = userDefaults.value(forKey: kAppToken) as? String {
+                        if let appToken = UserDefaults.standard.value(forKey: kAppToken) as? String {
                          
                             for i in 0..<arrMessage.count {
                                 let dictMessage = arrMessage[i] as! NSMutableDictionary
                                 
                                 if appToken != dictMessage.value(forKey: "token") as! String {
                                     topVC.showAlerBox("", Constants_Message.title_login_detected) { _ in
-                                        clearUserDefaultWithSocket()
+                                        UserDefaults.standard.clearUserDefaultWithSocket()
                                         APP_DELEGATE.setRegisterOptionRootViewController()
                                     }
                                 }
@@ -166,8 +167,8 @@ class SocketIOHandler: NSObject {
             }
         }
         
-        socket?.on(APIConstant.APISocketUserConnectionChanged) {data, ack in
-            print(data)
+        socket?.on(APIConstant.APISocketUserConnectionChanged) { [weak self] data, ack in
+            guard let self = self else { return }
             
             if let strUserId = ((data[0] as! NSDictionary).value(forKey: "user_id")) as? Int {
                 let is_online = ((data[0] as! NSDictionary).value(forKey: "isOnline")) as? Int
@@ -179,7 +180,8 @@ class SocketIOHandler: NSObject {
             }
         }
         
-        socket?.on(APIConstant.APISOCKETUpdateMessageStatusToSender) {data, ack in
+        socket?.on(APIConstant.APISOCKETUpdateMessageStatusToSender) { [weak self] data, ack in
+            guard let self = self else { return }
             
             print(data)
             
@@ -257,8 +259,9 @@ class SocketIOHandler: NSObject {
             }
         }
         
-        socket?.on(APIConstant.APISOCKETGetNewMessage) {data, ack in
-           
+        socket?.on(APIConstant.APISOCKETGetNewMessage) { [weak self] data, ack in
+            guard let self = self else { return }
+            
             if ((data[0] as! NSDictionary).value(forKey: "status")) as! Int == 1 {
                
                 let dic:NSDictionary = (data[0] as! NSDictionary)
@@ -519,7 +522,9 @@ class SocketIOHandler: NSObject {
     }
     
     func getConversation(data:NSDictionary) {
-        socket?.emitWithAck(APIConstant.APISocketFetchConversationMessages, data) .timingOut(after: 0) {data in
+        socket?.emitWithAck(APIConstant.APISocketFetchConversationMessages, data) .timingOut(after: 0) { [weak self] data in
+            guard let self = self else { return }
+            
             if ((data[0] as! NSDictionary).value(forKey: "status")) as! Int == 1 {
             let dic:NSDictionary = (data[0] as! NSDictionary)
            
@@ -606,7 +611,9 @@ class SocketIOHandler: NSObject {
         let senderId = data.value(forKey: "user_id") as? String
         let receiverId = data.value(forKey: "receiver_id") as? String
         
-        socket?.emitWithAck(APIConstant.APISocketGetUserChatStatus, data).timingOut(after: 0) {data in
+        socket?.emitWithAck(APIConstant.APISocketGetUserChatStatus, data).timingOut(after: 0) { [weak self] data in
+            guard let self = self else { return }
+            
             let dic:NSDictionary = (data[0] as! NSDictionary)
             print(dic)
             if let arrUser = dic.value(forKey: "User") as? NSMutableArray {
@@ -634,7 +641,9 @@ class SocketIOHandler: NSObject {
     
     func updateMessageStatus(data:NSDictionary){
         
-        socket?.emitWithAck(APIConstant.APISOCKETUpdateMessageStatus, data).timingOut(after: 0) {data in
+        socket?.emitWithAck(APIConstant.APISOCKETUpdateMessageStatus, data).timingOut(after: 0) { [weak self] data in
+            guard let self = self else { return }
+            
             let dic:NSDictionary = (data[0] as! NSDictionary)
             
             if  let arrMessage = dic.value(forKey: "Conversation") as? NSMutableArray {
@@ -713,9 +722,10 @@ class SocketIOHandler: NSObject {
         }
     }
     
-    func sendMessage(data:NSDictionary){
-
-        socket?.emitWithAck(APIConstant.APISOCKETSendNewMessage, data).timingOut(after: 0) {data in
+    func sendMessage(data:NSDictionary) {
+        socket?.emitWithAck(APIConstant.APISOCKETSendNewMessage, data).timingOut(after: 0) { [weak self] data in
+            guard let self = self else { return }
+            
             let dic:NSDictionary = (data[0] as! NSDictionary)
             
             if  let arrMessage = dic.value(forKey: "Conversation") as? NSMutableArray {
@@ -766,8 +776,9 @@ class SocketIOHandler: NSObject {
     
     func fetchNewMessagesOfSender(data:NSDictionary)  {
 
-        socket?.emitWithAck(APIConstant.APISocketFetchMessages, data).timingOut(after: 0) {data in
-                print(data)
+        socket?.emitWithAck(APIConstant.APISocketFetchMessages, data).timingOut(after: 0) { [weak self] data in
+            guard let self = self else { return }
+            
             if ((data[0] as! NSDictionary).value(forKey: "status")) as! Int == 1 {
                 
                 if (data[0] as! NSDictionary).value(forKey: "Messages") as? NSArray != nil {
@@ -843,8 +854,9 @@ class SocketIOHandler: NSObject {
     }
     
     func fetchOldMessagesOfSender(data:NSDictionary)  {
-        socket?.emitWithAck(APIConstant.APISocketFetchOldMessages, data).timingOut(after: 0) {data in
-               
+        socket?.emitWithAck(APIConstant.APISocketFetchOldMessages, data).timingOut(after: 0) { [weak self] data in
+            guard let self = self else { return }
+            
             if ((data[0] as! NSDictionary).value(forKey: "status")) as! Int == 1 {
                 
                 if (data[0] as! NSDictionary).value(forKey: "Messages") as? NSArray != nil {

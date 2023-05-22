@@ -18,6 +18,7 @@ class ForgotPasswordViewModel {
         var email = ""
     }
     private var objForgotPassword = structForgotPassword()
+    private let apiParams = ApiParams()
     
     //MARK: Check Validation
     func checkValidation() -> Bool {
@@ -37,14 +38,16 @@ class ForgotPasswordViewModel {
     func callForgotPasswordAPI() {
         if checkValidation() {
             let params : NSDictionary = [
-                APIParams.email : objForgotPassword.email,
+                apiParams.email : objForgotPassword.email,
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.ForgotPwd, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.ForgotPwd, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""

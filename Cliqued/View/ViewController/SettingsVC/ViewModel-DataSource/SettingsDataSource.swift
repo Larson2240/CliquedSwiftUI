@@ -14,6 +14,7 @@ class SettingsDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     private let viewController: SettingsVC
     private let tableView: UITableView
     private let viewModel: SettingsViewModel
+    private let loginType = LoginType()
     
     //MARK: Enum Section
     enum enumSettingsTableSection: Int, CaseIterable {
@@ -103,7 +104,9 @@ class SettingsDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
 
         let alert = UIAlertController(title: nil, message: Constants_Message.title_select_language, preferredStyle: .alert)
         
-            let closure = { (action: UIAlertAction!) -> Void in
+            let closure = { [weak self] (action: UIAlertAction!) -> Void in
+                guard let self = self else { return }
+                
                 let index = alert.actions.firstIndex(of: action)
 
                 if index != nil {
@@ -240,7 +243,7 @@ class SettingsDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
                 cell.labelEmailPasswordValue.text = Constants.loggedInUser?.connectedAccount![0].emailId
                 cell.imageviewBottomLine.isHidden = false
                 
-                if Constants.loggedInUser?.connectedAccount![0].loginType == LoginType.NORMAL {
+                if Constants.loggedInUser?.connectedAccount![0].loginType == loginType.NORMAL {
                     cell.imageviewNextArrow.isHidden = false
                 } else {
                     cell.imageviewNextArrow.isHidden = true
@@ -253,7 +256,7 @@ class SettingsDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
                 cell.labelEmailPasswordTitle.text = Constants.label_password
                 cell.imageviewBottomLine.isHidden = false
                 
-                if Constants.loggedInUser?.connectedAccount![0].loginType == LoginType.NORMAL {
+                if Constants.loggedInUser?.connectedAccount![0].loginType == loginType.NORMAL {
                     cell.imageviewNextArrow.isHidden = false
                     cell.labelEmailPasswordValue.text = "xxxxxxxxxxxxx"
                 } else {
@@ -405,13 +408,13 @@ class SettingsDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
         case .accountSetting:
             switch enumAccountSettingsRow(rawValue: indexPath.row)! {
             case .email:
-                if Constants.loggedInUser?.connectedAccount![0].loginType == LoginType.NORMAL {
+                if Constants.loggedInUser?.connectedAccount![0].loginType == loginType.NORMAL {
                     let vc = UpdateEmailVC.loadFromNib()
                     viewController.navigationController?.pushViewController(vc, animated: true)
                 }
                 break
             case .password:
-                if Constants.loggedInUser?.connectedAccount![0].loginType == LoginType.NORMAL {
+                if Constants.loggedInUser?.connectedAccount![0].loginType == loginType.NORMAL {
                     let vc = ChangePasswordVC.loadFromNib()
                     viewController.navigationController?.pushViewController(vc, animated: true)
                 }

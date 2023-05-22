@@ -39,6 +39,9 @@ class HomeActivitiesVC: UIViewController {
     var isUndoData: Bool = false
     var isBackFromDetailScreen: Bool = false
     private var interstitial: GADInterstitialAd?
+    private let preferenceTypeIds = PreferenceTypeIds()
+    private let isMeetup = IsMeetupIds()
+    private let isPremium = IsPremium()
     
     var user_ids = ""
     var isLikeLimitFinish: Bool = false
@@ -108,7 +111,7 @@ extension HomeActivitiesVC {
         arrayOfUserPreference = (Constants.loggedInUser?.userPreferences)!
         if arrayOfUserPreference.count > 0 {
             for i in arrayOfUserPreference {
-                if i.typesOfPreference == PreferenceTypeIds.looking_for {
+                if i.typesOfPreference == preferenceTypeIds.looking_for {
                     self.arrayOfLookingForIds.append(i.id ?? 0)
                 }
             }
@@ -118,7 +121,7 @@ extension HomeActivitiesVC {
         var arrayDistancePreference = [Int]()
         if arrayOfUserPreference.count > 0 {
             for i in arrayOfUserPreference {
-                if i.typesOfPreference == PreferenceTypeIds.distance {
+                if i.typesOfPreference == preferenceTypeIds.distance {
                     arrayDistancePreference.append(i.preferenceOptionId ?? 0)
                 }
             }
@@ -128,7 +131,7 @@ extension HomeActivitiesVC {
         var arrayKidsPreference = [Int]()
         if arrayOfUserPreference.count > 0 {
             for i in arrayOfUserPreference {
-                if i.typesOfPreference == PreferenceTypeIds.kids {
+                if i.typesOfPreference == preferenceTypeIds.kids {
                     arrayKidsPreference.append(i.preferenceOptionId ?? 0)
                 }
             }
@@ -138,7 +141,7 @@ extension HomeActivitiesVC {
         var arraySmokePreference = [Int]()
         if arrayOfUserPreference.count > 0 {
             for i in arrayOfUserPreference {
-                if i.typesOfPreference == PreferenceTypeIds.smoking {
+                if i.typesOfPreference == preferenceTypeIds.smoking {
                     arraySmokePreference.append(i.preferenceOptionId ?? 0)
                 }
             }
@@ -148,7 +151,7 @@ extension HomeActivitiesVC {
         var arrayAgeStartPreference = [Int]()
         if arrayOfUserPreference.count > 0 {
             for i in arrayOfUserPreference {
-                if i.subTypesOfPreference == PreferenceTypeIds.age_start {
+                if i.subTypesOfPreference == preferenceTypeIds.age_start {
                     arrayAgeStartPreference.append(i.preferenceOptionId ?? 0)
                 }
             }
@@ -158,7 +161,7 @@ extension HomeActivitiesVC {
         var arrayAgeEndPreference = [Int]()
         if arrayOfUserPreference.count > 0 {
             for i in arrayOfUserPreference {
-                if i.subTypesOfPreference == PreferenceTypeIds.age_end {
+                if i.subTypesOfPreference == preferenceTypeIds.age_end {
                     arrayAgeEndPreference.append(i.preferenceOptionId ?? 0)
                 }
             }
@@ -180,30 +183,36 @@ extension HomeActivitiesVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 self.viewActivityCard.countOfVisibleCards = self.viewModel.getNumberOfDuplicateUserActivity()
                 self.viewActivityCard.reloadData()
             }
         }
         
-        viewModel.isViewLimitFinish.bind { isSuccess in
+        viewModel.isViewLimitFinish.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
                     self.showSubscriptionPlanScreen()
                     self.labelNoActivityAvailable.text = Constants.label_noDataFound
                 }
             }
         }
         
-        viewModel.isLikeLimitFinish.bind { isSuccess in
+        viewModel.isLikeLimitFinish.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
                     self.isLikeLimitFinish = true
                     self.viewActivityCard.revertAction()
                     self.showSubscriptionPlanScreen()
@@ -211,10 +220,12 @@ extension HomeActivitiesVC {
             }
         }
         
-        viewModel.isLikdDislikeSuccess.bind { isSuccess in
+        viewModel.isLikdDislikeSuccess.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 let followersData = self.viewModel.getFollowersData(at: 0)
-                if followersData.isMeetup == isMeetup.Matched  {
+                if followersData.isMeetup == self.isMeetup.Matched  {
                     let matchscreenvc = MatchScreenVC.loadFromNib()
                     matchscreenvc.arrayOfFollowers = self.viewModel.getAllFollowersData()
                     matchscreenvc.hidesBottomBarWhenPushed = true
@@ -222,7 +233,7 @@ extension HomeActivitiesVC {
                 } else {
                     if self.viewModel.getLikesLimit() != 0 {
                         if !self.isLikeLimitFinish {
-                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+                            if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
                                 self.showGoogleAds()
                             }
                         }
@@ -232,7 +243,9 @@ extension HomeActivitiesVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -389,8 +402,8 @@ extension HomeActivitiesVC: KolodaViewDataSource {
                 }
             }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.imageviewLikeDislikeIcon.isHidden = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            self?.imageviewLikeDislikeIcon.isHidden = true
         }
         isBackFromDetailScreen = false
     }
@@ -431,7 +444,9 @@ extension HomeActivitiesVC: KolodaViewDataSource {
         let activityData = viewModel.getDuplicateUserActivityData(at: sender.tag)
         activityuserdetailsvc.objUserDetails = activityData
         
-        activityuserdetailsvc.callbackForIsLiked = { isLiked in
+        activityuserdetailsvc.callbackForIsLiked = { [weak self] isLiked in
+            guard let self = self else { return }
+            
             self.isBackFromDetailScreen = true
             if isLiked {
                 self.viewActivityCard.swipe(.up)
@@ -440,7 +455,9 @@ extension HomeActivitiesVC: KolodaViewDataSource {
             }
         }
         
-        activityuserdetailsvc.callbackForBlockUser = { isblocked in
+        activityuserdetailsvc.callbackForBlockUser = { [weak self] isblocked in
+            guard let self = self else { return }
+            
             self.isBackFromDetailScreen = true
             if isblocked {
                 self.viewActivityCard.swipe(.up)

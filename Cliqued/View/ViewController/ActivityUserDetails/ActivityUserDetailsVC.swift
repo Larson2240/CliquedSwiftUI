@@ -44,6 +44,7 @@ class ActivityUserDetailsVC: UIViewController {
     var callbackForBlockUser: ((_ isblocked: Bool) -> Void)?
     var is_fromChatActivity = false
     var isFromOtherScreen: Bool = false
+    private let isMeetup = IsMeetupIds()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -118,15 +119,17 @@ extension ActivityUserDetailsVC {
     func handleApiResponse() {
 
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
-        viewModelActivity.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModelActivity.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
 
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 self.callbackForBlockUser?(true)
                 self.navigationController?.popViewController(animated: true)
@@ -134,10 +137,12 @@ extension ActivityUserDetailsVC {
         }
         
         //If API success
-        viewModelActivity.isLikdDislikeSuccess.bind { isSuccess in
+        viewModelActivity.isLikdDislikeSuccess.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 let followersData = self.viewModelActivity.getFollowersData(at: 0)
-                if followersData.isMeetup == isMeetup.Matched  {
+                if followersData.isMeetup == self.isMeetup.Matched  {
                     /* comment added by srm
                     let matchscreenvc = MatchScreenVC.loadFromNib()
                     matchscreenvc.isFromUserDetailsScreen = true
@@ -157,7 +162,9 @@ extension ActivityUserDetailsVC {
         }
 
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -165,7 +172,9 @@ extension ActivityUserDetailsVC {
             }
         }
         
-        viewModelActivity.isLoaderShow.bind { isLoader in
+        viewModelActivity.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

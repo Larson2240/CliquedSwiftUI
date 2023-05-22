@@ -86,20 +86,15 @@ class SubscriptionPlanVC: UIViewController {
 }
 //MARK: Extension UDF
 extension SubscriptionPlanVC {
-    
     func viewDidLoadMethod() {
         setupNavigationBar()
         dataSource = SubscriptionPlanDataSource(tableView: tableview, viewModel: viewModel, viewController: self)
         tableview.delegate = dataSource
         tableview.dataSource = dataSource
-//        self.getProduct()
-        self.viewModel.callGetSubscriptionPlanAPI()
+        viewModel.callGetSubscriptionPlanAPI()
         handleResponse()
-//        labelTermConditionText.isHidden = true
-//        buttonContinue.isHidden = true
-//        buttonNoThanks.isHidden = true
-        
     }
+    
     //MARK: Setup Navigation Bar
     func setupNavigationBar() {
         viewNavigationBar.backgroundColor = .clear
@@ -137,7 +132,9 @@ extension SubscriptionPlanVC {
         print(Set.InAppAllPackageIds)
         IAPHelper.shared.getProducts(
             ofPackageIds: .InAppAllPackageIds,
-            callbackForProducts: { products in
+            callbackForProducts: { [weak self] products in
+                guard let self = self else { return }
+                
                 DispatchQueue.main.async {
                     self.arrProduct.append(contentsOf: products)
                     
@@ -157,12 +154,13 @@ extension SubscriptionPlanVC {
     func handleResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
             if !self.viewModel.isCheckEmptyData() {
                 let plans = self.viewModel.arrayOfPlan
                 self.viewModel.arrayOfPlan.removeAll()
@@ -195,7 +193,9 @@ extension SubscriptionPlanVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -208,7 +208,9 @@ extension SubscriptionPlanVC {
         let StoreProduct = self.arrProduct.filter({$0.productIdentifier == productId})
         if StoreProduct.count > 0 {
             self.showLoader()
-            IAPHelper.shared.buy(product: StoreProduct[0]) { transaction in
+            IAPHelper.shared.buy(product: StoreProduct[0]) { [weak self] transaction in
+                guard let self = self else { return }
+                
                 self.dismissLoader()
                 print(transaction)
                 self.getReceiptData()
@@ -218,15 +220,17 @@ extension SubscriptionPlanVC {
     //MARK: Retrive subscription plan info
     func getReceiptData() {
         IAPHelper.shared.getReceiptData(
-            responseData: { response in
+            responseData: { [weak self] response in
+                guard let self = self else { return }
+                
                 DispatchQueue.main.async {
                     self.dismissLoader()
                     self.storeResponse(response)
                 }
             },
-            errorData: { error in
+            errorData: { [weak self] error in
                 DispatchQueue.main.async {
-                    self.dismissLoader()
+                    self?.dismissLoader()
                     print("===>", error)
                 }
             })

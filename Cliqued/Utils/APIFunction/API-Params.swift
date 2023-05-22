@@ -7,10 +7,8 @@
 
 import UIKit
 
-//MARK: --------------------------------------------------------------
-//MARK: API Common Parameters
-struct structApiParams {
-    
+//MARK: - API Common Parameters
+struct ApiParams {
     let isTestdata = "isTestData"
     
     let email = "email"
@@ -114,21 +112,17 @@ struct structApiParams {
     let isPushEnabled = "is_pushEnabled"
     let userIds = "user_ids"
 }
-var APIParams = structApiParams()
 
-//MARK: --------------------------------------------------------------
-//MARK: API Common Parameters
-struct structLoginType {
+//MARK: - API Common Parameters
+struct LoginType {
     let NORMAL = "0"
     let FACEBOOK = "1"
     let GOOGLE = "2"
     let APPLE = "3"
 }
-var LoginType = structLoginType()
 
-//MARK: --------------------------------------------------------------
-//MARK: API Common Parameters
-struct structProfileSetupType {
+//MARK: - API Common Parameters
+struct ProfileSetupType {
     let none = "0"
     let name = "1"
     let birthdate = "2"
@@ -141,11 +135,9 @@ struct structProfileSetupType {
     let notification_enable = "9"
     let completed = "10"
 }
-var ProfileSetupType = structProfileSetupType()
 
-//MARK: --------------------------------------------------------------
-//MARK: Preference Type Id's
-struct structPreferenceTypeIds {
+//MARK: - Preference Type Id's
+struct PreferenceTypeIds {
     let looking_for = "0"
     let romance = "1"
     let friendship = "2"
@@ -162,78 +154,60 @@ struct structPreferenceTypeIds {
     let messages = "13"
     let promotions = "14"
 }
-var PreferenceTypeIds = structPreferenceTypeIds()
 
-struct structPreferenceOptionIds {
+struct PreferenceOptionIds {
     let men = "0"
     let women = "1"
     let yes = "2"
     let no = "3"
     let other = "4"
 }
-var PreferenceOptionIds = structPreferenceOptionIds()
 
-//MARK: --------------------------------------------------------------
-//MARK: Gender Type Id's
-struct structGenderTypeIds {
+//MARK: - Gender Type Id's
+struct GenderTypeIds {
     let Men = "0"
     let Women = "1"
 }
-var GenderTypeIds = structGenderTypeIds()
 
-//MARK: --------------------------------------------------------------
-//MARK: Notification Type Id's
-struct structNotificationPermissionTypeIds {
+//MARK: - Notification Type Id's
+struct NotificationPermissionTypeIds {
     let Yes = "2"
     let No = "3"
 }
-var NotificationPermissionTypeIds = structNotificationPermissionTypeIds()
 
-//MARK: --------------------------------------------------------------
-//MARK: Meetup Type
-struct structIsMeetupIds {
+//MARK: - Meetup Type
+struct IsMeetupIds {
     let Matched = 1
     let NotMatched = 0
 }
-var isMeetup = structIsMeetupIds()
 
-//MARK: --------------------------------------------------------------
-//MARK: IsPremium Type
-struct structIsPremium {
+//MARK: - IsPremium Type
+struct IsPremium {
     let Premium = "1"
     let NotPremium = "0"
 }
-var isPremium = structIsPremium()
 
-//MARK: --------------------------------------------------------------
-//MARK: Block Type
-struct structBlock {
+//MARK: - Block Type
+struct Block {
     let Block = "1"
     let UnBlock = "0"
 }
-var isBlock = structBlock()
 
-//MARK: --------------------------------------------------------------
-//MARK: Interest Activitu Status
-struct structInterestedActivityStatus {
+//MARK: - Interest Activitu Status
+struct InterestedActivityStatus {
     let isInterested = "1"
     let NotInterested = "0"
     let BothInterested = "2"
     let CreatorNotInterested = "3"
 }
-var interestedActivityStatus = structInterestedActivityStatus()
 
-//MARK: --------------------------------------------------------------
-//MARK: Media Type
-struct structMediaType {
+//MARK: - Media Type
+struct MediaType {
     let image = "0"
     let video = "1"
 }
-var MediaType = structMediaType()
 
-
-//MARK: --------------------------------------------------------------
-//MARK: API Response Data
+//MARK: - API Response Data
 var isTestData = "1"
 
 var API_STATUS = "status"

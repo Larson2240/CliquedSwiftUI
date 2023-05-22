@@ -33,6 +33,8 @@ class RestApiManager {
     var responseObject: AnyObject!
     var delegat: UploadProgressDelegate?
     var downloadDelegate: DownloadProgressDelegate?
+    let userDefaults = UserDefaults.standard
+    private let apiParams = ApiParams()
     
     init() {
         AF.session.configuration.timeoutIntervalForRequest = 50000 //seconds
@@ -49,7 +51,8 @@ class RestApiManager {
         }
         print(additionalHeaders)
         
-        AF.request(webUrl, method: .get, headers: header).responseJSON { response in
+        AF.request(webUrl, method: .get, headers: header).responseJSON { [weak self] response in
+            guard let self = self else { return }
             
             if response.error != nil {
                 if((response.error! as NSError).code == NSURLErrorNetworkConnectionLost || (response.error as! NSError).code == NSURLErrorTimedOut){
@@ -97,7 +100,8 @@ class RestApiManager {
             header.add(name: headerKey.key as! String, value: headerKey.value as! String)
         }
         print(additionalHeaders)
-        AF.request(webUrl, method: .post, parameters: parameter as? [String:AnyObject], headers: header).responseJSON { response in
+        AF.request(webUrl, method: .post, parameters: parameter as? [String:AnyObject], headers: header).responseJSON { [weak self] response in
+            guard let self = self else { return }
             
             if response.error != nil {
                 if ((response.error as! NSError).code == NSURLErrorNetworkConnectionLost || (response.error as! NSError).code == NSURLErrorTimedOut){
@@ -162,7 +166,8 @@ class RestApiManager {
         }
         print(additionalHeaders)
         
-        AF.request(endpointurl, method: .post, parameters: parameters as? Parameters, encoding: encodingType, headers: header).responseJSON { response in
+        AF.request(endpointurl, method: .post, parameters: parameters as? Parameters, encoding: encodingType, headers: header).responseJSON { [weak self] response in
+            guard let self = self else { return }
             
             if let _ = response.error{
                 if((response.error! as NSError).code == NSURLErrorNetworkConnectionLost || (response.error! as NSError).code == NSURLErrorTimedOut){
@@ -225,7 +230,8 @@ class RestApiManager {
         }
         print(header)
         
-        AF.upload( multipartFormData:{ multipartFormData in
+        AF.upload(multipartFormData: { [weak self] multipartFormData in
+            guard let self = self else { return }
             
             for (key,value) in parameters {
                 if value is UIImage {
@@ -305,8 +311,8 @@ class RestApiManager {
                     multipartFormData.append(valueData, withName: key as! String)
                 }
             }
-        } ,to: endpoint, method: .post, headers: header).responseJSON {
-            response in
+        } ,to: endpoint, method: .post, headers: header).responseJSON { [weak self] response in
+            guard let self = self else { return }
             
             if response.error != nil{
                 //print(response.error)
@@ -343,7 +349,7 @@ class RestApiManager {
 //MARK: Call Update Profile API
 func callLogoutAPI() {
     let params: NSDictionary = [
-        APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+        ApiParams().userID : "\(Constants.loggedInUser?.id ?? 0)",
     ]
     var topVC = UIViewController()
     topVC = UIApplication.getTopViewController() ?? UIViewController()
@@ -365,7 +371,7 @@ func callLogoutAPI() {
                 }
                 else {
                     topVC.dismissLoader()
-                    clearUserDefault()
+                    UserDefaults.standard.clearUserDefault()
                     checkSecurity()
                     APP_DELEGATE.setRegisterOptionRootViewController()
                 }

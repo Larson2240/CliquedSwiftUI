@@ -27,17 +27,20 @@ class PickSubActivityViewModel {
     private var arrayOfAllSelectedSubActivity = [structPickSubActivityParams]()
     private var arrayOfDeletedSubActivityIds = [Int]()
     private var categoryIds: String = ""
+    private let apiParams = ApiParams()
     
     //MARK: Call Get Preferences Data API
     func callGetActivityDataAPI() {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.activityCategoryId : self.getCategoriesIds()
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.activityCategoryId : self.getCategoriesIds()
         ]
         
         if(Connectivity.isConnectedToInternet()) {
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetActivityCategory, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetActivityCategory, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.setIsDataLoad(value: true)
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -157,8 +160,8 @@ extension PickSubActivityViewModel {
         var optionlist = [String]()
         
         for i in getSelectedSubActivity() {
-            let dict : NSMutableDictionary = [APIParams.activityCategoryId : i.activityCategoryId,
-                                              APIParams.activitySubCategoryId : i.activitySubCategoryId]
+            let dict : NSMutableDictionary = [apiParams.activityCategoryId : i.activityCategoryId,
+                                              apiParams.activitySubCategoryId : i.activitySubCategoryId]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
             let jsonstringstr = String(data: dictdata as Data, encoding: .utf8)
@@ -178,8 +181,8 @@ extension PickSubActivityViewModel {
         var optionlist = [String]()
         
         for i in getNewSelectedSubActivity() {
-            let dict : NSMutableDictionary = [APIParams.activityCategoryId : i.activityCategoryId,
-                                              APIParams.activitySubCategoryId : i.activitySubCategoryId]
+            let dict : NSMutableDictionary = [apiParams.activityCategoryId : i.activityCategoryId,
+                                              apiParams.activitySubCategoryId : i.activitySubCategoryId]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
             let jsonstringstr = String(data: dictdata as Data, encoding: .utf8)

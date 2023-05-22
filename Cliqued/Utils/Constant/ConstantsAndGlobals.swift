@@ -59,7 +59,7 @@ struct Constants_String {
     let urlTermsConditionFr = "https://cliqued.app/fr/conditions-dutilisation/"
     let urlTermsConditionIt = "https://cliqued.app/it/termini-e-condizioni/"
     
-
+    
     
     //MARK: Placeholder
     var placeholder_email = "placeholder_email".localized()
@@ -90,7 +90,7 @@ struct Constants_String {
     var btn_messageLater = "btn_messageLater".localized()
     var btn_completeProfile = "btn_completeProfile".localized()
     var btn_noThanks = "btn_noThanks".localized()
-   
+    
     var btn_dontHaveAccount = "btn_dontHaveAccount".localized()
     var btn_alreadyHaveAccount = "btn_alreadyHaveAccount".localized()
     
@@ -184,7 +184,7 @@ struct Constants_String {
     var label_notificationDisableMessage = "label_notificationDisableMessage".localized()
     var label_logoutAlertMsg = "label_logoutAlertMsg".localized()
     var label_blockAlertMsg = "label_blockAlertMsg".localized()
-//    var label_deleteAlertMsg = "label_deleteAlertMsg".localized()
+    //    var label_deleteAlertMsg = "label_deleteAlertMsg".localized()
     
     //Subscription Plan Benefits Text
     var label_planBenefitText1 = "label_planBenefitText1".localized()
@@ -227,7 +227,7 @@ struct Constants_String {
     var labelSettingRowTitle_privacyPreference = "labelSettingRowTitle_privacyPreference".localized()
     var labelSettingRowTitle_termsOfService = "labelSettingRowTitle_termsOfService".localized()
     var labelSettingRowTitle_licenses = "labelSettingRowTitle_licenses".localized()
-
+    
     var label_termsMessage = "label_termsMessage".localized()
     var label_ForgotPwdScreenDescription = "label_ForgotPwdScreenDescription".localized()
     var label_nameScreenTitle = "label_nameScreenTitle".localized()
@@ -304,11 +304,11 @@ struct Constants_String {
     var btn_subscribe = "btn_subscribe".localized()
     var label_activityMatchScreenTitle = "label_activityMatchScreenTitle".localized()
     
-//    var btn_viewPlan = "btn_viewPlan".localized()
-//    var label_likes = "label_likes".localized()
-//    var btn_settings = "btn_settings".localized()
-//    var label_locationPermissionAlertMsg = "label_locationPermissionAlertMsg".localized()
-//    var label_locationAlertTitle = "label_locationAlertTitle".localized()
+    //    var btn_viewPlan = "btn_viewPlan".localized()
+    //    var label_likes = "label_likes".localized()
+    //    var btn_settings = "btn_settings".localized()
+    //    var label_locationPermissionAlertMsg = "label_locationPermissionAlertMsg".localized()
+    //    var label_locationAlertTitle = "label_locationAlertTitle".localized()
     
     var btn_viewPlan = "View plan"
     var label_likes = "Likes"
@@ -322,13 +322,13 @@ struct Constants_String {
     var label_kmAway = "km away"
     var validMsg_validAddress = "Failed to load location. Please try again by dragging pin or click on the current location."
     
-//    var label_activityScreenPlaceholder = "There are no more activities at the moment, stay connected."
-//    var label_interestedActivityScreenPlaceholder = "There are no more interested peoples on your activity."
-//    var label_profileSwipeCardScreenPlaceholder = "There are no more users at the moment, stay connected."
-//    var label_profileSwipeViewFinish = "Your daily limit for profile is reached. Please upgrade your plan to view more profile or try again tomorrow."
-//    var label_activitySwipeViewFinish = "Your daily limit for activities is reached. Please upgrade your plan to view more activities or try again tomorrow."
-//    var label_addActivityPlaceholder = "Recently you have no activity. To add your activity tap on add activity button."
-//    var label_discoveryActivityPlaceholder = "Recently no other user's activities are available."
+    //    var label_activityScreenPlaceholder = "There are no more activities at the moment, stay connected."
+    //    var label_interestedActivityScreenPlaceholder = "There are no more interested peoples on your activity."
+    //    var label_profileSwipeCardScreenPlaceholder = "There are no more users at the moment, stay connected."
+    //    var label_profileSwipeViewFinish = "Your daily limit for profile is reached. Please upgrade your plan to view more profile or try again tomorrow."
+    //    var label_activitySwipeViewFinish = "Your daily limit for activities is reached. Please upgrade your plan to view more activities or try again tomorrow."
+    //    var label_addActivityPlaceholder = "Recently you have no activity. To add your activity tap on add activity button."
+    //    var label_discoveryActivityPlaceholder = "Recently no other user's activities are available."
     
     var label_activityScreenPlaceholder = "There are no more activities at the moment, stay connected."
     var label_interestedActivityScreenPlaceholder = "There are no more interested peoples on your activity."
@@ -357,38 +357,38 @@ struct Constants_String {
     //MARK: Check user is loggedIn
     var isUserLoggedIn : Bool {
         get {
-            userDefaults.bool(forKey: UserDefaultKey.isLoggedIn)
+            UserDefaults.standard.bool(forKey: UserDefaultKey().isLoggedIn)
         }
         set{
-            userDefaults.setValue(newValue, forKey: UserDefaultKey.isLoggedIn)
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaultKey().isLoggedIn)
         }
     }
     
     //MARK: Save user details in UserDefaults
     var loggedInUser: User? {
         get {
-            UserDefaults.standard.getCustom(User.self, forKey: UserDefaultKey.userData)
+            UserDefaults.standard.getCustom(User.self, forKey: UserDefaultKey().userData)
         }
         set{
-            UserDefaults.standard.setCustom(newValue, forKey: UserDefaultKey.userData)
+            UserDefaults.standard.setCustom(newValue, forKey: UserDefaultKey().userData)
         }
     }
     func saveUserInfoAndProceed(user: User){
-        userDefaults.setCustom(user, forKey: UserDefaultKey.userData)
-        userDefaults.set(user.guid, forKey: kUserGUID)
+        UserDefaults.standard.setCustom(user, forKey: UserDefaultKey().userData)
+        UserDefaults.standard.set(user.guid, forKey: kUserGUID)
     }
     
     //MARK: Save preference data in UserDefaults
     var getPreferenceData: [PreferenceClass]? {
         get {
-            userDefaults.getCustomArr(PreferenceClass.self, forKey: UserDefaultKey.preferenceData)
+            UserDefaults.standard.getCustomArr(PreferenceClass.self, forKey: UserDefaultKey().preferenceData)
         }
         set{
-            userDefaults.setCustomArr(newValue ?? [], forKey: UserDefaultKey.preferenceData)
+            UserDefaults.standard.setCustomArr(newValue ?? [], forKey: UserDefaultKey().preferenceData)
         }
     }
     func savePreferenceData(preferene: [PreferenceClass]){
-        userDefaults.setCustomArr(preferene, forKey: UserDefaultKey.preferenceData)
+        UserDefaults.standard.setCustomArr(preferene, forKey: UserDefaultKey().preferenceData)
     }
 }
 
@@ -399,7 +399,6 @@ class GlobalVariables{
 }
 
 class CustomFont {
-    
     static func THEME_FONT_Bold(_ Size: CGFloat) -> UIFont? {
         UIFont(name: "Rationell-Bold", size: Size)
     }
@@ -415,7 +414,7 @@ class CustomFont {
     static func THEME_FONT_Medium(_ Size: CGFloat) -> UIFont? {
         UIFont(name: "Rationell-Medium", size: Size)
     }
-
+    
     static func THEME_FONT_Regular(_ Size: CGFloat) -> UIFont? {
         UIFont(name: "Rationell-Regular", size: Size)
     }
@@ -431,6 +430,7 @@ class CustomFont {
     static let regular = "Rationell-Regular"
     static let light = "Rationell-Light"
 }
+
 //MARK:----------------------------------------------------------------
 //MARK: Check email validation
 func isValidEmail(_ email: String) -> Bool {
@@ -442,7 +442,7 @@ func isValidEmail(_ email: String) -> Bool {
 //MARK:----------------------------------------------------------------
 //MARK: Check password validation
 func isPasswordHasNumberAndCharacter(password: String) -> Bool {
-//    let passRegEx = "^([a-z])(?=.*[0-9])(?=.*[A-Z]).{8,}$"
+    //    let passRegEx = "^([a-z])(?=.*[0-9])(?=.*[A-Z]).{8,}$"
     let passRegEx = "^(?=.*[0-9])(?=.*[A-Z]).{8,}$"
     let passwordTest = NSPredicate(format: "SELF MATCHES %@", passRegEx)
     return passwordTest.evaluate(with: password)

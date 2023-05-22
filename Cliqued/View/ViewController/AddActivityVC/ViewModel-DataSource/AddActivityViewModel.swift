@@ -13,6 +13,8 @@ class AddActivityViewModel {
     var isLoaderShow: Dynamic<Bool> = Dynamic(true)
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     
+    private let apiParams = ApiParams()
+    
     //MARK: Variables
     private struct addActivityParams {
         var user_id = ""
@@ -84,21 +86,23 @@ class AddActivityViewModel {
                
         if checkValidation() {
             let params: NSDictionary = [
-                APIParams.userID : self.getUserId(),
-                APIParams.title : self.getTitle(),
-                APIParams.description : self.getDescription(),
-                APIParams.date : self.getActivityDate(),
-                APIParams.activity_address : self.convertAddressStructToString(),
-                APIParams.activity_sub_category : self.convertSubCategoryStructToString(),
-                APIParams.activity_media : self.getActivityAllMedia(),
-                APIParams.thumbnail : self.getActivityAllMedia()
+                apiParams.userID : self.getUserId(),
+                apiParams.title : self.getTitle(),
+                apiParams.description : self.getDescription(),
+                apiParams.date : self.getActivityDate(),
+                apiParams.activity_address : self.convertAddressStructToString(),
+                apiParams.activity_sub_category : self.convertSubCategoryStructToString(),
+                apiParams.activity_media : self.getActivityAllMedia(),
+                apiParams.thumbnail : self.getActivityAllMedia()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.AddUserActivity, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.AddUserActivity, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""
@@ -124,22 +128,24 @@ class AddActivityViewModel {
                
         if checkEditValidation() {
             let params: NSDictionary = [
-                APIParams.userID : self.getUserId(),
-                APIParams.title : self.getTitle(),
-                APIParams.description : self.getDescription(),
-                APIParams.date : self.getActivityDate(),
-                APIParams.activity_address : self.convertAddressStructToString(),
-                APIParams.activity_sub_category : self.convertSubCategoryStructToString(),
-                APIParams.activity_media : self.getActivityAllMedia(),
-                APIParams.thumbnail : self.getActivityAllMedia(),
-                APIParams.activityId : self.getActivityId()
+                apiParams.userID : self.getUserId(),
+                apiParams.title : self.getTitle(),
+                apiParams.description : self.getDescription(),
+                apiParams.date : self.getActivityDate(),
+                apiParams.activity_address : self.convertAddressStructToString(),
+                apiParams.activity_sub_category : self.convertSubCategoryStructToString(),
+                apiParams.activity_media : self.getActivityAllMedia(),
+                apiParams.thumbnail : self.getActivityAllMedia(),
+                apiParams.activityId : self.getActivityId()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.isLoaderShow.value = true
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.EditActivity, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.EditActivity, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.isLoaderShow.value = false
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""
@@ -317,14 +323,14 @@ extension AddActivityViewModel {
         for i in getAllActivityAddress() {
 //            let dict = structAddActivityValue.activity_address[i]
             
-            let dict : NSMutableDictionary = [APIParams.address : i.address ,
-                                              APIParams.latitude : i.latitude ,
-                                              APIParams.longitude : i.longitude ,
-                                              APIParams.city : i.city,
-                                              APIParams.state : i.state,
-                                              APIParams.country : i.country,
-                                              APIParams.pincode : i.pincode,
-                                              APIParams.addressId : i.address_id
+            let dict : NSMutableDictionary = [apiParams.address : i.address ,
+                                              apiParams.latitude : i.latitude ,
+                                              apiParams.longitude : i.longitude ,
+                                              apiParams.city : i.city,
+                                              apiParams.state : i.state,
+                                              apiParams.country : i.country,
+                                              apiParams.pincode : i.pincode,
+                                              apiParams.addressId : i.address_id
             ]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
@@ -344,8 +350,8 @@ extension AddActivityViewModel {
         var optionlist = [String]()
         
         for i in getActivityAllSubCategory() {
-            let dict : NSMutableDictionary = [APIParams.activityCategoryId : i.activity_category_id ,
-                                              APIParams.activitySubCategoryId : i.activity_sub_category_id
+            let dict : NSMutableDictionary = [apiParams.activityCategoryId : i.activity_category_id ,
+                                              apiParams.activitySubCategoryId : i.activity_sub_category_id
             ]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])

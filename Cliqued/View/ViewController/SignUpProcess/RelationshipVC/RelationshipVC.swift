@@ -126,7 +126,9 @@ class RelationshipVC: UIViewController {
     var isFromEditProfile: Bool = false
     var arrayOfUserPreference = [UserPreferences]()
     var arrayOfDeletedIds = [Int]()
-    
+    private let preferenceTypeIds = PreferenceTypeIds()
+    private let genderTypeIds = GenderTypeIds()
+    private let profileSetupType = ProfileSetupType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -162,14 +164,14 @@ class RelationshipVC: UIViewController {
         var arrayOfSubType = [SubTypes]()
         var arrayOfTypeOption = [TypeOptions]()
         
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.looking_for}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.looking_for}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfSubType = arrayOfPreference[0].subTypes ?? []
             if arrayOfSubType.count > 0 {
-                let subTypesData = arrayOfSubType.filter({$0.typesOfPreference == PreferenceTypeIds.romance})
+                let subTypesData = arrayOfSubType.filter({$0.typesOfPreference == preferenceTypeIds.romance})
                 arrayOfTypeOption = subTypesData[0].typeOptions ?? []
                 if arrayOfTypeOption.count > 0 {
-                    arrayOfTypeOption = arrayOfTypeOption.filter({$0.typeOfOptions == GenderTypeIds.Women})
+                    arrayOfTypeOption = arrayOfTypeOption.filter({$0.typeOfOptions == genderTypeIds.Women})
                 }
             }
         }
@@ -237,14 +239,14 @@ class RelationshipVC: UIViewController {
         var arrayOfSubType = [SubTypes]()
         var arrayOfTypeOption = [TypeOptions]()
         
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.looking_for}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.looking_for}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfSubType = arrayOfPreference[0].subTypes ?? []
             if arrayOfSubType.count > 0 {
-                let subTypesData = arrayOfSubType.filter({$0.typesOfPreference == PreferenceTypeIds.romance})
+                let subTypesData = arrayOfSubType.filter({$0.typesOfPreference == preferenceTypeIds.romance})
                 arrayOfTypeOption = subTypesData[0].typeOptions ?? []
                 if arrayOfTypeOption.count > 0 {
-                    arrayOfTypeOption = arrayOfTypeOption.filter({$0.typeOfOptions == GenderTypeIds.Men})
+                    arrayOfTypeOption = arrayOfTypeOption.filter({$0.typeOfOptions == genderTypeIds.Men})
                 }
             }
         }
@@ -323,14 +325,14 @@ class RelationshipVC: UIViewController {
         var arrayOfSubType = [SubTypes]()
         var arrayOfTypeOption = [TypeOptions]()
         
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.looking_for}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.looking_for}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfSubType = arrayOfPreference[0].subTypes ?? []
             if arrayOfSubType.count > 0 {
-                let subTypesData = arrayOfSubType.filter({$0.typesOfPreference == PreferenceTypeIds.friendship})
+                let subTypesData = arrayOfSubType.filter({$0.typesOfPreference == preferenceTypeIds.friendship})
                 arrayOfTypeOption = subTypesData[0].typeOptions ?? []
                 if arrayOfTypeOption.count > 0 {
-                    arrayOfTypeOption = arrayOfTypeOption.filter({$0.typeOfOptions == GenderTypeIds.Women})
+                    arrayOfTypeOption = arrayOfTypeOption.filter({$0.typeOfOptions == genderTypeIds.Women})
                 }
             }
         }
@@ -400,14 +402,14 @@ class RelationshipVC: UIViewController {
         var arrayOfSubType = [SubTypes]()
         var arrayOfTypeOption = [TypeOptions]()
         
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.looking_for}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.looking_for}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfSubType = arrayOfPreference[0].subTypes ?? []
             if arrayOfSubType.count > 0 {
-                let subTypesData = arrayOfSubType.filter({$0.typesOfPreference == PreferenceTypeIds.friendship})
+                let subTypesData = arrayOfSubType.filter({$0.typesOfPreference == preferenceTypeIds.friendship})
                 arrayOfTypeOption = subTypesData[0].typeOptions ?? []
                 if arrayOfTypeOption.count > 0 {
-                    arrayOfTypeOption = arrayOfTypeOption.filter({$0.typeOfOptions == GenderTypeIds.Men})
+                    arrayOfTypeOption = arrayOfTypeOption.filter({$0.typeOfOptions == genderTypeIds.Men})
                 }
             }
         }
@@ -472,9 +474,9 @@ class RelationshipVC: UIViewController {
     //MARK: Button Continue Click Event
     @IBAction func btnContinueTap(_ sender: Any) {
         if !isFromEditProfile {
-            viewModel.setProfileSetupType(value: ProfileSetupType.relationship)
+            viewModel.setProfileSetupType(value: profileSetupType.relationship)
         } else {
-            viewModel.setProfileSetupType(value: ProfileSetupType.completed)
+            viewModel.setProfileSetupType(value: profileSetupType.completed)
         }
         if viewModel.getRelationship().count > 0 {
             if isFromEditProfile {
@@ -613,9 +615,9 @@ extension RelationshipVC {
     func bindRelationshipDataForEditTime() {
         if arrayOfUserPreference.count > 0 {
             for userPreference in arrayOfUserPreference {
-                if userPreference.typesOfPreference == PreferenceTypeIds.looking_for {
-                    if userPreference.subTypesOfPreference == PreferenceTypeIds.romance {
-                        if (userPreference.typesOfOptions == GenderTypeIds.Men) && (userPreference.subTypesOfPreference == PreferenceTypeIds.romance) {
+                if userPreference.typesOfPreference == preferenceTypeIds.looking_for {
+                    if userPreference.subTypesOfPreference == preferenceTypeIds.romance {
+                        if (userPreference.typesOfOptions == genderTypeIds.Men) && (userPreference.subTypesOfPreference == preferenceTypeIds.romance) {
                             isSelectedRomanceMen = true
                             selectedGenderBtnUI(buttonName: buttonRomanceMen, buttonTitle: Constants.btn_men)
                             
@@ -624,7 +626,7 @@ extension RelationshipVC {
                             let userPrefId = userPreference.id?.description ?? ""
                             addDataInDictionary(prefId: prefId, prefOptionId: prefOptionId, UserPrefId: userPrefId)
                         }
-                        if (userPreference.typesOfOptions == GenderTypeIds.Women) && (userPreference.subTypesOfPreference == PreferenceTypeIds.romance) {
+                        if (userPreference.typesOfOptions == genderTypeIds.Women) && (userPreference.subTypesOfPreference == preferenceTypeIds.romance) {
                             isSelectedRomanceWomen = true
                             selectedGenderBtnUI(buttonName: buttonRomanceWomen, buttonTitle: Constants.btn_women)
                             
@@ -636,8 +638,8 @@ extension RelationshipVC {
                         RomanceButtonUI(buttonName: buttonRomance, buttonTitle: Constants.btn_romance)
                     }
                     
-                    if userPreference.subTypesOfPreference == PreferenceTypeIds.friendship {
-                        if (userPreference.typesOfOptions == GenderTypeIds.Men) && (userPreference.subTypesOfPreference == PreferenceTypeIds.friendship) {
+                    if userPreference.subTypesOfPreference == preferenceTypeIds.friendship {
+                        if (userPreference.typesOfOptions == genderTypeIds.Men) && (userPreference.subTypesOfPreference == preferenceTypeIds.friendship) {
                             isSelectedFriendshipMen = true
                             selectedGenderBtnUI(buttonName: buttonFriendshipMen, buttonTitle: Constants.btn_men)
                             
@@ -646,7 +648,7 @@ extension RelationshipVC {
                             let userPrefId = userPreference.id?.description ?? ""
                             addDataInDictionary(prefId: prefId, prefOptionId: prefOptionId, UserPrefId: userPrefId)
                         }
-                        if (userPreference.typesOfOptions == GenderTypeIds.Women) && (userPreference.subTypesOfPreference == PreferenceTypeIds.friendship) {
+                        if (userPreference.typesOfOptions == genderTypeIds.Women) && (userPreference.subTypesOfPreference == preferenceTypeIds.friendship) {
                             isSelectedFriendshipWomen = true
                             selectedGenderBtnUI(buttonName: buttonFriendshipWomen, buttonTitle: Constants.btn_women)
                             
@@ -682,12 +684,14 @@ extension RelationshipVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if !self.isFromEditProfile {
                     let pickactivityVC = PickActivityVC.loadFromNib()
@@ -702,7 +706,9 @@ extension RelationshipVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

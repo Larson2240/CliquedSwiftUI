@@ -394,12 +394,12 @@ class MessageDataSource: NSObject {
             guard let data = data, error == nil else { return }
             
             // always update the UI from the main thread
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 
                 let img = data.uiImage
                 
                 if let image1 = img {
-                    self.saveImageToDocumentDirectory(image: image1, fileName: fileName,section:section,row:row)
+                    self?.saveImageToDocumentDirectory(image: image1, fileName: fileName,section:section,row:row)
                 }
             }
         }
@@ -735,7 +735,8 @@ extension MessageDataSource: UITableViewDelegate,UITableViewDataSource {
                 } else {
                     fileName = "\(UrlChatMedia)\(objMessage.thumbnailUrl ?? "")"
                     
-                    cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { image, error, type, ulr in
+                    cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { [weak self] image, error, type, ulr in
+                        guard let self = self else { return }
                         
                         if let img = image {
                             cell.imageMessage.image = self.blurEffect(userImage: img)
@@ -750,7 +751,8 @@ extension MessageDataSource: UITableViewDelegate,UITableViewDataSource {
             } else {
                 fileName = "\(UrlChatMedia)\(objMessage.thumbnailUrl ?? "")"
                 
-                cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { image, error, type, ulr in
+                cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { [weak self] image, error, type, ulr in
+                    guard let self = self else { return }
                     
                     if let img = image {
                         cell.imageMessage.image = self.blurEffect(userImage: img)
@@ -823,7 +825,8 @@ extension MessageDataSource: UITableViewDelegate,UITableViewDataSource {
                 } else {
                     fileName = "\(UrlChatMedia)\(objMessage.thumbnailUrl ?? "")"
                     
-                    cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { image, error, type, ulr in
+                    cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { [weak self] image, error, type, ulr in
+                        guard let self = self else { return }
                         
                         if let img = image {
                             cell.imageMessage.image = self.blurEffect(userImage: img)
@@ -838,7 +841,8 @@ extension MessageDataSource: UITableViewDelegate,UITableViewDataSource {
             } else {
                 fileName = "\(UrlChatMedia)\(objMessage.thumbnailUrl ?? "")"
                 
-                cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { image, error, type, ulr in
+                cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { [weak self] image, error, type, ulr in
+                    guard let self = self else { return }
                     
                     if let img = image {
                         cell.imageMessage.image = self.blurEffect(userImage: img)
@@ -889,7 +893,9 @@ extension MessageDataSource: UITableViewDelegate,UITableViewDataSource {
             
             let audioAsset = AVURLAsset.init(url: Url!, options: nil)
 
-            audioAsset.loadValuesAsynchronously(forKeys: ["duration"]) {
+            audioAsset.loadValuesAsynchronously(forKeys: ["duration"]) { [weak self] in
+                guard let self = self else { return }
+                
                 var error: NSError? = nil
                 let status = audioAsset.statusOfValue(forKey: "duration", error: &error)
                 switch status {
@@ -966,7 +972,9 @@ extension MessageDataSource: UITableViewDelegate,UITableViewDataSource {
                 } else {
                     fileName = "\(UrlChatMedia)\(objMessage.thumbnailUrl ?? "")"
                     
-                    cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { image, error, type, ulr in
+                    cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { [weak self] image, error, type, ulr in
+                        guard let self = self else { return }
+                        
                         cell.viewOption.isHidden = false
                         cell.buttonDownload.isHidden = false
                         cell.imageTypeIcon.isHidden = false
@@ -983,7 +991,9 @@ extension MessageDataSource: UITableViewDelegate,UITableViewDataSource {
             } else {
                 fileName = "\(UrlChatMedia)\(objMessage.thumbnailUrl ?? "")"
                 
-                cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { image, error, type, ulr in
+                cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { [weak self] image, error, type, ulr in
+                    guard let self = self else { return }
+                    
                     cell.viewOption.isHidden = false
                     cell.buttonDownload.isHidden = false
                     cell.imageTypeIcon.isHidden = false
@@ -1041,7 +1051,9 @@ extension MessageDataSource: UITableViewDelegate,UITableViewDataSource {
                 } else {
                     fileName = "\(UrlChatMedia)\(objMessage.thumbnailUrl ?? "")"
                     
-                    cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { image, error, type, ulr in
+                    cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { [weak self] image, error, type, ulr in
+                        guard let self = self else { return }
+                        
                         cell.viewOption.isHidden = false
                         cell.buttonDownload.isHidden = false
                         cell.imageTypeIcon.isHidden = false
@@ -1058,7 +1070,9 @@ extension MessageDataSource: UITableViewDelegate,UITableViewDataSource {
             } else {
                 fileName = "\(UrlChatMedia)\(objMessage.thumbnailUrl ?? "")"
                 
-                cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { image, error, type, ulr in
+                cell.imageMessage.sd_setImage(with: URL(string: fileName), placeholderImage: UIImage(), options: .highPriority) { [weak self] image, error, type, ulr in
+                    guard let self = self else { return }
+                    
                     cell.viewOption.isHidden = false
                     cell.buttonDownload.isHidden = false
                     cell.imageTypeIcon.isHidden = false
@@ -1092,7 +1106,9 @@ extension MessageDataSource: UITableViewDelegate,UITableViewDataSource {
             
             let audioAsset = AVURLAsset.init(url: Url!, options: nil)
 
-            audioAsset.loadValuesAsynchronously(forKeys: ["duration"]) {
+            audioAsset.loadValuesAsynchronously(forKeys: ["duration"]) { [weak self] in
+                guard let self = self else { return }
+                
                 var error: NSError? = nil
                 let status = audioAsset.statusOfValue(forKey: "duration", error: &error)
                 switch status {

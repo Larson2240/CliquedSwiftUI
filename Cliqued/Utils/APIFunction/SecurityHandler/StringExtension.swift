@@ -30,14 +30,14 @@ extension String
         return (firstMatch?.range.location != NSNotFound && firstMatch?.url?.scheme == "mailto")
     }
     public var length: Int {
-        return self.count
+        return count
     }
     func isValid() -> Bool {
-        return (self.isEmpty || self == "" || self == nil || self == "(null)") || self.blank() ? false : true
+        return (isEmpty || self == "" || self == nil || self == "(null)") || blank() ? false : true
         
     }
     func blank() -> Bool {
-        let trimmed = self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let trimmed = trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         return trimmed.isEmpty
     }
     func isDecimal1Point() -> Bool
@@ -57,9 +57,9 @@ extension String
 
     //MARK: Capitalizing first char of sentence
     func capitalizeFirst() -> String {
-        let firstIndex = self.index(startIndex, offsetBy: 1)
+        let firstIndex = index(startIndex, offsetBy: 1)
         
-        return self.substring(to: firstIndex).capitalized + self.substring(from: firstIndex).lowercased()
+        return substring(to: firstIndex).capitalized + substring(from: firstIndex).lowercased()
     }
 }
 extension String {

@@ -32,35 +32,35 @@ class DynamicArray<T>: DynamicAsync<[T]> {
         if listenerToFire == .Default {
             listener?(value)
         }
-        self.listenerToFire = .Default
+        listenerToFire = .Default
     }
     
     // MARK: - Public methods
     
     func append(_ element: T) {
-        self.listenerToFire = .Add
-        self.value.append(contentsOf: [element])
-        self.appendListener?(value.count)
+        listenerToFire = .Add
+        value.append(contentsOf: [element])
+        appendListener?(value.count)
     }
     
     func append(_ contentsOf: [T]) {
-        self.listenerToFire = .Add
-        self.value.append(contentsOf: contentsOf)
-        self.appendListener?(contentsOf.count)
+        listenerToFire = .Add
+        value.append(contentsOf: contentsOf)
+        appendListener?(contentsOf.count)
     }
     
     func remove(_ at: Int) {
-        self.listenerToFire = .Remove
-        self.value.remove(at: at)
-        self.removeListener?(at)
+        listenerToFire = .Remove
+        value.remove(at: at)
+        removeListener?(at)
     }
     
     func bindRemoveListener(_ listener: RemoveListener?) {
-        self.removeListener = listener
+        removeListener = listener
     }
     
     func bindAppendListener(_ listener: AddListener?) {
-        self.appendListener = listener
+        appendListener = listener
     }
     
 }

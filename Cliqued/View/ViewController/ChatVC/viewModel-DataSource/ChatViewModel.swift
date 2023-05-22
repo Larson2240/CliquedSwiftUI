@@ -29,21 +29,26 @@ class ChatViewModel {
     var arrMatchesList = [UserLikesMatchesClass]()
     var arrConversation = [CDConversation]()
     var arrayOfMainUserList = [User]()
+    private let apiParams = ApiParams()
     
     //MARK: Call API
     
     func callGetUserDetailsAPI(user_id: Int) {
         
         let params: NSDictionary = [
-            APIParams.userID : user_id
+            apiParams.userID : user_id
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = true
                 self.arrayOfMainUserList.removeAll()
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserDetails, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserDetails, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -81,14 +86,16 @@ class ChatViewModel {
     func callUserLikesListAPI() {
                
             let params: NSDictionary = [
-                APIParams.userID : self.getUserId()
+                apiParams.userID : self.getUserId()
             ]
             
             if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async {
-                    self.arrUserMatchesList.removeAll()
+                DispatchQueue.main.async { [weak self] in
+                    self?.arrUserMatchesList.removeAll()
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserLikesList, parameters: params) { response, error, message in
+                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserLikesList, parameters: params) { [weak self] response, error, message in
+                    guard let self = self else { return }
+                    
                     self.setIsDataLoad(value: true)
                     if(error != nil && response == nil) {
                         self.isMessage.value = message ?? ""

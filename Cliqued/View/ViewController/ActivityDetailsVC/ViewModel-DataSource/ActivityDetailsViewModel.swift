@@ -18,6 +18,7 @@ class ActivityDetailsViewModel {
     private var isDataLoad: Bool = false
     var objActivityDetails : UserActivityClass?
     var arrayOfInterestedUserList = [InterestedUserInfo]()
+    private let apiParams = ApiParams()
     
     private struct structActivityDetails {
         var activityId = ""
@@ -69,12 +70,14 @@ class ActivityDetailsViewModel {
     func callInterestedActivityListAPI() {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.activityId: self.getActivityId()
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.activityId: self.getActivityId()
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetActivityInterestedPeople, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetActivityInterestedPeople, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isDataLoad = true
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""

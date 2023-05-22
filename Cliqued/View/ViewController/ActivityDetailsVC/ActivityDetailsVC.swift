@@ -17,6 +17,7 @@ class ActivityDetailsVC: UIViewController {
     lazy var viewModel = ActivityDetailsViewModel()
     lazy var viewModel1 = InterestedActivityViewModel()
     var objActivityDetails : UserActivityClass!
+    private let isPremium = IsPremium()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -69,7 +70,9 @@ extension ActivityDetailsVC {
             addactivityvc.isEditActivity = true
             addactivityvc.objActivityDetails = objActivityDetails
             
-            addactivityvc.callbackForUpdateActivityData = { objActivityDetails in
+            addactivityvc.callbackForUpdateActivityData = { [weak self] objActivityDetails in
+                guard let self = self else { return }
+                
                 self.viewModel.bindActivityDetailsData(activityDetails: objActivityDetails)
                 self.tableview.reloadData()
             }
@@ -81,22 +84,24 @@ extension ActivityDetailsVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
-        viewModel1.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel1.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
             if isSuccess {
-                self.tableview.reloadData()
+                self?.tableview.reloadData()
             }
         }
         
-        viewModel1.isLikdDislikeSuccess.bind { isSuccess in
+        viewModel1.isLikdDislikeSuccess.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if self.viewModel1.arrayOfFollowersList.count > 0 {
                     let followersData = self.viewModel1.arrayOfFollowersList[0]
@@ -127,36 +132,36 @@ extension ActivityDetailsVC {
             }
         }
         
-        viewModel1.isViewLimitFinish.bind { isSuccess in
+        viewModel1.isViewLimitFinish.bind { [weak self] isSuccess in
             if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-                    self.showSubscriptionPlanScreen()
+                if Constants.loggedInUser?.isPremiumUser == self?.isPremium.NotPremium {
+                    self?.showSubscriptionPlanScreen()
                 }
             }
         }
         
-        viewModel1.isLikeLimitFinish.bind { isSuccess in
+        viewModel1.isLikeLimitFinish.bind { [weak self] isSuccess in
             if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-                    self.showSubscriptionPlanScreen()
+                if Constants.loggedInUser?.isPremiumUser == self?.isPremium.NotPremium {
+                    self?.showSubscriptionPlanScreen()
                 }
             }
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
             if isLoader {
-                self.showLoader()
+                self?.showLoader()
             } else {
-                self.dismissLoader()
+                self?.dismissLoader()
             }
         }
         
-        viewModel1.isLoaderShow.bind { isLoader in
+        viewModel1.isLoaderShow.bind { [weak self] isLoader in
             if isLoader {
-                self.showLoader()
+                self?.showLoader()
             } else {
-                self.dismissLoader()
+                self?.dismissLoader()
             }
         }
     }

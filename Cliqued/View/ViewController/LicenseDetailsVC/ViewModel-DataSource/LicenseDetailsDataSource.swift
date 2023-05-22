@@ -8,17 +8,16 @@
 import UIKit
 
 class LicenseDetailsDataSource: NSObject, UITableViewDelegate, UITableViewDataSource  {
-    
     private let viewController: LicenseDetailsVC
     private let tableView: UITableView
     private let viewModel: LicenseDetailsViewModel
-    
     
     struct structLibraryDetails {
         var libraryName = ""
         var description = ""
     }
     var selectedIndexPath: Int?
+    
     private var arrayOfLibraryName: [structLibraryDetails] = [
         structLibraryDetails(libraryName: "Description", description: ""),
         structLibraryDetails(libraryName: "Alamofire", description: DescriptionLibrary.Alamofire),
@@ -27,7 +26,8 @@ class LicenseDetailsDataSource: NSObject, UITableViewDelegate, UITableViewDataSo
         structLibraryDetails(libraryName: "SkeletonView", description: DescriptionLibrary.SkeletonView),
         structLibraryDetails(libraryName: "SKPhotoBrowser", description: DescriptionLibrary.SKPhotoBrowser),
         structLibraryDetails(libraryName: "SwiftyJson", description: DescriptionLibrary.SwiftyJson),
-        structLibraryDetails(libraryName: "TLPhotoPicker", description: DescriptionLibrary.TLPhotoPicker)]
+        structLibraryDetails(libraryName: "TLPhotoPicker", description: DescriptionLibrary.TLPhotoPicker)
+    ]
     
     //MARK:- Init
     init(tableView: UITableView, viewModel: LicenseDetailsViewModel, viewController: LicenseDetailsVC) {
@@ -39,10 +39,11 @@ class LicenseDetailsDataSource: NSObject, UITableViewDelegate, UITableViewDataSo
     }
     
     //MARK: - Class methods
-    func setupTableView(){
+    func setupTableView() {
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }
+        
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .clear
         registerTableCell()

@@ -14,6 +14,8 @@ class BlockedUserViewModel {
     var isLoaderShow: Dynamic<Bool> = Dynamic(true)
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     
+    private let apiParams = ApiParams()
+    
     //MARK: Variables
     private var isDataLoad: Bool = false
     private struct userBlockedUserListParams {
@@ -46,8 +48,8 @@ class BlockedUserViewModel {
     func callUserListAPI() {
                
             let params: NSDictionary = [
-                APIParams.userID : self.getUserId(),
-                APIParams.offset: self.getOffset()
+                apiParams.userID : self.getUserId(),
+                apiParams.offset: self.getOffset()
             ]
             
             if(Connectivity.isConnectedToInternet()){
@@ -97,10 +99,10 @@ class BlockedUserViewModel {
         
         if checkValidation() {
             let params: NSDictionary = [
-                APIParams.counterUserId : self.getCounterUserId(),
-                APIParams.userID : self.getUserId(),
-                APIParams.blockType : self.getBlockType(),
-                APIParams.isBlock : self.getIsBlock()
+                apiParams.counterUserId : self.getCounterUserId(),
+                apiParams.userID : self.getUserId(),
+                apiParams.blockType : self.getBlockType(),
+                apiParams.isBlock : self.getIsBlock()
             ]
             
             if(Connectivity.isConnectedToInternet()){

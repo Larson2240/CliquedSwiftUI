@@ -17,6 +17,8 @@ class HomeViewModel {
     private var isDataLoad: Bool = false
     var arrayOfHomeCategory = [ActivityCategoryClass]()
     private var isRefresh: Bool = false
+    private let apiParams = ApiParams()
+    private let preferenceOptionIds = PreferenceOptionIds()
     
     //MARK: Save user data in UserDefault
     func saveUserInfoAndProceed(user: User){
@@ -27,14 +29,16 @@ class HomeViewModel {
     func callGetUserInterestedCategoryAPI() {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)"
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)"
         ]
         
         if(Connectivity.isConnectedToInternet()) {
-            DispatchQueue.main.async {
-                self.arrayOfHomeCategory.removeAll()
+            DispatchQueue.main.async { [weak self] in
+                self?.arrayOfHomeCategory.removeAll()
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserInterestedCategory, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserInterestedCategory, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isDataLoad = true
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -76,16 +80,18 @@ class HomeViewModel {
     func callUpdateUserDeviceTokenAPI(is_enabled: Bool) {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.deviceType: "1",
-            APIParams.deviceToken : userDefaults.object(forKey: kDeviceToken) ?? "123",
-            APIParams.voipToken: userDefaults.object(forKey: USER_DEFAULT_KEYS.VOIP_TOKEN) ?? "123",
-            APIParams.isPushEnabled : is_enabled ? "\(PreferenceOptionIds.yes)" : "\(PreferenceOptionIds.no)"
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.deviceType: "1",
+            apiParams.deviceToken : UserDefaults.standard.object(forKey: kDeviceToken) ?? "123",
+            apiParams.voipToken: UserDefaults.standard.object(forKey: USER_DEFAULT_KEYS.VOIP_TOKEN) ?? "123",
+            apiParams.isPushEnabled : is_enabled ? "\(preferenceOptionIds.yes)" : "\(preferenceOptionIds.no)"
         ]
         
         if(Connectivity.isConnectedToInternet()) {
             
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateNotificationToken, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateNotificationToken, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
                 } else {
@@ -125,7 +131,9 @@ class HomeViewModel {
     func callGetPreferenceDataAPI() {
         
         if(Connectivity.isConnectedToInternet()) {
-            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetMasterPreferenceAPI) { response, error, message in
+            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetMasterPreferenceAPI) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 if(error != nil && response == nil) {
 //                    self.isMessage.value = message ?? ""
                 } else {

@@ -8,10 +8,12 @@
 import UIKit
 
 class EmailNotificationDataSource: NSObject {
-
+    
     private let viewController: EmailNotification
     private let viewModel: EmailNotificationViewModel
     private let tableView : UITableView
+    private let preferenceOptionIds = PreferenceOptionIds()
+    private let preferenceTypeIds = PreferenceTypeIds()
     
     //MARK:- Init
     init(tableView: UITableView, viewModel: EmailNotificationViewModel, viewController: EmailNotification) {
@@ -44,16 +46,16 @@ class EmailNotificationDataSource: NSObject {
         let obj = viewModel.arrNotification[0].subTypes![mySwitch.tag]
         viewModel.setPreferenceId(value: "\(obj.id ?? 0)")
         if let sub_array = obj.typeOptions, sub_array.count > 0 {
-        
-            if value == true {
             
-                let array_value = sub_array.filter({$0.typeOfOptions == PreferenceOptionIds.yes})
+            if value == true {
+                
+                let array_value = sub_array.filter({$0.typeOfOptions == preferenceOptionIds.yes})
                 
                 if array_value.count > 0 {
                     viewModel.setPreferenceOptionId(value: "\(array_value[0].id ?? 0)")
                 }
             } else {
-                let array_value = sub_array.filter({$0.typeOfOptions == PreferenceOptionIds.no})
+                let array_value = sub_array.filter({$0.typeOfOptions == preferenceOptionIds.no})
                 
                 if array_value.count > 0 {
                     viewModel.setPreferenceOptionId(value: "\(array_value[0].id ?? 0)")
@@ -66,7 +68,7 @@ class EmailNotificationDataSource: NSObject {
 
 //MARK: UItablview Delegate Datasource
 extension EmailNotificationDataSource : UITableViewDelegate, UITableViewDataSource {
- 
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if viewModel.arrNotification.count > 0 {
             return viewModel.arrNotification[0].subTypes!.count
@@ -90,17 +92,17 @@ extension EmailNotificationDataSource : UITableViewDelegate, UITableViewDataSour
         
         if let array = Constants.loggedInUser?.userPreferences,array.count > 0 {
             if let sub_array = obj.typeOptions, sub_array.count > 0 {
-                let arrValues = array.filter({$0.typesOfOptions == PreferenceOptionIds.no && $0.preferenceId == obj.id})
+                let arrValues = array.filter({$0.typesOfOptions == preferenceOptionIds.no && $0.preferenceId == obj.id})
                 
                 if arrValues.count > 0 {
                     cell.switchButton.isOn = false
                 } else {
                     
                     if viewController.is_from_push == 1 {
-                        let arrInitialPush = array.filter({$0.typesOfPreference == PreferenceTypeIds.notification_enable})
+                        let arrInitialPush = array.filter({$0.typesOfPreference == preferenceTypeIds.notification_enable})
                         
                         if arrInitialPush.count > 0 {
-                            let arrInitialPushOption = array.filter({$0.typesOfOptions == PreferenceOptionIds.yes})
+                            let arrInitialPushOption = array.filter({$0.typesOfOptions == preferenceOptionIds.yes})
                             
                             if arrInitialPushOption.count > 0 {
                                 cell.switchButton.isOn = true
@@ -116,10 +118,10 @@ extension EmailNotificationDataSource : UITableViewDelegate, UITableViewDataSour
                 }
             } else {
                 
-                let arrInitialPush = array.filter({$0.typesOfPreference == PreferenceTypeIds.notification_enable})
+                let arrInitialPush = array.filter({$0.typesOfPreference == preferenceTypeIds.notification_enable})
                 
                 if arrInitialPush.count > 0 {
-                    let arrInitialPushOption = arrInitialPush.filter({$0.typesOfOptions == PreferenceOptionIds.yes})
+                    let arrInitialPushOption = arrInitialPush.filter({$0.typesOfOptions == preferenceOptionIds.yes})
                     
                     if arrInitialPushOption.count > 0 {
                         cell.switchButton.isOn = true

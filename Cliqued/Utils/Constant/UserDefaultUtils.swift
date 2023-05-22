@@ -12,78 +12,75 @@ import ContactsUI
 import GoogleSignIn
 import FBSDKLoginKit
 
-//MARK: Gloabal Declare UserDefaults
-let userDefaults = UserDefaults.standard
-
 //MARK: UserDefault Key
-struct structUserdefaultKey {
-    let isLoggedIn              = "isLoggedIn"
-    let userData                = "userData"
+struct UserDefaultKey {
+    let isLoggedIn = "isLoggedIn"
+    let userData = "userData"
     
-    let userEmail               = "email"
-    let userPassword            = "Password"
-    let userName                = "userName"
-    let isRemeberMe             = "isRememberMe"
+    let userEmail = "email"
+    let userPassword = "Password"
+    let userName = "userName"
+    let isRemeberMe = "isRememberMe"
     
-    let preferenceData          = "preferenceData"
+    let preferenceData = "preferenceData"
 }
-var UserDefaultKey = structUserdefaultKey()
 
-//MARK: Clear User Defautls
-func clearUserDefault()
-{
-    let deviceToken = userDefaults.value(forKey: kDeviceToken)
-    let voipToken = userDefaults.value(forKey: USER_DEFAULT_KEYS.VOIP_TOKEN)
-    
-    let domain = Bundle.main.bundleIdentifier!
-    userDefaults.removePersistentDomain(forName: domain)
-    userDefaults.synchronize()
-    APP_DELEGATE.socketIOHandler?.disconnectSocket()
-       
-    //Facebook SignOut
-    if let _ = AccessToken.current {
-        let loginManager = LoginManager()
-        loginManager.logOut()
+extension UserDefaults {
+    func clearUserDefault() {
+        let userDefaults = UserDefaults.standard
+        
+        let deviceToken = userDefaults.value(forKey: kDeviceToken)
+        let voipToken = userDefaults.value(forKey: USER_DEFAULT_KEYS.VOIP_TOKEN)
+        
+        let domain = Bundle.main.bundleIdentifier!
+        userDefaults.removePersistentDomain(forName: domain)
+        userDefaults.synchronize()
+        APP_DELEGATE.socketIOHandler?.disconnectSocket()
+        
+        //Facebook SignOut
+        if let _ = AccessToken.current {
+            let loginManager = LoginManager()
+            loginManager.logOut()
+        }
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        userDefaults.setValue(deviceToken, forKey: kDeviceToken)
+        userDefaults.set(voipToken, forKey: USER_DEFAULT_KEYS.VOIP_TOKEN)
+        CoreDataAdaptor.sharedDataAdaptor.deleteAllConversation()
+        CoreDataAdaptor.sharedDataAdaptor.deleteAllMessage()
+        
+        //Google SignOut
+        GIDSignIn.sharedInstance.signOut()
+        checkSecurity()
     }
     
-    UIApplication.shared.applicationIconBadgeNumber = 0
-    userDefaults.setValue(deviceToken, forKey: kDeviceToken)
-    userDefaults.set(voipToken, forKey: USER_DEFAULT_KEYS.VOIP_TOKEN)
-    CoreDataAdaptor.sharedDataAdaptor.deleteAllConversation()
-    CoreDataAdaptor.sharedDataAdaptor.deleteAllMessage()
-    
-    //Google SignOut
-    GIDSignIn.sharedInstance.signOut()
-    checkSecurity()
-}
-
-func clearUserDefaultWithSocket()
-{
-    let deviceToken = userDefaults.value(forKey: kDeviceToken)
-    let voipToken = userDefaults.value(forKey: USER_DEFAULT_KEYS.VOIP_TOKEN)
-    
-    let domain = Bundle.main.bundleIdentifier!
-    userDefaults.removePersistentDomain(forName: domain)
-    userDefaults.synchronize()
-       
-    //Facebook SignOut
-    if let _ = AccessToken.current {
-        let loginManager = LoginManager()
-        loginManager.logOut()
+    func clearUserDefaultWithSocket() {
+        let userDefaults = UserDefaults.standard
+        
+        let deviceToken = userDefaults.value(forKey: kDeviceToken)
+        let voipToken = userDefaults.value(forKey: USER_DEFAULT_KEYS.VOIP_TOKEN)
+        
+        let domain = Bundle.main.bundleIdentifier!
+        userDefaults.removePersistentDomain(forName: domain)
+        userDefaults.synchronize()
+        
+        //Facebook SignOut
+        if let _ = AccessToken.current {
+            let loginManager = LoginManager()
+            loginManager.logOut()
+        }
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        userDefaults.setValue(deviceToken, forKey: kDeviceToken)
+        userDefaults.set(voipToken, forKey: USER_DEFAULT_KEYS.VOIP_TOKEN)
+        CoreDataAdaptor.sharedDataAdaptor.deleteAllConversation()
+        CoreDataAdaptor.sharedDataAdaptor.deleteAllMessage()
+        
+        //Google SignOut
+        GIDSignIn.sharedInstance.signOut()
+        checkSecurity()
     }
     
-    UIApplication.shared.applicationIconBadgeNumber = 0
-    userDefaults.setValue(deviceToken, forKey: kDeviceToken)
-    userDefaults.set(voipToken, forKey: USER_DEFAULT_KEYS.VOIP_TOKEN)
-    CoreDataAdaptor.sharedDataAdaptor.deleteAllConversation()
-    CoreDataAdaptor.sharedDataAdaptor.deleteAllMessage()
-    
-    //Google SignOut
-    GIDSignIn.sharedInstance.signOut()
-    checkSecurity()
-}
-
-extension UserDefaults{
     func setCustom<T: Codable>(_ value: T?, forKey: String){
         let data = try? JSONEncoder().encode(value)
         set(data, forKey: forKey)

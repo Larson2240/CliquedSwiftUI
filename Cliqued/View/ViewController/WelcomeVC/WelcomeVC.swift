@@ -33,6 +33,7 @@ class WelcomeVC: UIViewController {
     
     var favoriteActivity = [UserInterestedCategory]()
     var favoriteCategoryActivity = [UserInterestedCategory]()
+    private let profileSetupType = ProfileSetupType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -80,19 +81,21 @@ extension WelcomeVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
             if isSuccess {
-                self.manageSetupProfileNavigationFlow()
+                self?.manageSetupProfileNavigationFlow()
             }
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -112,44 +115,44 @@ extension WelcomeVC {
             strCount = "\(profile_setup_count)"
         }
         switch strCount {
-        case ProfileSetupType.name:
+        case profileSetupType.name:
             let namevc = NameVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: namevc)
             
-        case ProfileSetupType.birthdate:
+        case profileSetupType.birthdate:
             let agevc = AgeVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController =  UINavigationController(rootViewController: agevc)
             
-        case ProfileSetupType.gender:
+        case profileSetupType.gender:
             let gendervc = GenderVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: gendervc)
             
-        case ProfileSetupType.relationship:
+        case profileSetupType.relationship:
             let relationshipvc = RelationshipVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: relationshipvc)
             
-        case ProfileSetupType.category:
+        case profileSetupType.category:
             let pickactivityvc = PickActivityVC.loadFromNib()
             pickactivityvc.arrayOfActivity = self.favoriteActivity
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: pickactivityvc)
             
-        case ProfileSetupType.sub_category:
+        case profileSetupType.sub_category:
             let picksubactivityvc = PickSubActvityVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: picksubactivityvc)
             
-        case ProfileSetupType.profile_images:
+        case profileSetupType.profile_images:
             let selectpicturevc = SelectPicturesVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: selectpicturevc)
             
-        case ProfileSetupType.location:
+        case profileSetupType.location:
             let locationvc = SetLocationVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: locationvc)
             
-        case ProfileSetupType.notification_enable:
+        case profileSetupType.notification_enable:
             let notificationvc = NotificationPermissionVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: notificationvc)
             
-        case ProfileSetupType.completed:
+        case profileSetupType.completed:
             let startexplorevc = StartExploringVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: startexplorevc)
         default:

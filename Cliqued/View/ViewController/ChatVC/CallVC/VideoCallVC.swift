@@ -97,8 +97,8 @@ class VideoCallVC: UIViewController {
         
         APP_DELEGATE.socketIOHandler?.delegate = self
         check_record_permission()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.viewDidLoadMethod()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.viewDidLoadMethod()
         }
     }
     
@@ -458,11 +458,11 @@ class VideoCallVC: UIViewController {
     //                self.viewSmallScreenVideo.addGestureRecognizer(tap)
                 }
 
-                camera!.startCapture(device: frontCamera != nil ? frontCamera! : backCamera!) { (captureDevice, videoFormat, error) in
+                camera!.startCapture(device: frontCamera != nil ? frontCamera! : backCamera!) { [weak self] (captureDevice, videoFormat, error) in
                     if let error = error {
                         
                     } else {
-                        self.viewSmallScreenVideo.shouldMirror = (captureDevice.position == .front)
+                        self?.viewSmallScreenVideo.shouldMirror = (captureDevice.position == .front)
                     }
                 }
             }
@@ -574,7 +574,7 @@ class VideoCallVC: UIViewController {
         if isAudioRecordingGranted {
         } else {
             alertCustom(btnNo: Constants_Message.cancel_title, btnYes: Constants_Message.open_setting_title, title: "", message: Constants_Message.open_settin_in_device_text) {
-                userDefaults.set(true, forKey: "go_setting")
+                UserDefaults.standard.set(true, forKey: "go_setting")
                  UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             }
         }

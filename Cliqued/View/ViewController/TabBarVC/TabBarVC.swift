@@ -130,11 +130,13 @@ extension TabBarVC {
     func handleApiResponse() {
         
         //Check response message
-        welcomeViewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        welcomeViewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
-        vieWModelMessage.isDataGet.bind { isSuccess in
+        vieWModelMessage.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             
             print("SRM LOG Calling is audio => \(Calling.is_audio_call)")
             

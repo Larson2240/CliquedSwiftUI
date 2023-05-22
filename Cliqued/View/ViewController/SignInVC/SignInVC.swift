@@ -21,6 +21,8 @@ class SignInVC: UIViewController {
     var dataSource : SignInDataSource?
     lazy var viewModel = SignInViewModel()
     var isFromSignUpScreen: Bool = false
+    private let loginType = LoginType()
+    private let profileSetupType = ProfileSetupType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -40,15 +42,16 @@ class SignInVC: UIViewController {
     func handleGoogleSignIn() {
         let config = GIDConfiguration(clientID: Constants.googleSignInKey)
         GIDSignIn.sharedInstance.configuration = config
-        GIDSignIn.sharedInstance.signIn(withPresenting: self) { signInResult, error in
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] signInResult, error in
+            guard let self = self else { return }
             guard error == nil else { return }
             guard let signInResult = signInResult else { return }
             
             let user = signInResult.user
-            userDefaults.set(user.profile?.givenName, forKey: UserDefaultKey.userName)
+            UserDefaults.standard.set(user.profile?.givenName, forKey: UserDefaultKey().userName)
             self.viewModel.setEmail(value: user.profile?.email ?? "")
             self.viewModel.setSocialLoginId(value: user.userID ?? "")
-            self.viewModel.setLoginType(value: LoginType.GOOGLE)
+            self.viewModel.setLoginType(value: self.loginType.GOOGLE)
             self.viewModel.callSocialLoginAPI()
         }
     }
@@ -80,12 +83,14 @@ extension SignInVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
                     APP_DELEGATE.socketIOHandler = SocketIOHandler()
@@ -106,7 +111,9 @@ extension SignInVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -126,43 +133,43 @@ extension SignInVC {
             strCount = "\(profile_setup_count)"
         }
         switch strCount {
-        case ProfileSetupType.name:
+        case profileSetupType.name:
             let namevc = NameVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: namevc)
             
-        case ProfileSetupType.birthdate:
+        case profileSetupType.birthdate:
             let agevc = AgeVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController =  UINavigationController(rootViewController: agevc)
             
-        case ProfileSetupType.gender:
+        case profileSetupType.gender:
             let gendervc = GenderVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: gendervc)
             
-        case ProfileSetupType.relationship:
+        case profileSetupType.relationship:
             let relationshipvc = RelationshipVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: relationshipvc)
             
-        case ProfileSetupType.category:
+        case profileSetupType.category:
             let pickactivityvc = PickActivityVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: pickactivityvc)
             
-        case ProfileSetupType.sub_category:
+        case profileSetupType.sub_category:
             let picksubactivityvc = PickSubActvityVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: picksubactivityvc)
             
-        case ProfileSetupType.profile_images:
+        case profileSetupType.profile_images:
             let selectpicturevc = SelectPicturesVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: selectpicturevc)
             
-        case ProfileSetupType.location:
+        case profileSetupType.location:
             let locationvc = SetLocationVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: locationvc)
             
-        case ProfileSetupType.notification_enable:
+        case profileSetupType.notification_enable:
             let notificationvc = NotificationPermissionVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: notificationvc)
             
-        case ProfileSetupType.completed:
+        case profileSetupType.completed:
             let startexplorevc = StartExploringVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: startexplorevc)
         default:
@@ -190,10 +197,10 @@ extension SignInVC: ASAuthorizationControllerDelegate {
             if appleCredential.fullName != nil, appleCredential.email != nil {
                 self.saveCredentialInKeychain(userIdentifier: appleCredential.user, fullName: appleCredential.fullName?.givenName ?? "", email: appleCredential.email ?? "")
             }
-            userDefaults.set(KeychainItem.currentUserFullName, forKey: UserDefaultKey.userName)
+            UserDefaults.standard.set(KeychainItem.currentUserFullName, forKey: UserDefaultKey().userName)
             viewModel.setEmail(value: KeychainItem.currentUserEmail)
             viewModel.setSocialLoginId(value: appleCredential.user)
-            viewModel.setLoginType(value: LoginType.APPLE)
+            viewModel.setLoginType(value: loginType.APPLE)
             viewModel.callSocialLoginAPI()
         }
     }

@@ -27,20 +27,23 @@ class InterestedActivityViewModel {
     private var interested_user_id = ""
     private var is_follow = ""
     private var activty_title = ""
+    private let apiParams = ApiParams()
     
     //MARK: Call API
     func callInterestedActivityListAPI() {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.activityId: self.getActivityId()
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.activityId: self.getActivityId()
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetActivityInterestedPeople, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetActivityInterestedPeople, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -93,21 +96,23 @@ class InterestedActivityViewModel {
     func callLikeDislikeActivityAPI(isShowLoader: Bool) {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            APIParams.activityId : self.getActivityId(),
-            APIParams.interestedUserId : self.getInterestedUserId(),
-            APIParams.isFollow : self.getIsFollow(),
-            APIParams.activityName : self.getActivityTitle()
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.activityId : self.getActivityId(),
+            apiParams.interestedUserId : self.getInterestedUserId(),
+            apiParams.isFollow : self.getIsFollow(),
+            apiParams.activityName : self.getActivityTitle()
         ]
         
         if(Connectivity.isConnectedToInternet()) {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 if isShowLoader {
-                    self.isLoaderShow.value = true
+                    self?.isLoaderShow.value = true
                 }
             }
             self.arrayOfFollowersList.removeAll()
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.MarkActivityInterestForUser, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.MarkActivityInterestForUser, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""

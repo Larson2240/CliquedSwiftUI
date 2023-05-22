@@ -35,6 +35,8 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     var callbackForKidsDropDownValue: ((_ seletedItem: String) -> Void)?
     var callbackForSmokingDropDownValue: ((_ seletedItem: String) -> Void)?
     let settingView = DropDown()
+    private let mediaType = MediaType()
+    private let preferenceTypeIds = PreferenceTypeIds()
     
     //MARK:- Init
     init(tableView: UITableView, viewModel: EditProfileViewModel, viewController: EditProfileVC) {
@@ -78,11 +80,13 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
             cell.buttonEditProfileImage.tag = enumEditProfileTableRow.profileImage.rawValue
             cell.buttonEditProfileImage.addTarget(self, action: #selector(btnEditProfileImageTap(_:)), for: .touchUpInside)
             
-            cell.callbackForViewMedia = { isImageMedia, indexValue in
+            cell.callbackForViewMedia = { [weak self] isImageMedia, indexValue in
+                guard let self = self else { return }
+                
                 if isImageMedia {
                     var images = [SKPhotoProtocol]()
                     for i in 0..<self.viewModel.getUserProfileCollection().count {
-                        if self.viewModel.getUserProfileCollection()[i].mediaType == MediaType.image {
+                        if self.viewModel.getUserProfileCollection()[i].mediaType == self.mediaType.image {
                             let photo = SKPhoto.photoWithImageURL(UrlProfileImage + (self.viewModel.getUserProfileCollection()[i].url ?? ""))
                             photo.shouldCachePhotoURLImage = true
                             images.append(photo)
@@ -95,7 +99,7 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
                     self.viewController.present(browser, animated: true, completion: {})
                 } else {
                     for i in 0..<self.viewModel.getUserProfileCollection().count {
-                        if self.viewModel.getUserProfileCollection()[i].mediaType == MediaType.video {
+                        if self.viewModel.getUserProfileCollection()[i].mediaType == self.mediaType.video {
                             let videoURL = URL(string: UrlProfileImage + (self.viewModel.getUserProfileCollection()[i].url ?? ""))
                             let player = AVPlayer(url: videoURL! as URL)
                             let playerViewController = AVPlayerViewController()
@@ -259,13 +263,13 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
                 }
             }
             
-            cell.callbackForAgePreferenceValue = { startAgeId,startAgePrefId,endAgeId,endAgePrefId in
+            cell.callbackForAgePreferenceValue = { [weak self] startAgeId,startAgePrefId,endAgeId,endAgePrefId in
                 var dic = structAgePreferenceParam()
                 dic.age_start_id = startAgeId
                 dic.age_start_pref_id = startAgePrefId
                 dic.age_end_id = endAgeId
                 dic.age_end_pref_id = endAgePrefId
-                self.viewModel.setAgePreference(value: dic)
+                self?.viewModel.setAgePreference(value: dic)
             }
             return cell
         }
@@ -317,24 +321,26 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
         settingView.direction = .bottom
         settingView.bottomOffset = CGPoint(x: 0, y:(settingView.anchorView?.plainView.bounds.height)!)
         
-        settingView.selectionAction = { [unowned self] (index: Int, item: String) in
-            callbackForKidsDropDownValue?(item)
+        settingView.selectionAction = { [weak self] (index: Int, item: String) in
+            guard let self = self else { return }
+            
+            self.callbackForKidsDropDownValue?(item)
             
             var arrayOfPreference = [PreferenceClass]()
             var arrayOfTypeOption = [TypeOptions]()
             
-            arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.kids}) ?? []
+            arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == self.preferenceTypeIds.kids}) ?? []
             if arrayOfPreference.count > 0 {
                 arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
                 if arrayOfTypeOption.count > 0 {
                     let subTypesData = arrayOfTypeOption.filter({$0.title == item})
                     let prefId = subTypesData[0].preferenceId
                     let optionId = subTypesData[0].id
-                    viewModel.setKidsPrefId(value: prefId ?? 0)
-                    viewModel.setKidsOptionId(value: optionId ?? 0)
+                    self.viewModel.setKidsPrefId(value: prefId ?? 0)
+                    self.viewModel.setKidsOptionId(value: optionId ?? 0)
                 }
             }
-            settingView.hide()
+            self.settingView.hide()
         }
         settingView.show()
     }
@@ -349,24 +355,26 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
         settingView.direction = .bottom
         settingView.bottomOffset = CGPoint(x: 0, y:(settingView.anchorView?.plainView.bounds.height)!)
         
-        settingView.selectionAction = { [unowned self] (index: Int, item: String) in
-            callbackForSmokingDropDownValue?(item)
+        settingView.selectionAction = { [weak self] (index: Int, item: String) in
+            guard let self = self else { return }
+            
+            self.callbackForSmokingDropDownValue?(item)
             
             var arrayOfPreference = [PreferenceClass]()
             var arrayOfTypeOption = [TypeOptions]()
             
-            arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.smoking}) ?? []
+            arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == self.preferenceTypeIds.smoking}) ?? []
             if arrayOfPreference.count > 0 {
                 arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
                 if arrayOfTypeOption.count > 0 {
                     let subTypesData = arrayOfTypeOption.filter({$0.title == item})
                     let prefId = subTypesData[0].preferenceId
                     let optionId = subTypesData[0].id
-                    viewModel.setSmokingPrefId(value: prefId ?? 0)
-                    viewModel.setSmokingOptionId(value: optionId ?? 0)
+                    self.viewModel.setSmokingPrefId(value: prefId ?? 0)
+                    self.viewModel.setSmokingOptionId(value: optionId ?? 0)
                 }
             }
-            settingView.hide()
+            self.settingView.hide()
         }
         settingView.show()
     }
@@ -375,7 +383,7 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     @objc func handleSliderValueChange(_ sender: StepSlider) {
         var arrayOfPreference = [PreferenceClass]()
         var arrayOfTypeOption = [TypeOptions]()
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.distance}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.distance}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
             if arrayOfTypeOption.count > 0 {

@@ -41,7 +41,9 @@ class HomeDataSource: NSObject {
     //MARK: Pull To Refresh
     func setupPullToRefresh() {
         print("setupPullToRefresh")
-        viewController.pullToRefreshHeaderSetUpForCollectionview(collectionview: collectionView, strStatus: "") {
+        viewController.pullToRefreshHeaderSetUpForCollectionview(collectionview: collectionView, strStatus: "") { [weak self] in
+            guard let self = self else { return }
+            
             self.viewModel.setIsRefresh(value: true)
             self.viewModel.callGetUserInterestedCategoryAPI()
         }
@@ -50,8 +52,8 @@ class HomeDataSource: NSObject {
     //MARK: Hide header loader
     func hideHeaderLoader() {
         if viewController.isHeaderRefreshingForCollectionview(collectionview: collectionView) {
-            DispatchQueue.main.async {
-                self.collectionView.mj_header!.endRefreshing(completionBlock: { })
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.mj_header!.endRefreshing(completionBlock: { })
             }
         }
     }

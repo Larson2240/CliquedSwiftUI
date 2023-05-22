@@ -13,7 +13,7 @@ class DynamicAsync<T>: Dynamic<T> {
     // MARK: - Ovverides
 
     override func fire() {
-        do { self.listener?(self.value) }
+        do { listener?(value) }
     }
 
     // MARK: - Initialization

@@ -37,6 +37,8 @@ class SelectPicturesVC: UIViewController {
     
     var isFromEditProfile: Bool = false
     var arrayOfProfileImage = [UserProfileImages]()
+    private let profileSetupType = ProfileSetupType()
+    private let mediaType = MediaType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -78,7 +80,7 @@ class SelectPicturesVC: UIViewController {
                 //Check at least one image is selected or not.
                 let isImageContain = dataSource?.arrayOfSelectedImages.contains(where: {$0.mediaType == 0}) ?? Bool()
                 if isImageContain {
-                    viewModel.setProfileSetupType(value: ProfileSetupType.profile_images)
+                    viewModel.setProfileSetupType(value: profileSetupType.profile_images)
                     viewModel.callSignUpProcessAPI()
                 } else {
                     self.showAlertPopup(message: Constants.validMsg_selectImage)
@@ -102,7 +104,7 @@ class SelectPicturesVC: UIViewController {
                 //Check at least one image is selected or not.
                 let isImageContain = dataSource?.arrayOfSelectedImages.contains(where: {$0.mediaType == 0}) ?? Bool()
                 if isImageContain {
-                    viewModel.setProfileSetupType(value: ProfileSetupType.completed)
+                    viewModel.setProfileSetupType(value: profileSetupType.completed)
                     if let deleteImageIds = dataSource?.arrayOfDeletedImageIds.map({String($0)}).joined(separator: ", ") {
                         viewModel.setDeletedProfileImagesIds(value: deleteImageIds)
                     }
@@ -167,7 +169,7 @@ extension SelectPicturesVC {
     //MARK: Manage profile collection for edit profile time
     func setupProfileImageCollection() {
         for imagesData in arrayOfProfileImage {
-            if imagesData.mediaType == MediaType.image {
+            if imagesData.mediaType == mediaType.image {
                 let strUrl = UrlProfileImage + imagesData.url!
                 let url = URL(string: strUrl)
                 if let imgUrl = url {
@@ -203,12 +205,14 @@ extension SelectPicturesVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if self.isFromEditProfile {
                     NotificationCenter.default.post(name: Notification.Name("refreshProfileData"), object: nil, userInfo:nil)
@@ -223,7 +227,9 @@ extension SelectPicturesVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

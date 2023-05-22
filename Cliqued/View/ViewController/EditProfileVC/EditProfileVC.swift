@@ -20,6 +20,7 @@ class EditProfileVC: UIViewController {
     var objUserDetails: User?
     var callbackForUpdateProfile: ((_ isUpdate: Bool) -> Void)?
     var isUpdateData: Bool = false
+    private let profileSetupType = ProfileSetupType()
     
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -40,7 +41,7 @@ class EditProfileVC: UIViewController {
     //MARK: Button Submit Click
     @IBAction func btnSaveClick(_ sender: Any) {
         self.view.endEditing(true)
-        viewModel.setProfileSetupType(value: ProfileSetupType.completed)
+        viewModel.setProfileSetupType(value: profileSetupType.completed)
         let isValidName = isOnlyCharacter(text: viewModel.getName())
         if isValidName {
             viewModel.callSignUpProcessAPI()
@@ -81,12 +82,14 @@ extension EditProfileVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 self.callbackForUpdateProfile?(true)
                 self.navigationController?.popToRootViewController(animated: true)
@@ -94,7 +97,9 @@ extension EditProfileVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

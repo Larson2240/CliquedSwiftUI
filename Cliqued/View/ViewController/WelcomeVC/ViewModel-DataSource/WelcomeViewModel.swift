@@ -18,11 +18,15 @@ class WelcomeViewModel {
     var arrayOfPreferences = [PreferenceClass]()
     var arrayOfReportList = [ReportClass]()
     
+    private let apiParams = ApiParams()
+    
     //MARK: Call Get Preferences Data API
     func callGetPreferenceDataAPI() {
         
         if(Connectivity.isConnectedToInternet()) {
-            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetMasterPreferenceAPI) { response, error, message in
+            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetMasterPreferenceAPI) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
                 } else {
@@ -74,14 +78,16 @@ class WelcomeViewModel {
     func callGetUserDetailsAPI() {
         
         let params: NSDictionary = [
-            APIParams.userID : "\(Constants.loggedInUser?.id ?? 0)"
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)"
         ]
         
         if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async {
-                self.isLoaderShow.value = true
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoaderShow.value = true
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserDetails, parameters: params) { response, error, message in
+            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserDetails, parameters: params) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.isLoaderShow.value = false
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""

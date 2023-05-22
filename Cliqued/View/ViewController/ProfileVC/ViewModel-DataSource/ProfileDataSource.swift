@@ -17,6 +17,7 @@ class ProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     private let tableView: UITableView
     private let collectionView: UICollectionView
     private let viewModel: ProfileViewModel
+    private let mediaType = MediaType()
     
     enum enumActivityDetailsTableRow: Int, CaseIterable {
         case aboutme = 0
@@ -224,7 +225,7 @@ extension ProfileDataSource: UICollectionViewDelegate, UICollectionViewDataSourc
         let cellHeight = collectionView.frame.size.height
         return CGSize(width: cellWidth, height: cellHeight)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if !viewModel.isCheckProfileImage() {
             return viewModel.getNumberOfUserProfile()
@@ -246,7 +247,7 @@ extension ProfileDataSource: UICollectionViewDelegate, UICollectionViewDataSourc
             let profileData = viewModel.getUserProfileData(at: indexPath.item)
             var mediaName = ""
             
-            if profileData.mediaType == MediaType.image {
+            if profileData.mediaType == mediaType.image {
                 mediaName = profileData.url ?? ""
                 cell.imageviewVideoIcon.isHidden = true
             } else {
@@ -275,10 +276,10 @@ extension ProfileDataSource: UICollectionViewDelegate, UICollectionViewDataSourc
         if !viewModel.isCheckProfileImage() {
             let profileData = viewModel.getUserProfileData(at: indexPath.item)
             
-            if profileData.mediaType == MediaType.image {
+            if profileData.mediaType == mediaType.image {
                 var images = [SKPhotoProtocol]()
                 for i in 0..<self.viewModel.getNumberOfUserProfile() {
-                    if self.viewModel.getUserProfileData(at: i).mediaType == MediaType.image {
+                    if self.viewModel.getUserProfileData(at: i).mediaType == mediaType.image {
                         let photo = SKPhoto.photoWithImageURL(UrlProfileImage + (self.viewModel.getUserProfileData(at: i).url ?? ""))
                         photo.shouldCachePhotoURLImage = true
                         images.append(photo)

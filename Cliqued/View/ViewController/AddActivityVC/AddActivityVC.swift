@@ -162,15 +162,17 @@ extension AddActivityVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
+        viewModel.isMessage.bind { [weak self] message in
 //            if !self.isEditActivity {
 //                self.showAlertPopup(message: message)
 //            }
-            self.showAlertPopup(message: message)
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 if self.isEditActivity {
                     if let activityData = self.viewModel.objActivityDetails {
@@ -182,7 +184,9 @@ extension AddActivityVC {
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

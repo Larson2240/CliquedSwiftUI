@@ -36,6 +36,9 @@ class EmailNotification: UIViewController {
     var dataSource: EmailNotificationDataSource?
     var user_id = Constants.loggedInUser?.id ?? 0
     var is_from_push = 0
+    private let notificationPermissionTypeIds = NotificationPermissionTypeIds()
+    private let preferenceTypeIds = PreferenceTypeIds()
+    private let preferenceOptionIds = PreferenceOptionIds()
 
     //MARK: viewDidLoad Method
     override func viewDidLoad() {
@@ -52,17 +55,17 @@ class EmailNotification: UIViewController {
     //MARK: Button Subscribe Click
     @IBAction func btnSubscribeClick(_ sender: Any) {
         if is_from_push == 1 {
-            setEnableOrDisableEmailNotification(isSubscribed: NotificationPermissionTypeIds.Yes)
+            setEnableOrDisableEmailNotification(isSubscribed: notificationPermissionTypeIds.Yes)
         } else {
-            setEnableOrDisableEmailNotification(isSubscribed: NotificationPermissionTypeIds.Yes)
+            setEnableOrDisableEmailNotification(isSubscribed: notificationPermissionTypeIds.Yes)
         }
     }
     //MARK: Button Unsubscribe Click
     @IBAction func btnUnsubscribeClick(_ sender: Any) {
         if is_from_push == 1 {
-            setEnableOrDisableEmailNotification(isSubscribed: NotificationPermissionTypeIds.No)
+            setEnableOrDisableEmailNotification(isSubscribed: notificationPermissionTypeIds.No)
         } else {
-            setEnableOrDisableEmailNotification(isSubscribed: NotificationPermissionTypeIds.No)
+            setEnableOrDisableEmailNotification(isSubscribed: notificationPermissionTypeIds.No)
         }
     }
 }
@@ -83,13 +86,13 @@ extension EmailNotification {
         if is_from_push == 1 {
             if let array_records = Constants.getPreferenceData {
                 
-                let arr = array_records.filter({$0.typesOfPreference == PreferenceTypeIds.push_notification})
+                let arr = array_records.filter({$0.typesOfPreference == preferenceTypeIds.push_notification})
                 
                 viewModel.arrNotification = arr
             }
         } else {
             if let array_records = Constants.getPreferenceData {
-                let arr = array_records.filter({$0.typesOfPreference == PreferenceTypeIds.email_notification})
+                let arr = array_records.filter({$0.typesOfPreference == preferenceTypeIds.email_notification})
                 
                 viewModel.arrNotification = arr
             }
@@ -121,12 +124,14 @@ extension EmailNotification {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
-        viewModel.isDataGet.bind { isSuccess in
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
             if isSuccess {
                 self.checkEmailNotificationPrefrenceHaveOrNot()
                 self.tableView.reloadData()               
@@ -134,7 +139,9 @@ extension EmailNotification {
         }
                 
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {
@@ -148,20 +155,20 @@ extension EmailNotification {
             
             //Checked in user preference for email notification preference have or not
             if is_from_push == 1 {
-                let is_pushVerificationArray = array.filter({$0.typesOfPreference == PreferenceTypeIds.push_notification})
+                let is_pushVerificationArray = array.filter({$0.typesOfPreference == preferenceTypeIds.push_notification})
             
                 if is_pushVerificationArray.count > 0 {
-                    let isSubscribed = is_pushVerificationArray.filter({$0.typesOfOptions == NotificationPermissionTypeIds.No})
+                    let isSubscribed = is_pushVerificationArray.filter({$0.typesOfOptions == notificationPermissionTypeIds.No})
                     
                     if isSubscribed.count > 0 {
                         self.buttonSubscribe.isHidden = false
                         self.buttonUnsubscribe.isHidden = true
                     } else {
                         
-                        let arrInitialPush = array.filter({$0.typesOfPreference == PreferenceTypeIds.notification_enable})
+                        let arrInitialPush = array.filter({$0.typesOfPreference == preferenceTypeIds.notification_enable})
                         
                         if arrInitialPush.count > 0 {
-                            let arrInitialPushOption = arrInitialPush.filter({$0.typesOfOptions == PreferenceOptionIds.yes})
+                            let arrInitialPushOption = arrInitialPush.filter({$0.typesOfOptions == preferenceOptionIds.yes})
                             
                             if arrInitialPushOption.count > 0 {
                                 self.buttonSubscribe.isHidden = true
@@ -176,10 +183,10 @@ extension EmailNotification {
                         }
                     }
                 } else {
-                    let arrInitialPush = array.filter({$0.typesOfPreference == PreferenceTypeIds.notification_enable})
+                    let arrInitialPush = array.filter({$0.typesOfPreference == preferenceTypeIds.notification_enable})
                     
                     if arrInitialPush.count > 0 {
-                        let arrInitialPushOption = arrInitialPush.filter({$0.typesOfOptions == PreferenceOptionIds.yes})
+                        let arrInitialPushOption = arrInitialPush.filter({$0.typesOfOptions == preferenceOptionIds.yes})
                         
                         if arrInitialPushOption.count > 0 {
                             self.buttonSubscribe.isHidden = true
@@ -194,10 +201,10 @@ extension EmailNotification {
                     }
                 }
             } else {
-                let is_emailVerificationArray = array.filter({$0.typesOfPreference == PreferenceTypeIds.email_notification})
+                let is_emailVerificationArray = array.filter({$0.typesOfPreference == preferenceTypeIds.email_notification})
             
                 if is_emailVerificationArray.count > 0 {
-                    let isSubscribed = is_emailVerificationArray.filter({$0.typesOfOptions == NotificationPermissionTypeIds.Yes})
+                    let isSubscribed = is_emailVerificationArray.filter({$0.typesOfOptions == notificationPermissionTypeIds.Yes})
                     
                     if isSubscribed.count > 0 {
                         if isSubscribed.count == 3 {
@@ -229,7 +236,7 @@ extension EmailNotification {
         
         //Get email notification preference data from the master preference data
         if is_from_push == 1 {
-            arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.push_notification}) ?? []
+            arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.push_notification}) ?? []
             
             if arrayOfPreference.count > 0 {
                 
@@ -248,11 +255,11 @@ extension EmailNotification {
                     let arrayOfTypeOption = arrayOfSubType[i].typeOptions ?? []
                     
                     //Get Id of Yes option from all the typeoption object.
-                    if typeOfPref == PreferenceTypeIds.new_matches {
+                    if typeOfPref == preferenceTypeIds.new_matches {
                         let subTypesData = arrayOfTypeOption.filter({$0.typeOfOptions == isSubscribed})
                         let optId = subTypesData[0].id
                         arrayOptionId.append("\(optId ?? 0)")
-                    } else if typeOfPref == PreferenceTypeIds.messages {
+                    } else if typeOfPref == preferenceTypeIds.messages {
                         let subTypesData = arrayOfTypeOption.filter({$0.typeOfOptions == isSubscribed})
                         let optId = subTypesData[0].id
                         arrayOptionId.append("\(optId ?? 0)")
@@ -260,7 +267,7 @@ extension EmailNotification {
                 }
             }
         } else {
-            arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.email_notification}) ?? []
+            arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.email_notification}) ?? []
             
             if arrayOfPreference.count > 0 {
                 
@@ -279,15 +286,15 @@ extension EmailNotification {
                     let arrayOfTypeOption = arrayOfSubType[i].typeOptions ?? []
                     
                     //Get Id of Yes option from all the typeoption object.
-                    if typeOfPref == PreferenceTypeIds.new_matches {
+                    if typeOfPref == preferenceTypeIds.new_matches {
                         let subTypesData = arrayOfTypeOption.filter({$0.typeOfOptions == isSubscribed})
                         let optId = subTypesData[0].id
                         arrayOptionId.append("\(optId ?? 0)")
-                    } else if typeOfPref == PreferenceTypeIds.messages {
+                    } else if typeOfPref == preferenceTypeIds.messages {
                         let subTypesData = arrayOfTypeOption.filter({$0.typeOfOptions == isSubscribed})
                         let optId = subTypesData[0].id
                         arrayOptionId.append("\(optId ?? 0)")
-                    } else if typeOfPref == PreferenceTypeIds.promotions {
+                    } else if typeOfPref == preferenceTypeIds.promotions {
                         let subTypesData = arrayOfTypeOption.filter({$0.typeOfOptions == isSubscribed})
                         let optId = subTypesData[0].id
                         arrayOptionId.append("\(optId ?? 0)")

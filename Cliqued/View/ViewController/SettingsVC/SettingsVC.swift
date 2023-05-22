@@ -43,14 +43,14 @@ class SettingsVC: UIViewController {
     
     //MARK: Button Logout Click
     @IBAction func btnLogoutClick(_ sender: Any) {
-        self.alertCustom(btnNo:Constants.btn_cancel, btnYes:Constants.btn_logout, title: "", message: Constants.label_logoutAlertMsg) {
-            self.viewModel.callLogoutAPI()
+        self.alertCustom(btnNo:Constants.btn_cancel, btnYes:Constants.btn_logout, title: "", message: Constants.label_logoutAlertMsg) { [weak self] in
+            self?.viewModel.callLogoutAPI()
         }
     }
     
     @IBAction func buttonDeleteAccount(_ sender: UIButton) {
-        self.alertCustom(btnNo:Constants.btn_cancel, btnYes:Constants_Message.btn_delete, title: "", message: Constants.label_deleteAlertMsg) {
-            self.viewModel.callDeleteAccountAPI()
+        self.alertCustom(btnNo:Constants.btn_cancel, btnYes:Constants_Message.btn_delete, title: "", message: Constants.label_deleteAlertMsg) { [weak self] in
+            self?.viewModel.callDeleteAccountAPI()
         }
     }
 }
@@ -93,8 +93,8 @@ extension SettingsVC {
     func handleApiResponse() {
         
         //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
+        viewModel.isMessage.bind { [weak self] message in
+            self?.showAlertPopup(message: message)
         }
         
         //If API success
@@ -105,13 +105,15 @@ extension SettingsVC {
         
         viewModel.isLogout.bind { isSuccess in
             if isSuccess {
-                clearUserDefault()
+                UserDefaults.standard.clearUserDefault()
                 APP_DELEGATE.setRegisterOptionRootViewController()
             }
         }
         
         //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
             if isLoader {
                 self.showLoader()
             } else {

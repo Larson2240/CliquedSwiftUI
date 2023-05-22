@@ -9,7 +9,6 @@ import UIKit
 import StepSlider
 
 class DistancePreferenceCell: UITableViewCell {
-
     @IBOutlet weak var labelTitle: UILabel!{
         didSet {
             labelTitle.text = Constants.label_distancePreference
@@ -27,6 +26,7 @@ class DistancePreferenceCell: UITableViewCell {
     }
     var arrayOfDistance = [String]()
     var distancePreference: String?
+    private let preferenceTypeIds = PreferenceTypeIds()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -44,7 +44,7 @@ class DistancePreferenceCell: UITableViewCell {
         sliderDistance.labels = ["5km","10km","50km","100km","200km"]
         var arrayOfPreference = [PreferenceClass]()
         var arrayOfTypeOption = [TypeOptions]()
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds.distance}) ?? []
+        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.distance}) ?? []
         if arrayOfPreference.count > 0 {
             arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
             if arrayOfTypeOption.count > 0 {

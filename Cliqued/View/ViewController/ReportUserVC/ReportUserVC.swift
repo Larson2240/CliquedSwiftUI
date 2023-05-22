@@ -62,8 +62,10 @@ class ReportUserVC: UIViewController {
     @IBAction func btnNextClick(_ sender: Any) {
         if isSubmitReasonScreen {
             let viewcontrollers = self.navigationController?.viewControllers
-            viewcontrollers?.forEach({ (vc) in
-                if  let activitydetailsvc = vc as? ActivityUserDetailsVC {
+            viewcontrollers?.forEach({ [weak self] (vc) in
+                guard let self = self else { return }
+                
+                if let activitydetailsvc = vc as? ActivityUserDetailsVC {
                     self.navigationController?.popToViewController(activitydetailsvc, animated: true)
                 } else if let activitydetailsvc = vc as? ChatVC {
                     self.navigationController?.popToViewController(activitydetailsvc, animated: true)

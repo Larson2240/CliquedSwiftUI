@@ -27,15 +27,18 @@ class PickActivityViewModel {
     private var arrayOfNewPickActivity = [structPickActivityParams]()
     var arrayOfDeletedActivityIds = [Int]()
     var arrayOfSelectedCategoryIds = [Int]()
+    private let apiParams = ApiParams()
     
     //MARK: Call Get Preferences Data API
     func callGetActivityDataAPI() {
         
         if(Connectivity.isConnectedToInternet()) {
-            DispatchQueue.main.async {
-                self.arrayOfActivity.removeAll()
+            DispatchQueue.main.async { [weak self] in
+                self?.arrayOfActivity.removeAll()
             }
-            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetActivityCategory) { response, error, message in
+            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetActivityCategory) { [weak self] response, error, message in
+                guard let self = self else { return }
+                
                 self.setIsDataLoad(value: true)
                 if(error != nil && response == nil) {
                     self.isMessage.value = message ?? ""
@@ -178,8 +181,8 @@ extension PickActivityViewModel {
         var optionlist = [String]()
         
         for i in getSelectedPickActivity() {
-            let dict : NSMutableDictionary = [APIParams.activityCategoryId : i.activityCategoryId,
-                                              APIParams.activitySubCategoryId : i.activitySubCategoryId]
+            let dict : NSMutableDictionary = [apiParams.activityCategoryId : i.activityCategoryId,
+                                              apiParams.activitySubCategoryId : i.activitySubCategoryId]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
             let jsonstringstr = String(data: dictdata as Data, encoding: .utf8)
@@ -199,8 +202,8 @@ extension PickActivityViewModel {
         var optionlist = [String]()
         
         for i in getNewPickActivity() {
-            let dict : NSMutableDictionary = [APIParams.activityCategoryId : i.activityCategoryId,
-                                              APIParams.activitySubCategoryId : i.activitySubCategoryId]
+            let dict : NSMutableDictionary = [apiParams.activityCategoryId : i.activityCategoryId,
+                                              apiParams.activitySubCategoryId : i.activitySubCategoryId]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
             let jsonstringstr = String(data: dictdata as Data, encoding: .utf8)
