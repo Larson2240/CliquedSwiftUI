@@ -10,7 +10,7 @@ import UIKit
 class BlockedUserVC: UIViewController {
     
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet var tableView: UITableView!
     
     //MARK: Variables

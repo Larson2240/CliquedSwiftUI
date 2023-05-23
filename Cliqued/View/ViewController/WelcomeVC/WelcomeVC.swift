@@ -10,7 +10,7 @@ import UIKit
 class WelcomeVC: UIViewController {
     
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var labelTitle: UILabel!{
         didSet {
             labelTitle.text = Constants.label_appWelcomeTitle

@@ -15,7 +15,7 @@ private var numberOfCards: Int = 7
 class HomeActivitiesVC: UIViewController {
     
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var viewActivityCard: KolodaView!{
         didSet {
             viewActivityCard.layer.cornerRadius = 50.0

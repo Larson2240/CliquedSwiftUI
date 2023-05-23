@@ -28,7 +28,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="393" height="59"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2XK-0n-RUi" customClass="NavigationView" customModule="cliqued" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2XK-0n-RUi" customClass="UINavigationViewClass" customModule="cliqued" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>

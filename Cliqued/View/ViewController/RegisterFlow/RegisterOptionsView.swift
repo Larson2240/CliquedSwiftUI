@@ -9,15 +9,18 @@ import SwiftUI
 
 struct RegisterOptionsView: View {
     var body: some View {
-        ZStack {
-            Image("welcome_bkg")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
-            content
-            
-            presentables
+        NavigationView {
+            ZStack {
+                Image("welcome_bkg")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                
+                content
+                
+                presentables
+            }
+            .navigationBarHidden(true)
         }
     }
     

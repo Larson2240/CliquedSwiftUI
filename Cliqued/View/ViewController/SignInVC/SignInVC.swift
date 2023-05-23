@@ -14,7 +14,7 @@ import FBSDKLoginKit
 class SignInVC: UIViewController {
 
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var tableview: UITableView!
     
     //MARK: Variable

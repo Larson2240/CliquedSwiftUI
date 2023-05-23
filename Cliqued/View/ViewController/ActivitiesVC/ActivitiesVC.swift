@@ -10,7 +10,7 @@ import UIKit
 class ActivitiesVC: UIViewController {
 
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var tableview: UITableView!
     @IBOutlet weak var viewProfileNotComplete: UIView!
     @IBOutlet weak var labelProfileMsg: UILabel!{

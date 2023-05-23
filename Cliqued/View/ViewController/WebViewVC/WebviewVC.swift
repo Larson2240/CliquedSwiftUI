@@ -10,7 +10,7 @@ import WebKit
 
 class WebviewVC: UIViewController {
     
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var webview: WKWebView!
     @IBOutlet weak var progressview: UIProgressView!
     

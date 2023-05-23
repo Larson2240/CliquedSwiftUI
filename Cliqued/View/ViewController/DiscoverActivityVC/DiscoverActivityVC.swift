@@ -13,7 +13,7 @@ import GoogleMobileAds
 class DiscoverActivityVC: UIViewController {
     
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var viewActivityCard: KolodaView!{
         didSet {
             viewActivityCard.layer.cornerRadius = 50.0

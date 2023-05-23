@@ -10,7 +10,7 @@ import UIKit
 class OtherUserActivityDetailsVC: UIViewController {
     
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet var viewActivityAction: UIView!
     @IBOutlet weak var tableview: UITableView!
     

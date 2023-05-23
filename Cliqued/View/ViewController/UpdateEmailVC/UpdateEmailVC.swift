@@ -24,7 +24,7 @@ class UpdateEmailVC: UIViewController {
             labelTitle.text = Constants.label_email
         }
     }
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet var buttonSubmit: UIButton!
     
     //MARK: - Varialbes

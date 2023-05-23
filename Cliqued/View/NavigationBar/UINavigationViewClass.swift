@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NavigationView: UIView {
+class UINavigationViewClass: UIView {
     
     //MARK: IBOutlet
     @IBOutlet weak var contentView: UIView!

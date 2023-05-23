@@ -10,7 +10,7 @@ import SocketIO
 
 class ChatVC: UIViewController {
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet var viewCollection: UIView!
     @IBOutlet weak var imageviewLine: UIImageView!
     @IBOutlet weak var viewMessagesSection: UIView!

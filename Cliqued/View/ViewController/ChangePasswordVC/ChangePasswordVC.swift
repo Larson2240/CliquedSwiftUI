@@ -54,7 +54,7 @@ class ChangePasswordVC: UIViewController {
         }
     }
     
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet var buttonChangePassword: UIButton!
     @IBOutlet var buttonOldPasswordShow: UIButton!
     @IBOutlet var buttonNewPasswordShow: UIButton!

@@ -10,7 +10,7 @@ import UIKit
 class EmailVerificationVC: UIViewController {
     
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet var labelTitle: UILabel! {
         didSet {
             labelTitle.font = CustomFont.THEME_FONT_Medium(14)

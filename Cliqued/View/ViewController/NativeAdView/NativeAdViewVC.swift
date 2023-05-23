@@ -11,7 +11,7 @@ import GoogleMobileAds
 class NativeAdViewVC: UIViewController {
     
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     /// The view that holds the native ad.
     @IBOutlet weak var nativeAdPlaceholder: UIView!{
         didSet {

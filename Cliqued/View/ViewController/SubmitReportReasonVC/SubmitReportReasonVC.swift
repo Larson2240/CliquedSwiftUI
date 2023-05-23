@@ -10,7 +10,7 @@ import UIKit
 class SubmitReportReasonVC: UIViewController {
 
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var labelReasonTitle: UILabel!{
         didSet {
             labelReasonTitle.text = Constants.label_reportReasonTitle

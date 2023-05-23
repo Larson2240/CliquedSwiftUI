@@ -10,7 +10,7 @@ import UIKit
 class SetLocationVC: UIViewController {
 
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var labelMainTitle: UILabel!{
         didSet {

@@ -14,7 +14,7 @@ import SocketIO
 class InterestedActivityVC: UIViewController {
     
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var labelSubCategoryTitle: UILabel!{
         didSet {
             labelSubCategoryTitle.font = CustomFont.THEME_FONT_Bold(16)

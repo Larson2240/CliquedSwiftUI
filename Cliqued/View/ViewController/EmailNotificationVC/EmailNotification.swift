@@ -10,7 +10,7 @@ import UIKit
 class EmailNotification: UIViewController {
     
     //MARK: IBOutlet
-    @IBOutlet weak var viewNavigationBar: NavigationView!
+    @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var buttonUnsubscribe: UIButton!{
         didSet {
             buttonUnsubscribe.setTitle(Constants.btn_unsubscribe, for: .normal)
