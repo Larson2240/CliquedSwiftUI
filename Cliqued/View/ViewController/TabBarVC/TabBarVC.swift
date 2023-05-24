@@ -128,12 +128,6 @@ extension TabBarVC {
     
     //MARK: Handle API response
     func handleApiResponse() {
-        
-        //Check response message
-        welcomeViewModel.isMessage.bind { [weak self] message in
-            self?.showAlertPopup(message: message)
-        }
-        
         vieWModelMessage.isDataGet.bind { [weak self] isSuccess in
             guard let self = self else { return }
             

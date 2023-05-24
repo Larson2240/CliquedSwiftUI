@@ -66,13 +66,16 @@ struct SignUpView: View {
     }
     
     private var header: some View {
-        HeaderView(title: currentFlow == .signUp ? Constants.screenTitle_signUp : "")
+        HeaderView(title: currentFlow == .signUp ? Constants.screenTitle_signUp : "",
+                   backButtonVisible: true)
     }
     
     private var background: some View {
         Image("background")
             .resizable()
             .scaledToFill()
+            .ignoresSafeArea()
+            .frame(width: screenSize.width, height: screenSize.height)
     }
     
     private func inputStack(title: String, image: String, binding: Binding<String>, isSecure: Bool) -> some View {

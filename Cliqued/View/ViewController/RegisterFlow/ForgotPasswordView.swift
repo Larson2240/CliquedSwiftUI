@@ -47,6 +47,8 @@ struct ForgotPasswordView: View {
         Image("background")
             .resizable()
             .scaledToFill()
+            .ignoresSafeArea()
+            .frame(width: screenSize.width, height: screenSize.height)
     }
     
     private var emailStack: some View {
@@ -74,7 +76,8 @@ struct ForgotPasswordView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_forgotPwd)
+        HeaderView(title: Constants.screenTitle_forgotPwd,
+                   backButtonVisible: true)
     }
     
     private var description: some View {

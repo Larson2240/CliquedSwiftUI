@@ -11,15 +11,18 @@ struct HeaderView: View {
     @Environment(\.presentationMode) private var presentationMode
     
     var title: String
+    var backButtonVisible: Bool
     
     var body: some View {
         ZStack {
-            HStack {
-                Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                    Image("ic_back_black")
+            if backButtonVisible {
+                HStack {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                        Image("ic_back_black")
+                    }
+                    
+                    Spacer()
                 }
-                
-                Spacer()
             }
             
             
@@ -34,6 +37,6 @@ struct HeaderView: View {
 
 struct HeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        HeaderView(title: "Title")
+        HeaderView(title: "Title", backButtonVisible: true)
     }
 }

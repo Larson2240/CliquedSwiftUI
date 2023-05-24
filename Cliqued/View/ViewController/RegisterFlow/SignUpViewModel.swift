@@ -5,6 +5,7 @@
 //  Created by C211 on 12/01/23.
 //
 
+import SwiftUI
 import Combine
 import GoogleSignIn
 import AuthenticationServices
@@ -19,33 +20,8 @@ final class SignUpViewModel: NSObject, ObservableObject {
     
     private let apiParams = ApiParams()
     
-    //MARK: Check Validation
-    func checkValidation() -> Bool {
-        var flag = false
-        let isEmailAddressValid = isValidEmail(email)
-        let isPasswordValid = isPasswordHasNumberAndCharacter(password: password)
-        
-        if email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            UIApplication.shared.showAlertPopup(message: Constants.validMsg_emailId)
-        } else if !isEmailAddressValid {
-            UIApplication.shared.showAlertPopup(message: Constants.validMsg_invalidEmail)
-        } else if password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            UIApplication.shared.showAlertPopup(message: Constants.validMsg_password)
-        } else if !isPasswordValid {
-            UIApplication.shared.showAlertPopup(message: Constants.validMsg_invalidPassword)
-        } else if repeatPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            UIApplication.shared.showAlertPopup(message: Constants.validMsg_repeatPassword)
-        }  else if password != repeatPassword {
-            UIApplication.shared.showAlertPopup(message: Constants.validMsg_passwordNotMatche)
-        } else {
-            flag = true
-        }
-        return flag
-    }
-    
-    //MARK: Call Update Profile API
     func callSignUpAPI() {
-        guard checkValidation() else { return }
+        guard signUpValid() else { return }
         
         let params: NSDictionary = [
             apiParams.email: email,
@@ -99,7 +75,7 @@ final class SignUpViewModel: NSObject, ObservableObject {
     }
     
     func callSignInAPI() {
-        guard checkValidation() else { return }
+        guard signInValid() else { return }
         
         let params: NSDictionary = [
             apiParams.email: email,
@@ -237,18 +213,61 @@ final class SignUpViewModel: NSObject, ObservableObject {
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
         } else {
             if Constants.loggedInUser?.isVerified == "1" {
-                let welcomevc = WelcomeVC.loadFromNib()
-                APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: welcomevc)
+                let welcomevc = UIHostingController(rootView: WelcomeView())
+                APP_DELEGATE.window?.rootViewController = welcomevc
             } else {
                 UIApplication.shared.showAlerBox("", Constants.label_emailSentMessage) { _ in
-                    let welcomevc = WelcomeVC.loadFromNib()
-                    APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: welcomevc)
+                    let welcomevc = UIHostingController(rootView: WelcomeView())
+                    APP_DELEGATE.window?.rootViewController = welcomevc
                 }
             }
         }
     }
 }
 
+// MARK: - Validation
+extension SignUpViewModel {
+    private func signUpValid() -> Bool {
+        var flag = false
+        let isEmailAddressValid = isValidEmail(email)
+        let isPasswordValid = isPasswordHasNumberAndCharacter(password: password)
+        
+        if email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_emailId)
+        } else if !isEmailAddressValid {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_invalidEmail)
+        } else if password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_password)
+        } else if !isPasswordValid {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_invalidPassword)
+        } else if repeatPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_repeatPassword)
+        }  else if password != repeatPassword {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_passwordNotMatche)
+        } else {
+            flag = true
+        }
+        return flag
+    }
+    
+    private func signInValid() -> Bool {
+        var flag = false
+        let isEmailAddressValid = isValidEmail(email)
+        
+        if email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_emailId)
+        } else if !isEmailAddressValid {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_invalidEmail)
+        } else if password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_password)
+        } else {
+            flag = true
+        }
+        return flag
+    }
+}
+
+// MARK: - Social sign in
 extension SignUpViewModel {
     func googleSignIn() {
         guard let rootVC = UIApplication.shared.windows.first?.rootViewController else { return }

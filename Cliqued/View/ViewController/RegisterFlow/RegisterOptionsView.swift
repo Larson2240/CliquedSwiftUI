@@ -14,10 +14,7 @@ struct RegisterOptionsView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Image("welcome_bkg")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
+                background
                 
                 content
                 
@@ -48,6 +45,14 @@ struct RegisterOptionsView: View {
         .padding(.vertical, 100)
     }
     
+    private var background: some View {
+        Image("welcome_bkg")
+            .resizable()
+            .scaledToFill()
+            .ignoresSafeArea()
+            .frame(width: screenSize.width, height: screenSize.height)
+    }
+    
     private var presentables: some View {
         ZStack {
             NavigationLink(destination: SignUpView(currentFlow: .signUp),
@@ -75,8 +80,8 @@ struct RegisterOptionsView: View {
                     .foregroundColor(textColor)
             }
         }
-        .frame(height: 55)
-        .cornerRadius(22.5)
+        .frame(height: 60)
+        .cornerRadius(30)
         .padding(.horizontal, 50)
     }
 }
