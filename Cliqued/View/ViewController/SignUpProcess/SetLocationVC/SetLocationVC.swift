@@ -24,7 +24,7 @@ class SetLocationVC: UIViewController {
     
     //MARK: Variable
     var dataSource : SetLocationDataSource?
-    lazy var viewModel = SignUpProcessViewModel()
+    lazy var viewModel = OnboardingViewModel()
     var isFromEditProfile: Bool = false
     var distancePreference = ""
     var addressId = ""
@@ -52,11 +52,11 @@ class SetLocationVC: UIViewController {
     //MARK: Button Continue Click Event
     @IBAction func btnContinueTap(_ sender: Any) {
         if dataSource?.addressDic.latitude != "" && dataSource?.addressDic.longitude != "" && dataSource?.addressDic.city != "" && dataSource?.addressDic.state != "" {
-            self.viewModel.setUserAddress(value: dataSource?.addressDic ?? structAddressParam())
+            self.viewModel.userAddress.append(dataSource?.addressDic ?? AddressParam())
             if !isFromEditProfile {
-                viewModel.setProfileSetupType(value: profileSetupType.location)
+                viewModel.profileSetupType = profileSetupType.location
             } else {
-                viewModel.setProfileSetupType(value: profileSetupType.completed)
+                viewModel.profileSetupType = profileSetupType.completed
             }
             viewModel.callSignUpProcessAPI()
         } else {

@@ -32,7 +32,7 @@ class PickSubActvityVC: UIViewController {
     //MARK: Variable
     var dataSource: PickSubActivityDataSource?
     lazy var viewModel = PickSubActivityViewModel()
-    lazy var viewModelSignUpProcess = SignUpProcessViewModel()
+    lazy var viewModelSignUpProcess = OnboardingViewModel()
     var isSubCatSelectedFromEveryCategory: Bool = false
     var arrayOfSubActivity = [UserInterestedCategory]()
     var isFromEditProfile: Bool = false
@@ -87,14 +87,14 @@ class PickSubActvityVC: UIViewController {
             }
         }
         if isSubCatSelectedFromEveryCategory {
-            viewModelSignUpProcess.setActivity(value: viewModel.convertSubActivityStructToString())
+            viewModelSignUpProcess.pickActivities = viewModel.convertSubActivityStructToString()
             if !isFromEditProfile {
-                viewModelSignUpProcess.setProfileSetupType(value: profileSetupType.sub_category)
+                viewModelSignUpProcess.profileSetupType = profileSetupType.sub_category
             } else {
                 if isFromSetupProfile {
-                    viewModelSignUpProcess.setProfileSetupType(value: profileSetupType.sub_category)
+                    viewModelSignUpProcess.profileSetupType = profileSetupType.sub_category
                 } else {
-                    viewModelSignUpProcess.setProfileSetupType(value: profileSetupType.completed)
+                    viewModelSignUpProcess.profileSetupType = profileSetupType.completed
                 }
             }
             viewModelSignUpProcess.callSignUpProcessAPI()

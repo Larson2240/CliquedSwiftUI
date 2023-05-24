@@ -34,7 +34,7 @@ class PickActivityVC: UIViewController {
     //MARK: Variable
     var dataSource: PickActivityDataSource?
     lazy var viewModel = PickActivityViewModel()
-    lazy var viewModelSignUpProcess = SignUpProcessViewModel()
+    lazy var viewModelSignUpProcess = OnboardingViewModel()
     
     var isFromEditProfile: Bool = false
     var isFromSetupProfile: Bool = false

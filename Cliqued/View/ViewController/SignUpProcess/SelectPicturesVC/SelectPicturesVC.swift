@@ -33,7 +33,7 @@ class SelectPicturesVC: UIViewController {
     
     //MARK: Variable
     var dataSource: SelectPicturesDataSource?
-    lazy var viewModel = SignUpProcessViewModel()
+    lazy var viewModel = OnboardingViewModel()
     
     var isFromEditProfile: Bool = false
     var arrayOfProfileImage = [UserProfileImages]()
@@ -62,25 +62,25 @@ class SelectPicturesVC: UIViewController {
     @IBAction func btnContinueTap(_ sender: Any) {
         
         //Bind data in viewModel method
-        viewModel.clearProfileImageArray()
-        viewModel.clearThumnailImageArray()
+        viewModel.profileImages = []
+        viewModel.thumbnails = []
         
         if !isFromEditProfile {
             for profileData in dataSource?.arrayOfSelectedImages ?? [] {
                 if profileData.mediaType == 0 {
-                    viewModel.setProfileImage(value: profileData.image ?? UIImage())
-                    viewModel.setThumbnails(value: profileData.image ?? UIImage())
+                    viewModel.profileImages.append(profileData.image ?? UIImage())
+                    viewModel.thumbnails.append(profileData.image ?? UIImage())
                 } else if profileData.mediaType == 1 {
-                    viewModel.setProfileImage(value: profileData.videoURL ?? URL.self)
-                    viewModel.setThumbnails(value: profileData.thumbnail ?? UIImage())
+                    viewModel.profileImages.append(profileData.videoURL ?? URL.self)
+                    viewModel.thumbnails.append(profileData.thumbnail ?? UIImage())
                 }
             }
             //Check array count
-            if viewModel.getAllProfileImage().count > 1 {
+            if viewModel.profileImages.count > 1 {
                 //Check at least one image is selected or not.
                 let isImageContain = dataSource?.arrayOfSelectedImages.contains(where: {$0.mediaType == 0}) ?? Bool()
                 if isImageContain {
-                    viewModel.setProfileSetupType(value: profileSetupType.profile_images)
+                    viewModel.profileSetupType = profileSetupType.profile_images
                     viewModel.callSignUpProcessAPI()
                 } else {
                     self.showAlertPopup(message: Constants.validMsg_selectImage)
@@ -94,19 +94,19 @@ class SelectPicturesVC: UIViewController {
             if dataSource?.arrayOfSelectedImages.count ?? 0 > 1 {
                 for profileData in dataSource?.arrayOfEditedImages ?? [] {
                     if profileData.mediaType == 0 {
-                        viewModel.setProfileImage(value: profileData.image ?? UIImage())
-                        viewModel.setThumbnails(value: profileData.image ?? UIImage())
+                        viewModel.profileImages.append(profileData.image ?? UIImage())
+                        viewModel.thumbnails.append(profileData.image ?? UIImage())
                     } else if profileData.mediaType == 1 {
-                        viewModel.setProfileImage(value: profileData.videoURL ?? URL.self)
-                        viewModel.setThumbnails(value: profileData.thumbnail ?? UIImage())
+                        viewModel.profileImages.append(profileData.videoURL ?? URL.self)
+                        viewModel.thumbnails.append(profileData.thumbnail ?? UIImage())
                     }
                 }
                 //Check at least one image is selected or not.
                 let isImageContain = dataSource?.arrayOfSelectedImages.contains(where: {$0.mediaType == 0}) ?? Bool()
                 if isImageContain {
-                    viewModel.setProfileSetupType(value: profileSetupType.completed)
+                    viewModel.profileSetupType = profileSetupType.completed
                     if let deleteImageIds = dataSource?.arrayOfDeletedImageIds.map({String($0)}).joined(separator: ", ") {
-                        viewModel.setDeletedProfileImagesIds(value: deleteImageIds)
+                        viewModel.deletedImageIds = deleteImageIds
                     }
                     viewModel.callSignUpProcessAPI()
                 } else {
@@ -116,7 +116,6 @@ class SelectPicturesVC: UIViewController {
                 self.showAlertPopup(message: Constants.validMsg_selectPicture)
             }
         }
-        print("SelectedImages \(viewModel.getAllProfileImage())")
     }
     
 }

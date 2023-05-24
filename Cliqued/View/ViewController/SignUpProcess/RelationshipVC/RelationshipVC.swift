@@ -122,7 +122,7 @@ class RelationshipVC: UIViewController {
     var isSelectedRomanceMen: Bool = false
     var isSelectedFriendshipWomen: Bool = false
     var isSelectedFriendshipMen: Bool = false
-    lazy var viewModel = SignUpProcessViewModel()
+    lazy var viewModel = OnboardingViewModel()
     var isFromEditProfile: Bool = false
     var arrayOfUserPreference = [UserPreferences]()
     var arrayOfDeletedIds = [Int]()
@@ -474,21 +474,19 @@ class RelationshipVC: UIViewController {
     //MARK: Button Continue Click Event
     @IBAction func btnContinueTap(_ sender: Any) {
         if !isFromEditProfile {
-            viewModel.setProfileSetupType(value: profileSetupType.relationship)
+            viewModel.profileSetupType = profileSetupType.relationship
         } else {
-            viewModel.setProfileSetupType(value: profileSetupType.completed)
+            viewModel.profileSetupType = profileSetupType.completed
         }
         if viewModel.getRelationship().count > 0 {
             if isFromEditProfile {
                 let deleteIds = arrayOfDeletedIds.map({String($0)}).joined(separator: ", ")
-                viewModel.setDeletedLookingForIds(value: deleteIds)
+                viewModel.deletedLookingForIds = deleteIds
             }
             viewModel.callSignUpProcessAPI()
         } else {
             showAlertPopup(message: Constants.validMsg_relationship)
         }
-        print(viewModel.getRelationship())
-        print(viewModel.getDeletedLookingForIds())
     }
 }
 //MARK: Extension UDF
@@ -665,7 +663,7 @@ extension RelationshipVC {
     }
     //MARK: Add data in dictionary for param.
     func addDataInDictionary(prefId: String, prefOptionId: String, UserPrefId: String) {
-        var dict1 = structRelationshipParam()
+        var dict1 = RelationshipParam()
         dict1.preference_id = prefId
         dict1.preference_option_id = prefOptionId
         dict1.user_preference_id = UserPrefId

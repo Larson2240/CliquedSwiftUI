@@ -15,7 +15,7 @@ class SelectPicturesDataSource: NSObject {
     
     private let viewController: SelectPicturesVC
     private let collectionView: UICollectionView
-    private let viewModel: SignUpProcessViewModel
+    private let viewModel: OnboardingViewModel
     private var selectedItemIndex: Int?
     
     struct structProfileMedia {
@@ -35,7 +35,7 @@ class SelectPicturesDataSource: NSObject {
     var videoURL: URL?
     
     //MARK:- Init
-    init(viewController: SelectPicturesVC, viewModel: SignUpProcessViewModel, collectionView: UICollectionView) {
+    init(viewController: SelectPicturesVC, viewModel: OnboardingViewModel, collectionView: UICollectionView) {
         self.viewController = viewController
         self.viewModel = viewModel
         self.collectionView = collectionView

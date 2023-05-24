@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class ActivitiesVC: UIViewController {
 
@@ -229,8 +230,7 @@ extension ActivitiesVC {
         }
         switch strCount {
         case profileSetupType.name:
-            let namevc = NameVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: namevc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
             
         case profileSetupType.birthdate:
             let agevc = AgeVC.loadFromNib()

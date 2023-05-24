@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class HomeVC: UIViewController {
 
@@ -37,7 +38,6 @@ class HomeVC: UIViewController {
         viewDidLoadMethod()
         
         NotificationCenter.default.addObserver(self, selector: #selector(languageReload(notification:)), name: .languageChange, object: nil)
-        
     }
     
     @objc func languageReload(notification: NSNotification) {
@@ -167,8 +167,7 @@ extension HomeVC {
         }
         switch strCount {
         case profileSetupType.name:
-            let namevc = NameVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: namevc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
             
         case profileSetupType.birthdate:
             let agevc = AgeVC.loadFromNib()

@@ -44,7 +44,7 @@ class EditProfileViewModel {
         var startAge = ""
         var endAge = ""
         var userPreferenceArray = [UserPreferences]()
-        var distance: structDistanceParam?
+        var distance: DistanceParam?
         var agePrefereneArray: structAgePreferenceParam?
     }
     private var structUserDetailsValue = structUserDetails()
@@ -230,8 +230,8 @@ extension EditProfileViewModel {
     func getEndAge() -> String {
         structUserDetailsValue.endAge
     }
-    func getDistance() -> structDistanceParam {
-        structUserDetailsValue.distance ?? structDistanceParam()
+    func getDistance() -> DistanceParam {
+        structUserDetailsValue.distance ?? DistanceParam()
     }
     func getAgePreference() -> structAgePreferenceParam {
         structUserDetailsValue.agePrefereneArray ?? structAgePreferenceParam()
@@ -300,7 +300,7 @@ extension EditProfileViewModel {
     func setEndAge(value: String) {
         structUserDetailsValue.endAge = value
     }
-    func setDistance(value: structDistanceParam) {
+    func setDistance(value: DistanceParam) {
         structUserDetailsValue.distance = value
     }
     func setAgePreference(value: structAgePreferenceParam) {

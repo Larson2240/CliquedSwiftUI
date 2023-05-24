@@ -38,7 +38,7 @@ class AgeVC: UIViewController {
     @IBOutlet weak var buttonContinue: UIButton!
     
     //MARK: Variable
-    lazy var viewModel = SignUpProcessViewModel()
+    lazy var viewModel = OnboardingViewModel()
     var name: String?
     var selectedDate: String?
     // Age of 45.
@@ -71,11 +71,11 @@ class AgeVC: UIViewController {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         selectedDate = dateFormatter.string(from: datepicker.date)
         let isValidAge = validateAge(birthDate: datepicker.date)
-        self.viewModel.setDateOfBirth(value: selectedDate ?? "")
+        self.viewModel.dateofbirth = selectedDate ?? ""
         if(isValidAge) {
             showAlertPopup(message: Constants.validMsg_age)
         } else {
-            viewModel.setProfileSetupType(value: profileSetupType.birthdate)
+            viewModel.profileSetupType = profileSetupType.birthdate
             self.viewModel.callSignUpProcessAPI()
         }
     }

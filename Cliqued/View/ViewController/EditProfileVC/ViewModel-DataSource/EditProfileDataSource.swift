@@ -387,7 +387,7 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
         if arrayOfPreference.count > 0 {
             arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
             if arrayOfTypeOption.count > 0 {
-                var dict = structDistanceParam()
+                var dict = DistanceParam()
                 dict.distancePreferenceId = arrayOfTypeOption[Int(sender.index)].preferenceId?.description ?? ""
                 dict.distancePreferenceOptionId = arrayOfTypeOption[Int(sender.index)].id?.description ?? ""
                 viewModel.setDistance(value: dict)

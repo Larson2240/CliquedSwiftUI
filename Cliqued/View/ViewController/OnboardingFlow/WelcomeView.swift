@@ -11,13 +11,10 @@ struct WelcomeView: View {
     @StateObject private var viewModel = WelcomeViewModel()
     
     var body: some View {
-        NavigationView {
-            content
-                .navigationBarHidden(true)
-        }
-        .onAppear { viewModel.viewAppeared() }
-        .background(background)
-        .navigationBarHidden(true)
+        content
+            .onAppear { viewModel.viewAppeared() }
+            .background(background)
+            .navigationBarHidden(true)
     }
     
     private var content: some View {

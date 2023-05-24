@@ -14,14 +14,14 @@ class SetLocationDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     
     private let viewController: SetLocationVC
     private let tableView: UITableView
-    private let viewModel: SignUpProcessViewModel
+    private let viewModel: OnboardingViewModel
     
     enum enumSetLocationTableRow: Int, CaseIterable {
         case mapview = 0
         case pickDistance
     }
     var locationManager:CLLocationManager!
-    var addressDic = structAddressParam()
+    var addressDic = AddressParam()
     
     var newPin = MKPointAnnotation()
     var isLocationChangedByUser = false
@@ -29,7 +29,7 @@ class SetLocationDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     private let preferenceTypeIds = PreferenceTypeIds()
     
     //MARK:- Init
-    init(tableView: UITableView, viewModel: SignUpProcessViewModel, viewController: SetLocationVC) {
+    init(tableView: UITableView, viewModel: OnboardingViewModel, viewController: SetLocationVC) {
         self.viewController = viewController
         self.tableView = tableView
         self.viewModel = viewModel
@@ -129,10 +129,10 @@ class SetLocationDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
         if arrayOfPreference.count > 0 {
             arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
             if arrayOfTypeOption.count > 0 {
-                var dict = structDistanceParam()
+                var dict = DistanceParam()
                 dict.distancePreferenceId = arrayOfTypeOption[Int(sender.index)].preferenceId?.description ?? ""
                 dict.distancePreferenceOptionId = arrayOfTypeOption[Int(sender.index)].id?.description ?? ""
-                viewModel.setDistance(value: dict)
+                viewModel.distance = dict
             }
         }
     }
@@ -144,10 +144,10 @@ class SetLocationDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
         if arrayOfPreference.count > 0 {
             arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
             if arrayOfTypeOption.count > 0 {
-                var dict = structDistanceParam()
+                var dict = DistanceParam()
                 dict.distancePreferenceId = arrayOfTypeOption[0].preferenceId?.description ?? ""
                 dict.distancePreferenceOptionId = arrayOfTypeOption[0].id?.description ?? ""
-                viewModel.setDistance(value: dict)
+                viewModel.distance = dict
             }
         }
     }

@@ -33,7 +33,7 @@ class GenderVC: UIViewController {
     //MARK: Variable
     var isMaleSelected: Bool = false
     var isAnyoneSelected: Bool = false
-    lazy var viewModel = SignUpProcessViewModel()
+    lazy var viewModel = OnboardingViewModel()
     private let profileSetupType = ProfileSetupType()
     
     //MARK: viewDidLoad Method
@@ -58,20 +58,20 @@ class GenderVC: UIViewController {
         isAnyoneSelected = true
         isMaleSelected = false
         setupGenderButtonUI()
-        viewModel.setGender(value: "2")
+        viewModel.gender = "2"
     }
     
     @IBAction func btnMaleTap(_ sender: Any) {
         isAnyoneSelected = true
         isMaleSelected = true
         setupGenderButtonUI()
-        viewModel.setGender(value: "1")
+        viewModel.gender = "1"
     }
     
     //MARK: Button Continue Click Event
     @IBAction func btnContinueTap(_ sender: Any) {
         if isAnyoneSelected {
-            viewModel.setProfileSetupType(value: profileSetupType.gender)
+            viewModel.profileSetupType = profileSetupType.gender
             viewModel.callSignUpProcessAPI()
         } else {
             showAlertPopup(message: Constants.validMsg_gender)

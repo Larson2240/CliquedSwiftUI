@@ -25,7 +25,7 @@ class NotificationPermissionVC: UIViewController {
     @IBOutlet weak var buttonSaveProfile: UIButton!
     
     //MARK: Variable
-    lazy var viewModel = SignUpProcessViewModel()
+    lazy var viewModel = OnboardingViewModel()
     var isEnableNotification: Bool = false
     var isSystemNotificationEnable: Bool = false
     private let profileSetupType = ProfileSetupType()
@@ -55,7 +55,7 @@ class NotificationPermissionVC: UIViewController {
     
     //MARK: Button Continue Click Event
     @IBAction func btnSaveProfileTap(_ sender: Any) {
-        viewModel.setProfileSetupType(value: profileSetupType.completed)
+        viewModel.profileSetupType = profileSetupType.completed
         UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
         UserDefaults.standard.set(true, forKey: UserDefaultKey().isRemeberMe)
         self.viewModel.callSignUpProcessAPI()
@@ -97,10 +97,10 @@ class NotificationPermissionVC: UIViewController {
             arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
             if arrayOfTypeOption.count > 0 {
                 arrayOfTypeOption = arrayOfTypeOption.filter({$0.typeOfOptions == typeOfOption})
-                var dict = structNotificationParam()
+                var dict = NotificationParam()
                 dict.notificationPreferenceId = arrayOfTypeOption[0].preferenceId?.description ?? ""
                 dict.notificationOptionId = arrayOfTypeOption[0].id?.description ?? ""
-                self.viewModel.setNotification(value: dict)
+                self.viewModel.notification = dict
             }
         }
     }
