@@ -205,7 +205,7 @@ struct SignUpView: View {
     }
     
     private var googleButton: some View {
-        Button(action: { viewModel.callSocialLoginAPI() }) {
+        Button(action: { viewModel.googleSignIn() }) {
             Image("ic_google")
         }
     }
@@ -217,7 +217,7 @@ struct SignUpView: View {
     }
     
     private var appleButton: some View {
-        Button(action: {  }) {
+        Button(action: { viewModel.appleSignIn() }) {
             Image("ic_apple")
         }
     }

@@ -68,7 +68,7 @@ final class SignUpViewModel: NSObject, ObservableObject {
             guard let self = self else { return }
             
             self.isLoading = false
-            if(error != nil && response == nil) {
+            if error != nil && response == nil {
                 self.messageToShow = message ?? ""
             } else {
                 let json = response as? NSDictionary
@@ -125,7 +125,7 @@ final class SignUpViewModel: NSObject, ObservableObject {
             
             self.isLoading = false
             
-            if(error != nil && response == nil) {
+            if error != nil && response == nil {
                 self.messageToShow = message ?? ""
             } else {
                 let json = response as? NSDictionary
@@ -257,7 +257,7 @@ final class SignUpViewModel: NSObject, ObservableObject {
 }
 
 extension SignUpViewModel {
-    func handleGoogleSignIn() {
+    func googleSignIn() {
         guard let rootVC = UIApplication.shared.windows.first?.rootViewController else { return }
         
         let config = GIDConfiguration(clientID: Constants.googleSignInKey)
@@ -275,6 +275,15 @@ extension SignUpViewModel {
             self.loginType = LoginType().GOOGLE
             self.callSocialLoginAPI()
         }
+    }
+    
+    func appleSignIn() {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.performRequests()
     }
 }
 
