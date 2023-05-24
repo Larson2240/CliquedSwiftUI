@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct RegisterOptionsView: View {
+    @State private var signUpViewPresented = false
+    @State private var signInViewPresented = false
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -33,13 +36,13 @@ struct RegisterOptionsView: View {
             option(text: Constants.btn_signUp,
                    textColor: .colorWhite,
                    color: .theme) {
-                
+                signUpViewPresented.toggle()
             }
             
             option(text: Constants.btn_logIn,
                    textColor: .colorDarkGrey,
                    color: .colorLightGrey) {
-                
+                signInViewPresented.toggle()
             }
         }
         .padding(.vertical, 100)
@@ -47,7 +50,13 @@ struct RegisterOptionsView: View {
     
     private var presentables: some View {
         ZStack {
+            NavigationLink(destination: SignUpView(currentFlow: .signUp),
+                           isActive: $signUpViewPresented,
+                           label: EmptyView.init)
             
+            NavigationLink(destination: SignUpView(currentFlow: .signIn),
+                           isActive: $signInViewPresented,
+                           label: EmptyView.init)
         }
     }
     

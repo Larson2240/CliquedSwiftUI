@@ -13,6 +13,7 @@ struct SignUpView: View {
         case signIn
     }
     
+    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel = SignUpViewModel()
     @State var currentFlow: FlowType
     
@@ -22,7 +23,11 @@ struct SignUpView: View {
             
             presentables
         }
-        .hideKeyboardWhenTappedAround()
+        .onReceive(viewModel.$messageToShow, perform: { message in
+            guard !message.isEmpty else { return }
+            
+            UIApplication.shared.showAlertPopup(message: message)
+        })
         .background(background)
         .navigationBarHidden(true)
     }
@@ -43,13 +48,13 @@ struct SignUpView: View {
                     inputStack(title: Constants.label_password,
                                image: "ic_password",
                                binding: $viewModel.password,
-                               isSecure: false)
+                               isSecure: true)
                     
                     if currentFlow == .signUp {
                         inputStack(title: Constants.label_repeatPassword,
                                    image: "ic_password",
                                    binding: $viewModel.repeatPassword,
-                                   isSecure: false)
+                                   isSecure: true)
                     }
                     
                     if currentFlow == .signIn {
@@ -68,7 +73,9 @@ struct SignUpView: View {
     private var header: some View {
         ZStack {
             HStack {
-                Image("ic_back_black")
+                Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                    Image("ic_back_black")
+                }
                 
                 Spacer()
             }
@@ -80,7 +87,7 @@ struct SignUpView: View {
             }
         }
         .padding(.horizontal, 20)
-        .padding(.vertical, 8)
+        .frame(height: 25)
     }
     
     private var background: some View {
@@ -96,21 +103,19 @@ struct SignUpView: View {
                 .foregroundColor(.colorDarkGrey)
             
             HStack(spacing: 12) {
-                Image("ic_email")
+                Image(image)
                 
                 if isSecure {
                     SecureField(title, text: binding)
-                        .font(.themeMedium(16))
-                        .foregroundColor(.colorDarkGrey)
-                        .accentColor(.theme)
                 } else {
                     TextField(title, text: binding)
-                        .font(.themeMedium(16))
-                        .foregroundColor(.colorDarkGrey)
-                        .accentColor(.theme)
-                        .keyboardType(.emailAddress)
                 }
             }
+            .font(.themeMedium(16))
+            .foregroundColor(.colorDarkGrey)
+            .accentColor(.theme)
+            .autocorrectionDisabled()
+            .autocapitalization(.none)
             
             Color.colorLightGrey
                 .frame(height: 1)
@@ -119,7 +124,7 @@ struct SignUpView: View {
     }
     
     private var mainButton: some View {
-        Button(action: {  }) {
+        Button(action: { currentFlow == .signUp ? viewModel.callSignUpAPI() : viewModel.callSignInAPI() }) {
             ZStack {
                 Color.theme
                 
@@ -200,7 +205,7 @@ struct SignUpView: View {
     }
     
     private var googleButton: some View {
-        Button(action: {  }) {
+        Button(action: { viewModel.callSocialLoginAPI() }) {
             Image("ic_google")
         }
     }

@@ -14,6 +14,7 @@ import PushKit
 import CallKit
 import TwilioVideo
 import GoogleMobileAds
+import SwiftUI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
@@ -82,8 +83,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
         } else {
             setLanguage()
-            let registerOptionVC = RegisterOptionVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: registerOptionVC)
+            let registerOptionsView = UIHostingController(rootView: RegisterOptionsView())
+            APP_DELEGATE.window?.rootViewController = registerOptionsView
         }
     }
     
@@ -99,8 +100,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
     //MARK: Setup RegisterOptionVC rootViewController
     func setRegisterOptionRootViewController() {
         setLanguage()
-        let registeroptvc = RegisterOptionVC.loadFromNib()
-        APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: registeroptvc)
+        let registerOptionsView = UIHostingController(rootView: RegisterOptionsView())
+        APP_DELEGATE.window?.rootViewController = registerOptionsView
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {

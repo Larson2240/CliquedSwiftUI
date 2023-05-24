@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class WelcomeViewModel {
     
@@ -112,8 +113,8 @@ class WelcomeViewModel {
                                         self.setEmailNotVerifiedCount()
                                         if self.getEmailNotVerifiedCount() > 2 {
                                             checkSecurity()
-                                            let registeroptionvc = RegisterOptionVC.loadFromNib()
-                                            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: registeroptionvc)
+                                            let registerOptionsView = UIHostingController(rootView: RegisterOptionsView())
+                                            APP_DELEGATE.window?.rootViewController = registerOptionsView
                                         } else {
                                             self.isMessage.value = Constants.validMsg_emailNotVerified
                                         }
