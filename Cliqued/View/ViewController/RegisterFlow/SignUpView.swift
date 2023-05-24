@@ -170,7 +170,15 @@ struct SignUpView: View {
     
     private var loginConfigStack: some View {
         HStack {
-            Button(action: { viewModel.rememberMeSelected.toggle() }) {
+            Button(action: {
+                viewModel.rememberMeSelected.toggle()
+                
+                if viewModel.rememberMeSelected {
+                    UserDefaults.standard.set(true, forKey: UserDefaultKey().isRemeberMe)
+                } else {
+                    UserDefaults.standard.set(false, forKey: UserDefaultKey().isRemeberMe)
+                }
+            }) {
                 Image(viewModel.rememberMeSelected ? "ic_rememberme_selected" : "ic_rememberme_unselect")
                 
                 Text(Constants.btn_rememberMe)
