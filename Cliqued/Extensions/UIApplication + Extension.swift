@@ -36,7 +36,7 @@ extension UIApplication {
         SVProgressHUD.show()
     }
     
-    func dismissLoader() {
+    func hideLoader() {
         SVProgressHUD.dismiss()
     }
 }

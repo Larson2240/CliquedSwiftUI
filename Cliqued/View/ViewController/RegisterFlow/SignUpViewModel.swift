@@ -10,12 +10,10 @@ import GoogleSignIn
 import AuthenticationServices
 
 final class SignUpViewModel: NSObject, ObservableObject {
-    @Published var isLoading = true
     @Published var email = ""
     @Published var password = ""
     @Published var repeatPassword = ""
     @Published var rememberMeSelected = false
-    @Published var messageToShow = ""
     @Published private var loginType = "0"
     @Published private var socialLoginID = ""
     
@@ -28,17 +26,17 @@ final class SignUpViewModel: NSObject, ObservableObject {
         let isPasswordValid = isPasswordHasNumberAndCharacter(password: password)
         
         if email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            messageToShow = Constants.validMsg_emailId
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_emailId)
         } else if !isEmailAddressValid {
-            messageToShow = Constants.validMsg_invalidEmail
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_invalidEmail)
         } else if password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            messageToShow = Constants.validMsg_password
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_password)
         } else if !isPasswordValid {
-            messageToShow = Constants.validMsg_invalidPassword
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_invalidPassword)
         } else if repeatPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            messageToShow = Constants.validMsg_repeatPassword
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_repeatPassword)
         }  else if password != repeatPassword {
-            messageToShow = Constants.validMsg_passwordNotMatche
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_passwordNotMatche)
         } else {
             flag = true
         }
@@ -56,20 +54,18 @@ final class SignUpViewModel: NSObject, ObservableObject {
         ]
         
         guard Connectivity.isConnectedToInternet() else {
-            messageToShow = Constants.alert_InternetConnectivity
+            UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
             return
         }
         
-        DispatchQueue.main.async { [weak self] in
-            self?.isLoading = true
-        }
+        UIApplication.shared.showLoader()
         
         RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SignUp, parameters: params) { [weak self] response, error, message in
             guard let self = self else { return }
             
-            self.isLoading = false
+            UIApplication.shared.hideLoader()
             if error != nil && response == nil {
-                self.messageToShow = message ?? ""
+                UIApplication.shared.showAlertPopup(message: message ?? "")
             } else {
                 let json = response as? NSDictionary
                 let status = json?[API_STATUS] as? Int
@@ -96,7 +92,7 @@ final class SignUpViewModel: NSObject, ObservableObject {
                         }
                     }
                 } else {
-                    self.messageToShow = message ?? ""
+                    UIApplication.shared.showAlertPopup(message: message ?? "")
                 }
             }
         }
@@ -112,21 +108,19 @@ final class SignUpViewModel: NSObject, ObservableObject {
         ]
         
         guard Connectivity.isConnectedToInternet() else {
-            messageToShow = Constants.alert_InternetConnectivity
+            UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
             return
         }
         
-        DispatchQueue.main.async { [weak self] in
-            self?.isLoading = true
-        }
+        UIApplication.shared.showLoader()
         
         RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.Login, parameters: params) { [weak self] response, error, message in
             guard let self = self else { return }
             
-            self.isLoading = false
+            UIApplication.shared.hideLoader()
             
             if error != nil && response == nil {
-                self.messageToShow = message ?? ""
+                UIApplication.shared.showAlertPopup(message: message ?? "")
             } else {
                 let json = response as? NSDictionary
                 let status = json?[API_STATUS] as? Int
@@ -157,9 +151,9 @@ final class SignUpViewModel: NSObject, ObservableObject {
                         }
                     }
                 } else if status == PASSWORD_WRONG {
-                    self.messageToShow = message ?? ""
+                    UIApplication.shared.showAlertPopup(message: message ?? "")
                 } else {
-                    self.messageToShow = message ?? ""
+                    UIApplication.shared.showAlertPopup(message: message ?? "")
                 }
             }
         }
@@ -174,20 +168,19 @@ final class SignUpViewModel: NSObject, ObservableObject {
         ]
         
         guard Connectivity.isConnectedToInternet() else {
-            messageToShow = Constants.alert_InternetConnectivity
+            UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
             return
         }
         
-        DispatchQueue.main.async { [weak self] in
-            self?.isLoading = true
-        }
+        UIApplication.shared.showLoader()
         
         RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SocialLogin, parameters: params) { [weak self] response, error, message in
             guard let self = self else { return }
             
-            self.isLoading = false
+            UIApplication.shared.hideLoader()
+            
             if error != nil && response == nil {
-                self.messageToShow = message ?? ""
+                UIApplication.shared.showAlertPopup(message: message ?? "")
             } else {
                 let json = response as? NSDictionary
                 let status = json?[API_STATUS] as? Int
@@ -217,7 +210,7 @@ final class SignUpViewModel: NSObject, ObservableObject {
                         }
                     }
                 } else {
-                    self.messageToShow = message ?? ""
+                    UIApplication.shared.showAlertPopup(message: message ?? "")
                 }
             }
         }

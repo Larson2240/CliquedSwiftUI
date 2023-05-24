@@ -11,6 +11,8 @@
 		0A16E70E2A1D356B00B8CA3F /* View + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16E70D2A1D356B00B8CA3F /* View + Extension.swift */; };
 		0A16E7102A1D359600B8CA3F /* CGSize + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16E70F2A1D359600B8CA3F /* CGSize + Extension.swift */; };
 		0A16E7122A1D588400B8CA3F /* UIApplication + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16E7112A1D588400B8CA3F /* UIApplication + Extension.swift */; };
+		0A16E7142A1E3C3B00B8CA3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16E7132A1E3C3B00B8CA3F /* HeaderView.swift */; };
+		0A16E7172A1E3D4800B8CA3F /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16E7162A1E3D4800B8CA3F /* ForgotPasswordView.swift */; };
 		0A1C0FB62A1AA54A00E9979C /* RegisterOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1C0FB52A1AA54A00E9979C /* RegisterOptionsView.swift */; };
 		0A1C0FB92A1AA79E00E9979C /* Font + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1C0FB82A1AA79E00E9979C /* Font + Extension.swift */; };
 		0A1C0FBB2A1AA8D800E9979C /* Color + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1C0FBA2A1AA8D800E9979C /* Color + Extension.swift */; };
@@ -286,8 +288,6 @@
 		60ED7C3E2981489800CD6A78 /* SelectPicturesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED7C362981489800CD6A78 /* SelectPicturesVC.swift */; };
 		60ED7C3F2981489800CD6A78 /* SelectPicturesVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60ED7C372981489800CD6A78 /* SelectPicturesVC.xib */; };
 		60ED7C402981489800CD6A78 /* SelectPicturesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED7C392981489800CD6A78 /* SelectPicturesDataSource.swift */; };
-		60F17E1E299628D600ACD7AF /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F17E1C299628D600ACD7AF /* ForgotPasswordVC.swift */; };
-		60F17E1F299628D600ACD7AF /* ForgotPasswordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60F17E1D299628D600ACD7AF /* ForgotPasswordVC.xib */; };
 		60F17E222996457600ACD7AF /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F17E212996457600ACD7AF /* ForgotPasswordViewModel.swift */; };
 		60F42A0D2990DACE00381566 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		60F42A0E2990DACE00381566 /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -408,6 +408,8 @@
 		0A16E70D2A1D356B00B8CA3F /* View + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extension.swift"; sourceTree = "<group>"; };
 		0A16E70F2A1D359600B8CA3F /* CGSize + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize + Extension.swift"; sourceTree = "<group>"; };
 		0A16E7112A1D588400B8CA3F /* UIApplication + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + Extension.swift"; sourceTree = "<group>"; };
+		0A16E7132A1E3C3B00B8CA3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		0A16E7162A1E3D4800B8CA3F /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		0A1C0FB52A1AA54A00E9979C /* RegisterOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterOptionsView.swift; sourceTree = "<group>"; };
 		0A1C0FB82A1AA79E00E9979C /* Font + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font + Extension.swift"; sourceTree = "<group>"; };
 		0A1C0FBA2A1AA8D800E9979C /* Color + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color + Extension.swift"; sourceTree = "<group>"; };
@@ -688,8 +690,6 @@
 		60ED7C362981489800CD6A78 /* SelectPicturesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPicturesVC.swift; sourceTree = "<group>"; };
 		60ED7C372981489800CD6A78 /* SelectPicturesVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectPicturesVC.xib; sourceTree = "<group>"; };
 		60ED7C392981489800CD6A78 /* SelectPicturesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPicturesDataSource.swift; sourceTree = "<group>"; };
-		60F17E1C299628D600ACD7AF /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
-		60F17E1D299628D600ACD7AF /* ForgotPasswordVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForgotPasswordVC.xib; sourceTree = "<group>"; };
 		60F17E212996457600ACD7AF /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
 		60F42C532990DF6B00381566 /* RelationshipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipViewModel.swift; sourceTree = "<group>"; };
 		60F48EB329935F3D001198CB /* SelectPictureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPictureViewModel.swift; sourceTree = "<group>"; };
@@ -845,12 +845,29 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		0A16E7152A1E3D0E00B8CA3F /* ReusableViews */ = {
+			isa = PBXGroup;
+			children = (
+				0A16E7132A1E3C3B00B8CA3F /* HeaderView.swift */,
+			);
+			path = ReusableViews;
+			sourceTree = "<group>";
+		};
+		0A16E7182A1E4D4700B8CA3F /* OnboardingFlow */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = OnboardingFlow;
+			sourceTree = "<group>";
+		};
 		0A1C0FB72A1AA56600E9979C /* RegisterFlow */ = {
 			isa = PBXGroup;
 			children = (
 				0A1C0FB52A1AA54A00E9979C /* RegisterOptionsView.swift */,
 				0A16E7092A1D29DF00B8CA3F /* SignUpView.swift */,
 				60C4D9B8296FCCA3007C2428 /* SignUpViewModel.swift */,
+				0A16E7162A1E3D4800B8CA3F /* ForgotPasswordView.swift */,
+				60F17E212996457600ACD7AF /* ForgotPasswordViewModel.swift */,
 			);
 			path = RegisterFlow;
 			sourceTree = "<group>";
@@ -1668,6 +1685,7 @@
 		60CBDF1A296D432A004CEE25 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				0A16E7152A1E3D0E00B8CA3F /* ReusableViews */,
 				646F61FC29D43FE900C63FF0 /* AudioDevices */,
 				6084A23929ADFB40009129A6 /* In-App Purchase */,
 				6476B13F29B1CA5F00F4CF03 /* Twilio_Call */,
@@ -1786,7 +1804,8 @@
 			isa = PBXGroup;
 			children = (
 				0A1C0FB72A1AA56600E9979C /* RegisterFlow */,
-				60F17E1B2996281E00ACD7AF /* ForgotPasswordVC */,
+				0A16E7182A1E4D4700B8CA3F /* OnboardingFlow */,
+				60CBDF59296D4A4B004CEE25 /* WelcomeVC */,
 				608B541529FAAA1000E22669 /* LicenseDetailsVC */,
 				6054719A29F6804C0013610A /* NativeAdView */,
 				60622AAF29EEB80800F8253A /* WebViewVC */,
@@ -1818,7 +1837,6 @@
 				60CBDF80296D9ACB004CEE25 /* TabBarVC */,
 				600A26DD2976AC6400231BB6 /* StartExploringVC */,
 				60E3A3F62977CC4B000F1984 /* SignUpProcess */,
-				60CBDF59296D4A4B004CEE25 /* WelcomeVC */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -2039,24 +2057,6 @@
 			children = (
 				60ED7C392981489800CD6A78 /* SelectPicturesDataSource.swift */,
 				60F48EB329935F3D001198CB /* SelectPictureViewModel.swift */,
-			);
-			path = "ViewModel-DataSource";
-			sourceTree = "<group>";
-		};
-		60F17E1B2996281E00ACD7AF /* ForgotPasswordVC */ = {
-			isa = PBXGroup;
-			children = (
-				60F17E202996455500ACD7AF /* ViewModel-DataSource */,
-				60F17E1C299628D600ACD7AF /* ForgotPasswordVC.swift */,
-				60F17E1D299628D600ACD7AF /* ForgotPasswordVC.xib */,
-			);
-			path = ForgotPasswordVC;
-			sourceTree = "<group>";
-		};
-		60F17E202996455500ACD7AF /* ViewModel-DataSource */ = {
-			isa = PBXGroup;
-			children = (
-				60F17E212996457600ACD7AF /* ForgotPasswordViewModel.swift */,
 			);
 			path = "ViewModel-DataSource";
 			sourceTree = "<group>";
@@ -2615,7 +2615,6 @@
 				6483EC212993BAC1009A9051 /* ReceiverVideoTVCell.xib in Resources */,
 				60C4D9CA29703175007C2428 /* ButtonCell.xib in Resources */,
 				601245E4297ABECB00441F09 /* DistancePreferenceCell.xib in Resources */,
-				60F17E1F299628D600ACD7AF /* ForgotPasswordVC.xib in Resources */,
 				6040111B29CDA8320079FEE2 /* TVSectionCell.xib in Resources */,
 				6084A23F29ADFE52009129A6 /* Products.storekit in Resources */,
 				60ED7C3D2981489800CD6A78 /* SelectPictureCell.xib in Resources */,
@@ -2717,7 +2716,6 @@
 				0A1C0FBB2A1AA8D800E9979C /* Color + Extension.swift in Sources */,
 				648CBA2A2990DC1D003171E1 /* AddTextTVCell.swift in Sources */,
 				600A26D529767CDD00231BB6 /* SetLocationDataSource.swift in Sources */,
-				60F17E1E299628D600ACD7AF /* ForgotPasswordVC.swift in Sources */,
 				600D445929793C6D001DEBA1 /* ActivityUserDetailsViewModel.swift in Sources */,
 				6025E4B029925F9300080812 /* PickSubActivityViewModel.swift in Sources */,
 				601245DF297AA7B300441F09 /* ActivityLocationCell.swift in Sources */,
@@ -2756,6 +2754,7 @@
 				605A3C5029AF5DF9003D05E4 /* GuideManagerVC.swift in Sources */,
 				601245CA297A9ECB00441F09 /* AddActivityDataSource.swift in Sources */,
 				60EA7BBF299A791800A745CA /* TypeOptions.swift in Sources */,
+				0A16E7172A1E3D4800B8CA3F /* ForgotPasswordView.swift in Sources */,
 				64D586C629A8CDA300FDA1AF /* SubscriptionPlanVC.swift in Sources */,
 				60CBDF20296D440F004CEE25 /* UserDefaultUtils.swift in Sources */,
 				60C666C7297FD3F90038213E /* EditProfileDataSource.swift in Sources */,
@@ -2833,6 +2832,7 @@
 				648CCF1329962198009736CF /* BlockedUserTVCell.swift in Sources */,
 				6032B398297516D800363C1E /* GenderVC.swift in Sources */,
 				648CBA012990DB55003171E1 /* CDConversation+CoreDataClass.swift in Sources */,
+				0A16E7142A1E3C3B00B8CA3F /* HeaderView.swift in Sources */,
 				6040110C29CD78990079FEE2 /* ActivityDetailsVC.swift in Sources */,
 				646F620729D44EA400C63FF0 /* ExampleAVAudioEngineDevice.m in Sources */,
 				644806E429A779620028EB33 /* AudioStreamClass.swift in Sources */,

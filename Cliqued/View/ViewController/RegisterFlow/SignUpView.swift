@@ -13,9 +13,9 @@ struct SignUpView: View {
         case signIn
     }
     
-    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel = SignUpViewModel()
     @State var currentFlow: FlowType
+    @State private var forgotPasswordViewPresented = false
     
     var body: some View {
         ZStack {
@@ -23,11 +23,6 @@ struct SignUpView: View {
             
             presentables
         }
-        .onReceive(viewModel.$messageToShow, perform: { message in
-            guard !message.isEmpty else { return }
-            
-            UIApplication.shared.showAlertPopup(message: message)
-        })
         .background(background)
         .navigationBarHidden(true)
     }
@@ -71,23 +66,7 @@ struct SignUpView: View {
     }
     
     private var header: some View {
-        ZStack {
-            HStack {
-                Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                    Image("ic_back_black")
-                }
-                
-                Spacer()
-            }
-            
-            if currentFlow == .signUp {
-                Text(Constants.screenTitle_signUp)
-                    .font(.themeBold(16))
-                    .foregroundColor(.colorSenderTextMsg)
-            }
-        }
-        .padding(.horizontal, 20)
-        .frame(height: 25)
+        HeaderView(title: currentFlow == .signUp ? Constants.screenTitle_signUp : "")
     }
     
     private var background: some View {
@@ -109,6 +88,7 @@ struct SignUpView: View {
                     SecureField(title, text: binding)
                 } else {
                     TextField(title, text: binding)
+                        .keyboardType(.emailAddress)
                 }
             }
             .font(.themeMedium(16))
@@ -195,7 +175,7 @@ struct SignUpView: View {
             
             Spacer()
             
-            Button(action: {  }) {
+            Button(action: { forgotPasswordViewPresented.toggle() }) {
                 Text(Constants.btn_forgotPassword)
             }
         }
@@ -223,9 +203,9 @@ struct SignUpView: View {
     }
     
     private var presentables: some View {
-        ZStack {
-            
-        }
+        NavigationLink(destination: ForgotPasswordView(),
+                       isActive: $forgotPasswordViewPresented,
+                       label: EmptyView.init)
     }
     
     private func switchFlow() {
