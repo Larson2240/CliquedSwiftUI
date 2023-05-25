@@ -181,12 +181,10 @@ class WelcomeViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
             
         case profileSetupType.birthdate:
-            let agevc = AgeVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController =  UINavigationController(rootViewController: agevc)
+            APP_DELEGATE.window?.rootViewController =  UIHostingController(rootView: AgeView())
             
         case profileSetupType.gender:
-            let gendervc = GenderVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: gendervc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: GenderView())
             
         case profileSetupType.relationship:
             let relationshipvc = RelationshipVC.loadFromNib()

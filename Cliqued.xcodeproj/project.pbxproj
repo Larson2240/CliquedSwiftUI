@@ -22,6 +22,9 @@
 		0A7607BE2A17A67B005DC411 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0A7607BD2A17A67B005DC411 /* FirebaseAuth */; };
 		0A7607C02A17A67B005DC411 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0A7607BF2A17A67B005DC411 /* FirebaseCrashlytics */; };
 		0A7607C32A17A748005DC411 /* TwilioVideo in Frameworks */ = {isa = PBXBuildFile; productRef = 0A7607C22A17A748005DC411 /* TwilioVideo */; };
+		0ACE846D2A1FD43E008B196C /* AgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACE846C2A1FD43E008B196C /* AgeView.swift */; };
+		0ACE846F2A1FDEA9008B196C /* GenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACE846E2A1FDEA9008B196C /* GenderView.swift */; };
+		0ACE84712A1FDF66008B196C /* RelationshipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACE84702A1FDF66008B196C /* RelationshipView.swift */; };
 		1C6F1D34E3BD03CEA2EFABD1 /* Pods_Cliqued.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF1B7C827013E49DB79FCC62 /* Pods_Cliqued.framework */; };
 		60015DF9299E5E2C00426EDB /* ReportClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60015DF8299E5E2B00426EDB /* ReportClass.swift */; };
 		600A26C82976774300231BB6 /* SetLocationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600A26C62976774300231BB6 /* SetLocationVC.swift */; };
@@ -110,10 +113,6 @@
 		6025E4AD299223BF00080812 /* SubCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6025E4AB299223BE00080812 /* SubCategory.swift */; };
 		6025E4AE299223BF00080812 /* ActivityCategoryClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6025E4AC299223BE00080812 /* ActivityCategoryClass.swift */; };
 		6025E4B029925F9300080812 /* PickSubActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6025E4AF29925F9300080812 /* PickSubActivityViewModel.swift */; };
-		6032B39329750CBE00363C1E /* AgeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032B39129750CBE00363C1E /* AgeVC.swift */; };
-		6032B39429750CBE00363C1E /* AgeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6032B39229750CBE00363C1E /* AgeVC.xib */; };
-		6032B398297516D800363C1E /* GenderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032B396297516D800363C1E /* GenderVC.swift */; };
-		6032B399297516D800363C1E /* GenderVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6032B397297516D800363C1E /* GenderVC.xib */; };
 		6032B39D297520CB00363C1E /* RelationshipVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032B39B297520CB00363C1E /* RelationshipVC.swift */; };
 		6032B39E297520CB00363C1E /* RelationshipVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6032B39C297520CB00363C1E /* RelationshipVC.xib */; };
 		6032B3A229752CFA00363C1E /* PickActivityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032B3A029752CFA00363C1E /* PickActivityVC.swift */; };
@@ -413,6 +412,9 @@
 		0A1C0FB52A1AA54A00E9979C /* RegisterOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterOptionsView.swift; sourceTree = "<group>"; };
 		0A1C0FB82A1AA79E00E9979C /* Font + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font + Extension.swift"; sourceTree = "<group>"; };
 		0A1C0FBA2A1AA8D800E9979C /* Color + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color + Extension.swift"; sourceTree = "<group>"; };
+		0ACE846C2A1FD43E008B196C /* AgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeView.swift; sourceTree = "<group>"; };
+		0ACE846E2A1FDEA9008B196C /* GenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderView.swift; sourceTree = "<group>"; };
+		0ACE84702A1FDF66008B196C /* RelationshipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipView.swift; sourceTree = "<group>"; };
 		5067FAEF3056452D5BC0D700 /* Pods-Cliqued.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cliqued.debug.xcconfig"; path = "Target Support Files/Pods-Cliqued/Pods-Cliqued.debug.xcconfig"; sourceTree = "<group>"; };
 		60015DF8299E5E2B00426EDB /* ReportClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportClass.swift; sourceTree = "<group>"; };
 		600A26C62976774300231BB6 /* SetLocationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLocationVC.swift; sourceTree = "<group>"; };
@@ -502,10 +504,6 @@
 		6025E4AB299223BE00080812 /* SubCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCategory.swift; sourceTree = "<group>"; };
 		6025E4AC299223BE00080812 /* ActivityCategoryClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCategoryClass.swift; sourceTree = "<group>"; };
 		6025E4AF29925F9300080812 /* PickSubActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickSubActivityViewModel.swift; sourceTree = "<group>"; };
-		6032B39129750CBE00363C1E /* AgeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeVC.swift; sourceTree = "<group>"; };
-		6032B39229750CBE00363C1E /* AgeVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AgeVC.xib; sourceTree = "<group>"; };
-		6032B396297516D800363C1E /* GenderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderVC.swift; sourceTree = "<group>"; };
-		6032B397297516D800363C1E /* GenderVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenderVC.xib; sourceTree = "<group>"; };
 		6032B39B297520CB00363C1E /* RelationshipVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipVC.swift; sourceTree = "<group>"; };
 		6032B39C297520CB00363C1E /* RelationshipVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RelationshipVC.xib; sourceTree = "<group>"; };
 		6032B3A029752CFA00363C1E /* PickActivityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickActivityVC.swift; sourceTree = "<group>"; };
@@ -856,6 +854,9 @@
 				6024BD422983A667003336E5 /* WelcomeViewModel.swift */,
 				604075D8298797D500CEB67F /* OnboardingViewModel.swift */,
 				0A16E71B2A1E856E00B8CA3F /* NameView.swift */,
+				0ACE846C2A1FD43E008B196C /* AgeView.swift */,
+				0ACE846E2A1FDEA9008B196C /* GenderView.swift */,
+				0ACE84702A1FDF66008B196C /* RelationshipView.swift */,
 			);
 			path = OnboardingFlow;
 			sourceTree = "<group>";
@@ -1193,24 +1194,6 @@
 				6025E4AB299223BE00080812 /* SubCategory.swift */,
 			);
 			path = ActivityCategory;
-			sourceTree = "<group>";
-		};
-		6032B39029750CA300363C1E /* AgeVC */ = {
-			isa = PBXGroup;
-			children = (
-				6032B39129750CBE00363C1E /* AgeVC.swift */,
-				6032B39229750CBE00363C1E /* AgeVC.xib */,
-			);
-			path = AgeVC;
-			sourceTree = "<group>";
-		};
-		6032B395297516C800363C1E /* GenderVC */ = {
-			isa = PBXGroup;
-			children = (
-				6032B396297516D800363C1E /* GenderVC.swift */,
-				6032B397297516D800363C1E /* GenderVC.xib */,
-			);
-			path = GenderVC;
 			sourceTree = "<group>";
 		};
 		6032B39A297520A500363C1E /* RelationshipVC */ = {
@@ -1929,8 +1912,6 @@
 				6032B3AC29755F0F00363C1E /* PickSubActvityVC */,
 				6032B39F29752CE000363C1E /* PickActivityVC */,
 				6032B39A297520A500363C1E /* RelationshipVC */,
-				6032B395297516C800363C1E /* GenderVC */,
-				6032B39029750CA300363C1E /* AgeVC */,
 			);
 			path = SignUpProcess;
 			sourceTree = "<group>";
@@ -2500,7 +2481,6 @@
 				608B541929FAAA5B00E22669 /* LicenseDetailsVC.xib in Resources */,
 				6483EC292993D537009A9051 /* ImagePreviewViewController.xib in Resources */,
 				603ABC09296E7FFF00F582D0 /* ChatVC.xib in Resources */,
-				6032B39429750CBE00363C1E /* AgeVC.xib in Resources */,
 				6040110D29CD78990079FEE2 /* ActivityDetailsVC.xib in Resources */,
 				6032B3A329752CFA00363C1E /* PickActivityVC.xib in Resources */,
 				60C666D1297FDCC50038213E /* UserProfileCell.xib in Resources */,
@@ -2530,7 +2510,6 @@
 				6032B39E297520CB00363C1E /* RelationshipVC.xib in Resources */,
 				600A26C92976774300231BB6 /* SetLocationVC.xib in Resources */,
 				6483EC2E2993D587009A9051 /* ImagePreviewCell.xib in Resources */,
-				6032B399297516D800363C1E /* GenderVC.xib in Resources */,
 				6025E4A42992224500080812 /* NoDataFoundCVCell.xib in Resources */,
 				60D352EC29712038007E09E8 /* Rationell-Bold.otf in Resources */,
 				60622AB329EEB82300F8253A /* WebviewVC.xib in Resources */,
@@ -2669,6 +2648,7 @@
 				648CBA2E2990DC1D003171E1 /* ReceiverProfileTVCell.swift in Sources */,
 				601245C3297A9B5500441F09 /* AddActivityVC.swift in Sources */,
 				648CBA232990DC1D003171E1 /* ChatViewModel.swift in Sources */,
+				0ACE846D2A1FD43E008B196C /* AgeView.swift in Sources */,
 				60CBDF3A296D4447004CEE25 /* FBEncryptorAES.m in Sources */,
 				648CBA052990DB55003171E1 /* CoreDBManager.swift in Sources */,
 				60EA7BBE299A791800A745CA /* SubTypes.swift in Sources */,
@@ -2681,6 +2661,7 @@
 				600A26E02976B46400231BB6 /* StartExploringVC.swift in Sources */,
 				60F17E222996457600ACD7AF /* ForgotPasswordViewModel.swift in Sources */,
 				603ABC03296E7E4500F582D0 /* ActivitiesVC.swift in Sources */,
+				0ACE846F2A1FDEA9008B196C /* GenderView.swift in Sources */,
 				60C666DB2980003A0038213E /* ConnectedAccountCell.swift in Sources */,
 				6483EC202993BAC1009A9051 /* ReceiverVideoTVCell.swift in Sources */,
 				60CBDF4B296D4451004CEE25 /* Data+Extension.swift in Sources */,
@@ -2752,6 +2733,7 @@
 				64D34AC6299CA70D00811B45 /* ProviderDelegate.swift in Sources */,
 				600A26DB29769D9F00231BB6 /* NotificationPermissionVC.swift in Sources */,
 				6032B3B82975658D00363C1E /* SubActivityCell.swift in Sources */,
+				0ACE84712A1FDF66008B196C /* RelationshipView.swift in Sources */,
 				60CBDF26296D4442004CEE25 /* Dynamic.swift in Sources */,
 				60CBDF83296D9BDC004CEE25 /* TabBarVC.swift in Sources */,
 				64D586CE29A8CDA300FDA1AF /* SubscriptionPlanDataSource.swift in Sources */,
@@ -2790,7 +2772,6 @@
 				6032B3B42975643900363C1E /* SubActivitySectionCell.swift in Sources */,
 				60AD7C8A299BA44000E2B560 /* ActivityEmptyView.swift in Sources */,
 				648CCF1329962198009736CF /* BlockedUserTVCell.swift in Sources */,
-				6032B398297516D800363C1E /* GenderVC.swift in Sources */,
 				648CBA012990DB55003171E1 /* CDConversation+CoreDataClass.swift in Sources */,
 				0A16E7142A1E3C3B00B8CA3F /* HeaderView.swift in Sources */,
 				6040110C29CD78990079FEE2 /* ActivityDetailsVC.swift in Sources */,
@@ -2895,7 +2876,6 @@
 				60CBDF3F296D4447004CEE25 /* WebService-Prefix.swift in Sources */,
 				601245D3297AA61700441F09 /* ActivityPhotoCell.swift in Sources */,
 				60CBDF50296D4452004CEE25 /* UITableVIew+Extension.swift in Sources */,
-				6032B39329750CBE00363C1E /* AgeVC.swift in Sources */,
 				6476B14129B1CA5F00F4CF03 /* Settings.swift in Sources */,
 				6040111029CD79D30079FEE2 /* ActivityDetailsViewModel.swift in Sources */,
 				60E5C81F29781DDB0058435C /* ActivityView.swift in Sources */,

@@ -41,7 +41,7 @@ final class OnboardingViewModel: ObservableObject {
     
     @Published var name = ""
     @Published var profileSetupType = ""
-    @Published var dateofbirth = ""
+    @Published var dateOfBirth = ""
     @Published var gender = ""
     @Published var looking_for = ""
     @Published var deletedLookingForIds = ""
@@ -69,7 +69,7 @@ final class OnboardingViewModel: ObservableObject {
             apiParams.userID: "\(Constants.loggedInUser?.id ?? 0)",
             apiParams.profile_setup_type: profileSetupType,
             apiParams.name: name,
-            apiParams.birthdate: dateofbirth,
+            apiParams.birthdate: dateOfBirth,
             apiParams.gender: gender,
             apiParams.looking_for: convertRelationshipStructToString(),
             apiParams.looking_for_deleted_id: deletedLookingForIds,

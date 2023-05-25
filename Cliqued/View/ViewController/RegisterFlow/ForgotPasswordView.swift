@@ -26,20 +26,21 @@ struct ForgotPasswordView: View {
     }
     
     private var content: some View {
-        ZStack {
+        VStack(spacing: 30) {
+            header
+            
+            description
+            
+            Image("ic_registrationlogo")
+            
+            Spacer()
+            
             emailStack
             
-            VStack(spacing: 30) {
-                header
-                
-                description
-                
-                Image("ic_registrationlogo")
-                
-                Spacer()
-                
-                sendButton
-            }
+            Spacer()
+            Spacer()
+            
+            sendButton
         }
     }
     

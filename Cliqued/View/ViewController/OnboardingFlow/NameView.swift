@@ -11,11 +11,19 @@ struct NameView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel = OnboardingViewModel()
     
+    @State private var ageViewPresented = false
+    
     var body: some View {
-        content
+        NavigationView {
+            ZStack {
+                content
+                
+                presentables
+            }
             .background(background)
             .onAppear { onAppearConfig() }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
+            .navigationBarHidden(true)
+        }
     }
     
     private var content: some View {
@@ -24,10 +32,11 @@ struct NameView: View {
             
             description
             
-            Image("ic_registrationlogo")
+            Spacer()
             
             emailStack
             
+            Spacer()
             Spacer()
             
             sendButton
@@ -79,11 +88,11 @@ struct NameView: View {
     }
     
     private var sendButton: some View {
-        Button(action: {  }) {
+        Button(action: { continueAction() }) {
             ZStack {
                 Color.theme
                 
-                Text(Constants.btn_send)
+                Text(Constants.btn_continue)
                     .font(.themeBold(20))
                     .foregroundColor(.colorWhite)
             }
@@ -93,9 +102,37 @@ struct NameView: View {
         .padding(30)
     }
     
+    private var presentables: some View {
+        NavigationLink(destination: AgeView(viewModel: viewModel),
+                       isActive: $ageViewPresented,
+                       label: EmptyView.init)
+    }
+    
     private func onAppearConfig() {
         viewModel.nextAction = {
-            
+            ageViewPresented.toggle()
+        }
+        
+        prefilledNameForSocialLoginUser()
+    }
+    
+    func prefilledNameForSocialLoginUser() {
+        let userName = UserDefaults.standard.string(forKey: UserDefaultKey().userName)
+        viewModel.name = userName ?? ""
+    }
+    
+    private func continueAction() {
+        viewModel.profileSetupType = ProfileSetupType().name
+        
+        if viewModel.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_name)
+        } else {
+            let isValidName = isOnlyCharacter(text: viewModel.name)
+            if isValidName {
+                viewModel.callSignUpProcessAPI()
+            } else {
+                UIApplication.shared.showAlertPopup(message: Constants.validMsg_validName)
+            }
         }
     }
 }
