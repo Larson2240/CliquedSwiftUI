@@ -19,20 +19,18 @@ struct NameView: View {
     }
     
     private var content: some View {
-        ZStack {
+        VStack(spacing: 30) {
+            header
+            
+            description
+            
+            Image("ic_registrationlogo")
+            
             emailStack
             
-            VStack(spacing: 30) {
-                header
-                
-                description
-                
-                Image("ic_registrationlogo")
-                
-                Spacer()
-                
-                sendButton
-            }
+            Spacer()
+            
+            sendButton
         }
     }
     
@@ -71,10 +69,11 @@ struct NameView: View {
     private var description: some View {
         VStack(spacing: 16) {
             Text(Constants.label_nameScreenTitle)
+                .font(.themeMedium(20))
             
             Text(Constants.label_nameScreenSubTitle)
+                .font(.themeMedium(14))
         }
-        .font(.themeMedium(20))
         .foregroundColor(.colorDarkGrey)
         .multilineTextAlignment(.center)
     }

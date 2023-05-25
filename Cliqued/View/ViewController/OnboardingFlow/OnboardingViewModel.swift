@@ -162,7 +162,7 @@ extension OnboardingViewModel {
     func convertUserAddressStructToString() -> String {
         var optionlist = [String]()
         for i in userAddress {
-            let dict : NSMutableDictionary = [apiParams.address : i.address ,
+            let dict : NSMutableDictionary = [apiParams.address : i.address,
                                               apiParams.latitude : i.latitude,
                                               apiParams.longitude : i.longitude,
                                               apiParams.city : i.city,
