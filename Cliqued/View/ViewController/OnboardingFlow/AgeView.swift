@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AgeView: View {
-    @Environment(\.presentationMode) private var presentationMode
     @StateObject var viewModel = OnboardingViewModel()
     
     @State private var date = Date()
@@ -69,6 +68,7 @@ struct AgeView: View {
         .foregroundColor(.colorDarkGrey)
         .multilineTextAlignment(.center)
         .padding(.top, 40)
+        .padding(.horizontal)
     }
     
     private var dateStack: some View {

@@ -85,6 +85,7 @@ struct NameView: View {
         }
         .foregroundColor(.colorDarkGrey)
         .multilineTextAlignment(.center)
+        .padding(.horizontal)
     }
     
     private var sendButton: some View {

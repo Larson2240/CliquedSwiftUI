@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct GenderView: View {
-    @Environment(\.presentationMode) private var presentationMode
     @StateObject var viewModel = OnboardingViewModel()
     
     @State private var relationshipViewPresented = false
@@ -65,6 +64,7 @@ struct GenderView: View {
         .foregroundColor(.colorDarkGrey)
         .multilineTextAlignment(.center)
         .padding(.top, 40)
+        .padding(.horizontal)
     }
     
     private var genderStack: some View {
