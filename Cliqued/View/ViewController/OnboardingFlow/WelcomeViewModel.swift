@@ -187,8 +187,7 @@ class WelcomeViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: GenderView())
             
         case profileSetupType.relationship:
-            let relationshipvc = RelationshipVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: relationshipvc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
             
         case profileSetupType.category:
             let pickactivityvc = PickActivityVC.loadFromNib()

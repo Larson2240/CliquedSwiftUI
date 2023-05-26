@@ -9,6 +9,8 @@ import SwiftUI
 
 struct RelationshipView: View {
     @StateObject var viewModel = OnboardingViewModel()
+    var isFromEditProfile: Bool
+    var arrayOfUserPreference: [UserPreferences]?
     
     @State private var friendshipWithMenSelected = false
     @State private var friendshipWithWomanSelected = false
@@ -180,29 +182,61 @@ struct RelationshipView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: RelationshipView(),
-                       isActive: $relationshipViewPresented,
-                       label: EmptyView.init)
+        ZStack {
+            
+        }
     }
     
     private func onAppearConfig() {
         viewModel.nextAction = {
+//            if !isFromEditProfile {
+//                let pickactivityVC = PickActivityVC.loadFromNib()
+//                navigationController?.pushViewController(pickactivityVC, animated: true)
+//            } else {
+//                NotificationCenter.default.post(name: Notification.Name("refreshProfileData"), object: nil, userInfo: nil)
+//                let editprofilevc = EditProfileVC.loadFromNib()
+//                editprofilevc.isUpdateData = true
+//                navigationController?.pushViewController(editprofilevc, animated: true)
+//            }
+            
             relationshipViewPresented.toggle()
         }
     }
     
     private func continueAction() {
-        if !viewModel.gender.isEmpty {
-            viewModel.profileSetupType = ProfileSetupType().gender
-            viewModel.callSignUpProcessAPI()
+        if !isFromEditProfile {
+            viewModel.profileSetupType = ProfileSetupType().relationship
         } else {
-            UIApplication.shared.showAlertPopup(message: Constants.validMsg_gender)
+            viewModel.profileSetupType = ProfileSetupType().completed
         }
+        
+        guard !viewModel.arrayRelationshipParam.isEmpty else {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_relationship)
+            return
+        }
+        
+        if romanceWithMenSelected {
+            viewModel.arrayRelationshipParam.append(RelationshipParam(preference_id: "1", preference_option_id: "2", user_preference_id: "0"))
+        }
+        
+        if romanceWithWomanSelected {
+            viewModel.arrayRelationshipParam.append(RelationshipParam(preference_id: "1", preference_option_id: "1", user_preference_id: "0"))
+        }
+        
+        if friendshipWithMenSelected {
+            viewModel.arrayRelationshipParam.append(RelationshipParam(preference_id: "2", preference_option_id: "24", user_preference_id: "0"))
+        }
+        
+        if friendshipWithWomanSelected {
+            viewModel.arrayRelationshipParam.append(RelationshipParam(preference_id: "2", preference_option_id: "23", user_preference_id: "0"))
+        }
+        
+        viewModel.callSignUpProcessAPI()
     }
 }
 
 struct RelationshipView_Previews: PreviewProvider {
     static var previews: some View {
-        RelationshipView()
+        RelationshipView(isFromEditProfile: false)
     }
 }

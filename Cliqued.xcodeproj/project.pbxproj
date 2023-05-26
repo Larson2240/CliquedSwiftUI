@@ -113,8 +113,6 @@
 		6025E4AD299223BF00080812 /* SubCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6025E4AB299223BE00080812 /* SubCategory.swift */; };
 		6025E4AE299223BF00080812 /* ActivityCategoryClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6025E4AC299223BE00080812 /* ActivityCategoryClass.swift */; };
 		6025E4B029925F9300080812 /* PickSubActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6025E4AF29925F9300080812 /* PickSubActivityViewModel.swift */; };
-		6032B39D297520CB00363C1E /* RelationshipVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032B39B297520CB00363C1E /* RelationshipVC.swift */; };
-		6032B39E297520CB00363C1E /* RelationshipVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6032B39C297520CB00363C1E /* RelationshipVC.xib */; };
 		6032B3A229752CFA00363C1E /* PickActivityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032B3A029752CFA00363C1E /* PickActivityVC.swift */; };
 		6032B3A329752CFA00363C1E /* PickActivityVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6032B3A129752CFA00363C1E /* PickActivityVC.xib */; };
 		6032B3A82975303F00363C1E /* ActivityCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032B3A62975303F00363C1E /* ActivityCVCell.swift */; };
@@ -290,7 +288,6 @@
 		60F42A0E2990DACE00381566 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		60F42A0F2990DACE00381566 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		60F42C3C2990DBD900381566 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		60F42C542990DF6B00381566 /* RelationshipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F42C532990DF6B00381566 /* RelationshipViewModel.swift */; };
 		60F48EB429935F3D001198CB /* SelectPictureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F48EB329935F3D001198CB /* SelectPictureViewModel.swift */; };
 		60FD459D299D10C300E54C92 /* Followers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FD459C299D10C200E54C92 /* Followers.swift */; };
 		64193B6229FA92DD00B0066F /* whitewave.gif in Resources */ = {isa = PBXBuildFile; fileRef = 64193B6029FA92DC00B0066F /* whitewave.gif */; };
@@ -504,8 +501,6 @@
 		6025E4AB299223BE00080812 /* SubCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCategory.swift; sourceTree = "<group>"; };
 		6025E4AC299223BE00080812 /* ActivityCategoryClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCategoryClass.swift; sourceTree = "<group>"; };
 		6025E4AF29925F9300080812 /* PickSubActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickSubActivityViewModel.swift; sourceTree = "<group>"; };
-		6032B39B297520CB00363C1E /* RelationshipVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipVC.swift; sourceTree = "<group>"; };
-		6032B39C297520CB00363C1E /* RelationshipVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RelationshipVC.xib; sourceTree = "<group>"; };
 		6032B3A029752CFA00363C1E /* PickActivityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickActivityVC.swift; sourceTree = "<group>"; };
 		6032B3A129752CFA00363C1E /* PickActivityVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickActivityVC.xib; sourceTree = "<group>"; };
 		6032B3A62975303F00363C1E /* ActivityCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCVCell.swift; sourceTree = "<group>"; };
@@ -685,7 +680,6 @@
 		60ED7C372981489800CD6A78 /* SelectPicturesVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectPicturesVC.xib; sourceTree = "<group>"; };
 		60ED7C392981489800CD6A78 /* SelectPicturesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPicturesDataSource.swift; sourceTree = "<group>"; };
 		60F17E212996457600ACD7AF /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
-		60F42C532990DF6B00381566 /* RelationshipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipViewModel.swift; sourceTree = "<group>"; };
 		60F48EB329935F3D001198CB /* SelectPictureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPictureViewModel.swift; sourceTree = "<group>"; };
 		60FD459C299D10C200E54C92 /* Followers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Followers.swift; sourceTree = "<group>"; };
 		64193B6029FA92DC00B0066F /* whitewave.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = whitewave.gif; sourceTree = "<group>"; };
@@ -1194,16 +1188,6 @@
 				6025E4AB299223BE00080812 /* SubCategory.swift */,
 			);
 			path = ActivityCategory;
-			sourceTree = "<group>";
-		};
-		6032B39A297520A500363C1E /* RelationshipVC */ = {
-			isa = PBXGroup;
-			children = (
-				60F42C522990DF4D00381566 /* ViewModel-DataSource */,
-				6032B39B297520CB00363C1E /* RelationshipVC.swift */,
-				6032B39C297520CB00363C1E /* RelationshipVC.xib */,
-			);
-			path = RelationshipVC;
 			sourceTree = "<group>";
 		};
 		6032B39F29752CE000363C1E /* PickActivityVC */ = {
@@ -1911,7 +1895,6 @@
 				600A26C52976772300231BB6 /* SetLocationVC */,
 				6032B3AC29755F0F00363C1E /* PickSubActvityVC */,
 				6032B39F29752CE000363C1E /* PickActivityVC */,
-				6032B39A297520A500363C1E /* RelationshipVC */,
 			);
 			path = SignUpProcess;
 			sourceTree = "<group>";
@@ -2012,14 +1995,6 @@
 				60EA7BBC299A791700A745CA /* TypeOptions.swift */,
 			);
 			path = PreferenceType;
-			sourceTree = "<group>";
-		};
-		60F42C522990DF4D00381566 /* ViewModel-DataSource */ = {
-			isa = PBXGroup;
-			children = (
-				60F42C532990DF6B00381566 /* RelationshipViewModel.swift */,
-			);
-			path = "ViewModel-DataSource";
 			sourceTree = "<group>";
 		};
 		644806D129A765920028EB33 /* CallVC */ = {
@@ -2507,7 +2482,6 @@
 				6032B3B92975658D00363C1E /* SubActivityCell.xib in Resources */,
 				64193B6229FA92DD00B0066F /* whitewave.gif in Resources */,
 				603ABC04296E7E4500F582D0 /* ActivitiesVC.xib in Resources */,
-				6032B39E297520CB00363C1E /* RelationshipVC.xib in Resources */,
 				600A26C92976774300231BB6 /* SetLocationVC.xib in Resources */,
 				6483EC2E2993D587009A9051 /* ImagePreviewCell.xib in Resources */,
 				6025E4A42992224500080812 /* NoDataFoundCVCell.xib in Resources */,
@@ -2637,7 +2611,6 @@
 				6498BAEC299F89190023C6EB /* EmailNotificationDataSource.swift in Sources */,
 				60C666B2297F9B960038213E /* OtherUserActivityDetailsVC.swift in Sources */,
 				60ED7C2A298134DF00CD6A78 /* UserPreferences.swift in Sources */,
-				6032B39D297520CB00363C1E /* RelationshipVC.swift in Sources */,
 				601245DB297AA65900441F09 /* ActivityDescriptionCell.swift in Sources */,
 				6483EC242993BAE1009A9051 /* SenderVideoTVCell.swift in Sources */,
 				601F0ADB297E5C1B0027B472 /* SettingsRowCell.swift in Sources */,
@@ -2765,7 +2738,6 @@
 				600A26C82976774300231BB6 /* SetLocationVC.swift in Sources */,
 				0A16E70A2A1D29DF00B8CA3F /* SignUpView.swift in Sources */,
 				6040111629CD9D2D0079FEE2 /* ActivityLikeUserCell.swift in Sources */,
-				60F42C542990DF6B00381566 /* RelationshipViewModel.swift in Sources */,
 				60C666D5298000020038213E /* ConnectedAccountVC.swift in Sources */,
 				6032B3AF29755F3C00363C1E /* PickSubActvityVC.swift in Sources */,
 				6025E4AD299223BF00080812 /* SubCategory.swift in Sources */,

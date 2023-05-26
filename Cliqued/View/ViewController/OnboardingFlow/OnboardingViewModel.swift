@@ -58,10 +58,10 @@ final class OnboardingViewModel: ObservableObject {
     private let apiParams = ApiParams()
     var nextAction: (() -> Void)?
     
-    private var arrayRelationshipParam = [RelationshipParam]()
-    private var arrayUserAddressParam = [AddressParam]()
-    private var arrayDistanceParam = [DistanceParam]()
-    private var arrayNotificationParam = [NotificationParam]()
+    var arrayRelationshipParam = [RelationshipParam]()
+    var arrayUserAddressParam = [AddressParam]()
+    var arrayDistanceParam = [DistanceParam]()
+    var arrayNotificationParam = [NotificationParam]()
     
     //MARK: Social Login API
     func callSignUpProcessAPI() {
@@ -122,29 +122,17 @@ final class OnboardingViewModel: ObservableObject {
     }
     
     //MARK: Save user data in UserDefault
-    func saveUserInfoAndProceed(user: User){
+    func saveUserInfoAndProceed(user: User) {
         Constants.saveUserInfoAndProceed(user: user)
     }
 }
 
-//MARK: getter/setter methods
 extension OnboardingViewModel {
-    func getRelationship() -> [RelationshipParam] {
-        arrayRelationshipParam
-    }
-    
-    func setRelationship(value: RelationshipParam) {
-        arrayRelationshipParam.append(value)
-    }
-    func removeSelectedRelationship(Index: Int) {
-        arrayRelationshipParam.remove(at: Index)
-    }
-    
     //MARK: Convert Relationship Struct to String
     func convertRelationshipStructToString() -> String {
         var optionlist = [String]()
-        for i in getRelationship() {
-            let dict : NSMutableDictionary = [apiParams.preferenceId : i.preference_id ,
+        for i in arrayRelationshipParam {
+            let dict : NSMutableDictionary = [apiParams.preferenceId : i.preference_id,
                                               apiParams.preferenceOptionId : i.preference_option_id,
                                               apiParams.userPreferenceId : i.user_preference_id
             ]
@@ -155,6 +143,7 @@ extension OnboardingViewModel {
         }
         let tappingdata : Data = try! JSONSerialization.data(withJSONObject: optionlist, options: [])
         let jsonstring = String(data: tappingdata as Data, encoding: .utf8)
+        
         return jsonstring!
     }
     

@@ -11,6 +11,7 @@ import StepSlider
 import SKPhotoBrowser
 import AVKit
 import AVFoundation
+import SwiftUI
 
 class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     
@@ -285,9 +286,7 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     
     //MARK: Button Looking For Tap
     @objc func btnLookingForTap(_ sender: UIButton) {
-        let relationshipvc = RelationshipVC.loadFromNib()
-        relationshipvc.isFromEditProfile = true
-        relationshipvc.arrayOfUserPreference = viewModel.getUserPreferencesArray()
+        let relationshipvc = UIHostingController(rootView: RelationshipView(isFromEditProfile: true, arrayOfUserPreference: viewModel.getUserPreferencesArray()))
         viewController.navigationController?.pushViewController(relationshipvc, animated: true)
     }
     

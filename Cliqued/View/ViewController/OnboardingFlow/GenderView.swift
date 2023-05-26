@@ -120,7 +120,7 @@ struct GenderView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: RelationshipView(),
+        NavigationLink(destination: RelationshipView(isFromEditProfile: false),
                        isActive: $relationshipViewPresented,
                        label: EmptyView.init)
     }
