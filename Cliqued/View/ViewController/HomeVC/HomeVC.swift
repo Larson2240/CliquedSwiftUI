@@ -179,14 +179,11 @@ extension HomeVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
             
         case profileSetupType.category:
-            let pickactivityvc = PickActivityVC.loadFromNib()
-            pickactivityvc.arrayOfActivity = self.favoriteActivity
-//            pickactivityvc.isFromSetupProfile = isCategoryNotEmpty
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: pickactivityvc)
+            let pickActivityView = PickActivityView(favoriteActivity: favoriteActivity)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: pickActivityView)
             
         case profileSetupType.sub_category:
-            let picksubactivityvc = PickSubActvityVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: picksubactivityvc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView())
             
         case profileSetupType.profile_images:
             let selectpicturevc = SelectPicturesVC.loadFromNib()

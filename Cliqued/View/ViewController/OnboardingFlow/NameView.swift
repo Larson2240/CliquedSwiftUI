@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NameView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @StateObject private var viewModel = OnboardingViewModel()
+    @StateObject private var viewModel = OnboardingViewModel.shared
     
     @State private var ageViewPresented = false
     
@@ -24,6 +24,7 @@ struct NameView: View {
             .onAppear { onAppearConfig() }
             .navigationBarHidden(true)
         }
+        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
@@ -39,7 +40,7 @@ struct NameView: View {
             Spacer()
             Spacer()
             
-            sendButton
+            continueButton
         }
     }
     
@@ -49,6 +50,24 @@ struct NameView: View {
             .scaledToFill()
             .ignoresSafeArea()
             .frame(width: screenSize.width, height: screenSize.height)
+    }
+    
+    private var header: some View {
+        HeaderView(title: Constants.screenTitle_forgotPwd,
+                   backButtonVisible: false)
+    }
+    
+    private var description: some View {
+        VStack(spacing: 16) {
+            Text(Constants.label_nameScreenTitle)
+                .font(.themeBold(20))
+            
+            Text(Constants.label_nameScreenSubTitle)
+                .font(.themeMedium(14))
+        }
+        .foregroundColor(.colorDarkGrey)
+        .multilineTextAlignment(.center)
+        .padding(.horizontal)
     }
     
     private var emailStack: some View {
@@ -70,25 +89,7 @@ struct NameView: View {
         .padding(.horizontal, 30)
     }
     
-    private var header: some View {
-        HeaderView(title: Constants.screenTitle_forgotPwd,
-                   backButtonVisible: true)
-    }
-    
-    private var description: some View {
-        VStack(spacing: 16) {
-            Text(Constants.label_nameScreenTitle)
-                .font(.themeMedium(20))
-            
-            Text(Constants.label_nameScreenSubTitle)
-                .font(.themeMedium(14))
-        }
-        .foregroundColor(.colorDarkGrey)
-        .multilineTextAlignment(.center)
-        .padding(.horizontal)
-    }
-    
-    private var sendButton: some View {
+    private var continueButton: some View {
         Button(action: { continueAction() }) {
             ZStack {
                 Color.theme
@@ -104,9 +105,11 @@ struct NameView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: AgeView(viewModel: viewModel),
+        NavigationLink(destination: AgeView(),
                        isActive: $ageViewPresented,
                        label: EmptyView.init)
+        .isDetailLink(false)
+        
     }
     
     private func onAppearConfig() {

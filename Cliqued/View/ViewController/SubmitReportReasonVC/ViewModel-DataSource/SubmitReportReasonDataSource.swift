@@ -99,7 +99,7 @@ class SubmitReportReasonDataSource: NSObject, UITableViewDelegate, UITableViewDa
             
             if viewModel.getIsDataLoad() {
                 cell.hideAnimation()
-                viewController.labelReasonTitle.hideSkeleton()
+//                viewController.labelReasonTitle.hideSkeleton()
             } else {
                 viewModel.setIsDataLoad(value: false)
                 cell.layoutIfNeeded()

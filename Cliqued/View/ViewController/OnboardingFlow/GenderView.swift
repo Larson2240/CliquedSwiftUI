@@ -8,19 +8,22 @@
 import SwiftUI
 
 struct GenderView: View {
-    @StateObject var viewModel = OnboardingViewModel()
+    @StateObject private var viewModel = OnboardingViewModel.shared
     
     @State private var relationshipViewPresented = false
     
     var body: some View {
-        ZStack {
-            content
-            
-            presentables
+        NavigationView {
+            ZStack {
+                content
+                
+                presentables
+            }
+            .background(background)
+            .onAppear { onAppearConfig() }
+            .navigationBarHidden(true)
         }
-        .background(background)
-        .onAppear { onAppearConfig() }
-        .navigationBarHidden(true)
+        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
@@ -36,7 +39,7 @@ struct GenderView: View {
             Spacer()
             Spacer()
             
-            sendButton
+            continueButton
         }
     }
     
@@ -50,7 +53,7 @@ struct GenderView: View {
     
     private var header: some View {
         HeaderView(title: Constants.screenTitle_gender,
-                   backButtonVisible: true)
+                   backButtonVisible: false)
     }
     
     private var description: some View {
@@ -69,21 +72,17 @@ struct GenderView: View {
     
     private var genderStack: some View {
         HStack(spacing: 16) {
-            genderOption(icon: "ic_female_black", title: Constants.btn_female, isSelected: viewModel.gender == Constants.btn_female)
+            genderOption(icon: "ic_female_black", title: Constants.btn_female)
             
-            genderOption(icon: "ic_male_black", title: Constants.btn_male, isSelected: viewModel.gender == Constants.btn_male)
+            genderOption(icon: "ic_male_black", title: Constants.btn_male)
         }
         .padding(.horizontal)
     }
     
-    private func genderOption(
-        icon: String,
-        title: String,
-        isSelected: Bool
-    ) -> some View {
+    private func genderOption(icon: String, title: String) -> some View {
         Button(action: { viewModel.gender = title }) {
             ZStack {
-                if isSelected {
+                if viewModel.gender == title {
                     Color.colorGreenSelected
                 } else {
                     Color.colorLightGrey
@@ -92,11 +91,11 @@ struct GenderView: View {
                 HStack {
                     Image(icon)
                         .renderingMode(.template)
-                        .foregroundColor(isSelected ? .white : .colorDarkGrey)
+                        .foregroundColor(viewModel.gender == title ? .white : .colorDarkGrey)
                     
                     Text(title)
                         .font(.themeMedium(18))
-                        .foregroundColor(isSelected ? .white : .colorDarkGrey)
+                        .foregroundColor(viewModel.gender == title ? .white : .colorDarkGrey)
                 }
             }
         }
@@ -104,7 +103,7 @@ struct GenderView: View {
         .cornerRadius(10)
     }
     
-    private var sendButton: some View {
+    private var continueButton: some View {
         Button(action: { continueAction() }) {
             ZStack {
                 Color.theme
@@ -123,6 +122,7 @@ struct GenderView: View {
         NavigationLink(destination: RelationshipView(isFromEditProfile: false),
                        isActive: $relationshipViewPresented,
                        label: EmptyView.init)
+        .isDetailLink(false)
     }
     
     private func onAppearConfig() {

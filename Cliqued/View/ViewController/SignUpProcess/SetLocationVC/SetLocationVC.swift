@@ -109,38 +109,5 @@ extension SetLocationVC {
     }
     //MARK: Handle API response
     func handleApiResponse() {
-        
-        //Check response message
-        viewModel.isMessage.bind { [weak self] message in
-            self?.showAlertPopup(message: message)
-        }
-        
-        //If API success
-        viewModel.isDataGet.bind { [weak self] isSuccess in
-            guard let self = self else { return }
-            
-            if isSuccess {
-                if !self.isFromEditProfile {
-                    let notificationVC = NotificationPermissionVC.loadFromNib()
-                    self.navigationController?.pushViewController(notificationVC, animated: true)
-                } else {
-                    NotificationCenter.default.post(name: Notification.Name("refreshProfileData"), object: nil, userInfo:nil)
-                    let editprofilevc = EditProfileVC.loadFromNib()
-                    editprofilevc.isUpdateData = true
-                    self.navigationController?.pushViewController(editprofilevc, animated: true)
-                }
-            }
-        }
-        
-        //Loader hide & show
-        viewModel.isLoaderShow.bind { [weak self] isLoader in
-            guard let self = self else { return }
-            
-            if isLoader {
-                self.showLoader()
-            } else {
-                self.dismissLoader()
-            }
-        }
     }
 }

@@ -35,9 +35,7 @@ struct NotificationParam {
 }
 
 final class OnboardingViewModel: ObservableObject {
-    var isMessage: Dynamic<String> = Dynamic(String())
-    var isLoaderShow: Dynamic<Bool> = Dynamic(true)
-    var isDataGet: Dynamic<Bool> = Dynamic(false)
+    static var shared = OnboardingViewModel()
     
     @Published var name = ""
     @Published var profileSetupType = ""

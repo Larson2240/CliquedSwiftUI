@@ -206,27 +206,6 @@ extension NotificationPermissionVC {
     //MARK: Handle API response
     func handleApiResponse() {
         
-        //Check response message
-        viewModel.isMessage.bind { message in
-            self.showAlertPopup(message: message)
-        }
-        
-        //If API success
-        viewModel.isDataGet.bind { isSuccess in
-            if isSuccess {
-                let startExploringVC = StartExploringVC.loadFromNib()
-                self.navigationController?.pushViewController(startExploringVC, animated: true)
-            }
-        }
-        
-        //Loader hide & show
-        viewModel.isLoaderShow.bind { isLoader in
-            if isLoader {
-                self.showLoader()
-            } else {
-                self.dismissLoader()
-            }
-        }
     }
 }
 //MARK: Extension Push Notification

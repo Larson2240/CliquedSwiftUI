@@ -5,72 +5,68 @@
 //  Created by C211 on 07/02/23.
 //
 
-import UIKit
+import Combine
 
 struct structPickActivityParams {
     var activityCategoryId = ""
     var activitySubCategoryId = ""
 }
 
-class PickActivityViewModel {
-    
-    var isMessage: Dynamic<String> = Dynamic(String())
-    var isLoaderShow: Dynamic<Bool> = Dynamic(true)
-    var isActivityDataGet: Dynamic<Bool> = Dynamic(false)
-    
+final class PickActivityViewModel: ObservableObject {
     //MARK: Variable
     private var isDataLoad: Bool = false
     private var isRefresh: Bool = false
-    var arrayOfActivity = [ActivityCategoryClass]()
+    @Published var arrayOfActivity = [ActivityCategoryClass]()
+    
     private var arrayOfSelectedPickActivity = [structPickActivityParams]()
     private var arrayOfAllSelectedActivity = [structPickActivityParams]()
     private var arrayOfNewPickActivity = [structPickActivityParams]()
     var arrayOfDeletedActivityIds = [Int]()
-    var arrayOfSelectedCategoryIds = [Int]()
+    @Published var arrayOfSelectedCategoryIds = [Int]()
     private let apiParams = ApiParams()
     
     //MARK: Call Get Preferences Data API
     func callGetActivityDataAPI() {
+        guard Connectivity.isConnectedToInternet() else {
+            UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
+            return
+        }
         
-        if(Connectivity.isConnectedToInternet()) {
-            DispatchQueue.main.async { [weak self] in
-                self?.arrayOfActivity.removeAll()
-            }
-            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetActivityCategory) { [weak self] response, error, message in
-                guard let self = self else { return }
+        arrayOfActivity.removeAll()
+        
+        UIApplication.shared.showLoader()
+        
+        RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetActivityCategory) { [weak self] response, error, message in
+            guard let self = self else { return }
+            
+            UIApplication.shared.hideLoader()
+            
+            self.setIsDataLoad(value: true)
+            if error != nil && response == nil {
+                UIApplication.shared.showAlertPopup(message: message ?? "")
+            } else {
+                let json = response as? NSDictionary
+                let status = json?[API_STATUS] as? Int
+                _ = json?[API_MESSAGE] as? String
                 
-                self.setIsDataLoad(value: true)
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
-                } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    _ = json?[API_MESSAGE] as? String
-                    
-                    if status == SUCCESS {
-                        if let activityArray = json?["activity_category"] as? NSArray {
-                            if activityArray.count > 0 {
-                                for activityInfo in activityArray {
-                                    let dicActivity = activityInfo as! NSDictionary
-                                    let decoder = JSONDecoder()
-                                    do {
-                                        let jsonData = try JSONSerialization.data(withJSONObject:dicActivity)
-                                        let activityData = try decoder.decode(ActivityCategoryClass.self, from: jsonData)
-                                        self.arrayOfActivity.append(activityData)
-                                    } catch {
-                                        print(error.localizedDescription)
-                                    }
+                if status == SUCCESS {
+                    if let activityArray = json?["activity_category"] as? NSArray {
+                        if activityArray.count > 0 {
+                            for activityInfo in activityArray {
+                                let dicActivity = activityInfo as! NSDictionary
+                                let decoder = JSONDecoder()
+                                do {
+                                    let jsonData = try JSONSerialization.data(withJSONObject:dicActivity)
+                                    let activityData = try decoder.decode(ActivityCategoryClass.self, from: jsonData)
+                                    self.arrayOfActivity.append(activityData)
+                                } catch {
+                                    print(error.localizedDescription)
                                 }
-                                self.isActivityDataGet.value = true
-                            } else {
-                                self.isActivityDataGet.value = true
                             }
                         }
                     }
                 }
             }
-        } else {
-            self.isMessage.value = Constants.alert_InternetConnectivity
         }
     }
 }
@@ -159,7 +155,6 @@ extension PickActivityViewModel {
         isRefresh = value
     }
     
-    
     func setSelectedCategoryId(value: Int) {
         arrayOfSelectedCategoryIds.append(value)
     }
@@ -173,11 +168,8 @@ extension PickActivityViewModel {
         arrayOfSelectedCategoryIds
     }
     
-    
-    
     //For setup profile time
     func convertActivityStructToString() -> String {
-        
         var optionlist = [String]()
         
         for i in getSelectedPickActivity() {

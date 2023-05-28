@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct RelationshipView: View {
-    @StateObject var viewModel = OnboardingViewModel()
+    @Environment(\.presentationMode) private var presentationMode
+    @StateObject private var viewModel = OnboardingViewModel.shared
     var isFromEditProfile: Bool
     var arrayOfUserPreference: [UserPreferences]?
     
@@ -17,17 +18,20 @@ struct RelationshipView: View {
     @State private var romanceWithMenSelected = false
     @State private var romanceWithWomanSelected = false
     
-    @State private var relationshipViewPresented = false
+    @State private var activityViewPresented = false
     
     var body: some View {
-        ZStack {
-            content
-            
-            presentables
+        NavigationView {
+            ZStack {
+                content
+                
+                presentables
+            }
+            .background(background)
+            .onAppear { onAppearConfig() }
+            .navigationBarHidden(true)
         }
-        .background(background)
-        .onAppear { onAppearConfig() }
-        .navigationBarHidden(true)
+        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
@@ -45,7 +49,7 @@ struct RelationshipView: View {
             Spacer()
             Spacer()
             
-            sendButton
+            continueButton
         }
     }
     
@@ -59,7 +63,7 @@ struct RelationshipView: View {
     
     private var header: some View {
         HeaderView(title: Constants.screenTitle_relationship,
-                   backButtonVisible: true)
+                   backButtonVisible: false)
     }
     
     private var description: some View {
@@ -98,7 +102,7 @@ struct RelationshipView: View {
     }
     
     private var friendshipStack: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 12) {
             buble(icon: "ic_friendship_black",
                   text: Constants.btn_friendship,
                   isSelected: friendshipWithMenSelected || friendshipWithWomanSelected)
@@ -162,11 +166,11 @@ struct RelationshipView: View {
                     .foregroundColor(isSelected ? .white : .colorDarkGrey)
             }
         }
-        .frame(height: 50)
+        .frame(width: 75, height: 50)
         .cornerRadius(10)
     }
     
-    private var sendButton: some View {
+    private var continueButton: some View {
         Button(action: { continueAction() }) {
             ZStack {
                 Color.theme
@@ -182,24 +186,20 @@ struct RelationshipView: View {
     }
     
     private var presentables: some View {
-        ZStack {
-            
-        }
+        NavigationLink(destination: PickActivityView(),
+                       isActive: $activityViewPresented,
+                       label: EmptyView.init)
+        .isDetailLink(false)
     }
     
     private func onAppearConfig() {
         viewModel.nextAction = {
-//            if !isFromEditProfile {
-//                let pickactivityVC = PickActivityVC.loadFromNib()
-//                navigationController?.pushViewController(pickactivityVC, animated: true)
-//            } else {
-//                NotificationCenter.default.post(name: Notification.Name("refreshProfileData"), object: nil, userInfo: nil)
-//                let editprofilevc = EditProfileVC.loadFromNib()
-//                editprofilevc.isUpdateData = true
-//                navigationController?.pushViewController(editprofilevc, animated: true)
-//            }
-            
-            relationshipViewPresented.toggle()
+            if !isFromEditProfile {
+                activityViewPresented.toggle()
+            } else {
+                NotificationCenter.default.post(name: Notification.Name("refreshProfileData"), object: nil, userInfo: nil)
+                presentationMode.wrappedValue.dismiss()
+            }
         }
     }
     
@@ -208,11 +208,6 @@ struct RelationshipView: View {
             viewModel.profileSetupType = ProfileSetupType().relationship
         } else {
             viewModel.profileSetupType = ProfileSetupType().completed
-        }
-        
-        guard !viewModel.arrayRelationshipParam.isEmpty else {
-            UIApplication.shared.showAlertPopup(message: Constants.validMsg_relationship)
-            return
         }
         
         if romanceWithMenSelected {
@@ -229,6 +224,11 @@ struct RelationshipView: View {
         
         if friendshipWithWomanSelected {
             viewModel.arrayRelationshipParam.append(RelationshipParam(preference_id: "2", preference_option_id: "23", user_preference_id: "0"))
+        }
+        
+        guard !viewModel.arrayRelationshipParam.isEmpty else {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_relationship)
+            return
         }
         
         viewModel.callSignUpProcessAPI()

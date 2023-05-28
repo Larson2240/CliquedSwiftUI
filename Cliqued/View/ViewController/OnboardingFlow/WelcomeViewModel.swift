@@ -179,37 +179,35 @@ class WelcomeViewModel: ObservableObject {
         switch strCount {
         case profileSetupType.name:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
-            
+
         case profileSetupType.birthdate:
             APP_DELEGATE.window?.rootViewController =  UIHostingController(rootView: AgeView())
-            
+
         case profileSetupType.gender:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: GenderView())
-            
+
         case profileSetupType.relationship:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
-            
+
         case profileSetupType.category:
-            let pickactivityvc = PickActivityVC.loadFromNib()
-            pickactivityvc.arrayOfActivity = favoriteActivity
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: pickactivityvc)
-            
+            let pickActivityView = PickActivityView(favoriteActivity: favoriteActivity)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: pickActivityView)
+
         case profileSetupType.sub_category:
-            let picksubactivityvc = PickSubActvityVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: picksubactivityvc)
-            
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView())
+
         case profileSetupType.profile_images:
             let selectpicturevc = SelectPicturesVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: selectpicturevc)
-            
+
         case profileSetupType.location:
             let locationvc = SetLocationVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: locationvc)
-            
+
         case profileSetupType.notification_enable:
             let notificationvc = NotificationPermissionVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: notificationvc)
-            
+
         case profileSetupType.completed:
             let startexplorevc = StartExploringVC.loadFromNib()
             APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: startexplorevc)

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AgeView: View {
-    @StateObject var viewModel = OnboardingViewModel()
+    @StateObject private var viewModel = OnboardingViewModel.shared
     
     @State private var date = Date()
     @State private var genderViewPresented = false
@@ -17,14 +17,17 @@ struct AgeView: View {
     private let maxAge: Date = Calendar.current.date(byAdding: .year, value: -150, to: Date())!
     
     var body: some View {
-        ZStack {
-            content
-            
-            presentables
+        NavigationView {
+            ZStack {
+                content
+                
+                presentables
+            }
+            .background(background)
+            .onAppear { onAppearConfig() }
+            .navigationBarHidden(true)
         }
-        .background(background)
-        .onAppear { onAppearConfig() }
-        .navigationBarHidden(true)
+        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
@@ -40,7 +43,7 @@ struct AgeView: View {
             Spacer()
             Spacer()
             
-            sendButton
+            continueButton
         }
     }
     
@@ -54,7 +57,7 @@ struct AgeView: View {
     
     private var header: some View {
         HeaderView(title: Constants.screenTitle_age,
-                   backButtonVisible: true)
+                   backButtonVisible: false)
     }
     
     private var description: some View {
@@ -77,7 +80,7 @@ struct AgeView: View {
             .padding(.horizontal, 30)
     }
     
-    private var sendButton: some View {
+    private var continueButton: some View {
         Button(action: { continueAction() }) {
             ZStack {
                 Color.theme
@@ -96,6 +99,7 @@ struct AgeView: View {
         NavigationLink(destination: GenderView(),
                        isActive: $genderViewPresented,
                        label: EmptyView.init)
+        .isDetailLink(false)
     }
     
     private func onAppearConfig() {
