@@ -292,7 +292,7 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     
     //MARK: Button Edit Profile Image
     @objc func btnEditFavoriteActivityTap(_ sender: UIButton) {
-        let pickActivityView = PickActivityView(favoriteActivity: viewModel.getFavoriteActivity(), isFromEditProfile: true)
+        let pickActivityView = PickActivityView(isFromEditProfile: true, arrayOfActivity: viewModel.getFavoriteActivity())
         viewController.navigationController?.pushViewController(UIHostingController(rootView: pickActivityView), animated: true)
     }
     

@@ -13,17 +13,16 @@ struct structPickActivityParams {
 }
 
 final class PickActivityViewModel: ObservableObject {
-    //MARK: Variable
-    private var isDataLoad: Bool = false
-    private var isRefresh: Bool = false
-    @Published var arrayOfActivity = [ActivityCategoryClass]()
+    static var shared = PickActivityViewModel()
     
+    @Published var arrayOfActivity = [ActivityCategoryClass]()
+    @Published var arrayOfSelectedCategoryIds = [Int]()
+    
+    var arrayOfDeletedActivityIds = [Int]()
+    private let apiParams = ApiParams()
     private var arrayOfSelectedPickActivity = [structPickActivityParams]()
     private var arrayOfAllSelectedActivity = [structPickActivityParams]()
     private var arrayOfNewPickActivity = [structPickActivityParams]()
-    var arrayOfDeletedActivityIds = [Int]()
-    @Published var arrayOfSelectedCategoryIds = [Int]()
-    private let apiParams = ApiParams()
     
     //MARK: Call Get Preferences Data API
     func callGetActivityDataAPI() {
@@ -41,7 +40,6 @@ final class PickActivityViewModel: ObservableObject {
             
             UIApplication.shared.hideLoader()
             
-            self.setIsDataLoad(value: true)
             if error != nil && response == nil {
                 UIApplication.shared.showAlertPopup(message: message ?? "")
             } else {
@@ -72,25 +70,12 @@ final class PickActivityViewModel: ObservableObject {
 }
 //MARK: getter/setter method
 extension PickActivityViewModel {
-    
     func getNumberOfActivity() -> Int {
         arrayOfActivity.count
     }
     
     func getActivityData(at index: Int) -> ActivityCategoryClass {
         arrayOfActivity[index]
-    }
-    
-    func getIsDataLoad() -> Bool {
-        return isDataLoad
-    }
-    
-    func isCheckEmptyData() -> Bool {
-        if isDataLoad && arrayOfActivity.count == 0 {
-            return true
-        } else {
-            return false
-        }
     }
     
     func getSelectedPickActivity() -> [structPickActivityParams] {
@@ -104,24 +89,26 @@ extension PickActivityViewModel {
         arrayOfDeletedActivityIds
     }
     
-    func setIsDataLoad(value: Bool) {
-        isDataLoad = value
-    }
     func setPickActivity(value: structPickActivityParams) {
         arrayOfSelectedPickActivity.append(value)
     }
+    
     func setNewPickActivity(value: structPickActivityParams) {
         arrayOfNewPickActivity.append(value)
     }
+    
     func setActivity(value: structPickActivityParams) {
         arrayOfNewPickActivity.append(value)
     }
+    
     func setAllSelectedActivity(value: structPickActivityParams) {
         arrayOfAllSelectedActivity.append(value)
     }
+    
     func removeAllSelectedActivity() {
         arrayOfAllSelectedActivity.removeAll()
     }
+    
     func getAllSelectedActivity() -> [structPickActivityParams] {
         arrayOfAllSelectedActivity
     }
@@ -129,6 +116,7 @@ extension PickActivityViewModel {
     func removePickActivity(at Index: Int) {
         arrayOfSelectedPickActivity.remove(at: Index)
     }
+    
     func removeNewPickActivity(at Index: Int) {
         arrayOfNewPickActivity.remove(at: Index)
     }
@@ -136,6 +124,7 @@ extension PickActivityViewModel {
     func setDeletedActivityIds(value: Int) {
         arrayOfDeletedActivityIds.append(value)
     }
+    
     func removeDeletedActivityIds(at Index: Int) {
         arrayOfDeletedActivityIds.remove(at: Index)
     }
@@ -143,16 +132,9 @@ extension PickActivityViewModel {
     func removeAllSelectedArray() {
         arrayOfSelectedPickActivity.removeAll()
     }
+    
     func removeAllNewSelectedArray() {
         arrayOfNewPickActivity.removeAll()
-    }
-    
-    func getIsRefresh() -> Bool {
-        return isRefresh
-    }
-    
-    func setIsRefresh(value:Bool) {
-        isRefresh = value
     }
     
     func setSelectedCategoryId(value: Int) {

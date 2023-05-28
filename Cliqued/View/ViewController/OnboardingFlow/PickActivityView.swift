@@ -9,11 +9,10 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct PickActivityView: View {
-    @StateObject private var viewModel = PickActivityViewModel()
+    @StateObject private var viewModel = PickActivityViewModel.shared
     
-    @State var favoriteActivity = [UserInterestedCategory]()
-    var isFromEditProfile = false
-    var arrayOfActivity = [UserInterestedCategory]()
+    var isFromEditProfile: Bool
+    var arrayOfActivity: [UserInterestedCategory]
     
     @State private var subActivityViewPresented = false
     
@@ -57,7 +56,7 @@ struct PickActivityView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_relationship,
+        HeaderView(title: Constants.screenTitle_pickActivity,
                    backButtonVisible: false)
     }
     
@@ -80,35 +79,53 @@ struct PickActivityView: View {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach($viewModel.arrayOfActivity) { activity in
                     if let image = activity.image.wrappedValue, let imageURL = URL(string: UrlActivityImage + image) {
-                        ZStack {
-                            WebImage(url: imageURL)
-                                .placeholder {
-                                    Image("placeholder_activity")
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(maxHeight: 210)
-                                }
-                                .resizable()
-                                .scaledToFill()
-                                .frame(maxHeight: 210)
-                            
-                            Color.black
-                                .opacity(activityIsSelected(activity.wrappedValue) ? 0.6 : 0)
-                                .animation(.default, value: viewModel.arrayOfSelectedCategoryIds.count)
-                            
-                            Image("ic_category_selectiontick")
-                                .opacity(activityIsSelected(activity.wrappedValue) ? 1 : 0)
-                                .animation(.default, value: viewModel.arrayOfSelectedCategoryIds.count)
-                        }.onTapGesture {
-                            cellTap(for: activity.wrappedValue)
-                        }
-                        .frame(maxHeight: 210)
-                        .cornerRadius(15)
+                        imageCell(activity.wrappedValue, imageURL: imageURL)
+                            .frame(maxHeight: 210)
+                            .cornerRadius(15)
                     }
                 }
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 16)
+        }
+    }
+    
+    private func imageCell(_ activity: ActivityCategoryClass, imageURL: URL) -> some View {
+        ZStack {
+            WebImage(url: imageURL)
+                .placeholder {
+                    Image("placeholder_activity")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxHeight: 210)
+                }
+                .resizable()
+                .scaledToFill()
+                .frame(maxHeight: 210)
+            
+            VStack {
+                Spacer()
+                
+                HStack {
+                    Text(activity.title ?? "")
+                        .font(.themeMedium(14))
+                        .foregroundColor(.white)
+                    
+                    Spacer()
+                }
+            }
+            .padding(16)
+            
+            Color.black
+                .opacity(activityIsSelected(activity) ? 0.6 : 0)
+                .animation(.default, value: viewModel.arrayOfSelectedCategoryIds.count)
+            
+            Image("ic_category_selectiontick")
+                .opacity(activityIsSelected(activity) ? 1 : 0)
+                .animation(.default, value: viewModel.arrayOfSelectedCategoryIds.count)
+        }
+        .onTapGesture {
+            cellTap(for: activity)
         }
     }
     
@@ -150,8 +167,6 @@ struct PickActivityView: View {
     private func continueAction() {
         if viewModel.getSelectedCategoryId().count >= 3 {
             if isFromEditProfile {
-                let categoryIds = viewModel.getSelectedCategoryId().map({String($0)}).joined(separator: ", ")
-                
                 //Remove deleted activity from the edit array
                 let deletedIds = viewModel.getDeletedActivityIds()
                 var arrFilteredIds = arrayOfActivity
@@ -217,6 +232,6 @@ struct PickActivityView: View {
 
 struct PickActivityView_Previews: PreviewProvider {
     static var previews: some View {
-        PickActivityView()
+        PickActivityView(isFromEditProfile: false, arrayOfActivity: [])
     }
 }

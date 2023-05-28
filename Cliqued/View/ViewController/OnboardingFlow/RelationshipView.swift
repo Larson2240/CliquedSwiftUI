@@ -186,7 +186,7 @@ struct RelationshipView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: PickActivityView(),
+        NavigationLink(destination: PickActivityView(isFromEditProfile: false, arrayOfActivity: []),
                        isActive: $activityViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)

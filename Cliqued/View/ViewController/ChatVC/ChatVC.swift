@@ -337,11 +337,11 @@ extension ChatVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
             
         case profileSetupType.category:
-            let pickActivityView = PickActivityView(favoriteActivity: favoriteActivity)
+            let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity)
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: pickActivityView)
             
         case profileSetupType.sub_category:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView())
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: ""))
             
         case profileSetupType.profile_images:
             let selectpicturevc = SelectPicturesVC.loadFromNib()
