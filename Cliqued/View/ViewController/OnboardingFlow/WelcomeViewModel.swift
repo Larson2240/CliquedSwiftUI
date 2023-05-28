@@ -194,7 +194,7 @@ class WelcomeViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: pickActivityView)
 
         case profileSetupType.sub_category:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: ""))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: []))
 
         case profileSetupType.profile_images:
             let selectpicturevc = SelectPicturesVC.loadFromNib()

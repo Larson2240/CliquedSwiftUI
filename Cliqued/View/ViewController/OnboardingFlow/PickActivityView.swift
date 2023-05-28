@@ -14,6 +14,7 @@ struct PickActivityView: View {
     var isFromEditProfile: Bool
     var arrayOfActivity: [UserInterestedCategory]
     
+    @State private var arrayOfSubActivity: [UserInterestedCategory] = []
     @State private var subActivityViewPresented = false
     
     let columns = [
@@ -147,13 +148,12 @@ struct PickActivityView: View {
     }
     
     private var presentables: some View {
-        ZStack {
-            NavigationLink(destination: PickSubActivityView(isFromEditProfile: isFromEditProfile,
-                                                            categoryIds: isFromEditProfile ? viewModel.getSelectedCategoryId().map({String($0)}).joined(separator: ", ") : viewModel.getSelectedCategoryId().map({String($0)}).joined(separator: ", ")),
-                           isActive: $subActivityViewPresented,
-                           label: EmptyView.init)
-            .isDetailLink(false)
-        }
+        NavigationLink(destination: PickSubActivityView(isFromEditProfile: isFromEditProfile,
+                                                        categoryIds: isFromEditProfile ? viewModel.getSelectedCategoryId().map({String($0)}).joined(separator: ", ") : viewModel.getSelectedCategoryId().map({String($0)}).joined(separator: ", "),
+                                                        arrayOfSubActivity: arrayOfSubActivity),
+                       isActive: $subActivityViewPresented,
+                       label: EmptyView.init)
+        .isDetailLink(false)
     }
     
     private func onAppearConfig() {
@@ -185,6 +185,8 @@ struct PickActivityView: View {
                         }
                     }
                 }
+                
+                arrayOfSubActivity = arrFilteredIds
                 
                 subActivityViewPresented.toggle()
             } else {

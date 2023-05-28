@@ -90,6 +90,7 @@ final class OnboardingViewModel: ObservableObject {
             guard let self = self else { return }
             
             UIApplication.shared.hideLoader()
+            
             if error != nil && response == nil {
                 UIApplication.shared.showAlertPopup(message: message ?? "")
             } else {
