@@ -5,7 +5,7 @@
 //  Created by C211 on 07/02/23.
 //
 
-import Combine
+import SwiftUI
 
 struct structPickActivityParams {
     var activityCategoryId = ""
@@ -68,6 +68,7 @@ final class PickActivityViewModel: ObservableObject {
         }
     }
 }
+
 //MARK: getter/setter method
 extension PickActivityViewModel {
     func getNumberOfActivity() -> Int {

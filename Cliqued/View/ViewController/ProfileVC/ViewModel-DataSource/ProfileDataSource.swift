@@ -54,7 +54,7 @@ class ProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
         registerCollectionCell()
     }
     func registerTableCell(){
-        tableView.registerNib(nibNames: [AboutMeCell.identifier, FavoriteActivityCell.identifier,UserProfileCommonCell.identifier, DistancePreferenceCell.identifier, AgePreferneceCell.identifier, ButtonCell.identifier])
+        tableView.registerNib(nibNames: [AboutMeCell.identifier, FavoriteActivityCell.identifier,UserProfileCommonCell.identifier, ButtonCell.identifier])
         tableView.reloadData()
     }
     
@@ -159,41 +159,9 @@ class ProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
             }
             return cell
         case .distancePreference:
-            let cell = tableView.dequeueReusableCell(withIdentifier: DistancePreferenceCell.identifier) as! DistancePreferenceCell
-            cell.selectionStyle = .none
-            cell.sliderDistance.isUserInteractionEnabled = false
-            cell.distancePreference = viewModel.getDistancePreference()
-            if cell.sliderDistance.labels.count > 0 {
-                for i in 0...cell.sliderDistance.labels.count - 1 {
-                    if "\(viewModel.getDistancePreference())km" == cell.sliderDistance.labels[i] as? String {
-                        cell.sliderDistance.index = UInt(i)
-                    }
-                }
-            }
-            return cell
+            return UITableViewCell()
         case .agePreference:
-            let cell = tableView.dequeueReusableCell(withIdentifier: AgePreferneceCell.identifier) as! AgePreferneceCell
-            cell.selectionStyle = .none
-            cell.seekbarAge.isUserInteractionEnabled = false
-            if !viewModel.getStartAge().isEmpty && !viewModel.getEndAge().isEmpty {
-                let str1 = viewModel.getStartAge()
-                let str2 = viewModel.getEndAge()
-                
-                if let strToNum1 = NumberFormatter().number(from: str1) {
-                    let startAge = CGFloat(truncating: strToNum1)
-                    cell.seekbarAge.selectedMinValue = startAge
-                }
-                if let strToNum2 = NumberFormatter().number(from: str2) {
-                    let endAge = CGFloat(truncating: strToNum2)
-                    cell.seekbarAge.selectedMaxValue = endAge
-                }
-            } else {
-                cell.seekbarAge.minValue = 45
-                cell.seekbarAge.maxValue = 99
-            }
-            cell.seekbarAge.setNeedsLayout()
-            cell.seekbarAge.layoutIfNeeded()
-            return cell
+            return UITableViewCell()
         case .button:
             let cell = tableView.dequeueReusableCell(withIdentifier: ButtonCell.identifier) as! ButtonCell
             cell.selectionStyle = .none

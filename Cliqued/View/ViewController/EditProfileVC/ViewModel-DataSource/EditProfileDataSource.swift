@@ -58,7 +58,7 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
         registerTableCell()
     }
     func registerTableCell(){
-        tableView.registerNib(nibNames: [UserProfileCell.identifier,BorderedTextFieldCell.identifier,ActivityDescriptionCell.identifier,FavoriteActivityCell.identifier,DropdownCell.identifier,DistancePreferenceCell.identifier,AgePreferneceCell.identifier, TextViewCell.identifier])
+        tableView.registerNib(nibNames: [UserProfileCell.identifier,BorderedTextFieldCell.identifier,ActivityDescriptionCell.identifier,FavoriteActivityCell.identifier,DropdownCell.identifier, TextViewCell.identifier])
         tableView.reloadData()
     }
     
@@ -235,52 +235,15 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
             }
             return cell
         case .distancePreference:
-            let cell = tableView.dequeueReusableCell(withIdentifier: DistancePreferenceCell.identifier) as! DistancePreferenceCell
-            cell.selectionStyle = .none
-            cell.distancePreference = viewModel.getDistancePreference()
-            if cell.sliderDistance.labels.count > 0 {
-                for i in 0...cell.sliderDistance.labels.count - 1 {
-                    if "\(viewModel.getDistancePreference())km" == cell.sliderDistance.labels[i] as? String {
-                        cell.sliderDistance.index = UInt(i)
-                    }
-                }
-            }
-            cell.sliderDistance.addTarget(self, action: #selector(handleSliderValueChange(_:)), for: .valueChanged)
-            return cell
+            return UITableViewCell()
         case .agePreference:
-            let cell = tableView.dequeueReusableCell(withIdentifier: AgePreferneceCell.identifier) as! AgePreferneceCell
-            cell.selectionStyle = .none
-            if !viewModel.getStartAge().isEmpty && !viewModel.getStartAge().isEmpty {
-                let str1 = viewModel.getStartAge()
-                let str2 = viewModel.getEndAge()
-                
-                if let strToNum1 = NumberFormatter().number(from: str1) {
-                    let startAge = CGFloat(truncating: strToNum1)
-                    cell.seekbarAge.selectedMinValue = startAge
-                }
-                if let strToNum2 = NumberFormatter().number(from: str2) {
-                    let endAge = CGFloat(truncating: strToNum2)
-                    cell.seekbarAge.selectedMaxValue = endAge
-                }
-            }
-            
-            cell.callbackForAgePreferenceValue = { [weak self] startAgeId,startAgePrefId,endAgeId,endAgePrefId in
-                var dic = structAgePreferenceParam()
-                dic.age_start_id = startAgeId
-                dic.age_start_pref_id = startAgePrefId
-                dic.age_end_id = endAgeId
-                dic.age_end_pref_id = endAgePrefId
-                self?.viewModel.setAgePreference(value: dic)
-            }
-            return cell
+            return UITableViewCell()
         }
     }
     
     //MARK: Button Edit Profile Image
     @objc func btnEditProfileImageTap(_ sender: UIButton) {
-        let selectpicturevc = SelectPicturesVC.loadFromNib()
-        selectpicturevc.isFromEditProfile = true
-        selectpicturevc.arrayOfProfileImage = viewModel.getUserProfileCollection()
+        let selectpicturevc = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: viewModel.getUserProfileCollection(), isFromEditProfile: true))
         viewController.navigationController?.pushViewController(selectpicturevc, animated: true)
     }
     
@@ -298,12 +261,13 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     
     //MARK: Button Edit Profile Image
     @objc func btnEditLocationTap(_ sender: UIButton) {
-        let locationData = viewModel.getLocation().first
-        let setlocationvc = SetLocationVC.loadFromNib()
-        setlocationvc.isFromEditProfile = true
-        setlocationvc.addressId = "\(locationData?.id ?? 0)"
-        setlocationvc.distancePreference = viewModel.getDistancePreference()
-        setlocationvc.objAddress = locationData
+        guard let locationData = viewModel.getLocation().first else { return }
+        
+        let setlocationvc = UIHostingController(rootView: LocationView(isFromEditProfile: true,
+                                                                       addressId: "\(locationData.id ?? 0)",
+                                                                       setlocationvc: viewModel.getDistancePreference(),
+                                                                       objAddress: locationData))
+        
         viewController.navigationController?.pushViewController(setlocationvc, animated: true)
     }
     
@@ -374,22 +338,6 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
             self.settingView.hide()
         }
         settingView.show()
-    }
-    
-    //MARK: Handle distance slider
-    @objc func handleSliderValueChange(_ sender: StepSlider) {
-        var arrayOfPreference = [PreferenceClass]()
-        var arrayOfTypeOption = [TypeOptions]()
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.distance}) ?? []
-        if arrayOfPreference.count > 0 {
-            arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
-            if arrayOfTypeOption.count > 0 {
-                var dict = DistanceParam()
-                dict.distancePreferenceId = arrayOfTypeOption[Int(sender.index)].preferenceId?.description ?? ""
-                dict.distancePreferenceOptionId = arrayOfTypeOption[Int(sender.index)].id?.description ?? ""
-                viewModel.setDistance(value: dict)
-            }
-        }
     }
     
     //MARK: Dropdown Popup UI

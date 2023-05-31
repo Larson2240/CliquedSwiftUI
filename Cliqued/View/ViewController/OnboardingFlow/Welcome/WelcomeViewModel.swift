@@ -176,43 +176,41 @@ class WelcomeViewModel: ObservableObject {
             strCount = "\(profile_setup_count)"
         }
         
-        switch strCount {
-        case profileSetupType.name:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
-
-        case profileSetupType.birthdate:
-            APP_DELEGATE.window?.rootViewController =  UIHostingController(rootView: AgeView())
-
-        case profileSetupType.gender:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: GenderView())
-
-        case profileSetupType.relationship:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
-
-        case profileSetupType.category:
-            let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity)
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: pickActivityView)
-
-        case profileSetupType.sub_category:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: []))
-
-        case profileSetupType.profile_images:
-            let selectpicturevc = SelectPicturesVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: selectpicturevc)
-
-        case profileSetupType.location:
-            let locationvc = SetLocationVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: locationvc)
-
-        case profileSetupType.notification_enable:
-            let notificationvc = NotificationPermissionVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: notificationvc)
-
-        case profileSetupType.completed:
-            let startexplorevc = StartExploringVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: startexplorevc)
-        default:
-            break
-        }
+//        switch strCount {
+//        case profileSetupType.name:
+//            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
+//
+//        case profileSetupType.birthdate:
+//            APP_DELEGATE.window?.rootViewController =  UIHostingController(rootView: AgeView())
+//
+//        case profileSetupType.gender:
+//            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: GenderView())
+//
+//        case profileSetupType.relationship:
+//            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
+//
+//        case profileSetupType.category:
+//            let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity)
+//            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: pickActivityView)
+//
+//        case profileSetupType.sub_category:
+//            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: []))
+//
+//        case profileSetupType.profile_images:
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false))
+//
+//        case profileSetupType.location:
+//            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: "", setlocationvc: "", objAddress: nil))
+//
+//        case profileSetupType.notification_enable:
+//            let notificationvc = NotificationPermissionVC.loadFromNib()
+//            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: notificationvc)
+//
+//        case profileSetupType.completed:
+//            let startexplorevc = StartExploringVC.loadFromNib()
+//            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: startexplorevc)
+//        default:
+//            break
+//        }
     }
 }

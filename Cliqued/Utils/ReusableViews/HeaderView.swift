@@ -31,6 +31,7 @@ struct HeaderView: View {
                 .foregroundColor(.colorSenderTextMsg)
         }
         .padding(.horizontal, 20)
+        .padding(.top)
         .frame(height: 25)
     }
 }

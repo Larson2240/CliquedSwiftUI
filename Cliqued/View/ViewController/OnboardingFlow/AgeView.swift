@@ -25,8 +25,8 @@ struct AgeView: View {
             }
             .background(background)
             .onAppear { onAppearConfig() }
-            .navigationBarHidden(true)
         }
+        .navigationBarHidden(true)
         .navigationViewStyle(.stack)
     }
     
@@ -61,7 +61,7 @@ struct AgeView: View {
     }
     
     private var description: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
             Text(title())
                 .font(.themeBold(20))
             

@@ -29,8 +29,8 @@ struct RelationshipView: View {
             }
             .background(background)
             .onAppear { onAppearConfig() }
-            .navigationBarHidden(true)
         }
+        .navigationBarHidden(true)
         .navigationViewStyle(.stack)
     }
     
@@ -67,7 +67,7 @@ struct RelationshipView: View {
     }
     
     private var description: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
             Text(Constants.label_relationshipScreenTitle)
                 .font(.themeBold(20))
             

@@ -17,7 +17,7 @@ import GoogleMobileAds
 import SwiftUI
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
     var window: UIWindow?
     var socketIOHandler:SocketIOHandler?

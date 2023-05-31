@@ -32,8 +32,8 @@ struct PickSubActivityView: View {
             }
             .background(background)
             .onAppear { onAppearConfig() }
-            .navigationBarHidden(true)
         }
+        .navigationBarHidden(true)
         .navigationViewStyle(.stack)
     }
     
@@ -63,7 +63,7 @@ struct PickSubActivityView: View {
     }
     
     private var description: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
             Text(Constants.label_pickSubActivityScreenTitle)
                 .font(.themeBold(20))
             
@@ -152,7 +152,7 @@ struct PickSubActivityView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: SelectPicturesView(),
+        NavigationLink(destination: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false),
                        isActive: $selectPicturesViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)

@@ -34,9 +34,6 @@ target 'Cliqued' do
   # Photopicker
   pod "TLPhotoPicker"
 
-  # Step Slider
-  pod 'StepSlider', '~> 1.8.0'
-
   # Card Suffle
   pod "Koloda"
 

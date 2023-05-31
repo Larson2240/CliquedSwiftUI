@@ -186,12 +186,10 @@ extension HomeVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: []))
             
         case profileSetupType.profile_images:
-            let selectpicturevc = SelectPicturesVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: selectpicturevc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false))
             
         case profileSetupType.location:
-            let locationvc = SetLocationVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: locationvc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: "", setlocationvc: "", objAddress: nil))
             
         case profileSetupType.notification_enable:
             let notificationvc = NotificationPermissionVC.loadFromNib()

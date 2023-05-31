@@ -22,8 +22,8 @@ struct NameView: View {
             }
             .background(background)
             .onAppear { onAppearConfig() }
-            .navigationBarHidden(true)
         }
+        .navigationBarHidden(true)
         .navigationViewStyle(.stack)
     }
     
@@ -58,7 +58,7 @@ struct NameView: View {
     }
     
     private var description: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
             Text(Constants.label_nameScreenTitle)
                 .font(.themeBold(20))
             

@@ -228,6 +228,7 @@ extension ActivitiesVC {
             let profile_setup_count = Int((Constants.loggedInUser?.profileSetupType)!)! + 1
             strCount = "\(profile_setup_count)"
         }
+        
         switch strCount {
         case profileSetupType.name:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
@@ -249,12 +250,10 @@ extension ActivitiesVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: []))
             
         case profileSetupType.profile_images:
-            let selectpicturevc = SelectPicturesVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: selectpicturevc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false))
             
         case profileSetupType.location:
-            let locationvc = SetLocationVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: locationvc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: "", setlocationvc: ""))
             
         case profileSetupType.notification_enable:
             let notificationvc = NotificationPermissionVC.loadFromNib()

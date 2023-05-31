@@ -21,8 +21,8 @@ struct GenderView: View {
             }
             .background(background)
             .onAppear { onAppearConfig() }
-            .navigationBarHidden(true)
         }
+        .navigationBarHidden(true)
         .navigationViewStyle(.stack)
     }
     
@@ -57,7 +57,7 @@ struct GenderView: View {
     }
     
     private var description: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
             Text(Constants.label_genderScreenTitle)
                 .font(.themeBold(20))
             
