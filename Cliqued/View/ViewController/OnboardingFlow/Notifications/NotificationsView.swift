@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct NotificationsView: View {
-    @Environment(\.presentationMode) private var presentationMode
-    
     @StateObject private var onboardingViewModel = OnboardingViewModel.shared
     @StateObject private var notificationsViewModel = NotificationsViewModel()
+    
+    @State private var startExploringViewPresented = false
     
     var body: some View {
         NavigationView {
@@ -118,9 +118,10 @@ struct NotificationsView: View {
     }
     
     private var presentables: some View {
-        ZStack {
-            
-        }
+        NavigationLink(destination: StartExploringView(),
+                       isActive: $startExploringViewPresented,
+                       label: EmptyView.init)
+        .isDetailLink(false)
     }
     
     private func onAppearConfig() {
