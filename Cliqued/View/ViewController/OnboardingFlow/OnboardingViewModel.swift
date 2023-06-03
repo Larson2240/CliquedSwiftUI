@@ -63,6 +63,8 @@ final class OnboardingViewModel: ObservableObject {
     
     //MARK: Social Login API
     func callSignUpProcessAPI() {
+        guard Connectivity.isConnectedToInternet() else { return }
+        
         let params: NSDictionary = [
             apiParams.userID: "\(Constants.loggedInUser?.id ?? 0)",
             apiParams.profile_setup_type: profileSetupType,
@@ -81,8 +83,6 @@ final class OnboardingViewModel: ObservableObject {
             apiParams.distance_pref: convertDistanceParamStructToString(),
             apiParams.notification_status: convertNotificationParamStructToString()
         ]
-        
-        guard Connectivity.isConnectedToInternet() else { return }
         
         UIApplication.shared.showLoader()
         
@@ -157,8 +157,7 @@ extension OnboardingViewModel {
                                               apiParams.state : i.state,
                                               apiParams.country : i.country,
                                               apiParams.pincode : i.pincode,
-                                              apiParams.addressId : i.address_id
-            ]
+                                              apiParams.addressId : i.address_id]
             
             let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
             let jsonstringstr = String(data: dictdata as Data, encoding: .utf8)

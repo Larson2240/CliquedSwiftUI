@@ -1,5 +1,5 @@
 //
-//  LocationManager.swift
+//  LocationViewModel.swift
 //  Cliqued
 //
 //  Created by Seraphim Kovalchuk on 31.05.2023.
@@ -14,20 +14,27 @@ struct Pin: Identifiable {
     let title: String
 }
 
-final class LocationManager: NSObject, ObservableObject {
-    private var locationManager = CLLocationManager()
+final class LocationViewModel: NSObject, ObservableObject {
+    private var locationManager: CLLocationManager!
+    @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+    @Published var annotations: [Pin] = []
+    var addressDic = AddressParam()
+    
+    var isFromEditProfile: Bool?
+    var addressId = ""
     
     override init() {
         super.init()
         determineCurrentLocation()
     }
     
-    private func determineCurrentLocation() {
+    func determineCurrentLocation() {
+        locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.global().async { [weak self] in
             guard CLLocationManager.locationServicesEnabled() else { return }
             
             self?.locationManager.startUpdatingLocation()
@@ -42,8 +49,37 @@ final class LocationManager: NSObject, ObservableObject {
         }
     }
     
-    func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
-        var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
+    func convertTap(at point: CGPoint, for mapSize: CGSize) {
+        let lat = mapRegion.center.latitude
+        let lon = mapRegion.center.longitude
+        
+        let mapCenter = CGPoint(x: mapSize.width / 2, y: mapSize.height / 2)
+        
+        let xValue = (point.x - mapCenter.x) / mapCenter.x
+        let xSpan = xValue * mapRegion.span.longitudeDelta / 2
+        
+        let yValue = (point.y - mapCenter.y) / mapCenter.y
+        let ySpan = yValue * mapRegion.span.latitudeDelta / 2
+        
+        let coordinate = CLLocationCoordinate2D(latitude: lat - ySpan, longitude: lon + xSpan)
+        
+        getAddressFromLatLon(pdblLatitude: "\(coordinate.latitude)", withLongitude: "\(coordinate.longitude)") { [weak self] address in
+            let pin = Pin(id: UUID(),
+                          coordinate: coordinate,
+                          title: address)
+            
+            DispatchQueue.main.async {
+                withAnimation {
+                    self?.mapRegion.center = coordinate
+                    self?.mapRegion.span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                    self?.annotations = [pin]
+                }
+            }
+        }
+    }
+    
+    func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String, completion: @escaping (String) -> Void) {
+        var center = CLLocationCoordinate2D()
         let lat: Double = Double("\(pdblLatitude)")!
         //21.228124
         let long: Double = Double("\(pdblLongitude)")!
@@ -55,13 +91,12 @@ final class LocationManager: NSObject, ObservableObject {
         
         let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
         
-        ceo.reverseGeocodeLocation(loc, completionHandler:
-                                    { [weak self] (placemarks, error) in
+        ceo.reverseGeocodeLocation(loc, completionHandler: { [weak self] placemarks, error in
             guard let self = self else { return }
             
-            if (error != nil)
-            {
+            if (error != nil) {
                 print("reverse geodcode fail: \(error!.localizedDescription)")
+                completion("")
             } else {
                 let pm = placemarks! as [CLPlacemark]
                 
@@ -90,29 +125,26 @@ final class LocationManager: NSObject, ObservableObject {
                     print(addressString)
                     self.addressDic.address = addressString
                     
-                    if self.viewController.isFromEditProfile {
-                        self.addressDic.address_id = self.viewController.addressId
+                    if self.isFromEditProfile ?? false {
+                        self.addressDic.address_id = self.addressId
                     } else {
                         self.addressDic.address_id = "0"
                     }
                     
                     let fullAddress = "\(pm.name ?? "") \(pm.locality ?? "") \(pm.administrativeArea ?? "") \(pm.country ?? "") \(pm.postalCode ?? "")"
                     
-                    
-                    if let cell = self.tableView.cellForRow(at: IndexPath(row:enumSetLocationTableRow.mapview.rawValue, section:0)) as? LocationMapCell {
-                        self.newPin.title = fullAddress
-                        cell.mapview.addAnnotation(self.newPin)
-                    }
+                    completion(fullAddress)
+                } else {
+                    completion("")
                 }
             }
         })
     }
 }
 
-extension LocationManager: CLLocationManagerDelegate {
+extension LocationViewModel: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager,
                          didChangeAuthorization status: CLAuthorizationStatus) {
-
         if status == .authorizedWhenInUse || status == .authorizedAlways {
             print("Permission authorized")
         } else if status == .denied {
@@ -121,58 +153,20 @@ extension LocationManager: CLLocationManagerDelegate {
         }
     }
     
-    @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
-        isLocationChangedByUser = true
-        if let cell = tableView.cellForRow(at: IndexPath(row: enumSetLocationTableRow.mapview.rawValue, section:0)) as? LocationMapCell {
-            
-            cell.mapview.removeAnnotation(newPin)
-            
-            let location = gestureRecognizer.location(in: cell.mapview)
-            let coordinate = cell.mapview.convert(location, toCoordinateFrom: cell.mapview)
-            
-            cell.mapview.mapType = MKMapType.standard
-            getAddressFromLatLon(pdblLatitude: "\(coordinate.latitude)", withLongitude: "\(coordinate.longitude)")
-            
-            let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-            let region = MKCoordinateRegion(center: coordinate, span: span)
-            cell.mapview.setRegion(region, animated: true)
-            newPin.coordinate = coordinate
-            cell.mapview.addAnnotation(newPin)
-        }
-    }
-    
-    private func mapViewRegionDidChangeFromUserInteraction() -> Bool {
-        if let cell = tableView.cellForRow(at: IndexPath(row:enumSetLocationTableRow.mapview.rawValue, section:0)) as? LocationMapCell {
-            let view = cell.mapview.subviews[0]
-            if let gestureRecognizers = view.gestureRecognizers {
-                for recognizer in gestureRecognizers {
-                    if (recognizer.state == UIGestureRecognizer.State.began || recognizer.state == UIGestureRecognizer.State.ended ) {
-                        return true
-                    }
-                }
-            }
-        }
-        
-        return false
-    }
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if !isLocationChangedByUser && !mapChangedFromUserInteraction {
-            let location = locations.last! as CLLocation
-            let locValue:CLLocationCoordinate2D = location.coordinate
-            
-            if let cell = tableView.cellForRow(at: IndexPath(row:enumSetLocationTableRow.mapview.rawValue, section:0)) as? LocationMapCell {
-                
-                cell.mapview.removeAnnotation(newPin)
-                cell.mapview.mapType = MKMapType.standard
-                getAddressFromLatLon(pdblLatitude: "\(locValue.latitude)", withLongitude: "\(locValue.longitude)")
-                
-                let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                let region = MKCoordinateRegion(center: locValue, span: span)
-                cell.mapview.setRegion(region, animated: true)
-                newPin.coordinate = locValue
-                cell.mapview.addAnnotation(newPin)
-            }
+        let location = locations.last! as CLLocation
+        let locValue:CLLocationCoordinate2D = location.coordinate
+        
+        annotations = []
+        getAddressFromLatLon(pdblLatitude: "\(locValue.latitude)", withLongitude: "\(locValue.longitude)") { _ in }
+        
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let region = MKCoordinateRegion(center: locValue, span: span)
+        
+        withAnimation {
+            mapRegion = region
+            let newAnnotation = Pin(id: UUID(), coordinate: locValue, title: "")
+            annotations = [newAnnotation]
         }
     }
     

@@ -179,7 +179,7 @@ struct SelectPicturesView: View {
     private func onAppearConfig() {
         onboardingViewModel.nextAction = {
             if isFromEditProfile {
-                
+
             } else {
                 locationViewPresented.toggle()
             }
