@@ -22,6 +22,8 @@
 		0A1C0FBB2A1AA8D800E9979C /* Color + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1C0FBA2A1AA8D800E9979C /* Color + Extension.swift */; };
 		0A315A022A26A66000CE9709 /* StepSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 0A315A012A26A66000CE9709 /* StepSlider */; };
 		0A315A042A26BE3B00CE9709 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A315A032A26BE3B00CE9709 /* LocationViewModel.swift */; };
+		0A37E2682A2BC29100BAA6E9 /* NotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A37E2672A2BC29100BAA6E9 /* NotificationsViewModel.swift */; };
+		0A37E26A2A2BC95900BAA6E9 /* StartExploringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A37E2692A2BC95900BAA6E9 /* StartExploringView.swift */; };
 		0A7607BC2A17A67B005DC411 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0A7607BB2A17A67B005DC411 /* FirebaseAnalytics */; };
 		0A7607BE2A17A67B005DC411 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0A7607BD2A17A67B005DC411 /* FirebaseAuth */; };
 		0A7607C02A17A67B005DC411 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0A7607BF2A17A67B005DC411 /* FirebaseCrashlytics */; };
@@ -39,8 +41,6 @@
 		0AF1D7662A2537A600BBC440 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF1D7652A2537A600BBC440 /* LocationView.swift */; };
 		1C6F1D34E3BD03CEA2EFABD1 /* Pods_Cliqued.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF1B7C827013E49DB79FCC62 /* Pods_Cliqued.framework */; };
 		60015DF9299E5E2C00426EDB /* ReportClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60015DF8299E5E2B00426EDB /* ReportClass.swift */; };
-		600A26DB29769D9F00231BB6 /* NotificationPermissionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600A26D929769D9F00231BB6 /* NotificationPermissionVC.swift */; };
-		600A26DC29769D9F00231BB6 /* NotificationPermissionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 600A26DA29769D9F00231BB6 /* NotificationPermissionVC.xib */; };
 		600A26E02976B46400231BB6 /* StartExploringVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600A26DE2976B46400231BB6 /* StartExploringVC.swift */; };
 		600A26E12976B46400231BB6 /* StartExploringVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 600A26DF2976B46400231BB6 /* StartExploringVC.xib */; };
 		600A26E52976BBD800231BB6 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600A26E32976BBD800231BB6 /* ProfileVC.swift */; };
@@ -392,6 +392,8 @@
 		0A1C0FB82A1AA79E00E9979C /* Font + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font + Extension.swift"; sourceTree = "<group>"; };
 		0A1C0FBA2A1AA8D800E9979C /* Color + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color + Extension.swift"; sourceTree = "<group>"; };
 		0A315A032A26BE3B00CE9709 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
+		0A37E2672A2BC29100BAA6E9 /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
+		0A37E2692A2BC95900BAA6E9 /* StartExploringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartExploringView.swift; sourceTree = "<group>"; };
 		0A8EAFC62A21425D00A753AD /* PickActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickActivityView.swift; sourceTree = "<group>"; };
 		0A8EAFD12A222B6300A753AD /* PickSubActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickSubActivityView.swift; sourceTree = "<group>"; };
 		0ACE846C2A1FD43E008B196C /* AgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeView.swift; sourceTree = "<group>"; };
@@ -405,8 +407,6 @@
 		0AF1D7652A2537A600BBC440 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		5067FAEF3056452D5BC0D700 /* Pods-Cliqued.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cliqued.debug.xcconfig"; path = "Target Support Files/Pods-Cliqued/Pods-Cliqued.debug.xcconfig"; sourceTree = "<group>"; };
 		60015DF8299E5E2B00426EDB /* ReportClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportClass.swift; sourceTree = "<group>"; };
-		600A26D929769D9F00231BB6 /* NotificationPermissionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionVC.swift; sourceTree = "<group>"; };
-		600A26DA29769D9F00231BB6 /* NotificationPermissionVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationPermissionVC.xib; sourceTree = "<group>"; };
 		600A26DE2976B46400231BB6 /* StartExploringVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartExploringVC.swift; sourceTree = "<group>"; };
 		600A26DF2976B46400231BB6 /* StartExploringVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StartExploringVC.xib; sourceTree = "<group>"; };
 		600A26E32976BBD800231BB6 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
@@ -816,7 +816,8 @@
 				0AF1D7622A25315C00BBC440 /* PickSubActivity */,
 				0AF1D7632A25317100BBC440 /* SelectPictures */,
 				0AF1D7642A25379300BBC440 /* Location */,
-				0AD9978B2A295D8900F5C095 /* NotificationsView.swift */,
+				0A37E2662A2BC27C00BAA6E9 /* Notifications */,
+				0A37E2692A2BC95900BAA6E9 /* StartExploringView.swift */,
 			);
 			path = OnboardingFlow;
 			sourceTree = "<group>";
@@ -853,6 +854,15 @@
 				64D586D429A8D1DC00FDA1AF /* Localizable.strings */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		0A37E2662A2BC27C00BAA6E9 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				0AD9978B2A295D8900F5C095 /* NotificationsView.swift */,
+				0A37E2672A2BC29100BAA6E9 /* NotificationsViewModel.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		0AF1D7602A25314300BBC440 /* Welcome */ = {
@@ -899,15 +909,6 @@
 				0AD997872A29473800F5C095 /* LocationAnnotationView.swift */,
 			);
 			path = Location;
-			sourceTree = "<group>";
-		};
-		600A26D829769D7C00231BB6 /* NotificationPermissionVC */ = {
-			isa = PBXGroup;
-			children = (
-				600A26D929769D9F00231BB6 /* NotificationPermissionVC.swift */,
-				600A26DA29769D9F00231BB6 /* NotificationPermissionVC.xib */,
-			);
-			path = NotificationPermissionVC;
 			sourceTree = "<group>";
 		};
 		600A26DD2976AC6400231BB6 /* StartExploringVC */ = {
@@ -1706,7 +1707,6 @@
 				603ABBFB296E7A1500F582D0 /* HomeVC */,
 				60CBDF80296D9ACB004CEE25 /* TabBarVC */,
 				600A26DD2976AC6400231BB6 /* StartExploringVC */,
-				60E3A3F62977CC4B000F1984 /* SignUpProcess */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1805,14 +1805,6 @@
 				60D352FC29715B95007E09E8 /* TermsConditionTextCell.xib */,
 			);
 			path = TermsConditionTextCell;
-			sourceTree = "<group>";
-		};
-		60E3A3F62977CC4B000F1984 /* SignUpProcess */ = {
-			isa = PBXGroup;
-			children = (
-				600A26D829769D7C00231BB6 /* NotificationPermissionVC */,
-			);
-			path = SignUpProcess;
 			sourceTree = "<group>";
 		};
 		60E3A3F72977CCC9000F1984 /* HomeActivitiesVC */ = {
@@ -2396,7 +2388,6 @@
 				608B541E29FAAD7500E22669 /* LicenseDiscriptionCell.xib in Resources */,
 				605471A229F694DD0013610A /* UnifiedNativeAdView.xib in Resources */,
 				6498BAE9299F77A40023C6EB /* EmailNotification.xib in Resources */,
-				600A26DC29769D9F00231BB6 /* NotificationPermissionVC.xib in Resources */,
 				6097F68229DEFB55005FF8D1 /* DiscoveryActivityView.xib in Resources */,
 				60C666CC297FD9730038213E /* DropdownCell.xib in Resources */,
 				64D586CD29A8CDA300FDA1AF /* PlanTermsConditionCell.xib in Resources */,
@@ -2558,10 +2549,12 @@
 				60C666C1297FD3950038213E /* EditProfileVC.swift in Sources */,
 				601245B9297A73E300441F09 /* YourActivityCVCell.swift in Sources */,
 				603ABBFE296E7A7400F582D0 /* HomeVC.swift in Sources */,
+				0A37E26A2A2BC95900BAA6E9 /* StartExploringView.swift in Sources */,
 				64B624A3299E66CC00D26F8D /* OTPTextField.swift in Sources */,
 				64D34AC5299CA70D00811B45 /* CallManager.swift in Sources */,
 				601F0ACD297E4F8B0027B472 /* SettingsVC.swift in Sources */,
 				600A26EB2976BF9E00231BB6 /* HomeViewModel.swift in Sources */,
+				0A37E2682A2BC29100BAA6E9 /* NotificationsViewModel.swift in Sources */,
 				648CB9E52990D8F6003171E1 /* DiscoverActivityViewModel.swift in Sources */,
 				60CBDF3B296D4447004CEE25 /* NSData+Base64.m in Sources */,
 				60CBDF4D296D4451004CEE25 /* Optional+Extensions.swift in Sources */,
@@ -2579,7 +2572,6 @@
 				60CBDF39296D4447004CEE25 /* Connectivity.swift in Sources */,
 				64B5260F29A647A10013963F /* Call.swift in Sources */,
 				64D34AC6299CA70D00811B45 /* ProviderDelegate.swift in Sources */,
-				600A26DB29769D9F00231BB6 /* NotificationPermissionVC.swift in Sources */,
 				0ACE84712A1FDF66008B196C /* RelationshipView.swift in Sources */,
 				60CBDF26296D4442004CEE25 /* Dynamic.swift in Sources */,
 				60CBDF83296D9BDC004CEE25 /* TabBarVC.swift in Sources */,

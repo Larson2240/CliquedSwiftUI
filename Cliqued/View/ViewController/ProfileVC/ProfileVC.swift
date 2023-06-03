@@ -208,8 +208,7 @@ extension ProfileVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: "", setlocationvc: "", objAddress: nil))
             
         case profileSetupType.notification_enable:
-            let notificationvc = NotificationPermissionVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: notificationvc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NotificationsView())
             
         case profileSetupType.completed:
             let tabbarvc = TabBarVC.loadFromNib()

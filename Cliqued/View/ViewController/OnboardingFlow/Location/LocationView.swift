@@ -191,7 +191,7 @@ struct LocationView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: NotificationsView(isUpdateData: true),
+        NavigationLink(destination: NotificationsView(),
                        isActive: $notificationsViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)
