@@ -1,44 +1,39 @@
 //
-//  SubActivityViewModel.swift
+//  PickActivityViewModel.swift
 //  Cliqued
 //
-//  Created by Seraphim Kovalchuk on 28.05.2023.
+//  Created by C211 on 07/02/23.
 //
 
-import Combine
+import SwiftUI
 
-struct structPickSubActivityParams {
+struct structPickActivityParams {
     var activityCategoryId = ""
     var activitySubCategoryId = ""
 }
 
-final class PickSubActivityViewModel: ObservableObject {
-    static var shared = PickSubActivityViewModel()
-    
+final class PickActivityViewModel: ObservableObject {
     @Published var arrayOfActivity = [ActivityCategoryClass]()
-    @Published var arrayOfActivityAllData = [ActivityCategoryClass]()
-    @Published var arrayOfSelectedSubActivity = [structPickSubActivityParams]()
+    @Published var arrayOfSelectedCategoryIds = [Int]()
     
-    private var arrayOfNewSelectedSubActivity = [structPickSubActivityParams]()
-    private var arrayOfAllSelectedSubActivity = [structPickSubActivityParams]()
-    private var arrayOfDeletedSubActivityIds = [Int]()
+    var arrayOfDeletedActivityIds = [Int]()
     private let apiParams = ApiParams()
+    private var arrayOfSelectedPickActivity = [structPickActivityParams]()
+    private var arrayOfAllSelectedActivity = [structPickActivityParams]()
+    private var arrayOfNewPickActivity = [structPickActivityParams]()
     
     //MARK: Call Get Preferences Data API
-    func callGetActivityDataAPI(categoryIDs: String) {
-        let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            apiParams.activityCategoryId : categoryIDs
-        ]
-        
+    func callGetActivityDataAPI() {
         guard Connectivity.isConnectedToInternet() else {
             UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
             return
         }
         
+        arrayOfActivity.removeAll()
+        
         UIApplication.shared.showLoader()
         
-        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetActivityCategory, parameters: params) { [weak self] response, error, message in
+        RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetActivityCategory) { [weak self] response, error, message in
             guard let self = self else { return }
             
             UIApplication.shared.hideLoader()
@@ -64,8 +59,6 @@ final class PickSubActivityViewModel: ObservableObject {
                                     print(error.localizedDescription)
                                 }
                             }
-                            
-                            self.setActivityAllData(value: self.arrayOfActivity)
                         }
                     }
                 }
@@ -74,64 +67,93 @@ final class PickSubActivityViewModel: ObservableObject {
     }
 }
 
-extension PickSubActivityViewModel {
-    //Get method's
+//MARK: getter/setter method
+extension PickActivityViewModel {
     func getNumberOfActivity() -> Int {
         arrayOfActivity.count
     }
-    func getActivityAllData() -> [ActivityCategoryClass] {
-        arrayOfActivity
-    }
+    
     func getActivityData(at index: Int) -> ActivityCategoryClass {
         arrayOfActivity[index]
     }
-    func getSelectedSubActivity() -> [structPickSubActivityParams] {
-        arrayOfSelectedSubActivity
+    
+    func getSelectedPickActivity() -> [structPickActivityParams] {
+        arrayOfSelectedPickActivity
     }
-    func getAllSelectedSubActivity() -> [structPickSubActivityParams] {
-        arrayOfAllSelectedSubActivity
-    }
-    func getNewSelectedSubActivity() -> [structPickSubActivityParams] {
-        arrayOfNewSelectedSubActivity
-    }
-    func getDeletedSubActivityIds() -> [Int] {
-        arrayOfDeletedSubActivityIds
+    func getNewPickActivity() -> [structPickActivityParams] {
+        arrayOfNewPickActivity
     }
     
-    //Set method's
-    func setActivityAllData(value: [ActivityCategoryClass]) {
-        arrayOfActivityAllData = value
-    }
-    func setSubActivity(value: structPickSubActivityParams) {
-        arrayOfSelectedSubActivity.append(value)
-    }
-    func setAllSelectedSubActivity(value: structPickSubActivityParams) {
-        arrayOfAllSelectedSubActivity.append(value)
-    }
-    func setNewSelectedSubActivity(value: structPickSubActivityParams) {
-        arrayOfNewSelectedSubActivity.append(value)
-    }
-    func setDeletedSubActivityIds(value: Int) {
-        arrayOfDeletedSubActivityIds.append(value)
+    func getDeletedActivityIds() -> [Int] {
+        arrayOfDeletedActivityIds
     }
     
-    //Other method's
-    func removeSelectedSubActivity(at Index: Int) {
-        arrayOfSelectedSubActivity.remove(at: Index)
+    func setPickActivity(value: structPickActivityParams) {
+        arrayOfSelectedPickActivity.append(value)
     }
-    func removeNewSelectedSubActivity(at Index: Int) {
-        arrayOfNewSelectedSubActivity.remove(at: Index)
+    
+    func setNewPickActivity(value: structPickActivityParams) {
+        arrayOfNewPickActivity.append(value)
     }
-    func removeDeletedSubActivityIds(at Index: Int) {
-        arrayOfDeletedSubActivityIds.remove(at: Index)
+    
+    func setActivity(value: structPickActivityParams) {
+        arrayOfNewPickActivity.append(value)
+    }
+    
+    func setAllSelectedActivity(value: structPickActivityParams) {
+        arrayOfAllSelectedActivity.append(value)
+    }
+    
+    func removeAllSelectedActivity() {
+        arrayOfAllSelectedActivity.removeAll()
+    }
+    
+    func getAllSelectedActivity() -> [structPickActivityParams] {
+        arrayOfAllSelectedActivity
+    }
+    
+    func removePickActivity(at Index: Int) {
+        arrayOfSelectedPickActivity.remove(at: Index)
+    }
+    
+    func removeNewPickActivity(at Index: Int) {
+        arrayOfNewPickActivity.remove(at: Index)
+    }
+    
+    func setDeletedActivityIds(value: Int) {
+        arrayOfDeletedActivityIds.append(value)
+    }
+    
+    func removeDeletedActivityIds(at Index: Int) {
+        arrayOfDeletedActivityIds.remove(at: Index)
+    }
+    
+    func removeAllSelectedArray() {
+        arrayOfSelectedPickActivity.removeAll()
+    }
+    
+    func removeAllNewSelectedArray() {
+        arrayOfNewPickActivity.removeAll()
+    }
+    
+    func setSelectedCategoryId(value: Int) {
+        arrayOfSelectedCategoryIds.append(value)
+    }
+    func removeSelectedCategoryId(at Index: Int) {
+        arrayOfSelectedCategoryIds.remove(at: Index)
+    }
+    func removeAllSelectedCategoryId() {
+        arrayOfSelectedCategoryIds.removeAll()
+    }
+    func getSelectedCategoryId() -> [Int] {
+        arrayOfSelectedCategoryIds
     }
     
     //For setup profile time
-    func convertSubActivityStructToString() -> String {
-        
+    func convertActivityStructToString() -> String {
         var optionlist = [String]()
         
-        for i in getSelectedSubActivity() {
+        for i in getSelectedPickActivity() {
             let dict : NSMutableDictionary = [apiParams.activityCategoryId : i.activityCategoryId,
                                               apiParams.activitySubCategoryId : i.activitySubCategoryId]
             
@@ -148,11 +170,11 @@ extension PickSubActivityViewModel {
     }
     
     //For edit profile time
-    func convertNewSubActivityStructToString() -> String {
+    func convertNewActivityStructToString() -> String {
         
         var optionlist = [String]()
         
-        for i in getNewSelectedSubActivity() {
+        for i in getNewPickActivity() {
             let dict : NSMutableDictionary = [apiParams.activityCategoryId : i.activityCategoryId,
                                               apiParams.activitySubCategoryId : i.activitySubCategoryId]
             

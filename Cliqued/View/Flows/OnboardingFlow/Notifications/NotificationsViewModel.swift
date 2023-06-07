@@ -19,8 +19,10 @@ final class NotificationsViewModel: NSObject, ObservableObject {
     }
     
     func registerForPushNotifications() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, error in
-            self?.notificationsEnabled = granted
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            DispatchQueue.main.async { [weak self] in
+                self?.notificationsEnabled = granted
+            }
         }
     }
     

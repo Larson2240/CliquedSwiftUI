@@ -53,8 +53,12 @@ struct NotificationsView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_notification,
-                   backButtonVisible: false)
+        VStack(spacing: 20) {
+            HeaderView(title: Constants.screenTitle_notification,
+                       backButtonVisible: false)
+            
+            OnboardingProgressView(totalSteps: 9, currentStep: 9)
+        }
     }
     
     private var title: some View {
@@ -63,7 +67,6 @@ struct NotificationsView: View {
             .foregroundColor(.colorDarkGrey)
             .fixedSize(horizontal: false, vertical: true)
             .multilineTextAlignment(.center)
-            .padding(.top, 40)
             .padding(.horizontal)
     }
     
@@ -76,7 +79,7 @@ struct NotificationsView: View {
             }
             
             option(text: Constants.btn_disableNotification, isSelected: notificationsViewModel.notificationsEnabled == false) {
-                if notificationsViewModel.notificationsEnabled == false {
+                if notificationsViewModel.notificationsEnabled == true {
                     UIApplication.shared.alertCustom(btnNo: Constants.btn_cancel, btnYes: Constants.btn_disable, title: Constants.label_notificationDisableTitle, message: Constants.label_notificationDisableMessage) {
                         notificationsViewModel.notificationsEnabled = false
                     }
@@ -128,7 +131,7 @@ struct NotificationsView: View {
         notificationsViewModel.registerForPushNotifications()
         
         onboardingViewModel.nextAction = {
-            
+            startExploringViewPresented.toggle()
         }
     }
     

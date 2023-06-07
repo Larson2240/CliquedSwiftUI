@@ -10,6 +10,7 @@ import SwiftUI
 struct GenderView: View {
     @StateObject private var viewModel = OnboardingViewModel.shared
     
+    @State private var gender = ""
     @State private var relationshipViewPresented = false
     
     var body: some View {
@@ -52,8 +53,12 @@ struct GenderView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_gender,
-                   backButtonVisible: false)
+        VStack(spacing: 20) {
+            HeaderView(title: Constants.screenTitle_gender,
+                       backButtonVisible: false)
+            
+            OnboardingProgressView(totalSteps: 9, currentStep: 3)
+        }
     }
     
     private var description: some View {
@@ -66,7 +71,7 @@ struct GenderView: View {
         }
         .foregroundColor(.colorDarkGrey)
         .multilineTextAlignment(.center)
-        .padding(.top, 40)
+        .padding(.top, scaled(60))
         .padding(.horizontal)
     }
     
@@ -80,9 +85,9 @@ struct GenderView: View {
     }
     
     private func genderOption(icon: String, title: String) -> some View {
-        Button(action: { viewModel.gender = title }) {
+        Button(action: { gender = title }) {
             ZStack {
-                if viewModel.gender == title {
+                if gender == title {
                     Color.colorGreenSelected
                 } else {
                     Color.colorLightGrey
@@ -91,11 +96,11 @@ struct GenderView: View {
                 HStack {
                     Image(icon)
                         .renderingMode(.template)
-                        .foregroundColor(viewModel.gender == title ? .white : .colorDarkGrey)
+                        .foregroundColor(gender == title ? .white : .colorDarkGrey)
                     
                     Text(title)
                         .font(.themeMedium(18))
-                        .foregroundColor(viewModel.gender == title ? .white : .colorDarkGrey)
+                        .foregroundColor(gender == title ? .white : .colorDarkGrey)
                 }
             }
         }
@@ -132,7 +137,8 @@ struct GenderView: View {
     }
     
     private func continueAction() {
-        if !viewModel.gender.isEmpty {
+        if !gender.isEmpty {
+            viewModel.gender = gender
             viewModel.profileSetupType = ProfileSetupType().gender
             viewModel.callSignUpProcessAPI()
         } else {

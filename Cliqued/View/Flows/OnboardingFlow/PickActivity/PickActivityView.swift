@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct PickActivityView: View {
-    @StateObject private var viewModel = PickActivityViewModel.shared
+    @StateObject private var viewModel = PickActivityViewModel()
     
     var isFromEditProfile: Bool
     var arrayOfActivity: [UserInterestedCategory]
@@ -57,8 +57,12 @@ struct PickActivityView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_pickActivity,
-                   backButtonVisible: false)
+        VStack(spacing: 20) {
+            HeaderView(title: Constants.screenTitle_pickActivity,
+                       backButtonVisible: false)
+            
+            OnboardingProgressView(totalSteps: 9, currentStep: 5)
+        }
     }
     
     private var description: some View {
@@ -71,7 +75,7 @@ struct PickActivityView: View {
         }
         .foregroundColor(.colorDarkGrey)
         .multilineTextAlignment(.center)
-        .padding(.top, 40)
+        .padding(.top)
         .padding(.horizontal)
     }
     

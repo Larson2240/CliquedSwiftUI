@@ -62,8 +62,12 @@ struct RelationshipView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_relationship,
-                   backButtonVisible: false)
+        VStack(spacing: 20) {
+            HeaderView(title: Constants.screenTitle_relationship,
+                       backButtonVisible: false)
+            
+            OnboardingProgressView(totalSteps: 9, currentStep: 4)
+        }
     }
     
     private var description: some View {
@@ -76,7 +80,7 @@ struct RelationshipView: View {
         }
         .foregroundColor(.colorDarkGrey)
         .multilineTextAlignment(.center)
-        .padding(.top, 40)
+        .padding(.top, scaled(60))
         .padding(.horizontal)
     }
     

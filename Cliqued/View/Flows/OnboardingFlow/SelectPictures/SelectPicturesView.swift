@@ -9,6 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct SelectPicturesView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var onboardingViewModel = OnboardingViewModel.shared
     @StateObject private var picturesViewModel = SelectPicturesViewModel()
     
@@ -60,8 +61,12 @@ struct SelectPicturesView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_selectPictures,
-                   backButtonVisible: false)
+        VStack(spacing: 20) {
+            HeaderView(title: Constants.screenTitle_selectPictures,
+                       backButtonVisible: false)
+            
+            OnboardingProgressView(totalSteps: 9, currentStep: 7)
+        }
     }
     
     private var description: some View {
@@ -179,8 +184,10 @@ struct SelectPicturesView: View {
     private func onAppearConfig() {
         onboardingViewModel.nextAction = {
             if isFromEditProfile {
-
+                presentationMode.wrappedValue.dismiss()
             } else {
+                onboardingViewModel.profileImages.removeAll()
+                onboardingViewModel.thumbnails.removeAll()
                 locationViewPresented.toggle()
             }
         }

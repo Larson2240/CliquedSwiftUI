@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @StateObject private var viewModel = WelcomeViewModel()
+    @StateObject private var viewModel = WelcomeViewModel(fromOnboarding: true)
     
     var body: some View {
         content

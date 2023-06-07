@@ -9,8 +9,9 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct PickSubActivityView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var onboardingViewModel = OnboardingViewModel.shared
-    @StateObject private var subActivityViewModel = PickSubActivityViewModel.shared
+    @StateObject private var subActivityViewModel = PickSubActivityViewModel()
     
     var isFromEditProfile: Bool
     var categoryIds: String
@@ -58,8 +59,12 @@ struct PickSubActivityView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_pickSubactivity,
-                   backButtonVisible: true)
+        VStack(spacing: 20) {
+            HeaderView(title: Constants.screenTitle_pickSubactivity,
+                       backButtonVisible: false)
+            
+            OnboardingProgressView(totalSteps: 9, currentStep: 6)
+        }
     }
     
     private var description: some View {
@@ -72,7 +77,7 @@ struct PickSubActivityView: View {
         }
         .foregroundColor(.colorDarkGrey)
         .multilineTextAlignment(.center)
-        .padding(.top, 40)
+        .padding(.top)
         .padding(.horizontal)
     }
     
@@ -167,7 +172,7 @@ struct PickSubActivityView: View {
         
         onboardingViewModel.nextAction = {
             if isFromEditProfile {
-                
+                presentationMode.wrappedValue.dismiss()
             } else {
                 selectPicturesViewPresented.toggle()
             }

@@ -56,8 +56,12 @@ struct AgeView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_age,
-                   backButtonVisible: false)
+        VStack(spacing: 20) {
+            HeaderView(title: Constants.screenTitle_age,
+                       backButtonVisible: false)
+            
+            OnboardingProgressView(totalSteps: 9, currentStep: 2)
+        }
     }
     
     private var description: some View {
@@ -70,7 +74,7 @@ struct AgeView: View {
         }
         .foregroundColor(.colorDarkGrey)
         .multilineTextAlignment(.center)
-        .padding(.top, 40)
+        .padding(.top, scaled(60))
         .padding(.horizontal)
     }
     

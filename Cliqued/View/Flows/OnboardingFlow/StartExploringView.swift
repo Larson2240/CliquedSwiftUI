@@ -80,9 +80,7 @@ struct StartExploringView: View {
     }
     
     private func continueAction() {
-        let tabbarvc = TabBarVC.loadFromNib()
-        tabbarvc.selectedIndex = 0
-        APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+        APP_DELEGATE.setTabBarRootViewController()
     }
 }
 

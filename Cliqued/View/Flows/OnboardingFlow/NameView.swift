@@ -11,6 +11,7 @@ struct NameView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel = OnboardingViewModel.shared
     
+    @State private var name = ""
     @State private var ageViewPresented = false
     
     var body: some View {
@@ -53,8 +54,12 @@ struct NameView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_forgotPwd,
-                   backButtonVisible: false)
+        VStack(spacing: 20) {
+            HeaderView(title: Constants.label_name,
+                       backButtonVisible: false)
+            
+            OnboardingProgressView(totalSteps: 9, currentStep: 1)
+        }
     }
     
     private var description: some View {
@@ -67,6 +72,7 @@ struct NameView: View {
         }
         .foregroundColor(.colorDarkGrey)
         .multilineTextAlignment(.center)
+        .padding(.top, scaled(60))
         .padding(.horizontal)
     }
     
@@ -76,7 +82,7 @@ struct NameView: View {
                 .font(.themeMedium(14))
                 .foregroundColor(.colorDarkGrey)
             
-            TextField(Constants.label_name, text: $viewModel.name)
+            TextField(Constants.label_name, text: $name)
                 .font(.themeMedium(16))
                 .foregroundColor(.colorDarkGrey)
                 .accentColor(.theme)
@@ -120,19 +126,20 @@ struct NameView: View {
         prefilledNameForSocialLoginUser()
     }
     
-    func prefilledNameForSocialLoginUser() {
+    private func prefilledNameForSocialLoginUser() {
         let userName = UserDefaults.standard.string(forKey: UserDefaultKey().userName)
-        viewModel.name = userName ?? ""
+        name = userName ?? ""
     }
     
     private func continueAction() {
         viewModel.profileSetupType = ProfileSetupType().name
         
-        if viewModel.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        if name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             UIApplication.shared.showAlertPopup(message: Constants.validMsg_name)
         } else {
-            let isValidName = isOnlyCharacter(text: viewModel.name)
+            let isValidName = isOnlyCharacter(text: name)
             if isValidName {
+                viewModel.name = name
                 viewModel.callSignUpProcessAPI()
             } else {
                 UIApplication.shared.showAlertPopup(message: Constants.validMsg_validName)

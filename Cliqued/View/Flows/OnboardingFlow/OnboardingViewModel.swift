@@ -37,10 +37,10 @@ struct NotificationParam {
 final class OnboardingViewModel: ObservableObject {
     static var shared = OnboardingViewModel()
     
-    @Published var name = ""
-    @Published var profileSetupType = ""
-    @Published var dateOfBirth = ""
-    @Published var gender = ""
+    var name = ""
+    var profileSetupType = ""
+    var dateOfBirth = ""
+    var gender = ""
     @Published var looking_for = ""
     @Published var deletedLookingForIds = ""
     @Published var pickActivities = ""

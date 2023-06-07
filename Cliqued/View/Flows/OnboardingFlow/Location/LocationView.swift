@@ -48,11 +48,11 @@ struct LocationView: View {
             
             mapStack
             
-            Spacer()
+            Spacer(minLength: 0)
             
             distanceStack
             
-            Spacer()
+            Spacer(minLength: 0)
             
             continueButton
         }
@@ -67,8 +67,12 @@ struct LocationView: View {
     }
     
     private var header: some View {
-        HeaderView(title: Constants.screenTitle_setYourLocation,
-                   backButtonVisible: false)
+        VStack(spacing: 20) {
+            HeaderView(title: Constants.screenTitle_setYourLocation,
+                       backButtonVisible: false)
+            
+            OnboardingProgressView(totalSteps: 9, currentStep: 8)
+        }
     }
     
     private var title: some View {
@@ -77,7 +81,6 @@ struct LocationView: View {
             .foregroundColor(.colorDarkGrey)
             .fixedSize(horizontal: false, vertical: true)
             .multilineTextAlignment(.center)
-            .padding(.top, 40)
             .padding(.horizontal)
     }
     

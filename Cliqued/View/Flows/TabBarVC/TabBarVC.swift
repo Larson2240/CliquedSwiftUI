@@ -8,7 +8,7 @@
 import UIKit
 
 class TabBarVC: UITabBarController {
-
+    
     //MARK: IBOutlet
     
     //MARK: Variable
@@ -41,7 +41,7 @@ class TabBarVC: UITabBarController {
     //MARK: Array of tabbar title
     let tabBarItemsTitle = [Constants.label_tabHome, Constants.label_tabActivities, Constants.label_tabChat, Constants.label_tabProfile]
     
-    lazy var welcomeViewModel = WelcomeViewModel()
+    lazy var welcomeViewModel = WelcomeViewModel(fromOnboarding: false)
     lazy var vieWModelMessage = MessageViewModel()
     
     
@@ -54,7 +54,7 @@ class TabBarVC: UITabBarController {
     //MARK: viewWillAppear Method
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
         
         if APP_DELEGATE.socketIOHandler == nil {
             APP_DELEGATE.socketIOHandler = SocketIOHandler()
@@ -67,9 +67,9 @@ class TabBarVC: UITabBarController {
     }
     
     @objc func incomingCall(_ notification: Notification) {
-       
+        
         print("incoming call 12345")
-                 
+        
         vieWModelMessage.setSenderId(value: "\(Constants.loggedInUser?.id ?? 0)")
         vieWModelMessage.setRoomName(value: "\(Calling.room_Name)")
         vieWModelMessage.setIsVideo(value: "\(Calling.is_audio_call == "1" ? "0" : "1")")
@@ -78,9 +78,9 @@ class TabBarVC: UITabBarController {
 }
 //MARK: Extension UDF
 extension TabBarVC {
-    
     func viewDidLoadMethod() {
         self.delegate = self
+        
         viewControllersList = [UINavigationController(rootViewController: HomeVC.loadFromNib()),
                                UINavigationController(rootViewController: ActivitiesVC.loadFromNib()),
                                UINavigationController(rootViewController: ChatVC.loadFromNib()),
@@ -111,7 +111,7 @@ extension TabBarVC {
     
     //MARK: Setup tabbar images
     func setupTabBarItems() {
-        for i in 0..<viewControllersList.count{
+        for i in 0..<viewControllersList.count {
             let item = UITabBarItem()
             item.image = tabBarItemImage[i]
             item.selectedImage = tabBarSelectedItemImage[i]
@@ -131,37 +131,31 @@ extension TabBarVC {
         vieWModelMessage.isDataGet.bind { [weak self] isSuccess in
             guard let self = self else { return }
             
-            
             print("SRM LOG Calling is audio => \(Calling.is_audio_call)")
             
             NotificationCenter.default.removeObserver(self,name: .incomingCall, object: nil)
-                          
-               if let topVC = UIApplication.getTopViewController(), topVC is VideoCallVC {
-                   
-               } else {
-                   let vc = VideoCallVC.loadFromNib()
-                   vc.sender_id = "\(Constants.loggedInUser?.id ?? 0)"
-                   vc.accessToken = self.vieWModelMessage.getAccessToken()
-                   vc.roomName = Calling.room_Name
-                   vc.hidesBottomBarWhenPushed = true
-                   vc.is_incomingCall = true
-                   vc.userName = "\(Calling.receiver_name )"
-                   vc.is_audioCall = Calling.is_audio_call == "1" ? true : false
-                   self.navigationController?.pushViewController(vc, animated: false)
-               }
+            
+            if let topVC = UIApplication.getTopViewController(), topVC is VideoCallVC {
+                
+            } else {
+                let vc = VideoCallVC.loadFromNib()
+                vc.sender_id = "\(Constants.loggedInUser?.id ?? 0)"
+                vc.accessToken = self.vieWModelMessage.getAccessToken()
+                vc.roomName = Calling.room_Name
+                vc.hidesBottomBarWhenPushed = true
+                vc.is_incomingCall = true
+                vc.userName = "\(Calling.receiver_name )"
+                vc.is_audioCall = Calling.is_audio_call == "1" ? true : false
+                self.navigationController?.pushViewController(vc, animated: false)
+            }
         }
     }
 }
+
 extension TabBarVC: UITabBarControllerDelegate {
-    
-    // UITabBarControllerDelegate
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         switch enumTabbarItem(rawValue: tabBarController.selectedIndex)! {
-        case .home:
-            welcomeViewModel.callGetUserDetailsAPI()
-        case .activity:
-            welcomeViewModel.callGetUserDetailsAPI()
-        case .chat:
+        case .home, .activity, .chat:
             welcomeViewModel.callGetUserDetailsAPI()
         case .profile:
             break
