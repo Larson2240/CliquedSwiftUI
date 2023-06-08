@@ -211,8 +211,7 @@ extension ProfileVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NotificationsView())
             
         case profileSetupType.completed:
-            let tabbarvc = TabBarVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())
         default:
             break
         }

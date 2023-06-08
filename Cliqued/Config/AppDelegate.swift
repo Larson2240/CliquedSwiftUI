@@ -79,8 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if UserDefaults.standard.bool(forKey: UserDefaultKey().isLoggedIn) && UserDefaults.standard.bool(forKey: UserDefaultKey().isRemeberMe) {
             setLanguage()
             socketIOHandler = SocketIOHandler()
-            let tabbarvc = TabBarVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 0))
         } else {
             setLanguage()
             let registerOptionsView = UIHostingController(rootView: RegisterOptionsView())
@@ -92,9 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func setTabBarRootViewController() {
         setLanguage()
         socketIOHandler = SocketIOHandler()
-        let tabbarvc = TabBarVC.loadFromNib()
-        tabbarvc.selectedIndex = 0
-        APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+        APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 0))
     }
     
     //MARK: Setup RegisterOptionVC rootViewController
@@ -304,57 +301,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     
                 case .newMatches:
                     setLanguage()
-                    let tabbarvc = TabBarVC.loadFromNib()
-                    tabbarvc.selectedIndex = 2
-                    APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+                    APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 2))
                     break
                     
                 case .message:
                     setLanguage()
-                    let tabbarvc = TabBarVC.loadFromNib()
-                    tabbarvc.selectedIndex = 2
-                    APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+                    APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 2))
                     break
                     
                 case .userLikesActivity:
                     setLanguage()
-                    let tabbarvc = TabBarVC.loadFromNib()
-                    tabbarvc.selectedIndex = 1
-                    APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+                    APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 1))
                     break
                     
                 case .CreatorAcceptActivityRequest:
                     setLanguage()
-                    let tabbarvc = TabBarVC.loadFromNib()
-                    tabbarvc.selectedIndex = 2
-                    APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+                    APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 2))
                     break
                     
                 case .CreatorRejectActivityRequest:
                     setLanguage()
-                    let tabbarvc = TabBarVC.loadFromNib()
-                    tabbarvc.selectedIndex = 1
-                    APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+                    APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 1))
                     break
                     
                 default:
                     setLanguage()
-                    let tabbarvc = TabBarVC.loadFromNib()
-                    tabbarvc.selectedIndex = 2
-                    APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+                    APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 2))
                     break
                 }
             } else {
                 setLanguage()
-                let tabbarvc = TabBarVC.loadFromNib()
-                tabbarvc.selectedIndex = 2
-                APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+                APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 2))
             }
         } else {
             setLanguage()
-            let tabbarvc = TabBarVC.loadFromNib()
-            tabbarvc.selectedIndex = 2
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 2))
         }
         completionHandler()
     }

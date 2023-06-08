@@ -34,14 +34,6 @@ struct StartExploringView: View {
         }
     }
     
-    private var background: some View {
-        Image("background")
-            .resizable()
-            .scaledToFill()
-            .ignoresSafeArea()
-            .frame(width: screenSize.width, height: screenSize.height)
-    }
-    
     private var header: some View {
         HeaderView(title: Constants.screenTitle_notification,
                    backButtonVisible: false)

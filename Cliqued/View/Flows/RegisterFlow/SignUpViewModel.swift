@@ -209,8 +209,7 @@ final class SignUpViewModel: NSObject, ObservableObject {
     private func proceed() {
         if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
             APP_DELEGATE.socketIOHandler = SocketIOHandler()
-            let tabbarvc = TabBarVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabbarvc)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 0))
         } else {
             if Constants.loggedInUser?.isVerified == "1" {
                 let welcomevc = UIHostingController(rootView: WelcomeView())

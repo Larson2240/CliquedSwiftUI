@@ -42,4 +42,12 @@ extension View {
     func scaled(_ constant: CGFloat) -> CGFloat {
         return constant * scale
     }
+    
+    var background: some View {
+        Image("background")
+            .resizable()
+            .scaledToFill()
+            .ignoresSafeArea()
+            .frame(width: screenSize.width, height: screenSize.height)
+    }
 }

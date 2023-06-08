@@ -18,8 +18,8 @@ struct PickActivityView: View {
     @State private var subActivityViewPresented = false
     
     let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
+        GridItem(.flexible(), spacing: 16),
+        GridItem(.flexible(), spacing: 16)
     ]
     
     var body: some View {
@@ -46,14 +46,6 @@ struct PickActivityView: View {
             
             continueButton
         }
-    }
-    
-    private var background: some View {
-        Image("background")
-            .resizable()
-            .scaledToFill()
-            .ignoresSafeArea()
-            .frame(width: screenSize.width, height: screenSize.height)
     }
     
     private var header: some View {
@@ -97,16 +89,21 @@ struct PickActivityView: View {
     
     private func imageCell(_ activity: ActivityCategoryClass, imageURL: URL) -> some View {
         ZStack {
+            let cellWidth = (screenSize.width - 40) / 2
+            let cellHeight = cellWidth + (cellWidth * 0.2)
+            
             WebImage(url: imageURL)
                 .placeholder {
                     Image("placeholder_activity")
                         .resizable()
                         .scaledToFill()
-                        .frame(maxHeight: 210)
+                        .frame(width: cellWidth, height: cellHeight)
                 }
                 .resizable()
                 .scaledToFill()
-                .frame(maxHeight: 210)
+                .frame(width: cellWidth, height: cellHeight)
+            
+            LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
             
             VStack {
                 Spacer()

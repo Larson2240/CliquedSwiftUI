@@ -44,14 +44,6 @@ struct GenderView: View {
         }
     }
     
-    private var background: some View {
-        Image("background")
-            .resizable()
-            .scaledToFill()
-            .ignoresSafeArea()
-            .frame(width: screenSize.width, height: screenSize.height)
-    }
-    
     private var header: some View {
         VStack(spacing: 20) {
             HeaderView(title: Constants.screenTitle_gender,
