@@ -253,13 +253,13 @@ extension ActivitiesVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false))
             
         case profileSetupType.location:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: "", setlocationvc: ""))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: ""))
             
         case profileSetupType.notification_enable:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NotificationsView())
             
         case profileSetupType.completed:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView(selectionValue: 0))
+            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: TabBarVC.loadFromNib())
         default:
             break
         }

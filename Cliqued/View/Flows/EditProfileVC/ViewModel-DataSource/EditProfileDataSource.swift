@@ -265,7 +265,6 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
         
         let setlocationvc = UIHostingController(rootView: LocationView(isFromEditProfile: true,
                                                                        addressId: "\(locationData.id ?? 0)",
-                                                                       setlocationvc: viewModel.getDistancePreference(),
                                                                        objAddress: locationData))
         
         viewController.navigationController?.pushViewController(setlocationvc, animated: true)

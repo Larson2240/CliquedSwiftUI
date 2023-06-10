@@ -7,9 +7,12 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import Introspect
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
+    @State private var guideViewPresented = false
+    @State private var uiTabBarController: UITabBarController?
     
     let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -20,8 +23,6 @@ struct HomeView: View {
         NavigationView {
             ZStack {
                 content
-                
-                presentables
             }
             .background(background)
             .onAppear { onAppearConfig() }
@@ -34,7 +35,15 @@ struct HomeView: View {
         VStack(spacing: 16) {
             header
             
-            activitiesStack
+            if viewModel.profileCompleted {
+                activitiesStack
+            } else {
+                completeProfileView
+            }
+            
+            if guideViewPresented {
+                guideView
+            }
         }
     }
     
@@ -45,7 +54,13 @@ struct HomeView: View {
             HStack {
                 Spacer()
                 
-                Button(action: {  }) {
+                Button(action: {
+                    var transaction = Transaction(animation: nil)
+                    transaction.disablesAnimations = true
+                    withTransaction(transaction) {
+                        guideViewPresented.toggle()
+                    }
+                }) {
                     Image("ic_explanationicon")
                 }
             }
@@ -106,13 +121,39 @@ struct HomeView: View {
         }
     }
     
-    private var presentables: some View {
-        ZStack {
+    private var guideView: some View {
+        GuideView(isPresented: $guideViewPresented, isFromUserSwipeScreen: false, isFromActivitySwipeScreen: false, isFromActivitiesScreen: false)
+            .introspectTabBarController { UITabBarController in
+                UITabBarController.tabBar.isHidden = true
+                uiTabBarController = UITabBarController
+            }.onDisappear {
+                uiTabBarController?.tabBar.isHidden = false
+            }
+    }
+    
+    private var completeProfileView: some View {
+        VStack(spacing: 16) {
+            Text(Constants.validMsg_profileIncompleteMsg)
+                .font(.themeMedium(14))
+                .foregroundColor(.colorDarkGrey)
             
+            Button(action: { viewModel.manageSetupProfileNavigationFlow() }) {
+                ZStack {
+                    Color.theme
+                    
+                    Text(Constants.btn_continue)
+                        .font(.themeBold(20))
+                        .foregroundColor(.colorWhite)
+                }
+            }
+            .frame(height: 60)
+            .cornerRadius(30)
         }
+        .padding(30)
     }
     
     private func onAppearConfig() {
+        viewModel.checkProfileCompletion()
         viewModel.callGetPreferenceDataAPI()
         viewModel.callGetUserInterestedCategoryAPI()
     }

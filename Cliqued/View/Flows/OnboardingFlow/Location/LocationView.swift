@@ -21,7 +21,6 @@ struct LocationView: View {
     
     var isFromEditProfile: Bool
     var addressId: String
-    var setlocationvc: String
     var objAddress: UserAddress?
     private let mediaType = MediaType()
     private let preferenceTypeIds = PreferenceTypeIds()
@@ -257,6 +256,6 @@ struct LocationView: View {
 
 struct LocationView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationView(isFromEditProfile: false, addressId: "", setlocationvc: "")
+        LocationView(isFromEditProfile: false, addressId: "")
     }
 }

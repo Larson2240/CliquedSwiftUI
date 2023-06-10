@@ -206,7 +206,7 @@ class WelcomeViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false))
 
         case profileSetupType.location:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: "", setlocationvc: "", objAddress: nil))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: "", objAddress: nil))
 
         case profileSetupType.notification_enable:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NotificationsView())

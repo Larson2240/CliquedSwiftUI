@@ -107,7 +107,6 @@ struct NameView: View {
                        isActive: $ageViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)
-        
     }
     
     private func onAppearConfig() {

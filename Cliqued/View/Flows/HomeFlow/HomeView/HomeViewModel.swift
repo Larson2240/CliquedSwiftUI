@@ -5,14 +5,19 @@
 //  Created by C211 on 17/01/23.
 //
 
-import Combine
+import SwiftUI
+import UserNotifications
 
 final class HomeViewModel: ObservableObject {
+    @Published var isLoading = false
+    @Published var profileCompleted = false
+    @Published var favoriteActivity = [UserInterestedCategory]()
+    @Published var favoriteCategoryActivity = [UserInterestedCategory]()
+    @Published var arrayOfHomeCategory = [ActivityCategoryClass]()
+    
     private let apiParams = ApiParams()
     private let preferenceOptionIds = PreferenceOptionIds()
-    
-    @Published var isLoading = false
-    @Published var arrayOfHomeCategory = [ActivityCategoryClass]()
+    private let profileSetupType = ProfileSetupType()
     
     //MARK: Save user data in UserDefault
     func saveUserInfoAndProceed(user: User){
@@ -67,7 +72,7 @@ final class HomeViewModel: ObservableObject {
             }
         }
     }
-        
+    
     func callUpdateUserDeviceTokenAPI(is_enabled: Bool) {
         let params: NSDictionary = [
             apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
@@ -158,5 +163,120 @@ final class HomeViewModel: ObservableObject {
     //MARK: Save preference data in UserDefault
     func savePreferenceData(preference: [PreferenceClass]){
         Constants.savePreferenceData(preferene: preference)
+    }
+    
+    func checkProfileCompletion() {
+        if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
+            profileCompleted = true
+            checkPushNotificationEnabled()
+        } else {
+            profileCompleted = false
+            bindUserDetailsData()
+        }
+    }
+    
+    func manageSetupProfileNavigationFlow() {
+        let strCount: String?
+        
+        if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
+            let profile_setup_count = Int((Constants.loggedInUser?.profileSetupType)!)!
+            strCount = "\(profile_setup_count)"
+        } else {
+            let profile_setup_count = Int((Constants.loggedInUser?.profileSetupType)!)! + 1
+            strCount = "\(profile_setup_count)"
+        }
+        
+        switch strCount {
+        case profileSetupType.name:
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
+            
+        case profileSetupType.birthdate:
+            APP_DELEGATE.window?.rootViewController =  UIHostingController(rootView: AgeView())
+            
+        case profileSetupType.gender:
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
+            
+        case profileSetupType.relationship:
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
+            
+        case profileSetupType.category:
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity))
+            
+        case profileSetupType.sub_category:
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: []))
+            
+        case profileSetupType.profile_images:
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false))
+            
+        case profileSetupType.location:
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: ""))
+            
+        case profileSetupType.notification_enable:
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NotificationsView())
+            
+        case profileSetupType.completed:
+            let tabBarVC = TabBarVC.loadFromNib()
+            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabBarVC)
+        default:
+            break
+        }
+    }
+    
+    private func checkPushNotificationEnabled() {
+        let current = UNUserNotificationCenter.current()
+        
+        current.getNotificationSettings(completionHandler: { [weak self] settings in
+            guard let self = self else { return }
+            
+            if settings.authorizationStatus == .notDetermined {
+                DispatchQueue.main.async {
+                    self.callUpdateUserDeviceTokenAPI(is_enabled: false)
+                    APP_DELEGATE.registerForPushNotifications()
+                }
+                // Notification permission has not been asked yet, go for it!
+            } else if settings.authorizationStatus == .denied {
+                
+                DispatchQueue.main.async {
+                    self.callUpdateUserDeviceTokenAPI(is_enabled: false)
+                }
+                
+                // Notification permission was previously denied, go to settings & privacy to re-enable
+            } else if settings.authorizationStatus == .authorized {
+                // Notification permission was already granted
+                APP_DELEGATE.registerForPushNotifications()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.callUpdateUserDeviceTokenAPI(is_enabled: true)
+                }
+            }
+        })
+    }
+    
+    private func bindUserDetailsData() {
+        let userData = Constants.loggedInUser!
+        
+        if userData.userInterestedCategory?.count ?? 0 > 0 {
+            if let interestedActivity = userData.userInterestedCategory {
+                favoriteActivity = interestedActivity
+            }
+        }
+        
+        //MARK: Managed multiple same category object in one category object
+        var arrayOfActivityIds = [Int]()
+        
+        if userData.userInterestedCategory?.count ?? 0 > 0 {
+            for interestedCategoryData in userData.userInterestedCategory ?? [] {
+                if let activityId = interestedCategoryData.activityId {
+                    arrayOfActivityIds.append(activityId)
+                }
+            }
+        }
+        
+        for activityId in arrayOfActivityIds {
+            if let data = favoriteActivity.filter({ $0.activityId == activityId }).first {
+                if !favoriteActivity.contains(where: {$0.activityId == activityId}) {
+                    favoriteCategoryActivity.append(data)
+                }
+            }
+        }
     }
 }

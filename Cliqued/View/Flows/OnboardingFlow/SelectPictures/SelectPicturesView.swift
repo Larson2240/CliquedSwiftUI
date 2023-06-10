@@ -167,7 +167,7 @@ struct SelectPicturesView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: LocationView(isFromEditProfile: false, addressId: "", setlocationvc: "", objAddress: nil),
+        NavigationLink(destination: LocationView(isFromEditProfile: false, addressId: "", objAddress: nil),
                        isActive: $locationViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)

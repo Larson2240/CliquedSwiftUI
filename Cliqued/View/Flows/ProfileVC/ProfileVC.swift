@@ -205,13 +205,14 @@ extension ProfileVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false))
             
         case profileSetupType.location:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: "", setlocationvc: "", objAddress: nil))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false, addressId: "", objAddress: nil))
             
         case profileSetupType.notification_enable:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NotificationsView())
             
         case profileSetupType.completed:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())
+            let tabBarVC = TabBarVC.loadFromNib()
+            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabBarVC)
         default:
             break
         }
