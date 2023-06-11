@@ -22,6 +22,7 @@ struct LocationView: View {
     var isFromEditProfile: Bool
     var addressId: String
     var objAddress: UserAddress?
+    var distancePreference = ""
     private let mediaType = MediaType()
     private let preferenceTypeIds = PreferenceTypeIds()
     
@@ -32,6 +33,7 @@ struct LocationView: View {
                 
                 presentables
             }
+            .animation(nil)
             .background(background)
             .onAppear { onAppearConfig() }
         }
@@ -60,9 +62,12 @@ struct LocationView: View {
     private var header: some View {
         VStack(spacing: 20) {
             HeaderView(title: Constants.screenTitle_setYourLocation,
-                       backButtonVisible: false)
+                       backButtonVisible: isFromEditProfile,
+                       backAction: { presentationMode.wrappedValue.dismiss() })
             
-            OnboardingProgressView(totalSteps: 9, currentStep: 8)
+            if !isFromEditProfile {
+                OnboardingProgressView(totalSteps: 9, currentStep: 8)
+            }
         }
     }
     
@@ -108,6 +113,7 @@ struct LocationView: View {
                         }
                     })
             .highPriorityGesture(DragGesture(minimumDistance: 10))
+            .animation(.default, value: locationViewModel.annotations.map { $0.id })
             .cornerRadius(16)
         }
     }
@@ -194,8 +200,9 @@ struct LocationView: View {
     private func onAppearConfig() {
         locationViewModel.isFromEditProfile = isFromEditProfile
         locationViewModel.addressId = addressId
+        locationViewModel.setupUserLocation(with: objAddress)
         
-        setupDefaultDistantce()
+        configureDistance()
         
         onboardingViewModel.nextAction = {
             if isFromEditProfile {
@@ -235,6 +242,14 @@ struct LocationView: View {
             onboardingViewModel.callSignUpProcessAPI()
         } else {
             UIApplication.shared.showAlertPopup(message: Constants.validMsg_validAddress)
+        }
+    }
+    
+    private func configureDistance() {
+        if !isFromEditProfile {
+            setupDefaultDistantce()
+        } else if distanceValues.contains(distancePreference) {
+            selectedDistance = distancePreference
         }
     }
     

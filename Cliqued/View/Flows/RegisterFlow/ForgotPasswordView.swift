@@ -78,7 +78,8 @@ struct ForgotPasswordView: View {
     
     private var header: some View {
         HeaderView(title: Constants.screenTitle_forgotPwd,
-                   backButtonVisible: true)
+                   backButtonVisible: true,
+                   backAction: { presentationMode.wrappedValue.dismiss() })
     }
     
     private var description: some View {

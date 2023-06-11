@@ -188,13 +188,13 @@ extension ChatDataSource : UITableViewDelegate, UITableViewDataSource {
     
     @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         if viewModel.arrSingleLikesList.count > 0 && viewModel.getIsPremium() == isPremium.Premium {
-            let arrIds = viewModel.arrSingleLikesList.map({"\($0.userId ?? 0)"})
-            let newString = arrIds.joined(separator: ",")
-            
-            let homeactivitiesVC = HomeActivitiesVC.loadFromNib()
-            homeactivitiesVC.user_ids = newString
-            homeactivitiesVC.hidesBottomBarWhenPushed = true
-            viewController.navigationController?.pushViewController(homeactivitiesVC, animated: true)
+//            let arrIds = viewModel.arrSingleLikesList.map({"\($0.userId ?? 0)"})
+//            let newString = arrIds.joined(separator: ",")
+//
+//            let homeactivitiesVC = HomeActivitiesVC.loadFromNib()
+//            homeactivitiesVC.user_ids = newString
+//            homeactivitiesVC.hidesBottomBarWhenPushed = true
+//            viewController.navigationController?.pushViewController(homeactivitiesVC, animated: true)
         }
     }
 }

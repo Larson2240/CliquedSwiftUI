@@ -23,11 +23,6 @@ final class LocationViewModel: NSObject, ObservableObject {
     var isFromEditProfile: Bool?
     var addressId = ""
     
-    override init() {
-        super.init()
-        determineCurrentLocation()
-    }
-    
     func determineCurrentLocation() {
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -69,12 +64,30 @@ final class LocationViewModel: NSObject, ObservableObject {
                           title: address)
             
             DispatchQueue.main.async {
-                withAnimation {
                     self?.mapRegion.center = coordinate
                     self?.mapRegion.span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
                     self?.annotations = [pin]
-                }
             }
+        }
+    }
+    
+    func setupUserLocation(with userAddress: UserAddress?) {
+        if let obj = userAddress {
+            let lat = Double(obj.latitude ?? "0.0")
+            let long = Double(obj.longitude ?? "0.0")
+            
+            let locValue:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
+            let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            let region = MKCoordinateRegion(center: locValue, span: span)
+            let fullAddress = "\(obj.address ?? "") \(obj.city ?? "") \(obj.state ?? "") \(obj.country ?? "") \(obj.pincode ?? "")"
+            let newAnnotation = Pin(id: UUID(), coordinate: locValue, title: fullAddress)
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.mapRegion = region
+                self?.annotations = [newAnnotation]
+            }
+        } else {
+            determineCurrentLocation()
         }
     }
     

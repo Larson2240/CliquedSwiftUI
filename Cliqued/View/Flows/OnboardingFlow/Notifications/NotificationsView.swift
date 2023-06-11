@@ -47,7 +47,8 @@ struct NotificationsView: View {
     private var header: some View {
         VStack(spacing: 20) {
             HeaderView(title: Constants.screenTitle_notification,
-                       backButtonVisible: false)
+                       backButtonVisible: false,
+                       backAction: {})
             
             OnboardingProgressView(totalSteps: 9, currentStep: 9)
         }

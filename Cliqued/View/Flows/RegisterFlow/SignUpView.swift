@@ -13,6 +13,8 @@ struct SignUpView: View {
         case signIn
     }
     
+    @Environment(\.presentationMode) private var presentationMode
+    
     @StateObject private var viewModel = SignUpViewModel()
     @State var currentFlow: FlowType
     @State private var forgotPasswordViewPresented = false
@@ -67,7 +69,8 @@ struct SignUpView: View {
     
     private var header: some View {
         HeaderView(title: currentFlow == .signUp ? Constants.screenTitle_signUp : "",
-                   backButtonVisible: true)
+                   backButtonVisible: true,
+                   backAction: { presentationMode.wrappedValue.dismiss() })
     }
     
     private var background: some View {

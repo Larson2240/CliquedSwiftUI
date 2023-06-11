@@ -5,12 +5,9 @@
 //  Created by C211 on 18/01/23.
 //
 
-import UIKit
+import Combine
 
-class HomeActivitiesViewModel {
-    
-    var isMessage: Dynamic<String> = Dynamic(String())
-    var isLoaderShow: Dynamic<Bool> = Dynamic(true)
+final class HomeActivitiesViewModel: ObservableObject {
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     var isViewLimitFinish: Dynamic<Bool> = Dynamic(false)
     var isLikeLimitFinish: Dynamic<Bool> = Dynamic(false)
@@ -40,146 +37,146 @@ class HomeActivitiesViewModel {
         var distancePrefId = ""
         var user_ids = ""
     }
+    
     private var structUserActivityParamValue = GetUserActivityParams()
     
     private struct setFollowStatusParams {
         var counterUserId = ""
         var isFollow = ""
     }
+    
     private var structFollowStatusParamValue = setFollowStatusParams()
     
     //MARK: Call Get Preferences Data API
     func callGetUserActivityAPI() {
-        
         let params: NSDictionary = [
             apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            apiParams.activityId : self.getActivityId(),
-            apiParams.activitySubCategoryId : self.getActivitySubCatIds(),
-            apiParams.looking_for : self.getLookingForIds(),
-            apiParams.kids_option_id : self.getKidsOptionId(),
-            apiParams.smoking_option_id : self.getSmokingOptionId(),
-            apiParams.ageStartPrefId : self.getAgeStartPrefId(),
-            apiParams.ageEndPrefId : self.getAgeEndPrefId(),
-            apiParams.distancePrefId : self.getDistancePrefId(),
-            apiParams.offset : self.getOffset(),
-            apiParams.userIds : self.getUserIds()
+            apiParams.activityId : getActivityId(),
+            apiParams.activitySubCategoryId : getActivitySubCatIds(),
+            apiParams.looking_for : getLookingForIds(),
+            apiParams.kids_option_id : getKidsOptionId(),
+            apiParams.smoking_option_id : getSmokingOptionId(),
+            apiParams.ageStartPrefId : getAgeStartPrefId(),
+            apiParams.ageEndPrefId : getAgeEndPrefId(),
+            apiParams.distancePrefId : getDistancePrefId(),
+            apiParams.offset : getOffset(),
+            apiParams.userIds : getUserIds()
         ]
         
-        if(Connectivity.isConnectedToInternet()) {
-            DispatchQueue.main.async { [weak self] in
-                self?.isLoaderShow.value = true
-            }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUsersForActivity, parameters: params) { [weak self] response, error, message in
-                guard let self = self else { return }
-                
-                self.isDataLoad = true
-                self.isLoaderShow.value = false
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
-                } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    let message = json?[API_MESSAGE] as? String
-                    let recordCount = json?["record_limit"] as? Int
-                    let likesLimit = json?["likes_limit"] as? Int
-                    self.setLikesLimit(value: likesLimit ?? 0)
-                    self.setRecordsCount(value: recordCount ?? 0)
-                    if status == SUCCESS {
-                        if let activityArray = json?["user_list"] as? NSArray {
-                            if activityArray.count > 0 {
-                                for activityInfo in activityArray {
-                                    let dicActivity = activityInfo as! NSDictionary
-                                    let decoder = JSONDecoder()
-                                    do {
-                                        let jsonData = try JSONSerialization.data(withJSONObject:dicActivity)
-                                        let activityData = try decoder.decode(User.self, from: jsonData)
-                                        self.arrayOfMainUserList.append(activityData)
-                                        self.arrayOfDuplicateUserList.append(activityData)
-                                    } catch {
-                                        print(error.localizedDescription)
-                                    }
+        guard Connectivity.isConnectedToInternet() else {
+            UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
+            return
+        }
+        
+        UIApplication.shared.showLoader()
+        
+        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUsersForActivity, parameters: params) { [weak self] response, error, message in
+            guard let self = self else { return }
+            
+            self.isDataLoad = true
+            UIApplication.shared.hideLoader()
+            
+            if error != nil && response == nil {
+                UIApplication.shared.showAlertPopup(message: message ?? "")
+            } else {
+                let json = response as? NSDictionary
+                let status = json?[API_STATUS] as? Int
+                let message = json?[API_MESSAGE] as? String
+                let recordCount = json?["record_limit"] as? Int
+                let likesLimit = json?["likes_limit"] as? Int
+                self.setLikesLimit(value: likesLimit ?? 0)
+                self.setRecordsCount(value: recordCount ?? 0)
+                if status == SUCCESS {
+                    if let activityArray = json?["user_list"] as? NSArray {
+                        if activityArray.count > 0 {
+                            for activityInfo in activityArray {
+                                let dicActivity = activityInfo as! NSDictionary
+                                let decoder = JSONDecoder()
+                                do {
+                                    let jsonData = try JSONSerialization.data(withJSONObject:dicActivity)
+                                    let activityData = try decoder.decode(User.self, from: jsonData)
+                                    self.arrayOfMainUserList.append(activityData)
+                                    self.arrayOfDuplicateUserList.append(activityData)
+                                } catch {
+                                    print(error.localizedDescription)
                                 }
-                                self.isDataGet.value = true
-                            } else {
-                                self.isDataGet.value = true
                             }
+                            self.isDataGet.value = true
+                        } else {
+                            self.isDataGet.value = true
                         }
-                    } else if status == 2 {
-                        self.isDataGet.value = true
-                        self.isViewLimitFinish.value = true
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        self.isMessage.value = message ?? ""
-                        self.isDataGet.value = true
                     }
+                } else if status == 2 {
+                    self.isDataGet.value = true
+                    self.isViewLimitFinish.value = true
+                    UIApplication.shared.showAlertPopup(message: message ?? "")
+                } else {
+                    UIApplication.shared.showAlertPopup(message: message ?? "")
+                    self.isDataGet.value = true
                 }
             }
-        } else {
-            self.isMessage.value = Constants.alert_InternetConnectivity
         }
     }
     
     //MARK: Call Like Dislike profile API
     func callLikeDislikeUserAPI(isShowLoader: Bool) {
-        
         let params: NSDictionary = [
             apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            apiParams.counterUserId : self.getCounterUserId(),
-            apiParams.isFollow : self.getIsFollow()
+            apiParams.counterUserId : getCounterUserId(),
+            apiParams.isFollow : getIsFollow()
         ]
         
-        if(Connectivity.isConnectedToInternet()) {
-            DispatchQueue.main.async { [weak self] in
-                if isShowLoader {
-                    self?.isLoaderShow.value = true
-                }
-            }
-            self.arrayOfFollowersList.removeAll()
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SetUserFollowStatus, parameters: params) { [weak self] response, error, message in
-                guard let self = self else { return }
-                
-                self.isLoaderShow.value = false
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
-                } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    let message = json?[API_MESSAGE] as? String
-                    if status == SUCCESS {
-                        if let followersArray = json?["followers"] as? NSArray {
-                            if followersArray.count > 0 {
-                                for followersInfo in followersArray {
-                                    let dicFollowers = followersInfo as! NSDictionary
-                                    let decoder = JSONDecoder()
-                                    do {
-                                        let jsonData = try JSONSerialization.data(withJSONObject:dicFollowers)
-                                        let followersData = try decoder.decode(Followers.self, from: jsonData)
-                                        self.arrayOfFollowersList.append(followersData)
-                                    } catch {
-                                        print(error.localizedDescription)
-                                    }
+        guard Connectivity.isConnectedToInternet() else {
+            UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
+            return
+        }
+        
+        if isShowLoader {
+            UIApplication.shared.showLoader()
+        }
+        
+        self.arrayOfFollowersList.removeAll()
+        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SetUserFollowStatus, parameters: params) { [weak self] response, error, message in
+            guard let self = self else { return }
+            
+            UIApplication.shared.hideLoader()
+            if error != nil && response == nil {
+                UIApplication.shared.showAlertPopup(message: message ?? "")
+            } else {
+                let json = response as? NSDictionary
+                let status = json?[API_STATUS] as? Int
+                let message = json?[API_MESSAGE] as? String
+                if status == SUCCESS {
+                    if let followersArray = json?["followers"] as? NSArray {
+                        if followersArray.count > 0 {
+                            for followersInfo in followersArray {
+                                let dicFollowers = followersInfo as! NSDictionary
+                                let decoder = JSONDecoder()
+                                do {
+                                    let jsonData = try JSONSerialization.data(withJSONObject:dicFollowers)
+                                    let followersData = try decoder.decode(Followers.self, from: jsonData)
+                                    self.arrayOfFollowersList.append(followersData)
+                                } catch {
+                                    print(error.localizedDescription)
                                 }
-                                self.isLikdDislikeSuccess.value = true
-                            } else {
-                                self.isLikdDislikeSuccess.value = true
                             }
+                            self.isLikdDislikeSuccess.value = true
+                        } else {
+                            self.isLikdDislikeSuccess.value = true
                         }
-                    } else if status == LIMIT_FINISH {
-                        self.isLikeLimitFinish.value = true
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        self.isMessage.value = message ?? ""
                     }
+                } else if status == LIMIT_FINISH {
+                    self.isLikeLimitFinish.value = true
+                    UIApplication.shared.showAlertPopup(message: message ?? "")
+                } else {
+                    UIApplication.shared.showAlertPopup(message: message ?? "")
                 }
             }
-        } else {
-            self.isMessage.value = Constants.alert_InternetConnectivity
         }
     }
 }
 //MARK: getter/setter method
 extension HomeActivitiesViewModel {
-    
     //Set Methods
     func setUserIds(value:String) {
         structUserActivityParamValue.user_ids = value
@@ -244,7 +241,6 @@ extension HomeActivitiesViewModel {
         structUserActivityParamValue.distancePrefId
     }
     
-
     //Main Array Methods
     func getNumberOfUserActivity() -> Int {
         arrayOfMainUserList.count
@@ -262,7 +258,6 @@ extension HomeActivitiesViewModel {
             return false
         }
     }
-    
     
     //Duplicate Array Methods
     func getNumberOfDuplicateUserActivity() -> Int {
@@ -316,7 +311,6 @@ extension HomeActivitiesViewModel {
     func getIsFollow() -> String {
         return structFollowStatusParamValue.isFollow
     }
-    
     
     func setUndoUserList(value: User) {
         arrayOfUndoUserList.append(value)

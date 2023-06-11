@@ -53,7 +53,8 @@ struct PickSubActivityView: View {
     private var header: some View {
         VStack(spacing: 20) {
             HeaderView(title: Constants.screenTitle_pickSubactivity,
-                       backButtonVisible: false)
+                       backButtonVisible: false,
+                       backAction: {})
             
             OnboardingProgressView(totalSteps: 9, currentStep: 6)
         }

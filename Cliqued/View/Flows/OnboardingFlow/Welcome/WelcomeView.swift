@@ -20,7 +20,8 @@ struct WelcomeView: View {
     private var content: some View {
         VStack(spacing: 8) {
             HeaderView(title: Constants.screenTitle_welcome,
-                       backButtonVisible: false)
+                       backButtonVisible: false,
+                       backAction: {})
             
             Spacer()
             

@@ -47,7 +47,8 @@ struct GenderView: View {
     private var header: some View {
         VStack(spacing: 20) {
             HeaderView(title: Constants.screenTitle_gender,
-                       backButtonVisible: false)
+                       backButtonVisible: false,
+                       backAction: {})
             
             OnboardingProgressView(totalSteps: 9, currentStep: 3)
         }

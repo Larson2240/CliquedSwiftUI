@@ -36,7 +36,8 @@ struct StartExploringView: View {
     
     private var header: some View {
         HeaderView(title: Constants.screenTitle_notification,
-                   backButtonVisible: false)
+                   backButtonVisible: false,
+                   backAction: {})
     }
     
     private var title: some View {

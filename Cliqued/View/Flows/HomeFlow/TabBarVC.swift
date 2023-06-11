@@ -143,7 +143,6 @@ extension TabBarVC {
                    vc.sender_id = "\(Constants.loggedInUser?.id ?? 0)"
                    vc.accessToken = self.vieWModelMessage.getAccessToken()
                    vc.roomName = Calling.room_Name
-                   vc.hidesBottomBarWhenPushed = true
                    vc.is_incomingCall = true
                    vc.userName = "\(Calling.receiver_name )"
                    vc.is_audioCall = Calling.is_audio_call == "1" ? true : false

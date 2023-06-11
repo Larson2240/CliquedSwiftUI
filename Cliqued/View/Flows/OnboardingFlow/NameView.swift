@@ -48,7 +48,8 @@ struct NameView: View {
     private var header: some View {
         VStack(spacing: 20) {
             HeaderView(title: Constants.label_name,
-                       backButtonVisible: false)
+                       backButtonVisible: false,
+                       backAction: {})
             
             OnboardingProgressView(totalSteps: 9, currentStep: 1)
         }

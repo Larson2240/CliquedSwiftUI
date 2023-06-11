@@ -8,16 +8,15 @@
 import SwiftUI
 
 struct HeaderView: View {
-    @Environment(\.presentationMode) private var presentationMode
-    
     var title: String
     var backButtonVisible: Bool
+    var backAction: () -> Void
     
     var body: some View {
         ZStack {
             if backButtonVisible {
                 HStack {
-                    Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                    Button(action: { backAction() }) {
                         Image("ic_back_black")
                     }
                     
@@ -38,6 +37,6 @@ struct HeaderView: View {
 
 struct HeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        HeaderView(title: "Title", backButtonVisible: true)
+        HeaderView(title: "Title", backButtonVisible: true, backAction: {  })
     }
 }

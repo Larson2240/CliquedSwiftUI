@@ -5,10 +5,23 @@
 //  Created by C211 on 18/01/23.
 //
 
-import UIKit
+import SwiftUI
 import Koloda
 import SDWebImage
 import GoogleMobileAds
+
+struct ActivitiesViewRepresentable: UIViewControllerRepresentable {
+    var category: ActivityCategoryClass?
+    
+    func makeUIViewController(context: Context) -> UIViewController {
+        let vc = HomeActivitiesVC.loadFromNib()
+        vc.objOfHomeCategory = category
+        
+        return vc
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}
 
 private var numberOfCards: Int = 7
 
@@ -16,7 +29,7 @@ class HomeActivitiesVC: UIViewController {
     
     //MARK: IBOutlet
     @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
-    @IBOutlet weak var viewActivityCard: KolodaView!{
+    @IBOutlet weak var viewActivityCard: KolodaView! {
         didSet {
             viewActivityCard.layer.cornerRadius = 50.0
         }
@@ -24,8 +37,7 @@ class HomeActivitiesVC: UIViewController {
     @IBOutlet weak var imageviewLikeDislikeIcon: UIImageView!
     @IBOutlet weak var cardView: ActivityView!
     
-    
-    @IBOutlet weak var labelNoActivityAvailable: UILabel!{
+    @IBOutlet weak var labelNoActivityAvailable: UILabel! {
         didSet {
             labelNoActivityAvailable.font = CustomFont.THEME_FONT_Medium(14)
             labelNoActivityAvailable.textColor = Constants.color_MediumGrey
@@ -55,12 +67,17 @@ class HomeActivitiesVC: UIViewController {
     //MARK: viewWillAppear Method
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
     }
 }
 //MARK: Extension UDF
 extension HomeActivitiesVC {
-    
     func viewDidLoadMethod() {
         viewModel.setUserIds(value: user_ids)
         setupNavigationBar()
@@ -68,6 +85,7 @@ extension HomeActivitiesVC {
         callGetUserActivityAPI()
         handleApiResponse()
     }
+    
     //MARK: Setup Navigation Bar
     func setupNavigationBar() {
         viewNavigationBar.backgroundColor = .clear
@@ -78,6 +96,7 @@ extension HomeActivitiesVC {
         viewNavigationBar.buttonRight.isHidden = false
         viewNavigationBar.buttonRight.addTarget(self, action: #selector(buttonGuideTap), for: .touchUpInside)
     }
+    
     //MARK: Back Button Action
     @objc func buttonBackTap() {
         self.navigationController?.popViewController(animated: true)
@@ -181,12 +200,6 @@ extension HomeActivitiesVC {
     
     //MARK: Handle API response
     func handleApiResponse() {
-        
-        //Check response message
-        viewModel.isMessage.bind { [weak self] message in
-            self?.showAlertPopup(message: message)
-        }
-        
         //If API success
         viewModel.isDataGet.bind { [weak self] isSuccess in
             guard let self = self else { return }
@@ -241,17 +254,6 @@ extension HomeActivitiesVC {
                 }
             }
         }
-        
-        //Loader hide & show
-        viewModel.isLoaderShow.bind { [weak self] isLoader in
-            guard let self = self else { return }
-            
-            if isLoader {
-                self.showLoader()
-            } else {
-                self.dismissLoader()
-            }
-        }
     }
     
     //MARK: Show subscription screen for basic user
@@ -263,12 +265,12 @@ extension HomeActivitiesVC {
 }
 //MARK: Extension for Koloda Delegate Method
 extension HomeActivitiesVC: KolodaViewDelegate {
-    
     func kolodaDidRunOutOfCards(_ koloda: KolodaView) {
         koloda.reloadData()
         if viewModel.getLikesLimit() != 0 {
             viewModel.arrayOfDuplicateUserList.removeAll()
         }
+        
         if viewModel.getAllDuplicationUserActivityData().count == 0 {
             viewActivityCard.isHidden = true
             labelNoActivityAvailable.isHidden = false
@@ -377,13 +379,13 @@ extension HomeActivitiesVC: KolodaViewDataSource {
                     viewModel.setIsFollow(value: "1")
                     viewModel.callLikeDislikeUserAPI(isShowLoader: false)
                     
-//                    if viewModel.getLikesLimit() != 0 {
-//                        if !isLikeLimitFinish {
-//                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-//                                showGoogleAds()
-//                            }
-//                        }
-//                    }
+                    //                    if viewModel.getLikesLimit() != 0 {
+                    //                        if !isLikeLimitFinish {
+                    //                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+                    //                                showGoogleAds()
+                    //                            }
+                    //                        }
+                    //                    }
                 }
             } else if direction == .down || direction == .bottomLeft || direction == .bottomRight {
                 if viewModel.getAllDuplicationUserActivityData().count > 0 {

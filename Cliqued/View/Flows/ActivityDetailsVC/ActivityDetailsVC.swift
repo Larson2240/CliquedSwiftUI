@@ -66,7 +66,7 @@ extension ActivityDetailsVC {
             self.present(subscriptionplanvc, animated: true)
         } else {
             let addactivityvc = AddActivityVC.loadFromNib()
-            addactivityvc.hidesBottomBarWhenPushed = true
+            
             addactivityvc.isEditActivity = true
             addactivityvc.objActivityDetails = objActivityDetails
             

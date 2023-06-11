@@ -13,7 +13,7 @@ class UINavigationViewClass: UIView {
     //MARK: IBOutlet
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var buttonBack: UIButton!
-    @IBOutlet weak var labelNavigationTitle: UILabel!{
+    @IBOutlet weak var labelNavigationTitle: UILabel! {
         didSet {
             labelNavigationTitle.font = CustomFont.THEME_FONT_Bold(16)
             labelNavigationTitle.textColor = Constants.color_NavigationBarText

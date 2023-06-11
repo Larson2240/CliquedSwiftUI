@@ -11,7 +11,10 @@ import Introspect
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
+    
+    @State private var selectedCategory: ActivityCategoryClass?
     @State private var guideViewPresented = false
+    @State private var activitiesViewPresented = false
     @State private var uiTabBarController: UITabBarController?
     
     let columns = [
@@ -23,6 +26,8 @@ struct HomeView: View {
         NavigationView {
             ZStack {
                 content
+                
+                presentables
             }
             .background(background)
             .onAppear { onAppearConfig() }
@@ -54,13 +59,7 @@ struct HomeView: View {
             HStack {
                 Spacer()
                 
-                Button(action: {
-                    var transaction = Transaction(animation: nil)
-                    transaction.disablesAnimations = true
-                    withTransaction(transaction) {
-                        guideViewPresented.toggle()
-                    }
-                }) {
+                Button(action: { guideViewPresented.toggle() }) {
                     Image("ic_explanationicon")
                 }
             }
@@ -117,7 +116,8 @@ struct HomeView: View {
             .padding(16)
         }
         .onTapGesture {
-            
+            selectedCategory = activity
+            activitiesViewPresented.toggle()
         }
     }
     
@@ -126,7 +126,8 @@ struct HomeView: View {
             .introspectTabBarController { UITabBarController in
                 UITabBarController.tabBar.isHidden = true
                 uiTabBarController = UITabBarController
-            }.onDisappear {
+            }
+            .onDisappear {
                 uiTabBarController?.tabBar.isHidden = false
             }
     }
@@ -150,6 +151,14 @@ struct HomeView: View {
             .cornerRadius(30)
         }
         .padding(30)
+    }
+    
+    private var presentables: some View {
+        NavigationLink(destination: HomeActivitiesView(category: selectedCategory),
+                       isActive: $activitiesViewPresented,
+                       label: EmptyView.init)
+        .isDetailLink(false)
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
     }
     
     private func onAppearConfig() {
