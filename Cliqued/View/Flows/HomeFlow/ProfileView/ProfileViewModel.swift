@@ -27,10 +27,14 @@ final class ProfileViewModel: ObservableObject {
     }
     
     @Published var userDetails = UserDetails()
-    @Published var favoriteActivity = [UserInterestedCategory]()
+    @Published var profileCompleted = false
     private let profileSetupType = ProfileSetupType()
     
     var objUserDetails: User?
+    
+    func checkProfileCompletion() {
+        profileCompleted = Constants.loggedInUser?.isProfileSetupCompleted == 1
+    }
     
     //MARK: Bind data on screen from the user object.
     func configureUser() {
@@ -84,14 +88,14 @@ final class ProfileViewModel: ObservableObject {
         
         for activityId in arrayOfActivityIds {
             if userDetails.favoriteCategoryActivity.contains(where: { $0.activityId == activityId }) == false {
-                if let data = userDetails.favoriteCategoryActivity.filter({$0.activityId == activityId}).first {
+                if let data = userDetails.favoriteActivity.filter({$0.activityId == activityId}).first {
                     userDetails.favoriteCategoryActivity.append(data)
                 }
             }
         }
     }
     
-    func url(for object: UserProfileImages, screenSize: CGSize) -> URL? {
+    func profileImageURL(for object: UserProfileImages, screenSize: CGSize) -> URL? {
         var mediaName = ""
         
         if object.mediaType == MediaType().image {
@@ -105,6 +109,13 @@ final class ProfileViewModel: ObservableObject {
         let imageHeight: CGFloat = 300
         let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth)&h=\(imageHeight)&zc=1&src=\(strUrl)"
         
+        return URL(string: baseTimbThumb)
+    }
+    
+    func activityImageURL(for object: UserInterestedCategory, size: CGSize) -> URL? {
+        let img = object.activityCategoryImage ?? ""
+        let strUrl = UrlActivityImage + img
+        let baseTimbThumb = "\(URLBaseThumb)w=\(size.width * 3)&h=\(size.height * 3)&zc=1&src=\(strUrl)"
         return URL(string: baseTimbThumb)
     }
     
@@ -132,7 +143,7 @@ final class ProfileViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
             
         case profileSetupType.category:
-            let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity)
+            let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: userDetails.favoriteActivity)
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: pickActivityView)
             
         case profileSetupType.sub_category:

@@ -20,7 +20,11 @@ struct ProfileView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                content
+                if viewModel.profileCompleted {
+                    content
+                } else {
+                    completeProfileView
+                }
                 
                 presentables
             }
@@ -35,16 +39,46 @@ struct ProfileView: View {
         VStack(spacing: 0) {
             imageContainer
             
-            ScrollView {
-                
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 16) {
+                    aboutMe
+                    
+                    favoriteActivities
+                }
+                .padding(.vertical, 16)
             }
         }
         .ignoresSafeArea()
     }
     
+    private var completeProfileView: some View {
+        VStack(spacing: 16) {
+            Text(Constants.validMsg_profileIncompleteMsg)
+                .font(.themeMedium(14))
+                .foregroundColor(.colorDarkGrey)
+            
+            Button(action: { viewModel.manageSetupProfileNavigationFlow() }) {
+                ZStack {
+                    Color.theme
+                    
+                    Text(Constants.btn_continue)
+                        .font(.themeBold(20))
+                        .foregroundColor(.colorWhite)
+                }
+            }
+            .frame(height: 60)
+            .cornerRadius(30)
+        }
+        .padding(30)
+    }
+    
     private var imageContainer: some View {
         ZStack {
-            pagerView
+            if viewModel.userDetails.profileCollection.count > 0 {
+                pagerView
+            } else {
+                placeholderImage
+            }
             
             gradient
             
@@ -63,7 +97,7 @@ struct ProfileView: View {
     
     private var pagerView: some View {
         Pager(page: page, data: viewModel.userDetails.profileCollection, id: \.self) { object in
-            WebImage(url: viewModel.url(for: object, screenSize: screenSize))
+            WebImage(url: viewModel.profileImageURL(for: object, screenSize: screenSize))
                 .placeholder {
                     placeholderImage
                 }
@@ -134,6 +168,95 @@ struct ProfileView: View {
             .frame(width: screenSize.width, height: 300)
     }
     
+    private var aboutMe: some View {
+        VStack(spacing: 12) {
+            HStack {
+                Text(Constants.label_aboutMe)
+                    .font(.themeMedium(16))
+                    .foregroundColor(.theme)
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            HStack {
+                Text(viewModel.userDetails.aboutMe)
+                    .font(.themeBook(14))
+                    .foregroundColor(.colorDarkGrey)
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            separator
+        }
+    }
+    
+    private var favoriteActivities: some View {
+        VStack(spacing: 12) {
+            HStack {
+                Text(Constants.label_myFavoriteActivities)
+                    .font(.themeMedium(16))
+                    .foregroundColor(.theme)
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach($viewModel.userDetails.favoriteCategoryActivity) { activity in
+                        imageCell(activity.wrappedValue)
+                            .cornerRadius(10)
+                    }
+                    .frame(width: 110)
+                }
+                .padding(.horizontal)
+            }
+            .frame(height: 140)
+            
+            separator
+        }
+    }
+    
+    private func imageCell(_ activity: UserInterestedCategory) -> some View {
+        ZStack {
+            let cellWidth: CGFloat = 110
+            let cellHeight: CGFloat = 140
+            
+            WebImage(url: viewModel.activityImageURL(for: activity, size: CGSize(width: cellWidth, height: cellHeight)))
+                .placeholder {
+                    Image("placeholder_detailpage")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: cellWidth, height: cellHeight)
+                }
+                .resizable()
+                .scaledToFill()
+                .frame(width: cellWidth, height: cellHeight)
+            
+            LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
+            
+            VStack {
+                Spacer()
+                
+                HStack {
+                    Text(activity.activityCategoryTitle ?? "")
+                        .font(.themeMedium(10))
+                        .foregroundColor(.white)
+                        .padding(8)
+                    
+                    Spacer()
+                }
+            }
+        }
+    }
+    
+    private var separator: some View {
+        Color.colorLightGrey
+            .frame(height: 0.5)
+    }
+    
     private var presentables: some View {
         ZStack {
             
@@ -141,6 +264,7 @@ struct ProfileView: View {
     }
     
     private func onAppearConfig() {
+        viewModel.checkProfileCompletion()
         viewModel.configureUser()
     }
 }

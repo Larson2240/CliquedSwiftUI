@@ -175,6 +175,7 @@ final class SignUpViewModel: NSObject, ObservableObject {
                                 self.saveUser(user: objUser)
                                 UserDefaults.standard.set(userToken, forKey: kUserToken)
                                 UserDefaults.standard.set(appToken, forKey: kAppToken)
+                                UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
                                 
                                 self.proceed()
                             } catch {
