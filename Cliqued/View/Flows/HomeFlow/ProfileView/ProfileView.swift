@@ -44,8 +44,29 @@ struct ProfileView: View {
                     aboutMe
                     
                     favoriteActivities
+                    
+                    ProfileCommonCell(imageName: "ic_lookingfor",
+                                      title: Constants.label_lookingFor,
+                                      details: viewModel.userDetails.lookingForIds)
+                    
+                    ProfileCommonCell(imageName: "ic_location_black",
+                                      title: Constants.label_location,
+                                      details: "\(viewModel.userDetails.location.first?.city ?? ""), \(viewModel.userDetails.location.first?.state ?? "")")
+                    
+                    ProfileCommonCell(imageName: "ic_height",
+                                      title: Constants.label_height,
+                                      details: viewModel.userDetails.height == "0" ? "-" : viewModel.userDetails.height)
+                    
+                    ProfileCommonCell(imageName: "ic_kids",
+                                      title: Constants.label_kids,
+                                      details: viewModel.userDetails.kids.isEmpty ? "No" : viewModel.userDetails.kids)
+                    
+                    ProfileCommonCell(imageName: "ic_smoking",
+                                      title: Constants.label_smoking,
+                                      details: viewModel.userDetails.smoking.isEmpty ? "No" : viewModel.userDetails.smoking)
                 }
                 .padding(.vertical, 16)
+                .padding(.bottom, 100)
             }
         }
         .ignoresSafeArea()
@@ -254,7 +275,7 @@ struct ProfileView: View {
     
     private var separator: some View {
         Color.colorLightGrey
-            .frame(height: 0.5)
+            .frame(height: 0.7)
     }
     
     private var presentables: some View {
