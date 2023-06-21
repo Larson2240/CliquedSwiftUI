@@ -53,6 +53,7 @@ final class ProfileViewModel: ObservableObject {
         userDetails.smoking = userData.smokingSelectionId ?? ""
         userDetails.kids = userData.kidsSelectionId ?? ""
         userDetails.distancePreference = userData.distanceOptionId ?? ""
+        userDetails.distancePreference.append("km")
         
         userDetails.startAge = userData.ageStartId ?? ""
         userDetails.endAge = userData.ageEndId ?? ""

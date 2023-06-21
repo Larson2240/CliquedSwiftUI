@@ -13,7 +13,7 @@ struct ProfileCommonCell: View {
     var details: String
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 16) {
             HStack {
                 Image(imageName)
                     .resizable()
@@ -32,8 +32,9 @@ struct ProfileCommonCell: View {
             }
             .padding(.horizontal)
             
-            Color.colorLightGrey
-                .frame(height: 0.7)
+            Color.black
+                .opacity(0.3)
+                .frame(height: 0.5)
         }
     }
 }

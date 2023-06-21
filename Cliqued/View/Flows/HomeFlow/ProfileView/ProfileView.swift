@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftUIPager
 import SDWebImageSwiftUI
+import StepSlider
 
 struct ProfileView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
@@ -16,6 +17,7 @@ struct ProfileView: View {
     @StateObject private var page: Page = .first()
     
     @State private var currentPage = 0
+    private var distanceValues: [String] = ["5km", "10km", "50km", "100km", "200km"]
     
     var body: some View {
         NavigationView {
@@ -64,6 +66,8 @@ struct ProfileView: View {
                     ProfileCommonCell(imageName: "ic_smoking",
                                       title: Constants.label_smoking,
                                       details: viewModel.userDetails.smoking.isEmpty ? "No" : viewModel.userDetails.smoking)
+                    
+                    distanceStack
                 }
                 .padding(.vertical, 16)
                 .padding(.bottom, 100)
@@ -190,7 +194,7 @@ struct ProfileView: View {
     }
     
     private var aboutMe: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 16) {
             HStack {
                 Text(Constants.label_aboutMe)
                     .font(.themeMedium(16))
@@ -214,7 +218,7 @@ struct ProfileView: View {
     }
     
     private var favoriteActivities: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 16) {
             HStack {
                 Text(Constants.label_myFavoriteActivities)
                     .font(.themeMedium(16))
@@ -273,9 +277,50 @@ struct ProfileView: View {
         }
     }
     
+    private var distanceStack: some View {
+        VStack(spacing: 16) {
+            HStack {
+                Image("ic_distance")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                
+                Text(Constants.label_distancePreference)
+                    .font(.themeMedium(14))
+                    .foregroundColor(.theme)
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            StepSlider(selected: $viewModel.userDetails.distancePreference,
+                       values: distanceValues) { value in
+                Text(value)
+                    .foregroundColor(.colorDarkGrey)
+            } thumbLabels: { value in
+                ZStack {
+                    Color.theme
+                        .ignoresSafeArea()
+                    
+                    Text(value)
+                        .foregroundColor(.white)
+                }
+            } accessibilityLabels: { value in
+                Text(value)
+            }
+            .allowsHitTesting(false)
+            .accentColor(.theme)
+            .frame(height: 60)
+            .padding(.horizontal)
+            
+            separator
+        }
+    }
+    
     private var separator: some View {
-        Color.colorLightGrey
-            .frame(height: 0.7)
+        Color.black
+            .opacity(0.3)
+            .frame(height: 0.5)
     }
     
     private var presentables: some View {
