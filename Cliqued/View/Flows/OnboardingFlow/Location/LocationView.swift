@@ -16,13 +16,12 @@ struct LocationView: View {
     @StateObject private var locationViewModel = LocationViewModel()
     
     @State private var distanceValues: [String] = ["5km","10km","50km","100km","200km"]
-    @State private var selectedDistance = "5km"
+    @State var selectedDistance = "5km"
     @State private var notificationsViewPresented = false
     
     var isFromEditProfile: Bool
     var addressId: String
     var objAddress: UserAddress?
-    var distancePreference = ""
     private let mediaType = MediaType()
     private let preferenceTypeIds = PreferenceTypeIds()
     
@@ -202,7 +201,9 @@ struct LocationView: View {
         locationViewModel.addressId = addressId
         locationViewModel.setupUserLocation(with: objAddress)
         
-        configureDistance()
+        if !isFromEditProfile {
+            setupDefaultDistantce()
+        }
         
         onboardingViewModel.nextAction = {
             if isFromEditProfile {
@@ -242,14 +243,6 @@ struct LocationView: View {
             onboardingViewModel.callSignUpProcessAPI()
         } else {
             UIApplication.shared.showAlertPopup(message: Constants.validMsg_validAddress)
-        }
-    }
-    
-    private func configureDistance() {
-        if !isFromEditProfile {
-            setupDefaultDistantce()
-        } else if distanceValues.contains(distancePreference) {
-            selectedDistance = distancePreference
         }
     }
     

@@ -72,7 +72,6 @@ class EmailNotification: UIViewController {
 
 //MARK: Extension UDF
 extension EmailNotification {
-    
     func viewDidLoadMethod() {
         setupNavigationBar()
         

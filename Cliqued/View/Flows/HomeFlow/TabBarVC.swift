@@ -8,7 +8,7 @@
 import SwiftUI
 
 final class TabBarVC: UITabBarController {
-
+    
     //MARK: IBOutlet
     
     //MARK: Variable
@@ -66,25 +66,22 @@ final class TabBarVC: UITabBarController {
     }
     
     @objc func incomingCall(_ notification: Notification) {
-       
-        print("incoming call 12345")
-                 
         vieWModelMessage.setSenderId(value: "\(Constants.loggedInUser?.id ?? 0)")
         vieWModelMessage.setRoomName(value: "\(Calling.room_Name)")
         vieWModelMessage.setIsVideo(value: "\(Calling.is_audio_call == "1" ? "0" : "1")")
         vieWModelMessage.apiGetAccessToken()
     }
 }
+
 //MARK: Extension UDF
 extension TabBarVC {
-    
     func viewDidLoadMethod() {
         self.delegate = self
         
         viewControllers = [UIHostingController(rootView: HomeView()),
                            UINavigationController(rootViewController: ActivitiesVC.loadFromNib()),
                            UINavigationController(rootViewController: ChatVC.loadFromNib()),
-                           UINavigationController(rootViewController: ProfileVC.loadFromNib())]
+                           UIHostingController(rootView: ProfileView())]
         
         setupTabBarItems()
         handleApiResponse()
@@ -130,29 +127,23 @@ extension TabBarVC {
     func handleApiResponse() {
         vieWModelMessage.isDataGet.bind { [weak self] isSuccess in
             guard let self = self else { return }
-            
-            
-            print("SRM LOG Calling is audio => \(Calling.is_audio_call)")
-            
             NotificationCenter.default.removeObserver(self,name: .incomingCall, object: nil)
-                          
-               if let topVC = UIApplication.getTopViewController(), topVC is VideoCallVC {
-                   
-               } else {
-                   let vc = VideoCallVC.loadFromNib()
-                   vc.sender_id = "\(Constants.loggedInUser?.id ?? 0)"
-                   vc.accessToken = self.vieWModelMessage.getAccessToken()
-                   vc.roomName = Calling.room_Name
-                   vc.is_incomingCall = true
-                   vc.userName = "\(Calling.receiver_name )"
-                   vc.is_audioCall = Calling.is_audio_call == "1" ? true : false
-                   self.navigationController?.pushViewController(vc, animated: false)
-               }
+            
+            if let topVC = UIApplication.getTopViewController(), topVC is VideoCallVC == false {
+                let vc = VideoCallVC.loadFromNib()
+                vc.sender_id = "\(Constants.loggedInUser?.id ?? 0)"
+                vc.accessToken = self.vieWModelMessage.getAccessToken()
+                vc.roomName = Calling.room_Name
+                vc.is_incomingCall = true
+                vc.userName = "\(Calling.receiver_name )"
+                vc.is_audioCall = Calling.is_audio_call == "1" ? true : false
+                
+                self.navigationController?.pushViewController(vc, animated: false)
+            }
         }
     }
 }
 extension TabBarVC: UITabBarControllerDelegate {
-    
     // UITabBarControllerDelegate
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         switch enumTabbarItem(rawValue: tabBarController.selectedIndex)! {

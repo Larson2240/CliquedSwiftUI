@@ -263,10 +263,10 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     @objc func btnEditLocationTap(_ sender: UIButton) {
         guard let locationData = viewModel.getLocation().first else { return }
         
-        let setlocationvc = UIHostingController(rootView: LocationView(isFromEditProfile: true,
+        let setlocationvc = UIHostingController(rootView: LocationView(selectedDistance: viewModel.getDistancePreference() + "km",
+                                                                       isFromEditProfile: true,
                                                                        addressId: "\(locationData.id ?? 0)",
-                                                                       objAddress: locationData,
-                                                                       distancePreference: viewModel.getDistancePreference() + "km"))
+                                                                       objAddress: locationData))
         
         viewController.navigationController?.pushViewController(setlocationvc, animated: true)
     }
@@ -301,8 +301,10 @@ class EditProfileDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
                     self.viewModel.setKidsOptionId(value: optionId ?? 0)
                 }
             }
+            
             self.settingView.hide()
         }
+        
         settingView.show()
     }
     
@@ -404,8 +406,3 @@ extension EditProfileDataSource : UITextViewDelegate {
         return count <= 200
     }
 }
-
-
-
-
-

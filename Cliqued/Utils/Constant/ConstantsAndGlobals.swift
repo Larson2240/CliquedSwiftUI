@@ -369,7 +369,7 @@ struct Constants_String {
         get {
             UserDefaults.standard.getCustom(User.self, forKey: UserDefaultKey().userData)
         }
-        set{
+        set {
             UserDefaults.standard.setCustom(newValue, forKey: UserDefaultKey().userData)
         }
     }

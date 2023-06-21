@@ -25,13 +25,12 @@ struct ActivitiesViewRepresentable: UIViewControllerRepresentable {
 
 private var numberOfCards: Int = 7
 
-class HomeActivitiesVC: UIViewController {
-    
+final class HomeActivitiesVC: UIViewController {
     //MARK: IBOutlet
     @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var viewActivityCard: KolodaView! {
         didSet {
-            viewActivityCard.layer.cornerRadius = 50.0
+            viewActivityCard.layer.cornerRadius = 50
         }
     }
     @IBOutlet weak var imageviewLikeDislikeIcon: UIImageView!
@@ -43,6 +42,7 @@ class HomeActivitiesVC: UIViewController {
             labelNoActivityAvailable.textColor = Constants.color_MediumGrey
         }
     }
+    
     //MARK: Variable
     lazy var viewModel = HomeActivitiesViewModel()
     var objOfHomeCategory: ActivityCategoryClass?

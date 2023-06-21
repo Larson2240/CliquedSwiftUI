@@ -20,17 +20,12 @@ struct HomeActivitiesView: View {
             content
         }
         .background(background)
-        .onAppear { onAppearConfig() }
         .navigationBarHidden(true)
     }
     
     private var content: some View {
         ActivitiesViewRepresentable(category: category)
             .ignoresSafeArea()
-    }
-    
-    private func onAppearConfig() {
-        
     }
 }
 
