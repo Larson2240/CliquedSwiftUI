@@ -16,17 +16,18 @@ struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @StateObject private var page: Page = .first()
     
+    @State private var slider: CustomSlider?
     @State private var currentPage = 0
     private var distanceValues: [String] = ["5km", "10km", "50km", "100km", "200km"]
     
     var body: some View {
         NavigationView {
             ZStack {
-                if viewModel.profileCompleted {
+//                if viewModel.profileCompleted {
                     content
-                } else {
-                    completeProfileView
-                }
+//                } else {
+//                    completeProfileView
+//                }
                 
                 presentables
             }
@@ -68,9 +69,11 @@ struct ProfileView: View {
                                       details: viewModel.userDetails.smoking.isEmpty ? "No" : viewModel.userDetails.smoking)
                     
                     distanceStack
+                    
+                    ageStack
                 }
                 .padding(.vertical, 16)
-                .padding(.bottom, 100)
+                .padding(.bottom, 200)
             }
         }
         .ignoresSafeArea()
@@ -81,6 +84,7 @@ struct ProfileView: View {
             Text(Constants.validMsg_profileIncompleteMsg)
                 .font(.themeMedium(14))
                 .foregroundColor(.colorDarkGrey)
+                .multilineTextAlignment(.center)
             
             Button(action: { viewModel.manageSetupProfileNavigationFlow() }) {
                 ZStack {
@@ -317,6 +321,29 @@ struct ProfileView: View {
         }
     }
     
+    private var ageStack: some View {
+        VStack(spacing: 30) {
+            HStack {
+                Image("ic_age")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                
+                Text(Constants.label_agePreference)
+                    .font(.themeMedium(14))
+                    .foregroundColor(.theme)
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            if let slider = slider {
+                RangeSlider(slider: slider)
+                    .allowsHitTesting(false)
+            }
+        }
+    }
+    
     private var separator: some View {
         Color.black
             .opacity(0.3)
@@ -330,6 +357,8 @@ struct ProfileView: View {
     }
     
     private func onAppearConfig() {
+        slider = CustomSlider(start: 45, end: 99, width: screenSize.width - 60)
+        
         viewModel.checkProfileCompletion()
         viewModel.configureUser()
     }

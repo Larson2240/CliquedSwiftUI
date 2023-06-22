@@ -137,6 +137,7 @@ struct HomeView: View {
             Text(Constants.validMsg_profileIncompleteMsg)
                 .font(.themeMedium(14))
                 .foregroundColor(.colorDarkGrey)
+                .multilineTextAlignment(.center)
             
             Button(action: { viewModel.manageSetupProfileNavigationFlow() }) {
                 ZStack {
