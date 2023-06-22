@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftUIPager
 import SDWebImageSwiftUI
 import StepSlider
+import SKPhotoBrowser
+import AVKit.AVPlayerViewController
 
 struct ProfileView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
@@ -18,16 +20,19 @@ struct ProfileView: View {
     
     @State private var slider: CustomSlider?
     @State private var currentPage = 0
+    @State private var editProfileViewPresented = false
+    
     private var distanceValues: [String] = ["5km", "10km", "50km", "100km", "200km"]
+    private let mediaType = MediaType()
     
     var body: some View {
         NavigationView {
             ZStack {
-//                if viewModel.profileCompleted {
+                if viewModel.profileCompleted {
                     content
-//                } else {
-//                    completeProfileView
-//                }
+                } else {
+                    completeProfileView
+                }
                 
                 presentables
             }
@@ -71,9 +76,11 @@ struct ProfileView: View {
                     distanceStack
                     
                     ageStack
+                    
+                    editProfileButton
                 }
                 .padding(.vertical, 16)
-                .padding(.bottom, 200)
+                .padding(.bottom, 100)
             }
         }
         .ignoresSafeArea()
@@ -132,6 +139,9 @@ struct ProfileView: View {
                 }
                 .resizable()
                 .frame(width: screenSize.width, height: 300)
+                .onTapGesture {
+                    imageTapped(object)
+                }
         }
         .onPageChanged {
             currentPage = $0
@@ -147,7 +157,7 @@ struct ProfileView: View {
         HStack {
             Spacer()
             
-            Button(action: {  }) {
+            Button(action: { editProfileViewPresented.toggle() }) {
                 Image("ic_edit_category")
             }
             
@@ -341,6 +351,9 @@ struct ProfileView: View {
                 RangeSlider(slider: slider)
                     .allowsHitTesting(false)
             }
+            
+            separator
+                .padding(.top)
         }
     }
     
@@ -350,9 +363,28 @@ struct ProfileView: View {
             .frame(height: 0.5)
     }
     
+    private var editProfileButton: some View {
+        Button(action: { editProfileViewPresented.toggle() }) {
+            ZStack {
+                Color.theme
+                
+                Text(Constants.btn_editProfile)
+                    .font(.themeBold(20))
+                    .foregroundColor(.colorWhite)
+            }
+        }
+        .frame(height: 50)
+        .cornerRadius(30)
+        .padding(.top)
+        .padding(.horizontal, 30)
+    }
+    
     private var presentables: some View {
         ZStack {
-            
+            NavigationLink(destination: EditProfileView(),
+                           isActive: $editProfileViewPresented,
+                           label: EmptyView.init)
+            .isDetailLink(false)
         }
     }
     
@@ -361,6 +393,38 @@ struct ProfileView: View {
         
         viewModel.checkProfileCompletion()
         viewModel.configureUser()
+    }
+    
+    private func imageTapped(_ object: UserProfileImages) {
+        guard let rootVC = UIApplication.shared.windows.first?.rootViewController else { return }
+        
+        if object.mediaType == mediaType.image {
+            var images = [SKPhotoProtocol]()
+            
+            for i in 0..<viewModel.userDetails.profileCollection.count {
+                guard viewModel.userDetails.profileCollection[i].mediaType == mediaType.image else { continue }
+                
+                let photo = SKPhoto.photoWithImageURL(UrlProfileImage + (viewModel.userDetails.profileCollection[i].url ?? ""))
+                photo.shouldCachePhotoURLImage = true
+                images.append(photo)
+            }
+            
+            let browser = SKPhotoBrowser(photos: images)
+            SKPhotoBrowserOptions.displayAction = false
+            let index = viewModel.userDetails.profileCollection.firstIndex(where: { $0 == object })
+            browser.initializePageIndex(index ?? 0)
+            
+            rootVC.present(browser, animated: true, completion: {})
+        } else {
+            let videoURL = URL(string: UrlProfileImage + (object.url ?? ""))
+            let player = AVPlayer(url: videoURL! as URL)
+            let playerViewController = AVPlayerViewController()
+            playerViewController.player = player
+            
+            rootVC.present(playerViewController, animated: true) {
+                playerViewController.player!.play()
+            }
+        }
     }
 }
 

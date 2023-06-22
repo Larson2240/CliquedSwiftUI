@@ -159,7 +159,6 @@ struct HomeView: View {
                        isActive: $activitiesViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
     }
     
     private func onAppearConfig() {
