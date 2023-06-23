@@ -112,11 +112,11 @@ struct ProfileView: View {
         ZStack {
             if viewModel.userDetails.profileCollection.count > 0 {
                 pagerView
+                
+                gradient
             } else {
                 placeholderImage
             }
-            
-            gradient
             
             VStack {
                 topButtons

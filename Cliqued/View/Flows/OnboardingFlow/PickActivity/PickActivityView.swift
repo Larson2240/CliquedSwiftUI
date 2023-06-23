@@ -9,10 +9,14 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct PickActivityView: View {
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
+    
     @StateObject private var viewModel = PickActivityViewModel()
     
     var isFromEditProfile: Bool
     var arrayOfActivity: [UserInterestedCategory]
+    
+    @Binding var activitiesFlowPresented: Bool
     
     @State private var arrayOfSubActivity: [UserInterestedCategory] = []
     @State private var subActivityViewPresented = false
@@ -46,12 +50,13 @@ struct PickActivityView: View {
             
             continueButton
         }
+        .edgesIgnoringSafeArea(.bottom)
     }
     
     private var header: some View {
         VStack(spacing: 20) {
             HeaderView(title: Constants.screenTitle_pickActivity,
-                       backButtonVisible: false,
+                       backButtonVisible: isFromEditProfile,
                        backAction: {})
             
             OnboardingProgressView(totalSteps: 9, currentStep: 5)
@@ -155,14 +160,15 @@ struct PickActivityView: View {
         .frame(height: 60)
         .cornerRadius(30)
         .padding(.horizontal, 30)
-        .padding(.bottom, 30)
+        .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
         .padding(.top, 16)
     }
     
     private var presentables: some View {
         NavigationLink(destination: PickSubActivityView(isFromEditProfile: isFromEditProfile,
                                                         categoryIds: isFromEditProfile ? viewModel.getSelectedCategoryId().map({String($0)}).joined(separator: ", ") : viewModel.getSelectedCategoryId().map({String($0)}).joined(separator: ", "),
-                                                        arrayOfSubActivity: arrayOfSubActivity),
+                                                        arrayOfSubActivity: arrayOfSubActivity,
+                                                        activitiesFlowPresented: $activitiesFlowPresented),
                        isActive: $subActivityViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)
@@ -220,11 +226,11 @@ struct PickActivityView: View {
     }
     
     private func cellTap(for activity: ActivityCategoryClass) {
-        if viewModel.getSelectedCategoryId().contains(where: {$0 == activity.id}) {
-            if let index = viewModel.getSelectedCategoryId().firstIndex(where: {$0 == activity.id}) {
+        if viewModel.getSelectedCategoryId().contains(where: { $0 == activity.id }) {
+            if let index = viewModel.getSelectedCategoryId().firstIndex(where: { $0 == activity.id }) {
                 viewModel.removeSelectedCategoryId(at: index)
                 if isFromEditProfile {
-                    if viewModel.getAllSelectedActivity().contains(where: {$0.activityCategoryId == "\(activity.id ?? 0)"}) == true {
+                    if viewModel.getAllSelectedActivity().contains(where: { $0.activityCategoryId == "\(activity.id ?? 0)" }) == true {
                         viewModel.setDeletedActivityIds(value: activity.id ?? 0)
                     }
                 }
@@ -246,6 +252,6 @@ struct PickActivityView: View {
 
 struct PickActivityView_Previews: PreviewProvider {
     static var previews: some View {
-        PickActivityView(isFromEditProfile: false, arrayOfActivity: [])
+        PickActivityView(isFromEditProfile: false, arrayOfActivity: [], activitiesFlowPresented: .constant(true))
     }
 }

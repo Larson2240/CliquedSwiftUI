@@ -18,6 +18,7 @@ struct EditProfileView: View {
     
     @State private var slider: CustomSlider?
     @State private var currentPage = 0
+    @State private var editActivitiesViewPresented = false
     
     var body: some View {
         ZStack {
@@ -31,13 +32,19 @@ struct EditProfileView: View {
     }
     
     private var content: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 25) {
             header
             
             ScrollView(showsIndicators: false) {
-                imageContainer
-                
-                nameStack
+                VStack(spacing: 25) {
+                    imageContainer
+                    
+                    nameStack
+                    
+                    aboutMe
+                    
+                    favoriteActivities
+                }
             }
             
             saveButton
@@ -55,11 +62,11 @@ struct EditProfileView: View {
         ZStack {
             if viewModel.userDetails.profileCollection.count > 0 {
                 pagerView
+                
+                gradient
             } else {
                 placeholderImage
             }
-            
-            gradient
             
             VStack {
                 editImagesButton
@@ -115,6 +122,94 @@ struct EditProfileView: View {
         .padding(.horizontal, 20)
     }
     
+    private var aboutMe: some View {
+        VStack {
+            HStack {
+                Text(Constants.label_aboutMe)
+                    .font(.themeMedium(16))
+                    .foregroundColor(.theme)
+                
+                Spacer()
+            }
+            
+            ZStack {
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.gray.opacity(0.6), lineWidth: 1)
+                
+                TextView(placeholder: Constants.placeholder_activityDescription,
+                         text: $viewModel.userDetails.aboutMe)
+                .padding(.horizontal, 8)
+            }
+            .font(.themeBook(14))
+            .frame(height: 160)
+        }
+        .padding(.horizontal, 20)
+    }
+    
+    private var favoriteActivities: some View {
+        VStack(spacing: 16) {
+            HStack {
+                Text(Constants.label_myFavoriteActivities)
+                    .font(.themeMedium(16))
+                    .foregroundColor(.theme)
+                
+                Spacer()
+                
+                Button(action: { editActivitiesViewPresented.toggle() }) {
+                    Image("ic_edit_category")
+                }
+            }
+            .padding(.horizontal)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach($viewModel.userDetails.favoriteCategoryActivity) { activity in
+                        imageCell(activity.wrappedValue)
+                            .cornerRadius(10)
+                    }
+                    .frame(width: 110)
+                }
+                .padding(.horizontal)
+            }
+            .frame(height: 140)
+            
+            separator
+        }
+    }
+    
+    private func imageCell(_ activity: UserInterestedCategory) -> some View {
+        ZStack {
+            let cellWidth: CGFloat = 110
+            let cellHeight: CGFloat = 140
+            
+            WebImage(url: viewModel.activityImageURL(for: activity, size: CGSize(width: cellWidth, height: cellHeight)))
+                .placeholder {
+                    Image("placeholder_detailpage")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: cellWidth, height: cellHeight)
+                }
+                .resizable()
+                .scaledToFill()
+                .frame(width: cellWidth, height: cellHeight)
+            
+            LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
+            
+            VStack {
+                Spacer()
+                
+                HStack {
+                    Text(activity.activityCategoryTitle ?? "")
+                        .font(.themeMedium(10))
+                        .foregroundColor(.white)
+                        .padding(8)
+                    
+                    Spacer()
+                }
+            }
+        }
+    }
+    
     private var placeholderImage: some View {
         Image("placeholder_detailpage")
             .resizable()
@@ -151,6 +246,11 @@ struct EditProfileView: View {
         }
     }
     
+    private var separator: some View {
+        Color.gray.opacity(0.6)
+            .frame(height: 0.5)
+    }
+    
     private var saveButton: some View {
         Button(action: {  }) {
             ZStack {
@@ -169,7 +269,10 @@ struct EditProfileView: View {
     
     private var presentables: some View {
         ZStack {
-            
+            NavigationLink(destination: PickActivityView(isFromEditProfile: true, arrayOfActivity: viewModel.userDetails.favoriteActivity, activitiesFlowPresented: $editActivitiesViewPresented),
+                           isActive: $editActivitiesViewPresented,
+                           label: EmptyView.init)
+            .isDetailLink(false)
         }
     }
     

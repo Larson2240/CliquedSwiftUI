@@ -243,11 +243,11 @@ extension ActivitiesVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
             
         case profileSetupType.category:
-            let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity)
+            let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity, activitiesFlowPresented: .constant(false))
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: pickActivityView)
             
         case profileSetupType.sub_category:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: []))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: [], activitiesFlowPresented: .constant(false)))
             
         case profileSetupType.profile_images:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false))

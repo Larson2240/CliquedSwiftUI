@@ -10,12 +10,16 @@ import SDWebImageSwiftUI
 
 struct PickSubActivityView: View {
     @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
+    
     @StateObject private var onboardingViewModel = OnboardingViewModel.shared
     @StateObject private var subActivityViewModel = PickSubActivityViewModel()
     
     var isFromEditProfile: Bool
     var categoryIds: String
     var arrayOfSubActivity: [UserInterestedCategory]
+    
+    @Binding var activitiesFlowPresented: Bool
     
     @State private var selectPicturesViewPresented = false
     
@@ -48,13 +52,14 @@ struct PickSubActivityView: View {
             
             continueButton
         }
+        .edgesIgnoringSafeArea(.bottom)
     }
     
     private var header: some View {
         VStack(spacing: 20) {
             HeaderView(title: Constants.screenTitle_pickSubactivity,
-                       backButtonVisible: false,
-                       backAction: {})
+                       backButtonVisible: isFromEditProfile,
+                       backAction: { presentationMode.wrappedValue.dismiss() })
             
             OnboardingProgressView(totalSteps: 9, currentStep: 6)
         }
@@ -99,7 +104,7 @@ struct PickSubActivityView: View {
         .frame(height: 60)
         .cornerRadius(30)
         .padding(.horizontal, 30)
-        .padding(.bottom, 30)
+        .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
         .padding(.top, 16)
     }
     
@@ -165,7 +170,7 @@ struct PickSubActivityView: View {
         
         onboardingViewModel.nextAction = {
             if isFromEditProfile {
-                presentationMode.wrappedValue.dismiss()
+                activitiesFlowPresented.toggle()
             } else {
                 selectPicturesViewPresented.toggle()
             }
@@ -229,6 +234,6 @@ struct PickSubActivityView: View {
 
 struct PickSubActivityView_Previews: PreviewProvider {
     static var previews: some View {
-        PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: [])
+        PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: [], activitiesFlowPresented: .constant(true))
     }
 }
