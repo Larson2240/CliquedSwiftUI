@@ -31,6 +31,9 @@ struct HomeView: View {
             }
             .background(background)
             .onAppear { onAppearConfig() }
+            .onChange(of: activitiesViewPresented) { newValue in
+                toggleTabBar(isHidden: newValue)
+            }
         }
         .navigationBarHidden(true)
         .navigationViewStyle(.stack)
@@ -100,7 +103,7 @@ struct HomeView: View {
                 .scaledToFill()
                 .frame(width: cellWidth, height: cellHeight)
             
-            LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
+            gradient
             
             VStack {
                 Spacer()
@@ -118,6 +121,16 @@ struct HomeView: View {
         .onTapGesture {
             selectedCategory = activity
             activitiesViewPresented.toggle()
+        }
+    }
+    
+    private var gradient: some View {
+        VStack {
+            Spacer()
+            
+            LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
+                .allowsHitTesting(false)
+                .frame(height: 100)
         }
     }
     

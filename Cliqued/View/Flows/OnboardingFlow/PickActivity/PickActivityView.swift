@@ -104,7 +104,7 @@ struct PickActivityView: View {
                 .scaledToFill()
                 .frame(width: cellWidth, height: cellHeight)
             
-            LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
+            gradient
             
             VStack {
                 Spacer()
@@ -129,6 +129,16 @@ struct PickActivityView: View {
         }
         .onTapGesture {
             cellTap(for: activity)
+        }
+    }
+    
+    private var gradient: some View {
+        VStack {
+            Spacer()
+            
+            LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
+                .allowsHitTesting(false)
+                .frame(height: 100)
         }
     }
     

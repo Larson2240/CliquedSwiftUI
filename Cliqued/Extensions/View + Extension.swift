@@ -50,4 +50,8 @@ extension View {
             .ignoresSafeArea()
             .frame(width: screenSize.width, height: screenSize.height)
     }
+    
+    func toggleTabBar(isHidden: Bool) {
+        NotificationCenter.default.post(name: isHidden ? .hideTabBar : .showTabBar, object: nil)
+    }
 }

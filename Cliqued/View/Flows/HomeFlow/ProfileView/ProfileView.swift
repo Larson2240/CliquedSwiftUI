@@ -9,8 +9,6 @@ import SwiftUI
 import SwiftUIPager
 import SDWebImageSwiftUI
 import StepSlider
-import SKPhotoBrowser
-import AVKit.AVPlayerViewController
 
 struct ProfileView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
@@ -23,7 +21,6 @@ struct ProfileView: View {
     @State private var editProfileViewPresented = false
     
     private var distanceValues: [String] = ["5km", "10km", "50km", "100km", "200km"]
-    private let mediaType = MediaType()
     
     var body: some View {
         NavigationView {
@@ -38,6 +35,9 @@ struct ProfileView: View {
             }
             .background(background)
             .onAppear { onAppearConfig() }
+            .onChange(of: editProfileViewPresented) { newValue in
+                toggleTabBar(isHidden: newValue)
+            }
         }
         .navigationBarHidden(true)
         .navigationViewStyle(.stack)
@@ -133,14 +133,14 @@ struct ProfileView: View {
     
     private var pagerView: some View {
         Pager(page: page, data: viewModel.userDetails.profileCollection, id: \.self) { object in
-            WebImage(url: viewModel.profileImageURL(for: object, screenSize: screenSize))
+            WebImage(url: viewModel.profileImageURL(for: object, imageSize: CGSize(width: screenSize.width, height: 300)))
                 .placeholder {
                     placeholderImage
                 }
                 .resizable()
                 .frame(width: screenSize.width, height: 300)
                 .onTapGesture {
-                    imageTapped(object)
+                    viewModel.imageTapped(object)
                 }
         }
         .onPageChanged {
@@ -149,8 +149,13 @@ struct ProfileView: View {
     }
     
     private var gradient: some View {
-        LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
-            .allowsHitTesting(false)
+        VStack {
+            Spacer()
+            
+            LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
+                .allowsHitTesting(false)
+                .frame(height: 130)
+        }
     }
     
     private var topButtons: some View {
@@ -358,8 +363,7 @@ struct ProfileView: View {
     }
     
     private var separator: some View {
-        Color.black
-            .opacity(0.3)
+        Color.gray.opacity(0.6)
             .frame(height: 0.5)
     }
     
@@ -381,7 +385,7 @@ struct ProfileView: View {
     
     private var presentables: some View {
         ZStack {
-            NavigationLink(destination: EditProfileView(),
+            NavigationLink(destination: EditProfileView(viewModel: viewModel),
                            isActive: $editProfileViewPresented,
                            label: EmptyView.init)
             .isDetailLink(false)
@@ -393,38 +397,6 @@ struct ProfileView: View {
         
         viewModel.checkProfileCompletion()
         viewModel.configureUser()
-    }
-    
-    private func imageTapped(_ object: UserProfileImages) {
-        guard let rootVC = UIApplication.shared.windows.first?.rootViewController else { return }
-        
-        if object.mediaType == mediaType.image {
-            var images = [SKPhotoProtocol]()
-            
-            for i in 0..<viewModel.userDetails.profileCollection.count {
-                guard viewModel.userDetails.profileCollection[i].mediaType == mediaType.image else { continue }
-                
-                let photo = SKPhoto.photoWithImageURL(UrlProfileImage + (viewModel.userDetails.profileCollection[i].url ?? ""))
-                photo.shouldCachePhotoURLImage = true
-                images.append(photo)
-            }
-            
-            let browser = SKPhotoBrowser(photos: images)
-            SKPhotoBrowserOptions.displayAction = false
-            let index = viewModel.userDetails.profileCollection.firstIndex(where: { $0 == object })
-            browser.initializePageIndex(index ?? 0)
-            
-            rootVC.present(browser, animated: true, completion: {})
-        } else {
-            let videoURL = URL(string: UrlProfileImage + (object.url ?? ""))
-            let player = AVPlayer(url: videoURL! as URL)
-            let playerViewController = AVPlayerViewController()
-            playerViewController.player = player
-            
-            rootVC.present(playerViewController, animated: true) {
-                playerViewController.player!.play()
-            }
-        }
     }
 }
 

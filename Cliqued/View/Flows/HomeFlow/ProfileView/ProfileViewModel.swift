@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SKPhotoBrowser
+import AVKit.AVPlayerViewController
 
 final class ProfileViewModel: ObservableObject {
     struct UserDetails {
@@ -29,6 +31,7 @@ final class ProfileViewModel: ObservableObject {
     @Published var userDetails = UserDetails()
     @Published var profileCompleted = false
     private let profileSetupType = ProfileSetupType()
+    private let mediaType = MediaType()
     
     var objUserDetails: User?
     
@@ -96,7 +99,7 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
-    func profileImageURL(for object: UserProfileImages, screenSize: CGSize) -> URL? {
+    func profileImageURL(for object: UserProfileImages, imageSize: CGSize) -> URL? {
         var mediaName = ""
         
         if object.mediaType == MediaType().image {
@@ -106,8 +109,8 @@ final class ProfileViewModel: ObservableObject {
         }
         
         let strUrl = UrlProfileImage + mediaName
-        let imageWidth = screenSize.width
-        let imageHeight: CGFloat = 300
+        let imageWidth = imageSize.width
+        let imageHeight = imageSize.height
         let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth)&h=\(imageHeight)&zc=1&src=\(strUrl)"
         
         return URL(string: baseTimbThumb)
@@ -163,6 +166,38 @@ final class ProfileViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: StartExploringView())
         default:
             break
+        }
+    }
+    
+    func imageTapped(_ object: UserProfileImages) {
+        guard let rootVC = UIApplication.shared.windows.first?.rootViewController else { return }
+        
+        if object.mediaType == mediaType.image {
+            var images = [SKPhotoProtocol]()
+            
+            for i in 0..<userDetails.profileCollection.count {
+                guard userDetails.profileCollection[i].mediaType == mediaType.image else { continue }
+                
+                let photo = SKPhoto.photoWithImageURL(UrlProfileImage + (userDetails.profileCollection[i].url ?? ""))
+                photo.shouldCachePhotoURLImage = true
+                images.append(photo)
+            }
+            
+            let browser = SKPhotoBrowser(photos: images)
+            SKPhotoBrowserOptions.displayAction = false
+            let index = userDetails.profileCollection.firstIndex(where: { $0 == object })
+            browser.initializePageIndex(index ?? 0)
+            
+            rootVC.present(browser, animated: true, completion: {})
+        } else {
+            let videoURL = URL(string: UrlProfileImage + (object.url ?? ""))
+            let player = AVPlayer(url: videoURL! as URL)
+            let playerViewController = AVPlayerViewController()
+            playerViewController.player = player
+            
+            rootVC.present(playerViewController, animated: true) {
+                playerViewController.player!.play()
+            }
         }
     }
 }
