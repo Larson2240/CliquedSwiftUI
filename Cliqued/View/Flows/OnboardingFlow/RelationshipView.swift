@@ -9,9 +9,12 @@ import SwiftUI
 
 struct RelationshipView: View {
     @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
+    
     @StateObject private var viewModel = OnboardingViewModel.shared
+    
     var isFromEditProfile: Bool
-    var arrayOfUserPreference: [UserPreferences]?
+    var arrayOfUserPreference: [UserPreferences]
     
     @State private var friendshipWithMenSelected = false
     @State private var friendshipWithWomanSelected = false
@@ -19,6 +22,9 @@ struct RelationshipView: View {
     @State private var romanceWithWomanSelected = false
     
     @State private var activityViewPresented = false
+    
+    private let preferenceTypeIds = PreferenceTypeIds()
+    private let genderTypeIds = GenderTypeIds()
     
     var body: some View {
         NavigationView {
@@ -51,16 +57,19 @@ struct RelationshipView: View {
             
             continueButton
         }
+        .edgesIgnoringSafeArea(.bottom)
     }
 
     
     private var header: some View {
         VStack(spacing: 20) {
             HeaderView(title: Constants.screenTitle_relationship,
-                       backButtonVisible: false,
-                       backAction: {})
+                       backButtonVisible: isFromEditProfile,
+                       backAction: { presentationMode.wrappedValue.dismiss() })
             
-            OnboardingProgressView(totalSteps: 9, currentStep: 4)
+            if !isFromEditProfile {
+                OnboardingProgressView(totalSteps: 9, currentStep: 4)
+            }
         }
     }
     
@@ -178,9 +187,10 @@ struct RelationshipView: View {
                     .foregroundColor(.colorWhite)
             }
         }
-        .frame(height: 60)
         .cornerRadius(30)
-        .padding(30)
+        .frame(height: 60)
+        .padding(.horizontal, 30)
+        .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
     }
     
     private var presentables: some View {
@@ -191,6 +201,8 @@ struct RelationshipView: View {
     }
     
     private func onAppearConfig() {
+        setupUserPreference()
+        
         viewModel.nextAction = {
             if !isFromEditProfile {
                 activityViewPresented.toggle()
@@ -231,10 +243,37 @@ struct RelationshipView: View {
         
         viewModel.callSignUpProcessAPI()
     }
+    
+    private func setupUserPreference() {
+        guard !arrayOfUserPreference.isEmpty else { return }
+        
+        for userPreference in arrayOfUserPreference {
+            if userPreference.typesOfPreference == preferenceTypeIds.looking_for {
+                if userPreference.subTypesOfPreference == preferenceTypeIds.romance {
+                    if (userPreference.typesOfOptions == genderTypeIds.Men) && (userPreference.subTypesOfPreference == preferenceTypeIds.romance) {
+                        romanceWithMenSelected = true
+                    }
+                    
+                    if (userPreference.typesOfOptions == genderTypeIds.Women) && (userPreference.subTypesOfPreference == preferenceTypeIds.romance) {
+                        romanceWithWomanSelected = true
+                    }
+                }
+                
+                if userPreference.subTypesOfPreference == preferenceTypeIds.friendship {
+                    if (userPreference.typesOfOptions == genderTypeIds.Men) && (userPreference.subTypesOfPreference == preferenceTypeIds.friendship) {
+                        friendshipWithMenSelected = true
+                    }
+                    if (userPreference.typesOfOptions == genderTypeIds.Women) && (userPreference.subTypesOfPreference == preferenceTypeIds.friendship) {
+                        friendshipWithWomanSelected = true
+                    }
+                }
+            }
+        }
+    }
 }
 
 struct RelationshipView_Previews: PreviewProvider {
     static var previews: some View {
-        RelationshipView(isFromEditProfile: false)
+        RelationshipView(isFromEditProfile: false, arrayOfUserPreference: [])
     }
 }

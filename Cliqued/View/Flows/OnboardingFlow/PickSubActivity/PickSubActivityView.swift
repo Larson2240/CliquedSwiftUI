@@ -180,8 +180,8 @@ struct PickSubActivityView: View {
     private func continueAction() {
         var isSubCatSelectedFromEveryCategory = false
         
-        for i in subActivityViewModel.getActivityAllData() {
-            if subActivityViewModel.getSelectedSubActivity().firstIndex(where: { $0.activityCategoryId == "\(i.id ?? 0)"}) != nil {
+        for i in subActivityViewModel.arrayOfActivity {
+            if subActivityViewModel.arrayOfSelectedSubActivity.firstIndex(where: { $0.activityCategoryId == "\(i.id ?? 0)"}) != nil {
                 isSubCatSelectedFromEveryCategory = true
             } else {
                 isSubCatSelectedFromEveryCategory = false
@@ -206,27 +206,27 @@ struct PickSubActivityView: View {
     
     private func setupSelectedSubActivity() {
         for activityData in arrayOfSubActivity {
-            if subActivityViewModel.getSelectedSubActivity().contains(where: { $0.activityCategoryId == "\(activityData.activityId ?? 0)" && $0.activitySubCategoryId == "\(activityData.subActivityId ?? 0)"}) == false {
+            if subActivityViewModel.arrayOfSelectedSubActivity.contains(where: { $0.activityCategoryId == "\(activityData.activityId ?? 0)" && $0.activitySubCategoryId == "\(activityData.subActivityId ?? 0)"}) == false {
                 var dic = structPickSubActivityParams()
                 dic.activityCategoryId = "\(activityData.activityId ?? 0)"
                 dic.activitySubCategoryId = "\(activityData.subActivityId ?? 0)"
-                subActivityViewModel.setSubActivity(value: dic)
-                subActivityViewModel.setAllSelectedSubActivity(value: dic)
+                subActivityViewModel.arrayOfSelectedSubActivity.append(dic)
+                subActivityViewModel.arrayOfAllSelectedSubActivity.append(dic)
             }
         }
     }
     
     private func subActivityTapped(activity: ActivityCategoryClass, subActivity: SubCategory) {
-        if subActivityViewModel.getNumberOfActivity() != 0 {
-            if subActivityViewModel.getSelectedSubActivity().contains(where: { $0.activityCategoryId == "\(activity.id ?? 0)" && $0.activitySubCategoryId == "\(subActivity.id ?? 0)"}) {
-                if let index = subActivityViewModel.getSelectedSubActivity().firstIndex(where: { $0.activityCategoryId == "\(activity.id ?? 0)" && $0.activitySubCategoryId == "\(subActivity.id ?? 0)"}) {
-                    subActivityViewModel.removeSelectedSubActivity(at: index)
+        if subActivityViewModel.arrayOfActivity.count != 0 {
+            if subActivityViewModel.arrayOfSelectedSubActivity.contains(where: { $0.activityCategoryId == "\(activity.id ?? 0)" && $0.activitySubCategoryId == "\(subActivity.id ?? 0)"}) {
+                if let index = subActivityViewModel.arrayOfSelectedSubActivity.firstIndex(where: { $0.activityCategoryId == "\(activity.id ?? 0)" && $0.activitySubCategoryId == "\(subActivity.id ?? 0)"}) {
+                    subActivityViewModel.arrayOfSelectedSubActivity.remove(at: index)
                 }
             } else {
                 var dict = structPickSubActivityParams()
                 dict.activityCategoryId = activity.id?.description ?? ""
                 dict.activitySubCategoryId = subActivity.id?.description ?? ""
-                subActivityViewModel.setSubActivity(value: dict)
+                subActivityViewModel.arrayOfSelectedSubActivity.append(dict)
             }
         }
     }

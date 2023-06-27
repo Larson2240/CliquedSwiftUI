@@ -175,6 +175,7 @@ final class HomeActivitiesViewModel: ObservableObject {
         }
     }
 }
+
 //MARK: getter/setter method
 extension HomeActivitiesViewModel {
     //Set Methods

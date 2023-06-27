@@ -20,8 +20,6 @@ struct ProfileView: View {
     @State private var currentPage = 0
     @State private var editProfileViewPresented = false
     
-    private var distanceValues: [String] = ["5km", "10km", "50km", "100km", "200km"]
-    
     var body: some View {
         NavigationView {
             ZStack {
@@ -62,7 +60,7 @@ struct ProfileView: View {
                                       details: "\(viewModel.userDetails.location.first?.city ?? ""), \(viewModel.userDetails.location.first?.state ?? "")")
                     
                     ProfileCommonCell(imageName: "ic_height",
-                                      title: Constants.label_height,
+                                      title: "\(Constants.label_height) \(Constants.label_heightInCm)",
                                       details: viewModel.userDetails.height == "0" ? "-" : viewModel.userDetails.height)
                     
                     ProfileCommonCell(imageName: "ic_kids",
@@ -313,7 +311,7 @@ struct ProfileView: View {
             .padding(.horizontal)
             
             StepSlider(selected: $viewModel.userDetails.distancePreference,
-                       values: distanceValues) { value in
+                       values: viewModel.distanceValues) { value in
                 Text(value)
                     .foregroundColor(.colorDarkGrey)
             } thumbLabels: { value in
@@ -393,10 +391,14 @@ struct ProfileView: View {
     }
     
     private func onAppearConfig() {
-        slider = CustomSlider(start: 45, end: 99, width: screenSize.width - 60)
-        
         viewModel.checkProfileCompletion()
-        viewModel.configureUser()
+        viewModel.viewAppeared()
+        
+        slider = CustomSlider(minBound: 45,
+                              maxBound: 99,
+                              lowValue: Double(viewModel.userDetails.startAge) ?? 45,
+                              highValue: Double(viewModel.userDetails.endAge) ?? 99,
+                              width: screenSize.width - 80)
     }
 }
 

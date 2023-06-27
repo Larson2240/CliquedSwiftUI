@@ -17,10 +17,11 @@ final class PickActivityViewModel: ObservableObject {
     @Published var arrayOfSelectedCategoryIds = [Int]()
     
     var arrayOfDeletedActivityIds = [Int]()
+    var arrayOfSelectedPickActivity = [structPickActivityParams]()
+    var arrayOfAllSelectedActivity = [structPickActivityParams]()
+    var arrayOfNewPickActivity = [structPickActivityParams]()
+    
     private let apiParams = ApiParams()
-    private var arrayOfSelectedPickActivity = [structPickActivityParams]()
-    private var arrayOfAllSelectedActivity = [structPickActivityParams]()
-    private var arrayOfNewPickActivity = [structPickActivityParams]()
     
     //MARK: Call Get Preferences Data API
     func callGetActivityDataAPI() {
@@ -65,95 +66,24 @@ final class PickActivityViewModel: ObservableObject {
             }
         }
     }
+    
+    func imageURL(for activity: ActivityCategoryClass, imageSize: CGSize) -> URL? {
+        let strUrl = UrlActivityImage + (activity.image ?? "")
+        let imageWidth = imageSize.width
+        let imageHeight = imageSize.height
+        let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(strUrl)"
+        
+        return URL(string: baseTimbThumb)
+    }
 }
 
 //MARK: getter/setter method
 extension PickActivityViewModel {
-    func getNumberOfActivity() -> Int {
-        arrayOfActivity.count
-    }
-    
-    func getActivityData(at index: Int) -> ActivityCategoryClass {
-        arrayOfActivity[index]
-    }
-    
-    func getSelectedPickActivity() -> [structPickActivityParams] {
-        arrayOfSelectedPickActivity
-    }
-    func getNewPickActivity() -> [structPickActivityParams] {
-        arrayOfNewPickActivity
-    }
-    
-    func getDeletedActivityIds() -> [Int] {
-        arrayOfDeletedActivityIds
-    }
-    
-    func setPickActivity(value: structPickActivityParams) {
-        arrayOfSelectedPickActivity.append(value)
-    }
-    
-    func setNewPickActivity(value: structPickActivityParams) {
-        arrayOfNewPickActivity.append(value)
-    }
-    
-    func setActivity(value: structPickActivityParams) {
-        arrayOfNewPickActivity.append(value)
-    }
-    
-    func setAllSelectedActivity(value: structPickActivityParams) {
-        arrayOfAllSelectedActivity.append(value)
-    }
-    
-    func removeAllSelectedActivity() {
-        arrayOfAllSelectedActivity.removeAll()
-    }
-    
-    func getAllSelectedActivity() -> [structPickActivityParams] {
-        arrayOfAllSelectedActivity
-    }
-    
-    func removePickActivity(at Index: Int) {
-        arrayOfSelectedPickActivity.remove(at: Index)
-    }
-    
-    func removeNewPickActivity(at Index: Int) {
-        arrayOfNewPickActivity.remove(at: Index)
-    }
-    
-    func setDeletedActivityIds(value: Int) {
-        arrayOfDeletedActivityIds.append(value)
-    }
-    
-    func removeDeletedActivityIds(at Index: Int) {
-        arrayOfDeletedActivityIds.remove(at: Index)
-    }
-    
-    func removeAllSelectedArray() {
-        arrayOfSelectedPickActivity.removeAll()
-    }
-    
-    func removeAllNewSelectedArray() {
-        arrayOfNewPickActivity.removeAll()
-    }
-    
-    func setSelectedCategoryId(value: Int) {
-        arrayOfSelectedCategoryIds.append(value)
-    }
-    func removeSelectedCategoryId(at Index: Int) {
-        arrayOfSelectedCategoryIds.remove(at: Index)
-    }
-    func removeAllSelectedCategoryId() {
-        arrayOfSelectedCategoryIds.removeAll()
-    }
-    func getSelectedCategoryId() -> [Int] {
-        arrayOfSelectedCategoryIds
-    }
-    
     //For setup profile time
     func convertActivityStructToString() -> String {
         var optionlist = [String]()
         
-        for i in getSelectedPickActivity() {
+        for i in arrayOfSelectedPickActivity {
             let dict : NSMutableDictionary = [apiParams.activityCategoryId : i.activityCategoryId,
                                               apiParams.activitySubCategoryId : i.activitySubCategoryId]
             
@@ -174,7 +104,7 @@ extension PickActivityViewModel {
         
         var optionlist = [String]()
         
-        for i in getNewPickActivity() {
+        for i in arrayOfNewPickActivity {
             let dict : NSMutableDictionary = [apiParams.activityCategoryId : i.activityCategoryId,
                                               apiParams.activitySubCategoryId : i.activitySubCategoryId]
             

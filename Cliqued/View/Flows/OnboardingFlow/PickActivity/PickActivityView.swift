@@ -9,6 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct PickActivityView: View {
+    @Environment(\.presentationMode) private var presentationMode
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     
     @StateObject private var viewModel = PickActivityViewModel()
@@ -57,9 +58,11 @@ struct PickActivityView: View {
         VStack(spacing: 20) {
             HeaderView(title: Constants.screenTitle_pickActivity,
                        backButtonVisible: isFromEditProfile,
-                       backAction: {})
+                       backAction: { presentationMode.wrappedValue.dismiss() })
             
-            OnboardingProgressView(totalSteps: 9, currentStep: 5)
+            if !isFromEditProfile {
+                OnboardingProgressView(totalSteps: 9, currentStep: 5)
+            }
         }
     }
     
@@ -81,11 +84,9 @@ struct PickActivityView: View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach($viewModel.arrayOfActivity) { activity in
-                    if let image = activity.image.wrappedValue, let imageURL = URL(string: UrlActivityImage + image) {
-                        imageCell(activity.wrappedValue, imageURL: imageURL)
-                            .frame(maxHeight: 210)
-                            .cornerRadius(15)
-                    }
+                    imageCell(activity.wrappedValue)
+                        .frame(maxHeight: 210)
+                        .cornerRadius(15)
                 }
             }
             .padding(.horizontal, 16)
@@ -93,12 +94,12 @@ struct PickActivityView: View {
         }
     }
     
-    private func imageCell(_ activity: ActivityCategoryClass, imageURL: URL) -> some View {
+    private func imageCell(_ activity: ActivityCategoryClass) -> some View {
         ZStack {
             let cellWidth = (screenSize.width - 40) / 2
             let cellHeight = cellWidth + (cellWidth * 0.2)
             
-            WebImage(url: imageURL)
+            WebImage(url: viewModel.imageURL(for: activity, imageSize: CGSize(width: cellWidth, height: cellHeight)))
                 .placeholder {
                     Image("placeholder_activity")
                         .resizable()
@@ -166,7 +167,7 @@ struct PickActivityView: View {
     
     private var presentables: some View {
         NavigationLink(destination: PickSubActivityView(isFromEditProfile: isFromEditProfile,
-                                                        categoryIds: isFromEditProfile ? viewModel.getSelectedCategoryId().map({String($0)}).joined(separator: ", ") : viewModel.getSelectedCategoryId().map({String($0)}).joined(separator: ", "),
+                                                        categoryIds: isFromEditProfile ? viewModel.arrayOfSelectedCategoryIds.map({String($0)}).joined(separator: ", ") : viewModel.arrayOfSelectedCategoryIds.map({String($0)}).joined(separator: ", "),
                                                         arrayOfSubActivity: arrayOfSubActivity,
                                                         activitiesFlowPresented: $activitiesFlowPresented),
                        isActive: $subActivityViewPresented,
@@ -183,10 +184,10 @@ struct PickActivityView: View {
     }
     
     private func continueAction() {
-        if viewModel.getSelectedCategoryId().count >= 3 {
+        if viewModel.arrayOfSelectedCategoryIds.count >= 3 {
             if isFromEditProfile {
                 //Remove deleted activity from the edit array
-                let deletedIds = viewModel.getDeletedActivityIds()
+                let deletedIds = viewModel.arrayOfDeletedActivityIds
                 var arrFilteredIds = arrayOfActivity
                 
                 for i in 0..<deletedIds.count {
@@ -216,29 +217,29 @@ struct PickActivityView: View {
     }
     
     func setupSelectedActivity() {
-        viewModel.removeAllSelectedArray()
+        viewModel.arrayOfSelectedPickActivity.removeAll()
         
         for activityData in arrayOfActivity {
-            if viewModel.getSelectedCategoryId().contains(where: {$0 == activityData.activityId}) == false {
-                viewModel.setSelectedCategoryId(value: activityData.activityId ?? 0)
+            if viewModel.arrayOfSelectedCategoryIds.contains(where: {$0 == activityData.activityId}) == false {
+                viewModel.arrayOfSelectedCategoryIds.append(activityData.activityId ?? 0)
             }
         }
     }
     
     private func cellTap(for activity: ActivityCategoryClass) {
-        if viewModel.getSelectedCategoryId().contains(where: { $0 == activity.id }) {
-            if let index = viewModel.getSelectedCategoryId().firstIndex(where: { $0 == activity.id }) {
-                viewModel.removeSelectedCategoryId(at: index)
+        if viewModel.arrayOfSelectedCategoryIds.contains(where: { $0 == activity.id }) {
+            if let index = viewModel.arrayOfSelectedCategoryIds.firstIndex(where: { $0 == activity.id }) {
+                viewModel.arrayOfSelectedCategoryIds.remove(at: index)
                 if isFromEditProfile {
-                    if viewModel.getAllSelectedActivity().contains(where: { $0.activityCategoryId == "\(activity.id ?? 0)" }) == true {
-                        viewModel.setDeletedActivityIds(value: activity.id ?? 0)
+                    if viewModel.arrayOfAllSelectedActivity.contains(where: { $0.activityCategoryId == "\(activity.id ?? 0)" }) == true {
+                        viewModel.arrayOfDeletedActivityIds.append(activity.id ?? 0)
                     }
                 }
             }
         } else {
-            viewModel.setSelectedCategoryId(value: activity.id ?? 0)
-            if let index = viewModel.getDeletedActivityIds().firstIndex(where: {$0 == activity.id ?? 0}) {
-                viewModel.removeDeletedActivityIds(at: index)
+            viewModel.arrayOfSelectedCategoryIds.append(activity.id ?? 0)
+            if let index = viewModel.arrayOfDeletedActivityIds.firstIndex(where: {$0 == activity.id ?? 0}) {
+                viewModel.arrayOfDeletedActivityIds.remove(at: index)
             }
         }
     }

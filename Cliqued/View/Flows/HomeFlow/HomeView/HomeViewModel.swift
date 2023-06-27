@@ -197,7 +197,7 @@ final class HomeViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
             
         case profileSetupType.relationship:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false, arrayOfUserPreference: []))
             
         case profileSetupType.category:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity, activitiesFlowPresented: .constant(false)))
@@ -220,6 +220,15 @@ final class HomeViewModel: ObservableObject {
         default:
             break
         }
+    }
+    
+    func imageURL(for activity: ActivityCategoryClass, imageSize: CGSize) -> URL? {
+        let strUrl = UrlActivityImage + (activity.image ?? "")
+        let imageWidth = imageSize.width
+        let imageHeight = imageSize.height
+        let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(strUrl)"
+        
+        return URL(string: baseTimbThumb)
     }
     
     private func checkPushNotificationEnabled() {

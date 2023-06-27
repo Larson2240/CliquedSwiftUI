@@ -9,8 +9,16 @@ import SwiftUI
 import SKPhotoBrowser
 import AVKit.AVPlayerViewController
 
+struct AgePreferenceParam {
+    var age_start_id: String
+    var age_start_pref_id: String
+    var age_end_id: String
+    var age_end_pref_id: String
+}
+
 final class ProfileViewModel: ObservableObject {
     struct UserDetails {
+        var profileSetupType = ""
         var profileCollection = [UserProfileImages]()
         var name = ""
         var age = ""
@@ -22,25 +30,44 @@ final class ProfileViewModel: ObservableObject {
         var location = [UserAddress]()
         var height = ""
         var kids = ""
+        var kidsPrefId = 0
+        var kidsOptionId = 0
         var smoking = ""
+        var smokingPrefId = 0
+        var smokingOptionId = 0
         var distancePreference = ""
         var startAge = ""
         var endAge = ""
+        var userPreferenceArray = [UserPreferences]()
+        var distance: DistanceParam?
+        var agePrefereneArray: AgePreferenceParam?
     }
     
     @Published var userDetails = UserDetails()
     @Published var profileCompleted = false
+    
     private let profileSetupType = ProfileSetupType()
     private let mediaType = MediaType()
+    private let preferenceTypeIds = PreferenceTypeIds()
+    private let apiParams = ApiParams()
+    private var arrayOfPreference = [PreferenceClass]()
+    private var arrayOfSubType = [SubTypes]()
+    private var arrayOfTypeOptionStartAge = [TypeOptions]()
+    private var arrayOfTypeOptionEndAge = [TypeOptions]()
     
     var objUserDetails: User?
+    var minSeekBarValue = ""
+    var maxSeekBarValue = ""
+    var successAction: (() -> Void)?
+    
+    let distanceValues = ["5km", "10km", "50km", "100km", "200km"]
     
     func checkProfileCompletion() {
         profileCompleted = Constants.loggedInUser?.isProfileSetupCompleted == 1
     }
     
     //MARK: Bind data on screen from the user object.
-    func configureUser() {
+    func viewAppeared() {
         guard let userData = Constants.loggedInUser else { return }
         
         userDetails.name = userData.name ?? ""
@@ -66,11 +93,19 @@ final class ProfileViewModel: ObservableObject {
                 userDetails.favoriteActivity = favoriteActivity
             }
         }
+        
         if userData.userProfileImages?.count ?? 0 > 0 {
             if let profileImages = userData.userProfileImages {
                 userDetails.profileCollection = profileImages
             }
         }
+        
+        if userData.userPreferences?.count ?? 0 > 0 {
+            if let userPreferences = userData.userPreferences {
+                userDetails.userPreferenceArray = userPreferences
+            }
+        }
+        
         if userData.userAddress?.count ?? 0 > 0 {
             if let userAddress = userData.userAddress {
                 userDetails.location = userAddress
@@ -95,6 +130,19 @@ final class ProfileViewModel: ObservableObject {
                 if let data = userDetails.favoriteActivity.filter({$0.activityId == activityId}).first {
                     userDetails.favoriteCategoryActivity.append(data)
                 }
+            }
+        }
+        
+        arrayOfPreference = Constants.getPreferenceData?.filter({ $0.typesOfPreference == preferenceTypeIds.age }) ?? []
+        
+        if arrayOfPreference.count > 0 {
+            arrayOfSubType = arrayOfPreference[0].subTypes ?? []
+            if arrayOfSubType.count > 0 {
+                let subTypesData = arrayOfSubType.filter({ $0.typesOfPreference == preferenceTypeIds.age_start })
+                arrayOfTypeOptionStartAge = subTypesData[0].typeOptions ?? []
+                
+                let subTypesDataEndAge = arrayOfSubType.filter({ $0.typesOfPreference == preferenceTypeIds.age_end })
+                arrayOfTypeOptionEndAge = subTypesDataEndAge[0].typeOptions ?? []
             }
         }
     }
@@ -144,7 +192,7 @@ final class ProfileViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: GenderView())
             
         case profileSetupType.relationship:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false, arrayOfUserPreference: []))
             
         case profileSetupType.category:
             let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: userDetails.favoriteActivity, activitiesFlowPresented: .constant(false))
@@ -199,5 +247,183 @@ final class ProfileViewModel: ObservableObject {
                 playerViewController.player!.play()
             }
         }
+    }
+    
+    func kidsOptionPicked(option: String) {
+        var arrayOfPreference = [PreferenceClass]()
+        var arrayOfTypeOption = [TypeOptions]()
+        
+        arrayOfPreference = Constants.getPreferenceData?.filter { $0.typesOfPreference == preferenceTypeIds.kids } ?? []
+        
+        guard arrayOfPreference.count > 0 else { return }
+        
+        arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
+        
+        guard arrayOfTypeOption.count > 0 else { return }
+        
+        let subTypesData = arrayOfTypeOption.filter({$0.title == option})
+        let prefId = subTypesData[0].preferenceId
+        let optionId = subTypesData[0].id
+        
+        userDetails.kidsPrefId = prefId ?? 0
+        userDetails.kidsOptionId = optionId ?? 0
+        userDetails.kids = option
+    }
+    
+    func smokingOptionPicked(option: String) {
+        var arrayOfPreference = [PreferenceClass]()
+        var arrayOfTypeOption = [TypeOptions]()
+        
+        arrayOfPreference = Constants.getPreferenceData?.filter { $0.typesOfPreference == preferenceTypeIds.kids } ?? []
+        
+        guard arrayOfPreference.count > 0 else { return }
+        
+        arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
+        
+        guard arrayOfTypeOption.count > 0 else { return }
+        
+        let subTypesData = arrayOfTypeOption.filter({$0.title == option})
+        let prefId = subTypesData[0].preferenceId
+        let optionId = subTypesData[0].id
+        
+        userDetails.smokingPrefId = prefId ?? 0
+        userDetails.smokingOptionId = optionId ?? 0
+        userDetails.smoking = option
+    }
+    
+    func save() {
+        userDetails.profileSetupType = profileSetupType.completed
+        
+        let isValidName = isOnlyCharacter(text: userDetails.name)
+        
+        if isValidName {
+            callSignUpProcessAPI()
+        } else {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_validName)
+        }
+    }
+    
+    private func isOnlyCharacter(text: String) -> Bool {
+        let characterRegEx = "[a-zA-Z\\s]+"
+        let characterPred = NSPredicate(format:"SELF MATCHES %@", characterRegEx)
+        return characterPred.evaluate(with: text)
+    }
+}
+
+
+// MARK: - Private methods
+extension ProfileViewModel {
+    private func callSignUpProcessAPI() {
+        guard allValid() else { return }
+        
+        let params: NSDictionary = [
+            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+            apiParams.profile_setup_type : userDetails.profileSetupType,
+            apiParams.name : userDetails.name,
+            apiParams.about_me : userDetails.aboutMe,
+            apiParams.height : userDetails.height,
+            apiParams.kids_preference_id : userDetails.kidsPrefId,
+            apiParams.kids_option_id : userDetails.kidsOptionId,
+            apiParams.smoking_preference_id : userDetails.smokingPrefId,
+            apiParams.smoking_option_id : userDetails.smokingOptionId,
+            apiParams.distance_pref : convertDistanceParamStructToString(),
+            apiParams.age_pref : convertAgePreferenceParamStructToString(),
+        ]
+        
+        guard Connectivity.isConnectedToInternet() else { return }
+        
+        UIApplication.shared.showLoader()
+        
+        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateProfile, parameters: params) { [weak self] response, error, message in
+            guard let self = self else { return }
+            
+            UIApplication.shared.hideLoader()
+            
+            if error != nil && response == nil {
+                UIApplication.shared.showAlertPopup(message: message ?? "")
+            } else {
+                let json = response as? NSDictionary
+                let status = json?[API_STATUS] as? Int
+                let message = json?[API_MESSAGE] as? String
+                
+                if status == SUCCESS {
+                    if let userArray = json?["user"] as? NSArray {
+                        if userArray.count > 0 {
+                            let dicUser = userArray[0] as! NSDictionary
+                            let decoder = JSONDecoder()
+                            do {
+                                let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
+                                let objUser = try decoder.decode(User.self, from: jsonData)
+                                Constants.saveUserInfoAndProceed(user: objUser)
+                                self.successAction?()
+                            } catch {
+                                print(error.localizedDescription)
+                            }
+                        }
+                    }
+                } else {
+                    UIApplication.shared.showAlertPopup(message: message ?? "")
+                }
+            }
+        }
+    }
+    
+    private func allValid() -> Bool {
+        var result = false
+        
+        if userDetails.name.trimmingCharacters(in: .whitespaces).isEmpty {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_validName)
+        } else if Int(userDetails.height) ?? 0 > 0 && Int(userDetails.height) ?? 0 < 100 {
+            UIApplication.shared.showAlertPopup(message: Constants.alertMsg_validHeight)
+        } else if Int(userDetails.height) ?? 0 > 220 {
+            UIApplication.shared.showAlertPopup(message: Constants.alertMsg_validHeight)
+        } else {
+            result = true
+        }
+        
+        return result
+    }
+    
+    private func convertDistanceParamStructToString() -> String {
+        guard let distance = userDetails.distance else { return "" }
+        
+        var optionlist = [String]()
+        
+        if !distance.distancePreferenceOptionId.isEmpty {
+            let dict : NSMutableDictionary = [
+                apiParams.distancePrefOptionId : distance.distancePreferenceOptionId,
+                apiParams.distancePrefId : distance.distancePreferenceId
+            ]
+            
+            let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
+            let jsonstringstr = String(data: dictdata as Data, encoding: .utf8)
+            optionlist.append(jsonstringstr!)
+        }
+        let tappingdata : Data = try! JSONSerialization.data(withJSONObject: optionlist, options: [])
+        let jsonstring = String(data: tappingdata as Data, encoding: .utf8)
+        return jsonstring!
+    }
+    
+    //MARK: Convert User Address Struct to String
+    private func convertAgePreferenceParamStructToString() -> String {
+        guard let age = userDetails.agePrefereneArray else { return "" }
+        
+        var optionlist = [String]()
+        
+        if !age.age_start_id.isEmpty {
+            let dict : NSMutableDictionary = [
+                apiParams.ageStartId : age.age_start_id ,
+                apiParams.ageStartPrefId : age.age_start_pref_id,
+                apiParams.ageEndId : age.age_end_id,
+                apiParams.ageEndPrefId : age.age_end_pref_id
+            ]
+            
+            let dictdata : Data = try! JSONSerialization.data(withJSONObject: dict, options: [])
+            let jsonstringstr = String(data: dictdata as Data, encoding: .utf8)
+            optionlist.append(jsonstringstr!)
+        }
+        let tappingdata : Data = try! JSONSerialization.data(withJSONObject: optionlist, options: [])
+        let jsonstring = String(data: tappingdata as Data, encoding: .utf8)
+        return jsonstring!
     }
 }

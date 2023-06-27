@@ -11,6 +11,7 @@ import MapKit
 
 struct LocationView: View {
     @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
     
     @StateObject private var onboardingViewModel = OnboardingViewModel.shared
     @StateObject private var locationViewModel = LocationViewModel()
@@ -56,6 +57,7 @@ struct LocationView: View {
             
             continueButton
         }
+        .edgesIgnoringSafeArea(.bottom)
     }
     
     private var header: some View {
@@ -182,10 +184,10 @@ struct LocationView: View {
                     .foregroundColor(.colorWhite)
             }
         }
-        .frame(height: 60)
         .cornerRadius(30)
+        .frame(height: 60)
         .padding(.horizontal, 30)
-        .padding(.bottom, 30)
+        .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
         .padding(.top, 16)
     }
     

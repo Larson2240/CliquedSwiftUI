@@ -74,11 +74,9 @@ struct HomeView: View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach($viewModel.arrayOfHomeCategory) { activity in
-                    if let image = activity.image.wrappedValue, let imageURL = URL(string: UrlActivityImage + image) {
-                        imageCell(activity.wrappedValue, imageURL: imageURL)
-                            .frame(maxHeight: 210)
-                            .cornerRadius(15)
-                    }
+                    imageCell(activity.wrappedValue)
+                        .frame(maxHeight: 210)
+                        .cornerRadius(15)
                 }
             }
             .padding(.horizontal, 16)
@@ -87,12 +85,12 @@ struct HomeView: View {
         .ignoresSafeArea()
     }
     
-    private func imageCell(_ activity: ActivityCategoryClass, imageURL: URL) -> some View {
+    private func imageCell(_ activity: ActivityCategoryClass) -> some View {
         ZStack {
             let cellWidth = (screenSize.width - 40) / 2
             let cellHeight = cellWidth + (cellWidth * 0.2)
             
-            WebImage(url: imageURL)
+            WebImage(url: viewModel.imageURL(for: activity, imageSize: CGSize(width: cellWidth, height: cellHeight)))
                 .placeholder {
                     Image("placeholder_activity")
                         .resizable()

@@ -334,7 +334,7 @@ extension ChatVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: GenderView())
             
         case profileSetupType.relationship:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false, arrayOfUserPreference: []))
             
         case profileSetupType.category:
             let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity, activitiesFlowPresented: .constant(false))
@@ -380,9 +380,9 @@ extension ChatVC {
             }
         }
         for activityId in arrayOfActivityIds {
-            if let data = self.favoriteActivity.filter({$0.activityId == activityId}).first {
-                if !self.favoriteActivity.contains(where: {$0.activityId == activityId}) {
-                    self.favoriteCategoryActivity.append(data)
+            if let data = favoriteActivity.filter({$0.activityId == activityId}).first {
+                if !favoriteActivity.contains(where: {$0.activityId == activityId}) {
+                    favoriteCategoryActivity.append(data)
                 }
             }
         }
