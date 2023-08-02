@@ -21,21 +21,17 @@ struct ProfileView: View {
     @State private var editProfileViewPresented = false
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                if viewModel.profileCompleted {
-                    content
-                } else {
-                    completeProfileView
-                }
-                
-                presentables
+        ZStack {
+            if viewModel.profileCompleted {
+                content
+            } else {
+                completeProfileView
             }
-            .background(background)
-            .onAppear { onAppearConfig() }
+            
+            presentables
         }
-        .navigationBarHidden(true)
-        .navigationViewStyle(.stack)
+        .background(background)
+        .onAppear { onAppearConfig() }
     }
     
     private var content: some View {

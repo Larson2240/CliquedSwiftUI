@@ -23,17 +23,13 @@ struct HomeView: View {
     ]
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                content
-                
-                presentables
-            }
-            .background(background)
-            .onAppear { onAppearConfig() }
+        ZStack {
+            content
+            
+            presentables
         }
-        .navigationBarHidden(true)
-        .navigationViewStyle(.stack)
+        .background(background)
+        .onAppear { onAppearConfig() }
     }
     
     private var content: some View {
@@ -77,7 +73,8 @@ struct HomeView: View {
                 }
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 16)
+            .padding(.top, 16)
+            .padding(.bottom, 100)
         }
         .ignoresSafeArea()
     }

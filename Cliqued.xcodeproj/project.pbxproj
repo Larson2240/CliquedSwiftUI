@@ -29,8 +29,6 @@
 		0A37E2682A2BC29100BAA6E9 /* NotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A37E2672A2BC29100BAA6E9 /* NotificationsViewModel.swift */; };
 		0A37E26A2A2BC95900BAA6E9 /* StartExploringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A37E2692A2BC95900BAA6E9 /* StartExploringView.swift */; };
 		0A39037B2A32591A00592D9B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39037A2A32591A00592D9B /* HomeView.swift */; };
-		0A3903802A33F5BB00592D9B /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A39037E2A33F5BA00592D9B /* TabBarVC.swift */; };
-		0A3903812A33F5BB00592D9B /* TabBarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A39037F2A33F5BA00592D9B /* TabBarVC.xib */; };
 		0A3903832A34C41400592D9B /* GuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3903822A34C41400592D9B /* GuideView.swift */; };
 		0A44B1BC2A42A92C008EFED3 /* SafeAreaInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A44B1BB2A42A92C008EFED3 /* SafeAreaInsets.swift */; };
 		0A44B1C02A42ACED008EFED3 /* PageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A44B1BF2A42ACED008EFED3 /* PageIndicator.swift */; };
@@ -398,8 +396,6 @@
 		0A37E2672A2BC29100BAA6E9 /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
 		0A37E2692A2BC95900BAA6E9 /* StartExploringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartExploringView.swift; sourceTree = "<group>"; };
 		0A39037A2A32591A00592D9B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		0A39037E2A33F5BA00592D9B /* TabBarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
-		0A39037F2A33F5BA00592D9B /* TabBarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabBarVC.xib; sourceTree = "<group>"; };
 		0A3903822A34C41400592D9B /* GuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideView.swift; sourceTree = "<group>"; };
 		0A44B1BB2A42A92C008EFED3 /* SafeAreaInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeAreaInsets.swift; sourceTree = "<group>"; };
 		0A44B1BF2A42ACED008EFED3 /* PageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageIndicator.swift; sourceTree = "<group>"; };
@@ -877,11 +873,8 @@
 			isa = PBXGroup;
 			children = (
 				0AEDFCB62A7A63D40012A574 /* TabBarView.swift */,
-				0A39037E2A33F5BA00592D9B /* TabBarVC.swift */,
-				0A39037F2A33F5BA00592D9B /* TabBarVC.xib */,
 				0A39037D2A325D0C00592D9B /* HomeView */,
 				0AEA2AFE2A3F235A0039F0E1 /* ProfileView */,
-				0A33A21A2A44DEC000EE262D /* EditProfileView */,
 			);
 			path = HomeFlow;
 			sourceTree = "<group>";
@@ -926,6 +919,7 @@
 				601245EA297AC25600441F09 /* ProfileViewModel.swift */,
 				0AEA2AFF2A3F236F0039F0E1 /* ProfileView.swift */,
 				0A33A2162A431ED000EE262D /* ProfileCommonCell.swift */,
+				0A33A21A2A44DEC000EE262D /* EditProfileView */,
 			);
 			path = ProfileView;
 			sourceTree = "<group>";
@@ -2329,7 +2323,6 @@
 				60D352F32971206D007E09E8 /* Rationell-Light.otf in Resources */,
 				60D352FE29715B95007E09E8 /* TermsConditionTextCell.xib in Resources */,
 				60B46D0829A4E0D400DD3F6B /* InterestUserActivityView.xib in Resources */,
-				0A3903812A33F5BB00592D9B /* TabBarVC.xib in Resources */,
 				64B6249A299E52CD00D26F8D /* UpdateEmailVC.xib in Resources */,
 				0A50CAB12A361D9900B598A4 /* HomeActivitiesVC.xib in Resources */,
 				609E0BFE29A4D4F000EDABD7 /* InterestedActivityVC.xib in Resources */,
@@ -2674,7 +2667,6 @@
 				60F42A0D2990DACE00381566 /* (null) in Sources */,
 				6025E4A8299222AA00080812 /* NoDataFoundCell.swift in Sources */,
 				601F0AD6297E573D0027B472 /* SettingsViewModel.swift in Sources */,
-				0A3903802A33F5BB00592D9B /* TabBarVC.swift in Sources */,
 				644806D429A765C30028EB33 /* VideoCallVC.swift in Sources */,
 				0AD9978C2A295D8900F5C095 /* NotificationsView.swift in Sources */,
 			);
@@ -2863,7 +2855,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2910,7 +2902,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
