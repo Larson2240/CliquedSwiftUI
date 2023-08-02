@@ -291,6 +291,40 @@ final class ProfileViewModel: ObservableObject {
         userDetails.smoking = option
     }
     
+    func saveAgePreferences(ageMinValue: Int, ageMaxValue: Int) {
+        var startAgeId = ""
+        var startAgePrefId = ""
+        var endAgeId = ""
+        var endAgePrefId = ""
+        
+        for mydata in arrayOfTypeOptionStartAge {
+            if let strToNum1 = NumberFormatter().number(from: mydata.title ?? "") {
+                let startAge = CGFloat(truncating: strToNum1)
+                if startAge == CGFloat(ageMinValue) {
+                    startAgeId = mydata.id?.description ?? ""
+                    startAgePrefId = mydata.preferenceId?.description ?? ""
+                }
+            }
+        }
+        
+        if arrayOfTypeOptionEndAge.count > 0 {
+            for mydata in arrayOfTypeOptionEndAge {
+                if let strToNum1 = NumberFormatter().number(from: mydata.title ?? "") {
+                    let endAge = CGFloat(truncating: strToNum1)
+                    if endAge == CGFloat(ageMaxValue) {
+                        endAgeId = mydata.id?.description ?? ""
+                        endAgePrefId = mydata.preferenceId?.description ?? ""
+                    }
+                }
+            }
+        }
+        
+        userDetails.agePrefereneArray = AgePreferenceParam(age_start_id: startAgeId,
+                                                           age_start_pref_id: startAgePrefId,
+                                                           age_end_id: endAgeId,
+                                                           age_end_pref_id: endAgePrefId)
+    }
+    
     func save() {
         userDetails.profileSetupType = profileSetupType.completed
         

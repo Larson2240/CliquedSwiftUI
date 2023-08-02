@@ -52,7 +52,7 @@ final class SliderHandle: ObservableObject {
         self.onDrag = false
     }
     
-    lazy var sliderDragGesture: _EndedGesture<_ChangedGesture<DragGesture>>  = DragGesture()
+    lazy var sliderDragGesture: _EndedGesture<_ChangedGesture<DragGesture>> = DragGesture()
         .onChanged { value in
             self.onDrag = true
             
@@ -72,14 +72,18 @@ final class SliderHandle: ObservableObject {
     
     private func calcSliderBtnLocation(_ dragLocation: CGPoint) {
         if dragLocation.y != sliderHeight / 2 {
-            currentLocation = CGPoint(x: dragLocation.x, y: sliderHeight/2)
+            currentLocation = CGPoint(x: dragLocation.x, y: sliderHeight / 2)
         } else {
             currentLocation = dragLocation
         }
     }
     
-    var currentValue: Double {
-        return sliderValueStart + currentPercentage.wrappedValue * sliderValueRange
+    var currentValue: Int {
+        let value = sliderValueStart + currentPercentage.wrappedValue * sliderValueRange
+        let step: Double = 5
+        let rounded = round(value / step) * step
+        
+        return Int(rounded)
     }
 }
 
@@ -174,7 +178,7 @@ struct SliderHandleView: View {
     
     var body: some View {
         ZStack {
-            Text("\(Int(handle.currentValue))")
+            Text("\(handle.currentValue)")
                 .font(.themeMedium(14))
                 .foregroundColor(.colorDarkGrey)
                 .offset(y: 25)

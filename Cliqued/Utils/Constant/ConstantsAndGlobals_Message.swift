@@ -250,7 +250,4 @@ extension Notification.Name {
     static let connectCall = Notification.Name("ConnectCall")
     
     static let invalidTimer = Notification.Name("invalidTimer")
-    
-    static let hideTabBar = Notification.Name("hideTabBar")
-    static let showTabBar = Notification.Name("showTabBar")
 }

@@ -353,8 +353,7 @@ extension ChatVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NotificationsView())
             
         case profileSetupType.completed:
-            let tabBarVC = TabBarVC.loadFromNib()
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: tabBarVC)
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())
         default:
             break
         }

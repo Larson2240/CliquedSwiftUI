@@ -31,9 +31,6 @@ struct HomeView: View {
             }
             .background(background)
             .onAppear { onAppearConfig() }
-            .onChange(of: activitiesViewPresented) { newValue in
-                toggleTabBar(isHidden: newValue)
-            }
         }
         .navigationBarHidden(true)
         .navigationViewStyle(.stack)

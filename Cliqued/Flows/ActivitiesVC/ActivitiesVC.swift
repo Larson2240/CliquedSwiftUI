@@ -259,7 +259,7 @@ extension ActivitiesVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NotificationsView())
             
         case profileSetupType.completed:
-            APP_DELEGATE.window?.rootViewController = UINavigationController(rootViewController: TabBarVC.loadFromNib())
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())
         default:
             break
         }

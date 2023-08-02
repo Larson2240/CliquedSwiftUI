@@ -33,9 +33,6 @@ struct ProfileView: View {
             }
             .background(background)
             .onAppear { onAppearConfig() }
-            .onChange(of: editProfileViewPresented) { newValue in
-                toggleTabBar(isHidden: newValue)
-            }
         }
         .navigationBarHidden(true)
         .navigationViewStyle(.stack)

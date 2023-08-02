@@ -504,12 +504,8 @@ struct EditProfileView: View {
     
     private var saveButton: some View {
         Button(action: {
-//            dic.age_start_id = startAgeId
-//            dic.age_start_pref_id = startAgePrefId
-//            dic.age_end_id = endAgeId
-//            dic.age_end_pref_id = endAgePrefId
-//            viewModel.userDetails.agePrefereneArray = AgePreferenceParam(age_start_id: <#T##String#>, age_start_pref_id: <#T##String#>, age_end_id: <#T##String#>, age_end_pref_id: <#T##String#>
-            
+            viewModel.saveAgePreferences(ageMinValue: slider?.lowHandle.currentValue ?? 45,
+                                         ageMaxValue: slider?.highHandle.currentValue ?? 99)
             viewModel.save()
         }) {
             ZStack {

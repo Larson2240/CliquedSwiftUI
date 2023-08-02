@@ -133,7 +133,7 @@ extension EmailNotification {
             
             if isSuccess {
                 self.checkEmailNotificationPrefrenceHaveOrNot()
-                self.tableView.reloadData()               
+                self.tableView.reloadData()
             }
         }
                 

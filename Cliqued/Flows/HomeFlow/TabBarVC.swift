@@ -63,8 +63,6 @@ final class TabBarVC: UITabBarController {
         welcomeViewModel.callGetUserDetailsAPI()
         
         NotificationCenter.default.addObserver(self, selector: #selector(incomingCall(_:)), name: .incomingCall, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(hideTabBar(_:)), name: .hideTabBar, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showTabBar(_:)), name: .showTabBar, object: nil)
     }
     
     @objc func incomingCall(_ notification: Notification) {
@@ -72,24 +70,6 @@ final class TabBarVC: UITabBarController {
         vieWModelMessage.setRoomName(value: "\(Calling.room_Name)")
         vieWModelMessage.setIsVideo(value: "\(Calling.is_audio_call == "1" ? "0" : "1")")
         vieWModelMessage.apiGetAccessToken()
-    }
-    
-    @objc func hideTabBar(_ notification: Notification) {
-        var frame = tabBar.frame
-        frame.origin.y = view.frame.size.height + frame.size.height
-        
-        UIView.animate(withDuration: 0.5, animations: { [weak self] in
-            self?.tabBar.frame = frame
-        })
-    }
-    
-    @objc func showTabBar(_ notification: Notification) {
-        var frame = tabBar.frame
-        frame.origin.y = view.frame.size.height - frame.size.height
-        
-        UIView.animate(withDuration: 0.5, animations: { [weak self] in
-            self?.tabBar.frame = frame
-        })
     }
 }
 
