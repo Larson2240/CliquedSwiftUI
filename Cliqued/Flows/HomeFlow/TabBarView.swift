@@ -27,11 +27,23 @@ struct TabBarView: View {
                 }
                 .tag(0)
             
+            ActivitiesView().ignoresSafeArea()
+                .tabItem {
+                    tabItem(imageName: "ic_activity_unselected", title: Constants.label_tabActivities)
+                }
+                .tag(1)
+            
+            ChatView().ignoresSafeArea()
+                .tabItem {
+                    tabItem(imageName: "ic_chat_unselected", title: Constants.label_tabChat)
+                }
+                .tag(2)
+            
             ProfileView()
                 .tabItem {
                     tabItem(imageName: "ic_profile_unselected", title: Constants.label_tabProfile)
                 }
-                .tag(1)
+                .tag(3)
         }
         .accentColor(.theme)
     }
@@ -68,10 +80,6 @@ struct TabBarView: View {
         UITabBar.appearance().clipsToBounds = false
         UITabBar.appearance().backgroundColor = .white
         UITabBar.appearance().unselectedItemTintColor = .darkGray
-        
-        let tabBarAppearance = UITabBarAppearance()
-        tabBarAppearance.configureWithDefaultBackground()
-        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
     }
 }
 
