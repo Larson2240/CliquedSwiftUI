@@ -33,7 +33,7 @@ struct HomeView: View {
     }
     
     private var content: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 0) {
             header
             
             if viewModel.profileCompleted {

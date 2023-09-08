@@ -14,7 +14,6 @@ struct TabBarView: View {
         NavigationView {
             tabBar
         }
-        .onAppear { onAppearConfig() }
         .navigationBarHidden(true)
         .navigationViewStyle(.stack)
     }
@@ -45,6 +44,9 @@ struct TabBarView: View {
                 }
                 .tag(3)
         }
+        .introspectTabBarController(customize: { tabBarController in
+            setupTabBarUI(tabBarController: tabBarController)
+        })
         .accentColor(.theme)
     }
     
@@ -63,23 +65,22 @@ struct TabBarView: View {
         }
     }
     
-    private func onAppearConfig() {
-        setupTabbarUI()
-    }
-    
-    private func setupTabbarUI() {
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: CustomFont.THEME_FONT_Medium(12)!], for: .normal)
+    private func setupTabBarUI(tabBarController: UITabBarController) {
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: CustomFont.THEME_FONT_Medium(12)!], for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: Constants.color_themeColor, NSAttributedString.Key.font: CustomFont.THEME_FONT_Medium(12)!], for: .selected)
         
-        UITabBar.appearance().layer.shadowColor = UIColor.lightGray.cgColor
-        UITabBar.appearance().layer.shadowOpacity = 0.5
-        UITabBar.appearance().layer.shadowOffset = CGSize.zero
-        UITabBar.appearance().layer.shadowRadius = 5
-        UITabBar.appearance().layer.borderColor = UIColor.clear.cgColor
-        UITabBar.appearance().layer.borderWidth = 0
-        UITabBar.appearance().clipsToBounds = false
-        UITabBar.appearance().backgroundColor = .white
-        UITabBar.appearance().unselectedItemTintColor = .darkGray
+        tabBarController.tabBar.layer.shadowColor = UIColor.lightGray.cgColor
+        tabBarController.tabBar.layer.shadowOpacity = 0.5
+        tabBarController.tabBar.layer.shadowOffset = CGSize.zero
+        tabBarController.tabBar.layer.shadowRadius = 5
+        tabBarController.tabBar.layer.borderColor = UIColor.clear.cgColor
+        tabBarController.tabBar.layer.borderWidth = 0
+        tabBarController.tabBar.clipsToBounds = false
+        tabBarController.tabBar.backgroundColor = UIColor.white
+        
+        UITabBar.appearance().tintColor = Constants.color_themeColor
+        UITabBar.appearance().shadowImage = UIImage()
+        UITabBar.appearance().backgroundImage = UIImage()
     }
 }
 

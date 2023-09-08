@@ -16,6 +16,7 @@ struct SettingsView: View {
             
             presentables
         }
+        .navigationBarHidden(true)
     }
     
     private var content: some View {
@@ -73,9 +74,9 @@ struct SettingsView: View {
     
     private var accountSettings: some View {
         Section {
-            rowTitle(text: Constants.label_email)
+            row(text: Constants.label_email, chevronVisible: false)
             
-            rowTitle(text: Constants.label_password)
+            row(text: Constants.label_password, chevronVisible: false)
         } header: {
             sectionHeader(text: Constants.labelSettingSectionTitle_accountSetting)
         }
@@ -85,7 +86,7 @@ struct SettingsView: View {
     
     private var subscription: some View {
         Section {
-            rowTitle(text: Constants.labelSettingRowTitle_inAppPurchase)
+            row(text: Constants.labelSettingRowTitle_inAppPurchase, chevronVisible: false)
         } header: {
             sectionHeader(text: Constants.labelSettingSectionTitle_subscription, basicAccount: true)
         }
@@ -95,7 +96,7 @@ struct SettingsView: View {
     
     private var connections: some View {
         Section {
-            rowTitle(text: Constants.labelSettingRowTitle_blockedContacts)
+            row(text: Constants.labelSettingRowTitle_blockedContacts, chevronVisible: false)
         } header: {
             sectionHeader(text: Constants.labelSettingSectionTitle_connections)
         }
@@ -105,9 +106,31 @@ struct SettingsView: View {
     
     private var activeStatus: some View {
         Section {
-            rowTitle(text: Constants.labelSettingRowTitle_onlineNow)
+            HStack {
+                Text(Constants.labelSettingRowTitle_onlineNow)
+                    .font(.themeRegular(12))
+                    .foregroundColor(.colorDarkGrey)
+                    .frame(height: 50)
+                
+                Spacer()
+                
+                Toggle("", isOn: .constant(true))
+                    .tint(Color.theme)
+            }
+            .padding(.horizontal)
             
-            rowTitle(text: Constants.labelSettingRowTitle_lastSeenStatus)
+            HStack {
+                Text(Constants.labelSettingRowTitle_lastSeenStatus)
+                    .font(.themeRegular(12))
+                    .foregroundColor(.colorDarkGrey)
+                    .frame(height: 50)
+                
+                Spacer()
+                
+                Toggle("", isOn: .constant(true))
+                    .tint(Color.theme)
+            }
+            .padding(.horizontal)
         } header: {
             sectionHeader(text: Constants.labelSettingSectionTitle_activeStatus)
         }
@@ -117,9 +140,9 @@ struct SettingsView: View {
     
     private var notifications: some View {
         Section {
-            rowTitle(text: Constants.labelSettingRowTitle_emailNotifications)
+            row(text: Constants.labelSettingRowTitle_emailNotifications, chevronVisible: false)
             
-            rowTitle(text: Constants.labelSettingRowTitle_pushNotifications)
+            row(text: Constants.labelSettingRowTitle_pushNotifications, chevronVisible: false)
         } header: {
             sectionHeader(text: Constants.labelSettingSectionTitle_notifications)
         }
@@ -129,9 +152,9 @@ struct SettingsView: View {
     
     private var otherSettings: some View {
         Section {
-            rowTitle(text: Constants.labelSettingRowTitle_restorePurchase)
+            row(text: Constants.labelSettingRowTitle_restorePurchase, chevronVisible: false)
             
-            rowTitle(text: Constants.labelSettingRowTitle_inviteFriends)
+            row(text: Constants.labelSettingRowTitle_inviteFriends, chevronVisible: false)
         } header: {
             sectionHeader(text: Constants.labelSettingSectionTitle_otherSettings)
         }
@@ -141,7 +164,7 @@ struct SettingsView: View {
     
     private var contactUs: some View {
         Section {
-            rowTitle(text: Constants.labelSettingSectionTitle_contactUs)
+            row(text: Constants.labelSettingSectionTitle_contactUs, chevronVisible: false)
         } header: {
             sectionHeader(text: Constants.labelSettingSectionTitle_contactUs)
         }
@@ -151,9 +174,9 @@ struct SettingsView: View {
     
     private var guidelines: some View {
         Section {
-            rowTitle(text: Constants.labelSettingRowTitle_communityGuidelines)
+            row(text: Constants.labelSettingRowTitle_communityGuidelines, chevronVisible: false)
             
-            rowTitle(text: Constants.labelSettingRowTitle_safetyTips)
+            row(text: Constants.labelSettingRowTitle_safetyTips, chevronVisible: false)
         } header: {
             sectionHeader(text: Constants.labelSettingRowTitle_communityGuidelines)
         }
@@ -163,9 +186,9 @@ struct SettingsView: View {
     
     private var privacyPolicy: some View {
         Section {
-            rowTitle(text: Constants.labelSettingRowTitle_cookiePolicy)
+            row(text: Constants.labelSettingRowTitle_cookiePolicy, chevronVisible: false)
             
-            rowTitle(text: Constants.labelSettingRowTitle_privacyPolicy)
+            row(text: Constants.labelSettingRowTitle_privacyPolicy, chevronVisible: false)
         } header: {
             sectionHeader(text: Constants.labelSettingRowTitle_privacyPolicy)
         }
@@ -175,9 +198,9 @@ struct SettingsView: View {
     
     private var legal: some View {
         Section {
-            rowTitle(text: Constants.labelSettingRowTitle_termsOfService)
+            row(text: Constants.labelSettingRowTitle_termsOfService, chevronVisible: false)
             
-            rowTitle(text: Constants.labelSettingRowTitle_licenses)
+            row(text: Constants.labelSettingRowTitle_licenses, chevronVisible: false)
         } header: {
             sectionHeader(text: Constants.labelSettingSectionTitle_legal)
         }
@@ -207,19 +230,25 @@ struct SettingsView: View {
         }
     }
     
-    private func rowTitle(text: String) -> some View {
-        Text(text)
-            .font(.themeRegular(12))
-            .foregroundColor(.colorDarkGrey)
-            .padding(.horizontal)
-            .frame(height: 50)
+    private func row(text: String, chevronVisible: Bool) -> some View {
+        HStack {
+            Text(text)
+                .font(.themeRegular(12))
+                .foregroundColor(.colorDarkGrey)
+                .frame(height: 50)
+            
+            Image("ic_next_arrow")
+        }
+        .padding(.horizontal)
     }
     
     private var bottomButtons: some View {
         VStack {
-            Text(Constants_Message.title_delete_account)
-                .font(.themeBold(16))
-                .foregroundColor(.theme)
+            Button(action: {  }) {
+                Text(Constants_Message.title_delete_account)
+                    .font(.themeBold(16))
+                    .foregroundColor(.theme)
+            }
             
             Button(action: {  }) {
                 ZStack {

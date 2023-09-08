@@ -19,6 +19,7 @@ struct ProfileView: View {
     @State private var slider: CustomSlider?
     @State private var currentPage = 0
     @State private var editProfileViewPresented = false
+    @State private var settingsViewPresented = false
     
     var body: some View {
         ZStack {
@@ -157,7 +158,7 @@ struct ProfileView: View {
                 Image("ic_edit_category")
             }
             
-            Button(action: {  }) {
+            Button(action: { settingsViewPresented.toggle() }) {
                 Image("ic_setting_icon")
             }
         }
@@ -378,6 +379,11 @@ struct ProfileView: View {
         ZStack {
             NavigationLink(destination: EditProfileView(viewModel: viewModel),
                            isActive: $editProfileViewPresented,
+                           label: EmptyView.init)
+            .isDetailLink(false)
+            
+            NavigationLink(destination: SettingsView(),
+                           isActive: $settingsViewPresented,
                            label: EmptyView.init)
             .isDetailLink(false)
         }

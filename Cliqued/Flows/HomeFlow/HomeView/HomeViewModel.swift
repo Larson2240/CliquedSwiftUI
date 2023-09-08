@@ -35,8 +35,6 @@ final class HomeViewModel: ObservableObject {
             return
         }
         
-        arrayOfHomeCategory.removeAll()
-        
         RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetUserInterestedCategory, parameters: params) { [weak self] response, error, message in
             guard let self = self else { return }
             
@@ -55,6 +53,8 @@ final class HomeViewModel: ObservableObject {
                     UIApplication.shared.showAlertPopup(message: msg ?? "")
                     return
                 }
+                
+                self.arrayOfHomeCategory.removeAll()
                 
                 for activityInfo in activityArray {
                     let dicActivity = activityInfo as! NSDictionary
