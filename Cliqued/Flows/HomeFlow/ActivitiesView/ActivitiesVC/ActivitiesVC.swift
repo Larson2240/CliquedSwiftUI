@@ -44,92 +44,7 @@ class ActivitiesVC: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.tabBarController?.tabBar.isHidden = false
         if isProfileCompleted() {
-            self.viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
             
-            if let arrCategory = Constants.loggedInUser?.userInterestedCategory {
-                var arrActivityId = arrCategory.map({$0.activityId!})
-                arrActivityId = arrActivityId.removeDuplicates()
-                            
-                let strActivityId = arrActivityId.map{String($0)}.joined(separator: ",")
-                self.viewModel.setActivityCategoryId(value: strActivityId)
-                
-                var arrSubActivityId = arrCategory.map({$0.subActivityId!})
-                arrSubActivityId = arrSubActivityId.removeDuplicates()
-                
-                let strSubActivityId = arrSubActivityId.map{String($0)}.joined(separator: ",")
-                self.viewModel.setActivitySubCategoryId(value: strSubActivityId)
-            }
-            
-            var arrayOfUserPreference = [UserPreferences]()
-            var arrayOfLookingForIds = [Int]()
-            arrayOfUserPreference = (Constants.loggedInUser?.userPreferences)!
-            if arrayOfUserPreference.count > 0 {
-                for i in arrayOfUserPreference {
-                    if i.typesOfPreference == preferenceTypeIds.looking_for {
-                        arrayOfLookingForIds.append(i.id ?? 0)
-                    }
-                }
-            }
-            let commaSepLookingForIds = arrayOfLookingForIds.map{String($0)}.joined(separator: ",")
-            
-            var arrayDistancePreference = [Int]()
-            if arrayOfUserPreference.count > 0 {
-                for i in arrayOfUserPreference {
-                    if i.typesOfPreference == preferenceTypeIds.distance {
-                        arrayDistancePreference.append(i.preferenceOptionId ?? 0)
-                    }
-                }
-            }
-            let commaSepDistance = arrayDistancePreference.map{String($0)}.joined(separator: ",")
-            
-            var arrayKidsPreference = [Int]()
-            if arrayOfUserPreference.count > 0 {
-                for i in arrayOfUserPreference {
-                    if i.typesOfPreference == preferenceTypeIds.kids {
-                        arrayKidsPreference.append(i.preferenceOptionId ?? 0)
-                    }
-                }
-            }
-            let commaSepKids = arrayKidsPreference.map{String($0)}.joined(separator: ",")
-            
-            var arraySmokePreference = [Int]()
-            if arrayOfUserPreference.count > 0 {
-                for i in arrayOfUserPreference {
-                    if i.typesOfPreference == preferenceTypeIds.smoking {
-                        arraySmokePreference.append(i.preferenceOptionId ?? 0)
-                    }
-                }
-            }
-            let commaSepSmoke = arraySmokePreference.map{String($0)}.joined(separator: ",")
-            
-            var arrayAgeStartPreference = [Int]()
-            if arrayOfUserPreference.count > 0 {
-                for i in arrayOfUserPreference {
-                    if i.subTypesOfPreference == preferenceTypeIds.age_start {
-                        arrayAgeStartPreference.append(i.preferenceOptionId ?? 0)
-                    }
-                }
-            }
-            let commaSepAgeStart = arrayAgeStartPreference.map{String($0)}.joined(separator: ",")
-            
-            var arrayAgeEndPreference = [Int]()
-            if arrayOfUserPreference.count > 0 {
-                for i in arrayOfUserPreference {
-                    if i.subTypesOfPreference == preferenceTypeIds.age_end {
-                        arrayAgeEndPreference.append(i.preferenceOptionId ?? 0)
-                    }
-                }
-            }
-            let commaSepAgeEnd = arrayAgeEndPreference.map{String($0)}.joined(separator: ",")
-                    
-            self.viewModel.setLookingForIds(value: commaSepLookingForIds)
-            self.viewModel.setKidsOptionId(value: commaSepKids)
-            self.viewModel.setSmokingOptionId(value: commaSepSmoke)
-            self.viewModel.setAgeStartPrefId(value: commaSepAgeStart)
-            self.viewModel.setAgeEndPrefId(value: commaSepAgeEnd)
-            self.viewModel.setDistancePrefId(value: commaSepDistance)
-            self.viewModel.setOffset(value: "0")
-            self.viewModel.callAllActivityListAPI()
         }
     }
     
@@ -269,27 +184,5 @@ extension ActivitiesVC {
     func bindUserDetailsData() {
         let userData = Constants.loggedInUser!
         
-        if userData.userInterestedCategory?.count ?? 0 > 0 {
-            if let interestedActivity = userData.userInterestedCategory {
-                self.favoriteActivity = interestedActivity
-            }
-        }
-
-        //MARK: Managed multiple same category object in one category object
-        var arrayOfActivityIds = [Int]()
-        if userData.userInterestedCategory?.count ?? 0 > 0 {
-            for interestedCategoryData in userData.userInterestedCategory ?? [] {
-                if let activityId = interestedCategoryData.activityId {
-                    arrayOfActivityIds.append(activityId)
-                }
-            }
-        }
-        for activityId in arrayOfActivityIds {
-            if let data = self.favoriteActivity.filter({$0.activityId == activityId}).first {
-                if !self.favoriteActivity.contains(where: {$0.activityId == activityId}) {
-                    self.favoriteCategoryActivity.append(data)
-                }
-            }
-        }
     }
 }

@@ -373,7 +373,7 @@ struct Constants_String {
             UserDefaults.standard.setCustom(newValue, forKey: UserDefaultKey().userData)
         }
     }
-    func saveUserInfoAndProceed(user: User){
+    func saveUser(user: User) {
         UserDefaults.standard.setCustom(user, forKey: UserDefaultKey().userData)
         UserDefaults.standard.set(user.guid, forKey: kUserGUID)
     }

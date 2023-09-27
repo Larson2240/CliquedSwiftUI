@@ -363,28 +363,6 @@ extension ChatVC {
     func bindUserDetailsData() {
         let userData = Constants.loggedInUser!
         
-        if userData.userInterestedCategory?.count ?? 0 > 0 {
-            if let interestedActivity = userData.userInterestedCategory {
-                self.favoriteActivity = interestedActivity
-            }
-        }
-        
-        //MARK: Managed multiple same category object in one category object
-        var arrayOfActivityIds = [Int]()
-        if userData.userInterestedCategory?.count ?? 0 > 0 {
-            for interestedCategoryData in userData.userInterestedCategory ?? [] {
-                if let activityId = interestedCategoryData.activityId {
-                    arrayOfActivityIds.append(activityId)
-                }
-            }
-        }
-        for activityId in arrayOfActivityIds {
-            if let data = favoriteActivity.filter({$0.activityId == activityId}).first {
-                if !favoriteActivity.contains(where: {$0.activityId == activityId}) {
-                    favoriteCategoryActivity.append(data)
-                }
-            }
-        }
     }
 }
 

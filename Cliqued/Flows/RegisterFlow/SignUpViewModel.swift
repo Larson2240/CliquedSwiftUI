@@ -19,15 +19,11 @@ final class SignUpViewModel: NSObject, ObservableObject {
     @Published private var socialLoginID = ""
     
     private let apiParams = ApiParams()
+    private let authWebService = AuthWebService()
+    private let userWebService = UserWebService()
     
     func callSignUpAPI() {
         guard signUpValid() else { return }
-        
-        let params: NSDictionary = [
-            apiParams.email: email,
-            apiParams.password: password,
-            apiParams.loginType: loginType
-        ]
         
         guard Connectivity.isConnectedToInternet() else {
             UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
@@ -36,39 +32,19 @@ final class SignUpViewModel: NSObject, ObservableObject {
         
         UIApplication.shared.showLoader()
         
-        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SignUp, parameters: params) { [weak self] response, error, message in
+        authWebService.register(email: email, password: password) { [weak self] result in
             guard let self = self else { return }
             
-            UIApplication.shared.hideLoader()
-            if error != nil && response == nil {
-                UIApplication.shared.showAlertPopup(message: message ?? "")
-            } else {
-                let json = response as? NSDictionary
-                let status = json?[API_STATUS] as? Int
-                let message = json?[API_MESSAGE] as? String
-                let userToken = json?["user_token"] as? String
-                
-                if status == SUCCESS {
-                    if let userArray = json?["user"] as? NSArray {
-                        if userArray.count > 0 {
-                            let dicUser = userArray[0] as! NSDictionary
-                            let decoder = JSONDecoder()
-                            do {
-                                let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
-                                let objUser = try decoder.decode(User.self, from: jsonData)
-                                self.saveUser(user: objUser)
-                                UserDefaults.standard.set(userToken, forKey: kUserToken)
-                                self.proceed()
-                            } catch {
-                                print(error.localizedDescription)
-                            }
-                            self.proceed()
-                        } else {
-                            self.proceed()
-                        }
-                    }
+            switch result {
+            case .success(let token):
+                UserDefaults.standard.set(token, forKey: kUserToken)
+                UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+                self.proceed()
+            case .failure(let error):
+                if let error = error as? ApiError, let errorDesc = error.errorDescription {
+                    UIApplication.shared.showAlertPopup(message: errorDesc)
                 } else {
-                    UIApplication.shared.showAlertPopup(message: message ?? "")
+                    UIApplication.shared.showAlertPopup(message: error.localizedDescription)
                 }
             }
         }
@@ -77,12 +53,6 @@ final class SignUpViewModel: NSObject, ObservableObject {
     func callSignInAPI() {
         guard signInValid() else { return }
         
-        let params: NSDictionary = [
-            apiParams.email: email,
-            apiParams.password: password,
-            apiParams.loginType: loginType
-        ]
-        
         guard Connectivity.isConnectedToInternet() else {
             UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
             return
@@ -90,46 +60,19 @@ final class SignUpViewModel: NSObject, ObservableObject {
         
         UIApplication.shared.showLoader()
         
-        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.Login, parameters: params) { [weak self] response, error, message in
+        authWebService.login(email: email, password: password) { [weak self] result in
             guard let self = self else { return }
             
-            UIApplication.shared.hideLoader()
-            
-            if error != nil && response == nil {
-                UIApplication.shared.showAlertPopup(message: message ?? "")
-            } else {
-                let json = response as? NSDictionary
-                let status = json?[API_STATUS] as? Int
-                let message = json?[API_MESSAGE] as? String
-                let userToken = json?["user_token"] as? String
-                let appToken = json?["app_token"] as? String
-                
-                if status == SUCCESS {
-                    if let userArray = json?["user"] as? NSArray {
-                        if userArray.count > 0 {
-                            let dicUser = userArray[0] as! NSDictionary
-                            let decoder = JSONDecoder()
-                            do {
-                                let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
-                                let objUser = try decoder.decode(User.self, from: jsonData)
-                                self.saveUser(user: objUser)
-                                UserDefaults.standard.set(userToken, forKey: kUserToken)
-                                UserDefaults.standard.set(appToken, forKey: kAppToken)
-                                UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
-                                
-                                self.proceed()
-                            } catch {
-                                print(error.localizedDescription)
-                            }
-                            self.proceed()
-                        } else {
-                            self.proceed()
-                        }
-                    }
-                } else if status == PASSWORD_WRONG {
-                    UIApplication.shared.showAlertPopup(message: message ?? "")
+            switch result {
+            case .success(let token):
+                UserDefaults.standard.set(token, forKey: kUserToken)
+                UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+                self.proceed()
+            case .failure(let error):
+                if let error = error as? ApiError, let errorDesc = error.errorDescription {
+                    UIApplication.shared.showAlertPopup(message: errorDesc)
                 } else {
-                    UIApplication.shared.showAlertPopup(message: message ?? "")
+                    UIApplication.shared.showAlertPopup(message: error.localizedDescription)
                 }
             }
         }
@@ -137,12 +80,6 @@ final class SignUpViewModel: NSObject, ObservableObject {
     
     //MARK: Social Login API
     func callSocialLoginAPI() {
-        let params: NSDictionary = [
-            apiParams.email: email,
-            apiParams.social_id: socialLoginID,
-            apiParams.loginType: loginType
-        ]
-        
         guard Connectivity.isConnectedToInternet() else {
             UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
             return
@@ -150,51 +87,22 @@ final class SignUpViewModel: NSObject, ObservableObject {
         
         UIApplication.shared.showLoader()
         
-        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.SocialLogin, parameters: params) { [weak self] response, error, message in
+        authWebService.social(socialID: socialLoginID, loginType: Int(loginType) ?? 0) { [weak self] result in
             guard let self = self else { return }
             
-            UIApplication.shared.hideLoader()
-            
-            if error != nil && response == nil {
-                UIApplication.shared.showAlertPopup(message: message ?? "")
-            } else {
-                let json = response as? NSDictionary
-                let status = json?[API_STATUS] as? Int
-                let message = json?[API_MESSAGE] as? String
-                let userToken = json?["user_token"] as? String
-                let appToken = json?["app_token"] as? String
-                
-                if status == SUCCESS {
-                    if let userArray = json?["user"] as? NSArray {
-                        if userArray.count > 0 {
-                            let dicUser = userArray[0] as! NSDictionary
-                            let decoder = JSONDecoder()
-                            do {
-                                let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
-                                let objUser = try decoder.decode(User.self, from: jsonData)
-                                self.saveUser(user: objUser)
-                                UserDefaults.standard.set(userToken, forKey: kUserToken)
-                                UserDefaults.standard.set(appToken, forKey: kAppToken)
-                                UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
-                                
-                                self.proceed()
-                            } catch {
-                                print(error.localizedDescription)
-                            }
-                            self.proceed()
-                        } else {
-                            self.proceed()
-                        }
-                    }
+            switch result {
+            case .success(let token):
+                UserDefaults.standard.set(token, forKey: kUserToken)
+                UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+                self.proceed()
+            case .failure(let error):
+                if let error = error as? ApiError, let errorDesc = error.errorDescription {
+                    UIApplication.shared.showAlertPopup(message: errorDesc)
                 } else {
-                    UIApplication.shared.showAlertPopup(message: message ?? "")
+                    UIApplication.shared.showAlertPopup(message: error.localizedDescription)
                 }
             }
         }
-    }
-    
-    private func saveUser(user: User){
-        Constants.saveUserInfoAndProceed(user: user)
     }
     
     private func saveCredentialInKeychain(userIdentifier: String, fullName: String, email: String) {
@@ -208,19 +116,23 @@ final class SignUpViewModel: NSObject, ObservableObject {
     }
     
     private func proceed() {
-        if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
-            APP_DELEGATE.socketIOHandler = SocketIOHandler()
+        userWebService.getUser { result in
+            UIApplication.shared.hideLoader()
             
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())
-        } else {
-            if Constants.loggedInUser?.isVerified == "1" {
-                let welcomevc = UIHostingController(rootView: WelcomeView())
-                APP_DELEGATE.window?.rootViewController = welcomevc
-            } else {
-                UIApplication.shared.showAlerBox("", Constants.label_emailSentMessage) { _ in
+            switch result {
+            case .success(let user):
+                Constants.saveUser(user: user)
+                
+                if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
+                    APP_DELEGATE.socketIOHandler = SocketIOHandler()
+                    
+                    APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())
+                } else {
                     let welcomevc = UIHostingController(rootView: WelcomeView())
                     APP_DELEGATE.window?.rootViewController = welcomevc
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
@@ -271,7 +183,7 @@ extension SignUpViewModel {
 // MARK: - Social sign in
 extension SignUpViewModel {
     func googleSignIn() {
-        guard let rootVC = UIApplication.shared.windows.first?.rootViewController else { return }
+        guard let rootVC = UIApplication.shared.keyWindow?.rootViewController else { return }
         
         let config = GIDConfiguration(clientID: Constants.googleSignInKey)
         

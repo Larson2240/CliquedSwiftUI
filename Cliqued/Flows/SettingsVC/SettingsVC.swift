@@ -31,8 +31,8 @@ class SettingsVC: UIViewController {
     //MARK: viewWillAppear Method
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.setIsOnline(value: "\(Constants.loggedInUser?.isOnline ?? "1")")
-        viewModel.setIsLastSeen(value: "\(Constants.loggedInUser?.isUserLastSeenEnable ?? "1")")
+        viewModel.setIsOnline(value: "\(Constants.loggedInUser?.isOnline ?? false)")
+        viewModel.setIsLastSeen(value: "\(Constants.loggedInUser?.isUserLastSeenEnable ?? false)")
     }
     
     override func viewDidLayoutSubviews() {

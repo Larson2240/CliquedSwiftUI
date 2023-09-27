@@ -453,7 +453,7 @@ extension AppDelegate : PKPushRegistryDelegate {
                                 do {
                                     let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
                                     let objUser = try decoder.decode(User.self, from: jsonData)
-                                    Constants.saveUserInfoAndProceed(user: objUser)
+                                    Constants.saveUser(user: objUser)
                                 } catch {
                                     print(error.localizedDescription)
                                 }

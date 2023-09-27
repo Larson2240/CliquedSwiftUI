@@ -90,51 +90,7 @@ extension EmailNotificationDataSource : UITableViewDelegate, UITableViewDataSour
         
         let obj = viewModel.arrNotification[0].subTypes![indexPath.row]
         
-        if let array = Constants.loggedInUser?.userPreferences,array.count > 0 {
-            if let sub_array = obj.typeOptions, sub_array.count > 0 {
-                let arrValues = array.filter({$0.typesOfOptions == preferenceOptionIds.no && $0.preferenceId == obj.id})
-                
-                if arrValues.count > 0 {
-                    cell.switchButton.isOn = false
-                } else {
-                    
-                    if viewController.is_from_push == 1 {
-                        let arrInitialPush = array.filter({$0.typesOfPreference == preferenceTypeIds.notification_enable})
-                        
-                        if arrInitialPush.count > 0 {
-                            let arrInitialPushOption = array.filter({$0.typesOfOptions == preferenceOptionIds.yes})
-                            
-                            if arrInitialPushOption.count > 0 {
-                                cell.switchButton.isOn = true
-                            } else {
-                                cell.switchButton.isOn = false
-                            }
-                        } else {
-                            cell.switchButton.isOn = false
-                        }
-                    } else {
-                        cell.switchButton.isOn = true
-                    }
-                }
-            } else {
-                
-                let arrInitialPush = array.filter({$0.typesOfPreference == preferenceTypeIds.notification_enable})
-                
-                if arrInitialPush.count > 0 {
-                    let arrInitialPushOption = arrInitialPush.filter({$0.typesOfOptions == preferenceOptionIds.yes})
-                    
-                    if arrInitialPushOption.count > 0 {
-                        cell.switchButton.isOn = true
-                    } else {
-                        cell.switchButton.isOn = false
-                    }
-                } else {
-                    cell.switchButton.isOn = false
-                }
-            }
-        } else {
-            cell.switchButton.isOn = true
-        }
+        
         
         cell.labelSettingsRowTitle.text = obj.title
         

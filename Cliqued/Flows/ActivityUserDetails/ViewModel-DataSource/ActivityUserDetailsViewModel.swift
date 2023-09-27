@@ -82,64 +82,7 @@ class ActivityUserDetailsViewModel {
         
         self.setLookingFor(value: "\(userData.lookingForTitle ?? "")")
         
-        if userData.distanceInkm != nil {
-            let distance = userData.distanceInkm!.clean
-            self.setDistance(value: "\(distance)")
-        } else {
-            let distance = String(format: "%.2f", userData.distanceInkm ?? 0.0)
-            self.setDistance(value: "\(distance)")
-        }
-        
-//        let distance = String(format: "%.2f", userData.distanceInkm ?? 0.0)
-        
-        self.setAboutMe(value: userData.aboutme ?? "")
-        self.setHeight(value: userData.height ?? "")
-        
-        if userData.userPreferences?.count ?? 0 > 0 {
-            var arrayOfPreference = [UserPreferences]()
-            arrayOfPreference = userData.userPreferences ?? []
-        
-            if let objOfSmoking = arrayOfPreference.filter({$0.typesOfPreference == preferenceTypeIds.smoking}).first {
-                setSmoking(value: objOfSmoking.preferenceOptionTitle ?? "")
-            }
-            
-            if let objOfKid = arrayOfPreference.filter({$0.typesOfPreference == preferenceTypeIds.kids}).first {
-                setKids(value: objOfKid.preferenceOptionTitle ?? "")
-            }
-        }
-        
-        if userData.userInterestedCategory?.count ?? 0 > 0 {
-            if let favoriteActivity = userData.userInterestedCategory {
-                self.setFavoriteActivity(value: favoriteActivity)
-            }
-        }
-        if userData.userProfileImages?.count ?? 0 > 0 {
-            if let profileImages = userData.userProfileImages {
-                self.setUserProfileCollection(value: profileImages)
-            }
-        }
-        if userData.userAddress?.count ?? 0 > 0 {
-            if let userAddress = userData.userAddress {
-                self.setLocation(value: userAddress)
-            }
-        }
-        
-        //MARK: Managed multiple same category object in one category object
-        var arrayOfActivityIds = [Int]()
-        if userData.userInterestedCategory?.count ?? 0 > 0 {
-            for interestedCategoryData in userData.userInterestedCategory ?? [] {
-                if let activityId = interestedCategoryData.activityId {
-                    arrayOfActivityIds.append(activityId)
-                }
-            }
-        }
-        for activityId in arrayOfActivityIds {
-            if let data = self.getFavoriteActivity().filter({$0.activityId == activityId}).first {
-                if !self.getFavoriteCategoryActivity().contains(where: {$0.activityId == activityId}) {
-                    self.setFavoriteCategoryActivity(value: data)
-                }
-            }
-        }
+       
     }
     
     //MARK: Call SignIn API

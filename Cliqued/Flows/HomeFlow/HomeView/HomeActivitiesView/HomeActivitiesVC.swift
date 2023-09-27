@@ -117,85 +117,7 @@ extension HomeActivitiesVC {
     
     //MARK: Setup API Data & Call API
     func callGetUserActivityAPI() {
-        var arrayOfSubCat = [SubCategory]()
-        if objOfHomeCategory?.subCategory?.count ?? 0 > 0 {
-            arrayOfSubCat = (objOfHomeCategory?.subCategory)!
-            for i in arrayOfSubCat {
-                self.arrayOfSubActivityIds.append(i.id ?? 0)
-            }
-        }
-        let commaSepSubActivityIds = arrayOfSubActivityIds.map{String($0)}.joined(separator: ",")
         
-        var arrayOfUserPreference = [UserPreferences]()
-        arrayOfUserPreference = (Constants.loggedInUser?.userPreferences)!
-        if arrayOfUserPreference.count > 0 {
-            for i in arrayOfUserPreference {
-                if i.typesOfPreference == preferenceTypeIds.looking_for {
-                    self.arrayOfLookingForIds.append(i.id ?? 0)
-                }
-            }
-        }
-        let commaSepLookingForIds = arrayOfLookingForIds.map{String($0)}.joined(separator: ",")
-        
-        var arrayDistancePreference = [Int]()
-        if arrayOfUserPreference.count > 0 {
-            for i in arrayOfUserPreference {
-                if i.typesOfPreference == preferenceTypeIds.distance {
-                    arrayDistancePreference.append(i.preferenceOptionId ?? 0)
-                }
-            }
-        }
-        let commaSepDistance = arrayDistancePreference.map{String($0)}.joined(separator: ",")
-        
-        var arrayKidsPreference = [Int]()
-        if arrayOfUserPreference.count > 0 {
-            for i in arrayOfUserPreference {
-                if i.typesOfPreference == preferenceTypeIds.kids {
-                    arrayKidsPreference.append(i.preferenceOptionId ?? 0)
-                }
-            }
-        }
-        let commaSepKids = arrayKidsPreference.map{String($0)}.joined(separator: ",")
-        
-        var arraySmokePreference = [Int]()
-        if arrayOfUserPreference.count > 0 {
-            for i in arrayOfUserPreference {
-                if i.typesOfPreference == preferenceTypeIds.smoking {
-                    arraySmokePreference.append(i.preferenceOptionId ?? 0)
-                }
-            }
-        }
-        let commaSepSmoke = arraySmokePreference.map{String($0)}.joined(separator: ",")
-        
-        var arrayAgeStartPreference = [Int]()
-        if arrayOfUserPreference.count > 0 {
-            for i in arrayOfUserPreference {
-                if i.subTypesOfPreference == preferenceTypeIds.age_start {
-                    arrayAgeStartPreference.append(i.preferenceOptionId ?? 0)
-                }
-            }
-        }
-        let commaSepAgeStart = arrayAgeStartPreference.map{String($0)}.joined(separator: ",")
-        
-        var arrayAgeEndPreference = [Int]()
-        if arrayOfUserPreference.count > 0 {
-            for i in arrayOfUserPreference {
-                if i.subTypesOfPreference == preferenceTypeIds.age_end {
-                    arrayAgeEndPreference.append(i.preferenceOptionId ?? 0)
-                }
-            }
-        }
-        let commaSepAgeEnd = arrayAgeEndPreference.map{String($0)}.joined(separator: ",")
-        
-        viewModel.setActivityId(value: objOfHomeCategory?.id?.description ?? "")
-        viewModel.setActivitySubCatIds(value: commaSepSubActivityIds)
-        viewModel.setLookingForIds(value: commaSepLookingForIds)
-        viewModel.setKidsOptionId(value: commaSepKids)
-        viewModel.setSmokingOptionId(value: commaSepSmoke)
-        viewModel.setAgeStartPrefId(value: commaSepAgeStart)
-        viewModel.setAgeEndPrefId(value: commaSepAgeEnd)
-        viewModel.setDistancePrefId(value: commaSepDistance)
-        viewModel.callGetUserActivityAPI()
     }
     
     //MARK: Handle API response
@@ -313,7 +235,7 @@ extension HomeActivitiesVC: KolodaViewDataSource {
             let activityData = viewModel.getDuplicateUserActivityData(at: index)
             card.labelUserNameAndAge.text = "\(activityData.name ?? ""), \(activityData.age ?? 0)"
             
-            let distance = activityData.distanceInkm!.clean
+            let distance = activityData.distance
             card.labelLocationDistance.text = "\(distance) \(Constants.label_kmAway)"
             
             if let arr = activityData.userProfileImages, arr.count > 0 {

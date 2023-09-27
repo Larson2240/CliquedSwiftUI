@@ -70,68 +70,10 @@ final class ProfileViewModel: ObservableObject {
     func viewAppeared() {
         guard let userData = Constants.loggedInUser else { return }
         
-        userDetails.name = userData.name ?? ""
-        userDetails.age = "\(userData.age ?? 0)"
-        
-        let distanceInKm = String(format: "%.2f", userData.distanceInkm ?? 0)
-        userDetails.locationDistance = "\(distanceInKm)"
-        
-        userDetails.aboutMe = userData.aboutme ?? ""
-        userDetails.height = userData.height ?? ""
-        
-        userDetails.lookingForIds = userData.lookingForTitle ?? ""
-        userDetails.smoking = userData.smokingSelectionId ?? ""
-        userDetails.kids = userData.kidsSelectionId ?? ""
-        userDetails.distancePreference = userData.distanceOptionId ?? ""
-        userDetails.distancePreference.append("km")
-        
-        userDetails.startAge = userData.ageStartId ?? ""
-        userDetails.endAge = userData.ageEndId ?? ""
-        
-        if userData.userInterestedCategory?.count ?? 0 > 0 {
-            if let favoriteActivity = userData.userInterestedCategory {
-                userDetails.favoriteActivity = favoriteActivity
-            }
-        }
-        
-        if userData.userProfileImages?.count ?? 0 > 0 {
-            if let profileImages = userData.userProfileImages {
-                userDetails.profileCollection = profileImages
-            }
-        }
-        
-        if userData.userPreferences?.count ?? 0 > 0 {
-            if let userPreferences = userData.userPreferences {
-                userDetails.userPreferenceArray = userPreferences
-            }
-        }
-        
-        if userData.userAddress?.count ?? 0 > 0 {
-            if let userAddress = userData.userAddress {
-                userDetails.location = userAddress
-            }
-        }
-        
-        //MARK: Managed multiple same category object in one category object
-        var arrayOfActivityIds = [Int]()
-        
-        if userData.userInterestedCategory?.count ?? 0 > 0 {
-            for interestedCategoryData in userData.userInterestedCategory ?? [] {
-                if let activityId = interestedCategoryData.activityId {
-                    arrayOfActivityIds.append(activityId)
-                }
-            }
-        }
         
         userDetails.favoriteCategoryActivity.removeAll()
         
-        for activityId in arrayOfActivityIds {
-            if userDetails.favoriteCategoryActivity.contains(where: { $0.activityId == activityId }) == false {
-                if let data = userDetails.favoriteActivity.filter({$0.activityId == activityId}).first {
-                    userDetails.favoriteCategoryActivity.append(data)
-                }
-            }
-        }
+        
         
         arrayOfPreference = Constants.getPreferenceData?.filter({ $0.typesOfPreference == preferenceTypeIds.age }) ?? []
         
@@ -218,7 +160,7 @@ final class ProfileViewModel: ObservableObject {
     }
     
     func imageTapped(_ object: UserProfileImages) {
-        guard let rootVC = UIApplication.shared.windows.first?.rootViewController else { return }
+        guard let rootVC = UIApplication.shared.keyWindow?.rootViewController else { return }
         
         if object.mediaType == mediaType.image {
             var images = [SKPhotoProtocol]()
@@ -388,7 +330,7 @@ extension ProfileViewModel {
                             do {
                                 let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
                                 let objUser = try decoder.decode(User.self, from: jsonData)
-                                Constants.saveUserInfoAndProceed(user: objUser)
+                                Constants.saveUser(user: objUser)
                                 self.successAction?()
                             } catch {
                                 print(error.localizedDescription)

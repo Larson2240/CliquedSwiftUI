@@ -28,7 +28,7 @@ class UpdateEmailViewModel {
     
     //MARK: Save user data in UserDefault
     func saveUserInfoAndProceed(user: User){
-        Constants.saveUserInfoAndProceed(user: user)
+        Constants.saveUser(user: user)
     }
     
     //MARK: Check Validation

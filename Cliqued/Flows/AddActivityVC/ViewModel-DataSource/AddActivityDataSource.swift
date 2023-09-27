@@ -141,44 +141,7 @@ class AddActivityDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     
     @objc func buttonDropDownAction(_ sender: UIButton) {
         setupDropDownUI()
-        if let arrCategory = Constants.loggedInUser?.userInterestedCategory {
-            var arrCategoryTitle = arrCategory.map({$0.activityCategoryTitle!})
-            arrCategoryTitle = arrCategoryTitle.removeDuplicates()
-            
-            var arrActivityId = arrCategory.map({$0.activityId})
-            arrActivityId = arrActivityId.removeDuplicates()
-            
-            let settingView = DropDown()
-            settingView.dataSource = arrCategoryTitle
-            settingView.width = sender.width
-            settingView.anchorView = sender
-            settingView.direction = .bottom
-            settingView.bottomOffset = CGPoint(x: 0, y:(settingView.anchorView?.plainView.bounds.height)!)
-            settingView.selectionAction = { [unowned self] (index: Int, item: String) in
-                
-                print(item)
-                
-                self.viewModel.removeActivityAllSubCategory()
-                self.viewModel.setActivityCategoryTitle(value: item)
-                
-                let arrSubCategory = arrCategory.filter({$0.activityId == arrActivityId[index]})
-                
-                for i in 0..<arrSubCategory.count {
-                    let obj = arrSubCategory[i]
-                    
-                    var dict = activitySubCategoryStruct()
-                    dict.activity_category_id = "\(arrActivityId[index] ?? 0)"
-                    dict.activity_sub_category_id = "\(obj.subActivityId ?? 0)"
-                    
-                    self.viewModel.setActivitySubCategory(value: dict)
-                }
-                
-                self.tableView.reloadRows(at: [IndexPath(row:enumAddActivityTableRow.category.rawValue, section:0)], with: .none)
-                
-                settingView.hide()
-            }
-            settingView.show()
-        }
+        
     }
     
     //MARK: Dropdown Popup UI

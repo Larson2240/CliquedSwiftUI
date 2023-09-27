@@ -122,7 +122,7 @@ final class OnboardingViewModel: ObservableObject {
     
     //MARK: Save user data in UserDefault
     func saveUserInfoAndProceed(user: User) {
-        Constants.saveUserInfoAndProceed(user: user)
+        Constants.saveUser(user: user)
     }
 }
 

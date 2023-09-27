@@ -11,6 +11,7 @@ import Moya
 enum AuthProvider {
     case login(email: String, password: String)
     case register(email: String, password: String)
+    case social(socialID: String, loginType: Int)
     case logout
     case verifyOTPForRegister(token: String)
 }
@@ -26,6 +27,8 @@ extension AuthProvider: TargetType {
             return "/login"
         case .register:
             return "/register"
+        case .social:
+            return "/social"
         case .logout:
             return "/logout"
         case .verifyOTPForRegister(let token):
@@ -35,7 +38,7 @@ extension AuthProvider: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .login, .register, .logout:
+        case .login, .register, .social, .logout:
             return .post
         case .verifyOTPForRegister:
             return .get
@@ -53,6 +56,14 @@ extension AuthProvider: TargetType {
             return .requestParameters(parameters: ["email": email,
                                                    "password": password,
                                                    "repeatPassword": password],
+                                      encoding: JSONEncoding.default)
+        case .social(let socialID, let loginType):
+            let deviceToken = UserDefaults.standard.string(forKey: kDeviceToken)
+            
+            return .requestParameters(parameters: ["social_id": socialID,
+                                                   "login_type": loginType,
+                                                   "device_type": 1,
+                                                   "device_token": deviceToken ?? ""],
                                       encoding: JSONEncoding.default)
         case .logout:
             return .requestPlain

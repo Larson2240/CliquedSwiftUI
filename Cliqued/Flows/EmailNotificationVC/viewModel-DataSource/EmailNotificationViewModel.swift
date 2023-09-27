@@ -26,7 +26,7 @@ class EmailNotificationViewModel {
     
     //MARK: Save user data in UserDefault
     func saveUserInfoAndProceed(user: User){
-        Constants.saveUserInfoAndProceed(user: user)
+        Constants.saveUser(user: user)
     }
     
     //MARK: - API Call
