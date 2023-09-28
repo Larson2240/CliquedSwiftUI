@@ -166,7 +166,7 @@ final class HomeViewModel: ObservableObject {
     }
     
     func checkProfileCompletion() {
-        if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
+        if let user = Constants.loggedInUser, user.profileSetupCompleted() {
             profileCompleted = true
             checkPushNotificationEnabled()
         } else {
@@ -178,11 +178,11 @@ final class HomeViewModel: ObservableObject {
     func manageSetupProfileNavigationFlow() {
         let strCount: String?
         
-        if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
-            let profile_setup_count = Int((Constants.loggedInUser?.profileSetupType)!)!
+        if let user = Constants.loggedInUser, user.profileSetupCompleted() {
+            let profile_setup_count = (Constants.loggedInUser?.profileSetupType)!
             strCount = "\(profile_setup_count)"
         } else {
-            let profile_setup_count = Int((Constants.loggedInUser?.profileSetupType)!)! + 1
+            let profile_setup_count = (Constants.loggedInUser?.profileSetupType)! + 1
             strCount = "\(profile_setup_count)"
         }
         
@@ -197,7 +197,7 @@ final class HomeViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
             
         case profileSetupType.relationship:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false, arrayOfUserPreference: []))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
             
         case profileSetupType.category:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity, activitiesFlowPresented: .constant(false)))

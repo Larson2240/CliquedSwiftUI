@@ -12,6 +12,8 @@ enum UserProvider {
     case getUser
     case deleteUser
     case updateUser(user: User)
+    case matches
+    case potentialMatches
 }
 
 extension UserProvider: TargetType {
@@ -27,12 +29,16 @@ extension UserProvider: TargetType {
             return "/user/delete"
         case .updateUser:
             return "/user/update"
+        case .matches:
+            return "/user/matches"
+        case .potentialMatches:
+            return "/user/potential_matches"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getUser:
+        case .getUser, .matches, .potentialMatches:
             return .get
         case .deleteUser:
             return .delete
@@ -45,7 +51,7 @@ extension UserProvider: TargetType {
     
     var task: Task {
         switch self {
-        case .getUser, .deleteUser:
+        case .getUser, .deleteUser, .matches, .potentialMatches:
             return .requestPlain
         case .updateUser(let user):
             return .requestCustomJSONEncodable(user, encoder: JSONEncoder())

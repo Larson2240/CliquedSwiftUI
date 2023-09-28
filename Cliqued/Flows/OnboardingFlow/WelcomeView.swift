@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @StateObject private var viewModel = WelcomeViewModel(fromOnboarding: true)
+    @State private var nameViewPresented = false
     
     var body: some View {
-        content
-            .onAppear { viewModel.viewAppeared() }
+        NavigationView {
+            ZStack {
+                content
+                
+                presentables
+            }
             .background(background)
-            .navigationBarHidden(true)
+        }
+        .navigationBarHidden(true)
+        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
@@ -42,16 +48,8 @@ struct WelcomeView: View {
         }
     }
     
-    private var background: some View {
-        Image("background")
-            .resizable()
-            .scaledToFill()
-            .frame(width: screenSize.width, height: screenSize.height)
-            .ignoresSafeArea()
-    }
-    
     private var continueButton: some View {
-        Button(action: { viewModel.callGetUserDetailsAPI() }) {
+        Button(action: { nameViewPresented.toggle() }) {
             ZStack {
                 Color.theme
                 
@@ -63,6 +61,13 @@ struct WelcomeView: View {
         .frame(height: 60)
         .cornerRadius(30)
         .padding(30)
+    }
+    
+    private var presentables: some View {
+        NavigationLink(destination: NameView(),
+                       isActive: $nameViewPresented,
+                       label: EmptyView.init)
+        .isDetailLink(false)
     }
 }
 

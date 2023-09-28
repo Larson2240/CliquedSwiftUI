@@ -74,14 +74,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
-    //MARK: Setup rootViewController
     func setRootViewController() {
+        setLanguage()
+        
         if UserDefaults.standard.bool(forKey: UserDefaultKey().isLoggedIn) && UserDefaults.standard.bool(forKey: UserDefaultKey().isRemeberMe) {
-            setLanguage()
-            socketIOHandler = SocketIOHandler()
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())
+            if let user = Constants.loggedInUser, user.profileSetupCompleted() {
+                socketIOHandler = SocketIOHandler()
+                APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())
+            } else {
+                APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: WelcomeView())
+            }
         } else {
-            setLanguage()
             let registerOptionsView = UIHostingController(rootView: RegisterOptionsView())
             APP_DELEGATE.window?.rootViewController = registerOptionsView
         }

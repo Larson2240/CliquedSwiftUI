@@ -62,10 +62,6 @@ final class ProfileViewModel: ObservableObject {
     
     let distanceValues = ["5km", "10km", "50km", "100km", "200km"]
     
-    func checkProfileCompletion() {
-        profileCompleted = Constants.loggedInUser?.isProfileSetupCompleted == 1
-    }
-    
     //MARK: Bind data on screen from the user object.
     func viewAppeared() {
         guard let userData = Constants.loggedInUser else { return }
@@ -115,11 +111,11 @@ final class ProfileViewModel: ObservableObject {
     
     func manageSetupProfileNavigationFlow() {
         let strCount: String?
-        if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
-            let profile_setup_count = Int((Constants.loggedInUser?.profileSetupType)!)!
+        if let user = Constants.loggedInUser, user.profileSetupCompleted() {
+            let profile_setup_count = (Constants.loggedInUser?.profileSetupType)!
             strCount = "\(profile_setup_count)"
         } else {
-            let profile_setup_count = Int((Constants.loggedInUser?.profileSetupType)!)! + 1
+            let profile_setup_count = (Constants.loggedInUser?.profileSetupType)! + 1
             strCount = "\(profile_setup_count)"
         }
         
@@ -134,7 +130,7 @@ final class ProfileViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: GenderView())
             
         case profileSetupType.relationship:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false, arrayOfUserPreference: []))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
             
         case profileSetupType.category:
             let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: userDetails.favoriteActivity, activitiesFlowPresented: .constant(false))

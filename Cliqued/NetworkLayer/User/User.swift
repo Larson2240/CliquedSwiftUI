@@ -15,13 +15,12 @@ struct User: Codable {
     var gender: Int?
     var name: String?
     var age: Int?
-    var distance: Int?
+    var preferenceDistance: Int?
     var preferenceRomance: Int?
     var preferenceFriendship: Int?
-    var address: Address?
+    var userAddress: Address?
     var modifiedDate: String?
-    var profileSetupType: String?
-    var isProfileSetupCompleted: Int?
+    var profileSetupType: Int?
     var connectedAccount: [ConnectedAccount]?
     var isTestdata: String?
     var birthdate: String?
@@ -33,18 +32,18 @@ struct User: Codable {
     var createdDate: String?
     var id: Int?
     var guid: String?
-    var userProfileImages: [UserProfileImages]?
+    var userProfileMedia: [UserProfileImages]?
     var likesCounter: Int?
     var height: Int?
     var isBlocked: String?
     var userMergeIds: String?
     var isUserLastSeenEnable: Bool?
 
-    var kids: Bool?
-    var smoking: Bool?
+    var preferenceKids: Bool?
+    var preferenceSmoking: Bool?
     var notifications: Int?
-    var ageFrom: Int?
-    var ageTo: Int?
+    var preferenceAgeFrom: Int?
+    var preferenceAgeTo: Int?
     
     var aboutMe: String?
     var chatStatus: Bool?
@@ -53,6 +52,10 @@ struct User: Codable {
     var activityUserViewCount: Int?
     var isPremiumUser: String?
     var lookingForTitle: String?
+    
+    func profileSetupCompleted() -> Bool {
+        return profileSetupType == 1
+    }
 }
 
 struct Address: Codable {

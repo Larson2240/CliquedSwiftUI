@@ -390,7 +390,6 @@ struct ProfileView: View {
     }
     
     private func onAppearConfig() {
-        viewModel.checkProfileCompletion()
         viewModel.viewAppeared()
         
         slider = CustomSlider(minBound: 45,

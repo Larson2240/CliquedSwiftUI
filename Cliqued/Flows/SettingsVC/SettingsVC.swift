@@ -64,7 +64,7 @@ extension SettingsVC {
         tableview.dataSource = dataSource
         
         viewModel.setUserId(value: "\(user_id)")
-        viewModel.setProfileSetupType(value: "\(Constants.loggedInUser?.profileSetupType ?? "10")")
+        viewModel.setProfileSetupType(value: "\(Constants.loggedInUser?.profileSetupType ?? 10)")
         
         
         if let strLanguage = UserDefaults.standard.string(forKey: USER_DEFAULT_KEYS.kUserLanguage) {

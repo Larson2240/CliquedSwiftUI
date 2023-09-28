@@ -123,10 +123,87 @@
             filePath = "Cliqued/Flows/RegisterFlow/SignUpViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
             landmarkName = "proceed()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EAFCCF15-0F96-4CB4-B465-DEDF146E5EC9 - 56ff74380841984a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;cliqued.ApiUser, Swift.Error&gt;) -&gt; () in cliqued.SignUpViewModel.proceed() -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/RegisterFlow/SignUpViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "127"
+                  endingLineNumber = "127"
+                  offsetFromSymbolStart = "144">
+               </Location>
+               <Location
+                  uuid = "EAFCCF15-0F96-4CB4-B465-DEDF146E5EC9 - 504ca66074a13a00"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; () in cliqued.SignUpViewModel.proceed() -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/RegisterFlow/SignUpViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "126"
+                  endingLineNumber = "126"
+                  offsetFromSymbolStart = "300">
+               </Location>
+               <Location
+                  uuid = "EAFCCF15-0F96-4CB4-B465-DEDF146E5EC9 - 504ca66074a13a00"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; () in cliqued.SignUpViewModel.proceed() -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/RegisterFlow/SignUpViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "126"
+                  endingLineNumber = "126"
+                  offsetFromSymbolStart = "396">
+               </Location>
+               <Location
+                  uuid = "EAFCCF15-0F96-4CB4-B465-DEDF146E5EC9 - 504ca66074a13de3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; () in cliqued.SignUpViewModel.proceed() -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/RegisterFlow/SignUpViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "588">
+               </Location>
+               <Location
+                  uuid = "EAFCCF15-0F96-4CB4-B465-DEDF146E5EC9 - 504ca66074a13de3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; () in cliqued.SignUpViewModel.proceed() -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/RegisterFlow/SignUpViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "684">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -159,22 +236,38 @@
             endingLineNumber = "55"
             landmarkName = "updateUser(user:completion:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "2B56E60C-659F-4B28-A816-5918E33F8E85"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cliqued/NetworkLayer/User/UserWebService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
-            landmarkName = "getUser(completion:)"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BBC17B84-7EBF-4672-92C8-664108A64898 - 1c36432dc9165e7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.ApiUser, completion: (Swift.Result&lt;cliqued.ApiUser, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "232">
+               </Location>
+               <Location
+                  uuid = "BBC17B84-7EBF-4672-92C8-664108A64898 - 276d41e4fd8ec8f3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "236">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

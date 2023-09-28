@@ -116,14 +116,17 @@ final class SignUpViewModel: NSObject, ObservableObject {
     }
     
     private func proceed() {
-        userWebService.getUser { result in
+        userWebService.getUser { [weak self] result in
+            guard let self = self else { return }
+            
             UIApplication.shared.hideLoader()
             
             switch result {
             case .success(let user):
                 Constants.saveUser(user: user)
+                UserDefaults.standard.set(self.rememberMeSelected, forKey: UserDefaultKey().isRemeberMe)
                 
-                if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
+                if let user = Constants.loggedInUser, user.profileSetupCompleted() {
                     APP_DELEGATE.socketIOHandler = SocketIOHandler()
                     
                     APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())

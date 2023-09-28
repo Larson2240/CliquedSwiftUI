@@ -8,23 +8,17 @@
 import SwiftUI
 
 struct GenderView: View {
-    @StateObject private var viewModel = OnboardingViewModel.shared
-    
-    @State private var gender = ""
+    @State private var gender: Int? = nil
     @State private var relationshipViewPresented = false
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                content
-                
-                presentables
-            }
-            .background(background)
-            .onAppear { onAppearConfig() }
+        ZStack {
+            content
+            
+            presentables
         }
+        .background(background)
         .navigationBarHidden(true)
-        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
@@ -70,17 +64,17 @@ struct GenderView: View {
     
     private var genderStack: some View {
         HStack(spacing: 16) {
-            genderOption(icon: "ic_female_black", title: Constants.btn_female)
+            genderOption(icon: "ic_female_black", title: Constants.btn_female, gender: 2)
             
-            genderOption(icon: "ic_male_black", title: Constants.btn_male)
+            genderOption(icon: "ic_male_black", title: Constants.btn_male, gender: 1)
         }
         .padding(.horizontal)
     }
     
-    private func genderOption(icon: String, title: String) -> some View {
-        Button(action: { gender = title }) {
+    private func genderOption(icon: String, title: String, gender: Int) -> some View {
+        Button(action: { self.gender = gender }) {
             ZStack {
-                if gender == title {
+                if self.gender == gender {
                     Color.colorGreenSelected
                 } else {
                     Color.colorLightGrey
@@ -89,11 +83,11 @@ struct GenderView: View {
                 HStack {
                     Image(icon)
                         .renderingMode(.template)
-                        .foregroundColor(gender == title ? .white : .colorDarkGrey)
+                        .foregroundColor(self.gender == gender ? .white : .colorDarkGrey)
                     
                     Text(title)
                         .font(.themeMedium(18))
-                        .foregroundColor(gender == title ? .white : .colorDarkGrey)
+                        .foregroundColor(self.gender == gender ? .white : .colorDarkGrey)
                 }
             }
         }
@@ -117,26 +111,23 @@ struct GenderView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: RelationshipView(isFromEditProfile: false, arrayOfUserPreference: []),
+        NavigationLink(destination: RelationshipView(isFromEditProfile: false),
                        isActive: $relationshipViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)
     }
     
-    private func onAppearConfig() {
-        viewModel.nextAction = {
-            relationshipViewPresented.toggle()
-        }
-    }
-    
     private func continueAction() {
-        if !gender.isEmpty {
-            viewModel.gender = gender
-            viewModel.profileSetupType = ProfileSetupType().gender
-            viewModel.callSignUpProcessAPI()
-        } else {
+        guard let gender = gender else {
             UIApplication.shared.showAlertPopup(message: Constants.validMsg_gender)
+            return
         }
+        
+        guard var user = Constants.loggedInUser else { return }
+        
+        user.gender = gender
+        Constants.saveUser(user: user)
+        relationshipViewPresented.toggle()
     }
 }
 

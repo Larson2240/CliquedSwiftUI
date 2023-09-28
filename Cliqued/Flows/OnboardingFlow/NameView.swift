@@ -9,23 +9,19 @@ import SwiftUI
 
 struct NameView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @StateObject private var viewModel = OnboardingViewModel.shared
     
     @State private var name = ""
     @State private var ageViewPresented = false
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                content
-                
-                presentables
-            }
-            .background(background)
-            .onAppear { onAppearConfig() }
+        ZStack {
+            content
+            
+            presentables
         }
+        .background(background)
+        .onAppear { prefillNameForSocialLoginUser() }
         .navigationBarHidden(true)
-        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
@@ -110,33 +106,27 @@ struct NameView: View {
         .isDetailLink(false)
     }
     
-    private func onAppearConfig() {
-        viewModel.nextAction = {
-            ageViewPresented.toggle()
-        }
-        
-        prefilledNameForSocialLoginUser()
-    }
-    
-    private func prefilledNameForSocialLoginUser() {
+    private func prefillNameForSocialLoginUser() {
         let userName = UserDefaults.standard.string(forKey: UserDefaultKey().userName)
         name = userName ?? ""
     }
     
     private func continueAction() {
-        viewModel.profileSetupType = ProfileSetupType().name
-        
-        if name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        guard name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false else {
             UIApplication.shared.showAlertPopup(message: Constants.validMsg_name)
-        } else {
-            let isValidName = isOnlyCharacter(text: name)
-            if isValidName {
-                viewModel.name = name
-                viewModel.callSignUpProcessAPI()
-            } else {
-                UIApplication.shared.showAlertPopup(message: Constants.validMsg_validName)
-            }
+            return
         }
+        
+        guard isOnlyCharacter(text: name) else {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_validName)
+            return
+        }
+        
+        guard var user = Constants.loggedInUser else { return }
+        
+        user.name = name
+        Constants.saveUser(user: user)
+        ageViewPresented.toggle()
     }
 }
 

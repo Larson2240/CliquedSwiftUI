@@ -235,10 +235,10 @@ extension HomeActivitiesVC: KolodaViewDataSource {
             let activityData = viewModel.getDuplicateUserActivityData(at: index)
             card.labelUserNameAndAge.text = "\(activityData.name ?? ""), \(activityData.age ?? 0)"
             
-            let distance = activityData.distance
+            let distance = activityData.preferenceDistance
             card.labelLocationDistance.text = "\(distance) \(Constants.label_kmAway)"
             
-            if let arr = activityData.userProfileImages, arr.count > 0 {
+            if let arr = activityData.userProfileMedia, arr.count > 0 {
                 let isImageData = arr.filter({$0.mediaType == "0"})
                 let img = isImageData[0].url
                 let strUrl = UrlProfileImage + img!

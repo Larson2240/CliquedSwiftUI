@@ -146,7 +146,7 @@ extension SelectPicturesViewModel: TLPhotosPickerViewControllerDelegate {
                 if mediaSize ?? 0 > Float(MEDIA_SIZE) {
                     UIApplication.shared.showAlertPopup(message: Constants_Message.validation_media_upload)
                 } else {
-                    //                    if isFaceDetected(profileImage: i.fullResolutionImage ?? UIImage()) {
+//                                        if isFaceDetected(profileImage: i.fullResolutionImage ?? UIImage()) {
                     let selectedImage = UIImage.upOrientationImage(i.fullResolutionImage ?? UIImage())
                     arrayOfSelectedImages.append(ProfileMedia(image: selectedImage(), thumbnail: UIImage(), mediaType: 0, videoURL: nil, serverURL: nil, serverImageId: 0))
                     

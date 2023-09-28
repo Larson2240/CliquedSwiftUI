@@ -297,7 +297,7 @@ extension ChatVC {
     
     //MARK: Function manage if user profile not complete
     func isProfileCompleted() -> Bool {
-        if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
+        if let user = Constants.loggedInUser, user.profileSetupCompleted() {
             self.viewProfileNotComplete.isHidden = true
             self.viewCollection.isHidden = false
             self.viewMessagesSection.isHidden = false
@@ -316,11 +316,11 @@ extension ChatVC {
     //MARK: Setup profile navigation flow
     func manageSetupProfileNavigationFlow() {
         let strCount: String?
-        if Constants.loggedInUser?.isProfileSetupCompleted == 1 {
-            let profile_setup_count = Int((Constants.loggedInUser?.profileSetupType)!)!
+        if let user = Constants.loggedInUser, user.profileSetupCompleted() {
+            let profile_setup_count = (Constants.loggedInUser?.profileSetupType)!
             strCount = "\(profile_setup_count)"
         } else {
-            let profile_setup_count = Int((Constants.loggedInUser?.profileSetupType)!)! + 1
+            let profile_setup_count = (Constants.loggedInUser?.profileSetupType)! + 1
             strCount = "\(profile_setup_count)"
         }
         switch strCount {
@@ -334,7 +334,7 @@ extension ChatVC {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: GenderView())
             
         case profileSetupType.relationship:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false, arrayOfUserPreference: []))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
             
         case profileSetupType.category:
             let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: favoriteActivity, activitiesFlowPresented: .constant(false))

@@ -129,7 +129,6 @@
 		601F0ADC297E5C1B0027B472 /* SettingsRowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 601F0ADA297E5C1B0027B472 /* SettingsRowCell.xib */; };
 		601F0ADF297E870F0027B472 /* EmailAndPasswordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601F0ADD297E870F0027B472 /* EmailAndPasswordCell.swift */; };
 		601F0AE0297E870F0027B472 /* EmailAndPasswordCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 601F0ADE297E870F0027B472 /* EmailAndPasswordCell.xib */; };
-		6024BD432983A667003336E5 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6024BD422983A667003336E5 /* WelcomeViewModel.swift */; };
 		6025E4A0299221EA00080812 /* PickActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6025E49F299221EA00080812 /* PickActivityViewModel.swift */; };
 		6025E4A32992224500080812 /* NoDataFoundCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6025E4A12992224500080812 /* NoDataFoundCVCell.swift */; };
 		6025E4A42992224500080812 /* NoDataFoundCVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6025E4A22992224500080812 /* NoDataFoundCVCell.xib */; };
@@ -500,7 +499,6 @@
 		601F0ADA297E5C1B0027B472 /* SettingsRowCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsRowCell.xib; sourceTree = "<group>"; };
 		601F0ADD297E870F0027B472 /* EmailAndPasswordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAndPasswordCell.swift; sourceTree = "<group>"; };
 		601F0ADE297E870F0027B472 /* EmailAndPasswordCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmailAndPasswordCell.xib; sourceTree = "<group>"; };
-		6024BD422983A667003336E5 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		6024BD442983CC96003336E5 /* Cliqued.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Cliqued.entitlements; sourceTree = "<group>"; };
 		6025E49F299221EA00080812 /* PickActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickActivityViewModel.swift; sourceTree = "<group>"; };
 		6025E4A12992224500080812 /* NoDataFoundCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataFoundCVCell.swift; sourceTree = "<group>"; };
@@ -823,8 +821,8 @@
 		0A16E7182A1E4D4700B8CA3F /* OnboardingFlow */ = {
 			isa = PBXGroup;
 			children = (
-				0AF1D7602A25314300BBC440 /* Welcome */,
 				604075D8298797D500CEB67F /* OnboardingViewModel.swift */,
+				0A16E7192A1E518500B8CA3F /* WelcomeView.swift */,
 				0A16E71B2A1E856E00B8CA3F /* NameView.swift */,
 				0ACE846C2A1FD43E008B196C /* AgeView.swift */,
 				0ACE846E2A1FDEA9008B196C /* GenderView.swift */,
@@ -1004,15 +1002,6 @@
 				603ABC05296E7FCE00F582D0 /* ChatVC */,
 			);
 			path = ChatView;
-			sourceTree = "<group>";
-		};
-		0AF1D7602A25314300BBC440 /* Welcome */ = {
-			isa = PBXGroup;
-			children = (
-				0A16E7192A1E518500B8CA3F /* WelcomeView.swift */,
-				6024BD422983A667003336E5 /* WelcomeViewModel.swift */,
-			);
-			path = Welcome;
 			sourceTree = "<group>";
 		};
 		0AF1D7612A25315000BBC440 /* PickActivity */ = {
@@ -2682,7 +2671,6 @@
 				601F0AD2297E55320027B472 /* SettingsSectionCell.swift in Sources */,
 				600D445529793B57001DEBA1 /* FavoriteActivityCell.swift in Sources */,
 				601245B0297A709D00441F09 /* YourActivitiesCell.swift in Sources */,
-				6024BD432983A667003336E5 /* WelcomeViewModel.swift in Sources */,
 				648CBA3B2990FAE3003171E1 /* CDMessage+CoreDataProperties.swift in Sources */,
 				60C666B7297F9CC60038213E /* ActivityPictureCell.swift in Sources */,
 				648CB9E72990D915003171E1 /* ActivityDetails.swift in Sources */,

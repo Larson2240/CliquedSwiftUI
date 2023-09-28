@@ -531,8 +531,7 @@ struct EditProfileView: View {
                            label: EmptyView.init)
             .isDetailLink(false)
             
-            NavigationLink(destination: RelationshipView(isFromEditProfile: true,
-                                                         arrayOfUserPreference: viewModel.userDetails.userPreferenceArray),
+            NavigationLink(destination: RelationshipView(isFromEditProfile: true),
                            isActive: $romanceViewPresented,
                            label: EmptyView.init)
             .isDetailLink(false)

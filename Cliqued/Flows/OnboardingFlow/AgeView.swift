@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct AgeView: View {
-    @StateObject private var viewModel = OnboardingViewModel.shared
-    
     @State private var date = Date()
     @State private var genderViewPresented = false
     
@@ -17,17 +15,13 @@ struct AgeView: View {
     private let maxAge: Date = Calendar.current.date(byAdding: .year, value: -150, to: Date())!
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                content
-                
-                presentables
-            }
-            .background(background)
-            .onAppear { onAppearConfig() }
+        ZStack {
+            content
+            
+            presentables
         }
+        .background(background)
         .navigationBarHidden(true)
-        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
@@ -99,35 +93,31 @@ struct AgeView: View {
         .isDetailLink(false)
     }
     
-    private func onAppearConfig() {
-        viewModel.nextAction = {
-            genderViewPresented.toggle()
-        }
-    }
-    
     private func title() -> String {
-        return "\(Constants.label_ageScreenTitleBeforName) \(viewModel.name) \(Constants.label_ageScreenTitleAfterName)"
+        return "\(Constants.label_ageScreenTitleBeforName) \(Constants.loggedInUser?.name ?? "") \(Constants.label_ageScreenTitleAfterName)"
     }
     
     private func continueAction() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let isValidAge = validateAge(birthDate: date)
-        viewModel.dateOfBirth = dateFormatter.string(from: date)
         
-        if isValidAge {
+        guard validateAge(birthDate: date) else {
             UIApplication.shared.showAlertPopup(message: Constants.validMsg_age)
-        } else {
-            viewModel.profileSetupType = ProfileSetupType().birthdate
-            viewModel.callSignUpProcessAPI()
+            return
         }
+        
+        guard var user = Constants.loggedInUser else { return }
+        
+        user.birthdate = dateFormatter.string(from: date)
+        Constants.saveUser(user: user)
+        genderViewPresented.toggle()
     }
     
     func validateAge(birthDate: Date) -> Bool {
-        var isValid = true
+        var isValid = false
         
         if birthDate >= maxAge && birthDate <= minAge {
-            isValid = false
+            isValid = true
         }
         
         return isValid

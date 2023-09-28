@@ -11,33 +11,25 @@ struct RelationshipView: View {
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     
-    @StateObject private var viewModel = OnboardingViewModel.shared
-    
     var isFromEditProfile: Bool
-    var arrayOfUserPreference: [UserPreferences]
     
-    @State private var friendshipWithMenSelected = false
-    @State private var friendshipWithWomanSelected = false
-    @State private var romanceWithMenSelected = false
-    @State private var romanceWithWomanSelected = false
+    @State private var romancePreference: Int?
+    @State private var friendshipPreference: Int?
     
     @State private var activityViewPresented = false
     
-    private let preferenceTypeIds = PreferenceTypeIds()
-    private let genderTypeIds = GenderTypeIds()
-    
     var body: some View {
-        NavigationView {
-            ZStack {
-                content
-                
-                presentables
-            }
-            .background(background)
-            .onAppear { onAppearConfig() }
+        ZStack {
+            content
+            
+            presentables
+        }
+        .background(background)
+        .onAppear {
+            romancePreference = Constants.loggedInUser?.preferenceRomance
+            friendshipPreference = Constants.loggedInUser?.preferenceFriendship
         }
         .navigationBarHidden(true)
-        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
@@ -59,7 +51,7 @@ struct RelationshipView: View {
         }
         .edgesIgnoringSafeArea(.bottom)
     }
-
+    
     
     private var header: some View {
         VStack(spacing: 20) {
@@ -91,18 +83,34 @@ struct RelationshipView: View {
         HStack(spacing: 12) {
             buble(icon: "ic_romance_black",
                   text: Constants.btn_romance,
-                  isSelected: romanceWithMenSelected || romanceWithWomanSelected)
+                  isSelected: romancePreference != nil)
             
             Text(Constants.label_with)
                 .font(.themeMedium(15))
                 .foregroundColor(.colorDarkGrey)
             
-            option(title: Constants.btn_female, isSelected: romanceWithWomanSelected) {
-                romanceWithWomanSelected.toggle()
+            option(title: Constants.btn_female, isSelected: romancePreference == 2 || romancePreference == 3) {
+                if romancePreference == nil {
+                    romancePreference = 2
+                } else if romancePreference == 1 {
+                    romancePreference = 3
+                } else if romancePreference == 2 {
+                    romancePreference = nil
+                } else if romancePreference == 3 {
+                    romancePreference = 1
+                }
             }
             
-            option(title: Constants.btn_male, isSelected: romanceWithMenSelected) {
-                romanceWithMenSelected.toggle()
+            option(title: Constants.btn_male, isSelected: romancePreference == 1 || romancePreference == 3) {
+                if romancePreference == nil {
+                    romancePreference = 1
+                } else if romancePreference == 2 {
+                    romancePreference = 3
+                } else if romancePreference == 1 {
+                    romancePreference = nil
+                } else if romancePreference == 3 {
+                    romancePreference = 2
+                }
             }
         }
         .padding(.horizontal)
@@ -112,18 +120,34 @@ struct RelationshipView: View {
         HStack(spacing: 12) {
             buble(icon: "ic_friendship_black",
                   text: Constants.btn_friendship,
-                  isSelected: friendshipWithMenSelected || friendshipWithWomanSelected)
+                  isSelected: friendshipPreference != nil)
             
             Text(Constants.label_with)
                 .font(.themeMedium(15))
                 .foregroundColor(.colorDarkGrey)
             
-            option(title: Constants.btn_female, isSelected: friendshipWithWomanSelected) {
-                friendshipWithWomanSelected.toggle()
+            option(title: Constants.btn_female, isSelected: friendshipPreference == 2 || friendshipPreference == 3) {
+                if friendshipPreference == nil {
+                    friendshipPreference = 2
+                } else if friendshipPreference == 1 {
+                    friendshipPreference = 3
+                } else if friendshipPreference == 2 {
+                    friendshipPreference = nil
+                } else if friendshipPreference == 3 {
+                    friendshipPreference = 1
+                }
             }
             
-            option(title: Constants.btn_male, isSelected: friendshipWithMenSelected) {
-                friendshipWithMenSelected.toggle()
+            option(title: Constants.btn_male, isSelected: friendshipPreference == 1 || friendshipPreference == 3) {
+                if friendshipPreference == nil {
+                    friendshipPreference = 1
+                } else if friendshipPreference == 2 {
+                    friendshipPreference = 3
+                } else if friendshipPreference == 1 {
+                    friendshipPreference = nil
+                } else if friendshipPreference == 3 {
+                    friendshipPreference = 2
+                }
             }
         }
         .padding(.horizontal)
@@ -167,7 +191,7 @@ struct RelationshipView: View {
                 } else {
                     Color.colorLightGrey
                 }
-                    
+                
                 Text(title)
                     .font(.themeMedium(15))
                     .foregroundColor(isSelected ? .white : .colorDarkGrey)
@@ -180,7 +204,11 @@ struct RelationshipView: View {
     private var continueButton: some View {
         Button(action: { continueAction() }) {
             ZStack {
-                Color.theme
+                if romancePreference == nil && friendshipPreference == nil {
+                    Color.gray
+                } else {
+                    Color.theme
+                }
                 
                 Text(Constants.btn_continue)
                     .font(.themeBold(20))
@@ -189,6 +217,7 @@ struct RelationshipView: View {
         }
         .cornerRadius(30)
         .frame(height: 60)
+        .disabled(romancePreference == nil && friendshipPreference == nil)
         .padding(.horizontal, 30)
         .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
     }
@@ -200,80 +229,19 @@ struct RelationshipView: View {
         .isDetailLink(false)
     }
     
-    private func onAppearConfig() {
-        setupUserPreference()
-        
-        viewModel.nextAction = {
-            if !isFromEditProfile {
-                activityViewPresented.toggle()
-            } else {
-                NotificationCenter.default.post(name: Notification.Name("refreshProfileData"), object: nil, userInfo: nil)
-                presentationMode.wrappedValue.dismiss()
-            }
-        }
-    }
-    
     private func continueAction() {
-        if !isFromEditProfile {
-            viewModel.profileSetupType = ProfileSetupType().relationship
-        } else {
-            viewModel.profileSetupType = ProfileSetupType().completed
-        }
+        guard var user = Constants.loggedInUser else { return }
         
-        if romanceWithMenSelected {
-            viewModel.arrayRelationshipParam.append(RelationshipParam(preference_id: "1", preference_option_id: "2", user_preference_id: "0"))
-        }
+        user.preferenceRomance = romancePreference
+        user.preferenceFriendship = friendshipPreference
         
-        if romanceWithWomanSelected {
-            viewModel.arrayRelationshipParam.append(RelationshipParam(preference_id: "1", preference_option_id: "1", user_preference_id: "0"))
-        }
-        
-        if friendshipWithMenSelected {
-            viewModel.arrayRelationshipParam.append(RelationshipParam(preference_id: "2", preference_option_id: "24", user_preference_id: "0"))
-        }
-        
-        if friendshipWithWomanSelected {
-            viewModel.arrayRelationshipParam.append(RelationshipParam(preference_id: "2", preference_option_id: "23", user_preference_id: "0"))
-        }
-        
-        guard !viewModel.arrayRelationshipParam.isEmpty else {
-            UIApplication.shared.showAlertPopup(message: Constants.validMsg_relationship)
-            return
-        }
-        
-        viewModel.callSignUpProcessAPI()
-    }
-    
-    private func setupUserPreference() {
-        guard !arrayOfUserPreference.isEmpty else { return }
-        
-        for userPreference in arrayOfUserPreference {
-            if userPreference.typesOfPreference == preferenceTypeIds.looking_for {
-                if userPreference.subTypesOfPreference == preferenceTypeIds.romance {
-                    if (userPreference.typesOfOptions == genderTypeIds.Men) && (userPreference.subTypesOfPreference == preferenceTypeIds.romance) {
-                        romanceWithMenSelected = true
-                    }
-                    
-                    if (userPreference.typesOfOptions == genderTypeIds.Women) && (userPreference.subTypesOfPreference == preferenceTypeIds.romance) {
-                        romanceWithWomanSelected = true
-                    }
-                }
-                
-                if userPreference.subTypesOfPreference == preferenceTypeIds.friendship {
-                    if (userPreference.typesOfOptions == genderTypeIds.Men) && (userPreference.subTypesOfPreference == preferenceTypeIds.friendship) {
-                        friendshipWithMenSelected = true
-                    }
-                    if (userPreference.typesOfOptions == genderTypeIds.Women) && (userPreference.subTypesOfPreference == preferenceTypeIds.friendship) {
-                        friendshipWithWomanSelected = true
-                    }
-                }
-            }
-        }
+        Constants.saveUser(user: user)
+        activityViewPresented.toggle()
     }
 }
 
 struct RelationshipView_Previews: PreviewProvider {
     static var previews: some View {
-        RelationshipView(isFromEditProfile: false, arrayOfUserPreference: [])
+        RelationshipView(isFromEditProfile: false)
     }
 }
