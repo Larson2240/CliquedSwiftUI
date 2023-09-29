@@ -133,11 +133,11 @@ final class ProfileViewModel: ObservableObject {
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
             
         case profileSetupType.category:
-            let pickActivityView = PickActivityView(isFromEditProfile: false, arrayOfActivity: userDetails.favoriteActivity, activitiesFlowPresented: .constant(false))
+            let pickActivityView = PickActivityView(isFromEditProfile: false, activitiesFlowPresented: .constant(false))
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: pickActivityView)
             
         case profileSetupType.sub_category:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, categoryIds: "", arrayOfSubActivity: [], activitiesFlowPresented: .constant(false)))
+            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, activitiesFlowPresented: .constant(false)))
             
         case profileSetupType.profile_images:
             APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false))

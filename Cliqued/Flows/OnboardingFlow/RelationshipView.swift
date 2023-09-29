@@ -223,7 +223,7 @@ struct RelationshipView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: PickActivityView(isFromEditProfile: false, arrayOfActivity: [], activitiesFlowPresented: .constant(false)),
+        NavigationLink(destination: PickActivityView(isFromEditProfile: false, activitiesFlowPresented: .constant(false)),
                        isActive: $activityViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)

@@ -53,6 +53,9 @@
 		0A7607C32A17A748005DC411 /* TwilioVideo in Frameworks */ = {isa = PBXBuildFile; productRef = 0A7607C22A17A748005DC411 /* TwilioVideo */; };
 		0A8EAFC72A21425D00A753AD /* PickActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8EAFC62A21425D00A753AD /* PickActivityView.swift */; };
 		0A8EAFD22A222B6300A753AD /* PickSubActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8EAFD12A222B6300A753AD /* PickSubActivityView.swift */; };
+		0A907E812AC66D0C000D2000 /* ActivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A907E802AC66D0C000D2000 /* ActivityProvider.swift */; };
+		0A907E832AC66D9C000D2000 /* ActivityWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A907E822AC66D9C000D2000 /* ActivityWebService.swift */; };
+		0A907E852AC675E4000D2000 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A907E842AC675E4000D2000 /* Activity.swift */; };
 		0A97EF672AAB6C8F00A06B5C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 0A97EF662AAB6C8F00A06B5C /* Moya */; };
 		0A97EF692AAB6D8400A06B5C /* AuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A97EF682AAB6D8400A06B5C /* AuthProvider.swift */; };
 		0AA87C052A3070A200C313D8 /* OnboardingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA87C042A3070A200C313D8 /* OnboardingProgressView.swift */; };
@@ -66,7 +69,6 @@
 		0AEDFCB72A7A63D40012A574 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEDFCB62A7A63D40012A574 /* TabBarView.swift */; };
 		0AEDFCBB2A7A80530012A574 /* ActivitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEDFCBA2A7A80530012A574 /* ActivitiesView.swift */; };
 		0AEDFCBD2A7A80590012A574 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEDFCBC2A7A80590012A574 /* ChatView.swift */; };
-		0AF1D75A2A23949400BBC440 /* SubActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF1D7592A23949400BBC440 /* SubActivityViewModel.swift */; };
 		0AF1D75D2A23F88B00BBC440 /* SelectPicturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF1D75C2A23F88B00BBC440 /* SelectPicturesView.swift */; };
 		0AF1D75F2A251D2100BBC440 /* SelectPicturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF1D75E2A251D2100BBC440 /* SelectPicturesViewModel.swift */; };
 		0AF1D7662A2537A600BBC440 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF1D7652A2537A600BBC440 /* LocationView.swift */; };
@@ -424,6 +426,9 @@
 		0A57C0172AC3E0A000DE377F /* ApiErrorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiErrorModel.swift; sourceTree = "<group>"; };
 		0A8EAFC62A21425D00A753AD /* PickActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickActivityView.swift; sourceTree = "<group>"; };
 		0A8EAFD12A222B6300A753AD /* PickSubActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickSubActivityView.swift; sourceTree = "<group>"; };
+		0A907E802AC66D0C000D2000 /* ActivityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityProvider.swift; sourceTree = "<group>"; };
+		0A907E822AC66D9C000D2000 /* ActivityWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityWebService.swift; sourceTree = "<group>"; };
+		0A907E842AC675E4000D2000 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		0A97EF682AAB6D8400A06B5C /* AuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProvider.swift; sourceTree = "<group>"; };
 		0AA87C042A3070A200C313D8 /* OnboardingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressView.swift; sourceTree = "<group>"; };
 		0AABBA852A888B1500B05DA5 /* EmailNotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailNotificationsView.swift; sourceTree = "<group>"; };
@@ -436,7 +441,6 @@
 		0AEDFCB62A7A63D40012A574 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		0AEDFCBA2A7A80530012A574 /* ActivitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesView.swift; sourceTree = "<group>"; };
 		0AEDFCBC2A7A80590012A574 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		0AF1D7592A23949400BBC440 /* SubActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubActivityViewModel.swift; sourceTree = "<group>"; };
 		0AF1D75C2A23F88B00BBC440 /* SelectPicturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPicturesView.swift; sourceTree = "<group>"; };
 		0AF1D75E2A251D2100BBC440 /* SelectPicturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPicturesViewModel.swift; sourceTree = "<group>"; };
 		0AF1D7652A2537A600BBC440 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
@@ -828,7 +832,6 @@
 				0ACE846E2A1FDEA9008B196C /* GenderView.swift */,
 				0ACE84702A1FDF66008B196C /* RelationshipView.swift */,
 				0AF1D7612A25315000BBC440 /* PickActivity */,
-				0AF1D7622A25315C00BBC440 /* PickSubActivity */,
 				0AF1D7632A25317100BBC440 /* SelectPictures */,
 				0AF1D7642A25379300BBC440 /* Location */,
 				0A37E2662A2BC27C00BAA6E9 /* Notifications */,
@@ -964,11 +967,22 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		0A907E7F2AC66CE0000D2000 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				0A907E802AC66D0C000D2000 /* ActivityProvider.swift */,
+				0A907E822AC66D9C000D2000 /* ActivityWebService.swift */,
+				0A907E842AC675E4000D2000 /* Activity.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
 		0A97EF642AAB6C1100A06B5C /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
 				0A57C0192AC3E43900DE377F /* Auth */,
 				0A57C01A2AC3E43C00DE377F /* User */,
+				0A907E7F2AC66CE0000D2000 /* Activity */,
 				0A57C0132AC3DB4800DE377F /* TokenModel.swift */,
 				0A57C0172AC3E0A000DE377F /* ApiErrorModel.swift */,
 			);
@@ -1009,17 +1023,9 @@
 			children = (
 				0A8EAFC62A21425D00A753AD /* PickActivityView.swift */,
 				6025E49F299221EA00080812 /* PickActivityViewModel.swift */,
+				0A8EAFD12A222B6300A753AD /* PickSubActivityView.swift */,
 			);
 			path = PickActivity;
-			sourceTree = "<group>";
-		};
-		0AF1D7622A25315C00BBC440 /* PickSubActivity */ = {
-			isa = PBXGroup;
-			children = (
-				0A8EAFD12A222B6300A753AD /* PickSubActivityView.swift */,
-				0AF1D7592A23949400BBC440 /* SubActivityViewModel.swift */,
-			);
-			path = PickSubActivity;
 			sourceTree = "<group>";
 		};
 		0AF1D7632A25317100BBC440 /* SelectPictures */ = {
@@ -2563,6 +2569,7 @@
 				6054719F29F682950013610A /* NativeAdViewVC.swift in Sources */,
 				601245B9297A73E300441F09 /* YourActivityCVCell.swift in Sources */,
 				0A37E26A2A2BC95900BAA6E9 /* StartExploringView.swift in Sources */,
+				0A907E832AC66D9C000D2000 /* ActivityWebService.swift in Sources */,
 				64B624A3299E66CC00D26F8D /* OTPTextField.swift in Sources */,
 				64D34AC5299CA70D00811B45 /* CallManager.swift in Sources */,
 				601F0ACD297E4F8B0027B472 /* SettingsVC.swift in Sources */,
@@ -2627,6 +2634,7 @@
 				646F620729D44EA400C63FF0 /* ExampleAVAudioEngineDevice.m in Sources */,
 				644806E429A779620028EB33 /* AudioStreamClass.swift in Sources */,
 				60CBDF3E296D4447004CEE25 /* StringExtension.swift in Sources */,
+				0A907E852AC675E4000D2000 /* Activity.swift in Sources */,
 				601245CE297A9F4400441F09 /* BorderedTextFieldCell.swift in Sources */,
 				648CB9E22990D8F6003171E1 /* DiscoverActivityVC.swift in Sources */,
 				648CBA302990DC1D003171E1 /* ReceiverTVCell.swift in Sources */,
@@ -2647,6 +2655,7 @@
 				648CBA002990DB55003171E1 /* CoreDataAdaptor.swift in Sources */,
 				60F42A0F2990DACE00381566 /* (null) in Sources */,
 				0A315A042A26BE3B00CE9709 /* LocationViewModel.swift in Sources */,
+				0A907E812AC66D0C000D2000 /* ActivityProvider.swift in Sources */,
 				64B62499299E52CD00D26F8D /* UpdateEmailVC.swift in Sources */,
 				0A16E70E2A1D356B00B8CA3F /* View + Extension.swift in Sources */,
 				60ED7C2C298134DF00CD6A78 /* User.swift in Sources */,
@@ -2655,7 +2664,6 @@
 				60CBF0A829A5E011000FF4FB /* InterestedActivityViewModel.swift in Sources */,
 				648CCF1729962551009736CF /* BlockedUserDataSource.swift in Sources */,
 				60CBDF1F296D440F004CEE25 /* ConstantsAndGlobals.swift in Sources */,
-				0AF1D75A2A23949400BBC440 /* SubActivityViewModel.swift in Sources */,
 				6097F68129DEFB55005FF8D1 /* DiscoveryActivityView.swift in Sources */,
 				648CBA262990DC1D003171E1 /* ChatUserTVCell.swift in Sources */,
 				60C666BD297FBA6B0038213E /* OtherUserActivityDetailsDataSource.swift in Sources */,

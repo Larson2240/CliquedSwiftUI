@@ -354,6 +354,19 @@ struct Constants_String {
     var color_chat_name = UIColor(named: "chatNameColor")
     var color_sender_text_msg = UIColor(named: "senderMsgTextColor")
     
+    func saveActivityCategories(activities: [Activity]) {
+        UserDefaults.standard.setCustom(activities, forKey: UserDefaultKey().userData)
+    }
+    
+    var activityCategories: [Activity]? {
+        get {
+            UserDefaults.standard.getCustom([Activity].self, forKey: UserDefaultKey().activityCategories)
+        }
+        set {
+            UserDefaults.standard.setCustom(newValue, forKey: UserDefaultKey().activityCategories)
+        }
+    }
+    
     //MARK: Check user is loggedIn
     var isUserLoggedIn : Bool {
         get {

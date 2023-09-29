@@ -63,6 +63,7 @@ extension UserProvider: TargetType {
             return nil
         }
         
-        return ["Authorization": "Bearer \(userToken)"]
+        return ["Authorization": "Bearer \(userToken)",
+                "Accept": "application/json"]
     }
 }

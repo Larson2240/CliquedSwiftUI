@@ -16,6 +16,7 @@ import FBSDKLoginKit
 struct UserDefaultKey {
     let isLoggedIn = "isLoggedIn"
     let userData = "userData"
+    let activityCategories = "activityCategories"
     
     let userEmail = "email"
     let userPassword = "Password"

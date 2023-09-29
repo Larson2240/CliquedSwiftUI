@@ -73,6 +73,6 @@ extension AuthProvider: TargetType {
     }
     
     var headers: [String : String]? {
-        return nil
+        return ["Accept": "application/json"]
     }
 }

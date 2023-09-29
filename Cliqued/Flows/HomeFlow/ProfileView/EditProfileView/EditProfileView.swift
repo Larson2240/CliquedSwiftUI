@@ -525,7 +525,6 @@ struct EditProfileView: View {
     private var presentables: some View {
         ZStack {
             NavigationLink(destination: PickActivityView(isFromEditProfile: true,
-                                                         arrayOfActivity: viewModel.userDetails.favoriteActivity,
                                                          activitiesFlowPresented: $editActivitiesViewPresented),
                            isActive: $editActivitiesViewPresented,
                            label: EmptyView.init)

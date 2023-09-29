@@ -15,11 +15,10 @@ struct PickActivityView: View {
     @StateObject private var viewModel = PickActivityViewModel()
     
     var isFromEditProfile: Bool
-    var arrayOfActivity: [UserInterestedCategory]
     
     @Binding var activitiesFlowPresented: Bool
     
-    @State private var arrayOfSubActivity: [UserInterestedCategory] = []
+    @State private var selectedActivities: [Activity] = []
     @State private var subActivityViewPresented = false
     
     let columns = [
@@ -83,9 +82,11 @@ struct PickActivityView: View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach($viewModel.arrayOfActivity) { activity in
-                    imageCell(activity.wrappedValue)
-                        .frame(maxHeight: 210)
-                        .cornerRadius(15)
+                    if activity.wrappedValue.parentID == nil {
+                        cell(activity.wrappedValue)
+                            .frame(maxHeight: 210)
+                            .cornerRadius(15)
+                    }
                 }
             }
             .padding(.horizontal, 16)
@@ -93,18 +94,12 @@ struct PickActivityView: View {
         }
     }
     
-    private func imageCell(_ activity: ActivityCategoryClass) -> some View {
+    private func cell(_ activity: Activity) -> some View {
         ZStack {
             let cellWidth = (screenSize.width - 40) / 2
             let cellHeight = cellWidth + (cellWidth * 0.2)
             
-            WebImage(url: viewModel.imageURL(for: activity, imageSize: CGSize(width: cellWidth, height: cellHeight)))
-                .placeholder {
-                    Image("placeholder_activity")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: cellWidth, height: cellHeight)
-                }
+            Image(activity.icon ?? "placeholder_activity")
                 .resizable()
                 .scaledToFill()
                 .frame(width: cellWidth, height: cellHeight)
@@ -115,7 +110,7 @@ struct PickActivityView: View {
                 Spacer()
                 
                 HStack {
-                    Text(activity.title ?? "")
+                    Text(activity.title)
                         .font(.themeMedium(14))
                         .foregroundColor(.white)
                     
@@ -126,11 +121,11 @@ struct PickActivityView: View {
             
             Color.black
                 .opacity(activityIsSelected(activity) ? 0.6 : 0)
-                .animation(.default, value: viewModel.arrayOfSelectedCategoryIds.count)
+                .animation(.default, value: selectedActivities.count)
             
             Image("ic_category_selectiontick")
                 .opacity(activityIsSelected(activity) ? 1 : 0)
-                .animation(.default, value: viewModel.arrayOfSelectedCategoryIds.count)
+                .animation(.default, value: selectedActivities.count)
         }
         .onTapGesture {
             cellTap(for: activity)
@@ -170,8 +165,6 @@ struct PickActivityView: View {
     
     private var presentables: some View {
         NavigationLink(destination: PickSubActivityView(isFromEditProfile: isFromEditProfile,
-                                                        categoryIds: isFromEditProfile ? viewModel.arrayOfSelectedCategoryIds.map({String($0)}).joined(separator: ", ") : viewModel.arrayOfSelectedCategoryIds.map({String($0)}).joined(separator: ", "),
-                                                        arrayOfSubActivity: arrayOfSubActivity,
                                                         activitiesFlowPresented: $activitiesFlowPresented),
                        isActive: $subActivityViewPresented,
                        label: EmptyView.init)
@@ -179,7 +172,9 @@ struct PickActivityView: View {
     }
     
     private func onAppearConfig() {
-        viewModel.callGetActivityDataAPI()
+        viewModel.callGetActivityDataAPI {
+            setupSelectedActivity()
+        }
         
         if isFromEditProfile {
             setupSelectedActivity()
@@ -187,75 +182,44 @@ struct PickActivityView: View {
     }
     
     private func continueAction() {
-        if viewModel.arrayOfSelectedCategoryIds.count >= 3 {
-            if isFromEditProfile {
-                //Remove deleted activity from the edit array
-                let deletedIds = viewModel.arrayOfDeletedActivityIds
-                var arrFilteredIds = arrayOfActivity
-                
-                for i in 0..<deletedIds.count {
-                    let arr1 = arrFilteredIds.filter({$0.activityId == deletedIds[i]})
-                    
-                    if arr1.count > 0 {
-                        
-                        let sub_cat_array = arr1.map({$0.subActivityId})
-                        
-                        for j in 0..<arr1.count {
-                            if let index = arrFilteredIds.firstIndex(where: {$0.activityId == deletedIds[i] && $0.subActivityId == sub_cat_array[j]}) {
-                                arrFilteredIds.remove(at: index)
-                            }
-                        }
-                    }
-                }
-                
-                arrayOfSubActivity = arrFilteredIds
-                
-                subActivityViewPresented.toggle()
-            } else {
-                subActivityViewPresented.toggle()
-            }
-        } else {
+        guard selectedActivities.count >= 3 else {
             UIApplication.shared.showAlertPopup(message: Constants.validMsg_pickActivity)
+            return
         }
-    }
-    
-    func setupSelectedActivity() {
-        viewModel.arrayOfSelectedPickActivity.removeAll()
         
-        for activityData in arrayOfActivity {
-            if viewModel.arrayOfSelectedCategoryIds.contains(where: {$0 == activityData.activityId}) == false {
-                viewModel.arrayOfSelectedCategoryIds.append(activityData.activityId ?? 0)
+        guard var user = Constants.loggedInUser else { return }
+        
+        user.interestedActivityCategories = selectedActivities.map { $0.id }
+        Constants.saveUser(user: user)
+        
+        subActivityViewPresented.toggle()
+    }
+    
+    private func setupSelectedActivity() {
+        guard let user = Constants.loggedInUser, let activities = user.interestedActivityCategories else { return }
+        
+        for activity in viewModel.arrayOfActivity {
+            if activities.contains(activity.id) {
+                selectedActivities.append(activity)
             }
         }
     }
     
-    private func cellTap(for activity: ActivityCategoryClass) {
-        if viewModel.arrayOfSelectedCategoryIds.contains(where: { $0 == activity.id }) {
-            if let index = viewModel.arrayOfSelectedCategoryIds.firstIndex(where: { $0 == activity.id }) {
-                viewModel.arrayOfSelectedCategoryIds.remove(at: index)
-                if isFromEditProfile {
-                    if viewModel.arrayOfAllSelectedActivity.contains(where: { $0.activityCategoryId == "\(activity.id ?? 0)" }) == true {
-                        viewModel.arrayOfDeletedActivityIds.append(activity.id ?? 0)
-                    }
-                }
-            }
+    private func cellTap(for activity: Activity) {
+        if selectedActivities.contains(activity) {
+            selectedActivities.removeAll(where: { $0 == activity })
         } else {
-            viewModel.arrayOfSelectedCategoryIds.append(activity.id ?? 0)
-            if let index = viewModel.arrayOfDeletedActivityIds.firstIndex(where: {$0 == activity.id ?? 0}) {
-                viewModel.arrayOfDeletedActivityIds.remove(at: index)
-            }
+            selectedActivities.append(activity)
         }
     }
     
-    private func activityIsSelected(_ activity: ActivityCategoryClass) -> Bool {
-        guard let activityID = activity.id else { return false }
-        print(viewModel.arrayOfSelectedCategoryIds)
-        return viewModel.arrayOfSelectedCategoryIds.contains(activityID)
+    private func activityIsSelected(_ activity: Activity) -> Bool {
+        return selectedActivities.contains(activity)
     }
 }
 
 struct PickActivityView_Previews: PreviewProvider {
     static var previews: some View {
-        PickActivityView(isFromEditProfile: false, arrayOfActivity: [], activitiesFlowPresented: .constant(true))
+        PickActivityView(isFromEditProfile: false, activitiesFlowPresented: .constant(true))
     }
 }

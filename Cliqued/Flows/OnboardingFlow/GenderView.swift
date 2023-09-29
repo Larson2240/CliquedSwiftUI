@@ -18,6 +18,11 @@ struct GenderView: View {
             presentables
         }
         .background(background)
+        .onAppear {
+            if let user = Constants.loggedInUser, let gender = user.gender {
+                self.gender = gender
+            }
+        }
         .navigationBarHidden(true)
     }
     
