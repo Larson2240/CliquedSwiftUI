@@ -41,6 +41,17 @@ extension ActivityProvider: TargetType {
     }
     
     var headers: [String : String]? {
-        return ["Accept": "application/json"]
+        guard let userToken = UserDefaults.standard.string(forKey: kUserToken) else {
+            return nil
+        }
+        
+        var header = ["Authorization": "Bearer \(userToken)",
+                      "Accept": "application/json"]
+        
+        for headerKey in includeSecurityCredentials() {
+            header[headerKey.key as! String] = headerKey.value as? String
+        }
+        
+        return header
     }
 }

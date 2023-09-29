@@ -54,7 +54,7 @@ final class SelectPicturesViewModel: ObservableObject {
     
     func openTLPhotoPicker() {
         checkPhotoLibraryPermission(completion: { [weak self] allowed in
-            guard let self = self, let rootVC = UIApplication.shared.windows.first?.rootViewController else { return }
+            guard let self = self, let rootVC = UIApplication.shared.keyWindow?.rootViewController else { return }
             
             if allowed {
                 let photoViewController = TLPhotosPickerViewController()
@@ -67,7 +67,7 @@ final class SelectPicturesViewModel: ObservableObject {
                     configure.maxSelectedAssets = MaxPictureSelect - arrayOfSelectedImages.count
                 }
                 
-                configure.allowedVideo = true
+                configure.allowedVideo = false
                 configure.allowedLivePhotos = false
                 configure.allowedPhotograph = true
                 configure.allowedVideoRecording = true
@@ -181,9 +181,5 @@ extension SelectPicturesViewModel: TLPhotosPickerViewControllerDelegate {
         }
         
         return true
-    }
-    
-    func dismissPhotoPicker(withPHAssets: [PHAsset]) {
-        
     }
 }

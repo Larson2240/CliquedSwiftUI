@@ -5,7 +5,7 @@
 //  Created by Seraphim Kovalchuk on 27.09.2023.
 //
 
-import Foundation
+import UIKit
 import Moya
 
 final class UserWebService {
@@ -51,6 +51,31 @@ final class UserWebService {
         completion: @escaping (Result<User, Error>) -> Void
     ) {
         userProvider.request(.updateUser(user: user)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let model = try JSONDecoder().decode(ApiUserModel.self, from: response.data)
+                    completion(.success(model.user))
+                } catch {
+                    if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
+                        completion(.failure(ApiError.custom(errorDescription: model.message)))
+                    } else {
+                        completion(.failure(ApiError.parsing))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func updateUserMedia(
+        image: UIImage,
+        completion: @escaping (Result<User, Error>) -> Void
+    ) {
+        guard let user = Constants.loggedInUser else { return }
+        
+        userProvider.request(.updateUserMedia(user: user, image: image)) { result in
             switch result {
             case .success(let response):
                 do {

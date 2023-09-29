@@ -71,6 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         setRootViewController()
         
         TwilioVideoSDK.audioDevice = audioDevice
+        
         return true
     }
     
