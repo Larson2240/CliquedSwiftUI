@@ -10,6 +10,8 @@ import SDWebImageSwiftUI
 
 struct SelectPicturesView: View {
     @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
+    
     @StateObject private var onboardingViewModel = OnboardingViewModel.shared
     @StateObject private var picturesViewModel = SelectPicturesViewModel()
     
@@ -28,28 +30,29 @@ struct SelectPicturesView: View {
     ]
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                content
-                
-                presentables
-            }
-            .background(background)
-            .onAppear { onAppearConfig() }
+        ZStack {
+            content
+            
+            presentables
         }
+        .background(background)
+        .onAppear { onAppearConfig() }
         .navigationBarHidden(true)
-        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
-        VStack(spacing: 0) {
-            header
-            
-            description
-            
-            imagesStack
+        ZStack {
+            VStack(spacing: 0) {
+                header
+                
+                description
+                
+                imagesStack
+                    .ignoresSafeArea()
+            }
             
             continueButton
+                .ignoresSafeArea()
         }
     }
     
@@ -152,20 +155,23 @@ struct SelectPicturesView: View {
     }
     
     private var continueButton: some View {
-        Button(action: { continueAction() }) {
-            ZStack {
-                Color.theme
-                
-                Text(Constants.btn_continue)
-                    .font(.themeBold(20))
-                    .foregroundColor(.colorWhite)
+        VStack {
+            Spacer()
+            
+            Button(action: { continueAction() }) {
+                ZStack {
+                    Color.theme
+                    
+                    Text(Constants.btn_continue)
+                        .font(.themeBold(20))
+                        .foregroundColor(.colorWhite)
+                }
             }
+            .frame(height: 60)
+            .cornerRadius(30)
+            .padding(.horizontal, 30)
+            .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
         }
-        .frame(height: 60)
-        .cornerRadius(30)
-        .padding(.horizontal, 30)
-        .padding(.bottom, 30)
-        .padding(.top, 16)
     }
     
     private var presentables: some View {
