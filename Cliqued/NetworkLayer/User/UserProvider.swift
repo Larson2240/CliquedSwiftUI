@@ -62,7 +62,7 @@ extension UserProvider: TargetType {
             return .requestCustomJSONEncodable(user, encoder: JSONEncoder())
         case .updateUserMedia(let user, let image):
             let imageData = image.jpegData(compressionQuality: 0)
-            let memberIdData = "\(user.id ?? 0)".data(using: String.Encoding.utf8) ?? Data()
+            let memberIdData = "\(user.name ?? "")".data(using: String.Encoding.utf8) ?? Data()
             var formData: [Moya.MultipartFormData] = [Moya.MultipartFormData(provider: .data(imageData!), name: "profile_image", fileName: "asdas.png", mimeType: "image/jpeg")]
             formData.append(Moya.MultipartFormData(provider: .data(memberIdData), name: "user_id"))
             return .uploadMultipart(formData)

@@ -16,29 +16,22 @@ struct LocationView: View {
     @StateObject private var onboardingViewModel = OnboardingViewModel.shared
     @StateObject private var locationViewModel = LocationViewModel()
     
-    @State private var distanceValues: [String] = ["5km","10km","50km","100km","200km"]
+    @State private var distanceValues: [String] = ["5km", "10km", "50km", "100km", "200km"]
     @State var selectedDistance = "5km"
     @State private var notificationsViewPresented = false
     
     var isFromEditProfile: Bool
-    var addressId: String
-    var objAddress: UserAddress?
-    private let mediaType = MediaType()
-    private let preferenceTypeIds = PreferenceTypeIds()
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                content
-                
-                presentables
-            }
-            .animation(nil)
-            .background(background)
-            .onAppear { onAppearConfig() }
+        ZStack {
+            content
+            
+            presentables
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .background(background)
+        .onAppear { onAppearConfig() }
         .navigationBarHidden(true)
-        .navigationViewStyle(.stack)
     }
     
     private var content: some View {
@@ -200,72 +193,36 @@ struct LocationView: View {
     
     private func onAppearConfig() {
         locationViewModel.isFromEditProfile = isFromEditProfile
-        locationViewModel.addressId = addressId
-        locationViewModel.setupUserLocation(with: objAddress)
-        
-        if !isFromEditProfile {
-            setupDefaultDistantce()
-        }
-        
-        onboardingViewModel.nextAction = {
-            if isFromEditProfile {
-                presentationMode.wrappedValue.dismiss()
-            } else {
-                notificationsViewPresented.toggle()
-            }
-        }
+//        locationViewModel.addressId = addressId
+//        locationViewModel.setupUserLocation(with: objAddress)
     }
     
     private func continueAction() {
-        if locationViewModel.addressDic.latitude != "" && locationViewModel.addressDic.longitude != "" && locationViewModel.addressDic.city != "" && locationViewModel.addressDic.state != "" {
-            onboardingViewModel.userAddress.append(locationViewModel.addressDic)
+        if locationViewModel.latitude != 0 && locationViewModel.longitude != 0 && locationViewModel.city != "" && locationViewModel.state != "" {
+            let userAddress = Address(address: locationViewModel.address,
+                                      latitude: locationViewModel.latitude,
+                                      longitude: locationViewModel.longitude,
+                                      city: locationViewModel.city,
+                                      state: locationViewModel.state,
+                                      country: locationViewModel.country,
+                                      pincode: locationViewModel.pincode)
             
-            var arrayOfPreference = [PreferenceClass]()
-            var arrayOfTypeOption = [TypeOptions]()
-            arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.distance}) ?? []
+            guard var user = Constants.loggedInUser else { return }
             
-            if arrayOfPreference.count > 0 {
-                arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
-                if arrayOfTypeOption.count > 0 {
-                    var dict = DistanceParam()
-                    guard let index = distanceValues.firstIndex(where: { $0 == selectedDistance }) else { return }
-                    
-                    dict.distancePreferenceId = arrayOfTypeOption[index].preferenceId?.description ?? ""
-                    dict.distancePreferenceOptionId = arrayOfTypeOption[index].id?.description ?? ""
-                    onboardingViewModel.distance = dict
-                }
-            }
+            user.userAddress = userAddress
+            user.preferenceDistance = Int(selectedDistance.replacingOccurrences(of: "km", with: ""))
             
-            if !isFromEditProfile {
-                onboardingViewModel.profileSetupType = ProfileSetupType().location
-            } else {
-                onboardingViewModel.profileSetupType = ProfileSetupType().completed
-            }
+            Constants.saveUser(user: user)
             
-            onboardingViewModel.callSignUpProcessAPI()
+            notificationsViewPresented.toggle()
         } else {
             UIApplication.shared.showAlertPopup(message: Constants.validMsg_validAddress)
-        }
-    }
-    
-    private func setupDefaultDistantce() {
-        var arrayOfPreference = [PreferenceClass]()
-        var arrayOfTypeOption = [TypeOptions]()
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == preferenceTypeIds.distance}) ?? []
-        if arrayOfPreference.count > 0 {
-            arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
-            if arrayOfTypeOption.count > 0 {
-                var dict = DistanceParam()
-                dict.distancePreferenceId = arrayOfTypeOption[0].preferenceId?.description ?? ""
-                dict.distancePreferenceOptionId = arrayOfTypeOption[0].id?.description ?? ""
-                onboardingViewModel.distance = dict
-            }
         }
     }
 }
 
 struct LocationView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationView(isFromEditProfile: false, addressId: "")
+        LocationView(isFromEditProfile: false)
     }
 }

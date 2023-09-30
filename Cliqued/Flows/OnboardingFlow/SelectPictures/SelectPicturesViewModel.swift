@@ -67,7 +67,7 @@ final class SelectPicturesViewModel: ObservableObject {
                     configure.maxSelectedAssets = MaxPictureSelect - arrayOfSelectedImages.count
                 }
                 
-                configure.allowedVideo = false
+                configure.allowedVideo = true
                 configure.allowedLivePhotos = false
                 configure.allowedPhotograph = true
                 configure.allowedVideoRecording = true

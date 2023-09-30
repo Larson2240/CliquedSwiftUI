@@ -60,6 +60,6 @@ struct User: Codable {
 
 struct Address: Codable {
     let address: String
-    let latitude, longitude: Int
+    let latitude, longitude: Double
     let city, state, country, pincode: String
 }

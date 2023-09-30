@@ -536,9 +536,7 @@ struct EditProfileView: View {
             .isDetailLink(false)
             
             NavigationLink(destination: LocationView(selectedDistance: viewModel.userDetails.distancePreference,
-                                                     isFromEditProfile: true,
-                                                     addressId: "\(viewModel.userDetails.location.first?.id ?? 0)",
-                                                     objAddress: viewModel.userDetails.location.first),
+                                                     isFromEditProfile: true),
                            isActive: $locationViewPresented,
                            label: EmptyView.init)
             .isDetailLink(false)

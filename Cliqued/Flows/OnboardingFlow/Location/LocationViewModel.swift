@@ -18,7 +18,14 @@ final class LocationViewModel: NSObject, ObservableObject {
     private var locationManager: CLLocationManager!
     @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
     @Published var annotations: [Pin] = []
-    var addressDic = AddressParam()
+    
+    @Published var address: String = ""
+    @Published var latitude: Double = 0
+    @Published var longitude: Double = 0
+    @Published var city: String = ""
+    @Published var state: String = ""
+    @Published var country: String = ""
+    @Published var pincode: String = ""
     
     var isFromEditProfile: Bool?
     var addressId = ""
@@ -107,8 +114,8 @@ final class LocationViewModel: NSObject, ObservableObject {
         ceo.reverseGeocodeLocation(loc, completionHandler: { [weak self] placemarks, error in
             guard let self = self else { return }
             
-            if (error != nil) {
-                print("reverse geodcode fail: \(error!.localizedDescription)")
+            if let error = error {
+                print("reverse geocode fail: \(error.localizedDescription)")
                 completion("")
             } else {
                 let pm = placemarks! as [CLPlacemark]
@@ -116,33 +123,31 @@ final class LocationViewModel: NSObject, ObservableObject {
                 if pm.count > 0 {
                     let pm = placemarks![0]
                     
-                    self.addressDic.latitude = pdblLatitude
-                    self.addressDic.longitude = pdblLongitude
+                    self.latitude = Double(pdblLatitude) ?? 0
+                    self.longitude = Double(pdblLongitude) ?? 0
                     
-                    if pm.name != nil {
-                        addressString = addressString + pm.name!
+                    if let street = pm.name {
+                        addressString = addressString + street
                     }
                     
-                    if pm.administrativeArea != nil {
-                        self.addressDic.state = pm.administrativeArea!
+                    if let state = pm.administrativeArea {
+                        self.state = state
                     }
-                    if pm.locality != nil {
-                        self.addressDic.city = pm.locality!
+                    
+                    if let city = pm.locality {
+                        self.city = city
                     }
-                    if pm.country != nil {
-                        self.addressDic.country = pm.country!
+                    
+                    if let country = pm.country {
+                        self.country = country
                     }
-                    if pm.postalCode != nil {
-                        self.addressDic.pincode = pm.postalCode!
+                    
+                    if let pincode = pm.postalCode {
+                        self.pincode = pincode
                     }
+                    
                     print(addressString)
-                    self.addressDic.address = addressString
-                    
-                    if self.isFromEditProfile ?? false {
-                        self.addressDic.address_id = self.addressId
-                    } else {
-                        self.addressDic.address_id = "0"
-                    }
+                    self.address = addressString
                     
                     let fullAddress = "\(pm.name ?? "") \(pm.locality ?? "") \(pm.administrativeArea ?? "") \(pm.country ?? "") \(pm.postalCode ?? "")"
                     

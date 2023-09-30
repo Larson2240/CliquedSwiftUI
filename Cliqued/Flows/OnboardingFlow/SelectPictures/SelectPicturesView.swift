@@ -169,7 +169,7 @@ struct SelectPicturesView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: LocationView(isFromEditProfile: false, addressId: "", objAddress: nil),
+        NavigationLink(destination: LocationView(isFromEditProfile: false),
                        isActive: $locationViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)
@@ -192,9 +192,10 @@ struct SelectPicturesView: View {
     }
     
     private func continueAction() {
-        userWebService.updateUserMedia(image: picturesViewModel.arrayOfSelectedImages.first!.image!) { result in
-            
-        }
+        locationViewPresented.toggle()
+//        userWebService.updateUserMedia(image: picturesViewModel.arrayOfSelectedImages.first!.image!) { result in
+//
+//        }
         
 //        onboardingViewModel.profileImages.removeAll()
 //        onboardingViewModel.thumbnails.removeAll()
