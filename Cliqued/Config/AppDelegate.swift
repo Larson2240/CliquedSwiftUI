@@ -437,36 +437,6 @@ extension AppDelegate : PKPushRegistryDelegate {
             apiParams.voipToken: UserDefaults.standard.object(forKey: USER_DEFAULT_KEYS.VOIP_TOKEN) ?? "123",
             apiParams.isPushEnabled : is_enabled ? "\(preferenceOptionIds.yes)" : "\(preferenceOptionIds.no)"
         ]
-        
-        if(Connectivity.isConnectedToInternet()) {
-            
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateNotificationToken, parameters: params) { response, error, message in
-                if(error != nil && response == nil) {
-                    
-                } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    let msg = json?[API_MESSAGE] as? String
-                    
-                    if status == SUCCESS {
-                        
-                        if let userArray = json?["user"] as? NSArray {
-                            if userArray.count > 0 {
-                                let dicUser = userArray[0] as! NSDictionary
-                                let decoder = JSONDecoder()
-                                do {
-                                    let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
-                                    let objUser = try decoder.decode(User.self, from: jsonData)
-                                    Constants.saveUser(user: objUser)
-                                } catch {
-                                    print(error.localizedDescription)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
     
     func callLogoutAPI() {

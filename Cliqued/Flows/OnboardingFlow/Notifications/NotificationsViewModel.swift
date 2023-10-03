@@ -27,23 +27,25 @@ final class NotificationsViewModel: NSObject, ObservableObject {
     }
     
     func checkNotificationsPermission() {
-        let current = UNUserNotificationCenter.current()
+        let notificationCenter = UNUserNotificationCenter.current()
         
-        current.getNotificationSettings(completionHandler: { [weak self] permission in
+        notificationCenter.getNotificationSettings(completionHandler: { [weak self] permission in
             guard let self = self else { return }
             
             switch permission.authorizationStatus  {
             case .authorized:
-                self.notificationsEnabled = true
+                DispatchQueue.main.async {
+                    self.notificationsEnabled = true
+                }
             case .denied:
-                self.notificationsEnabled = false
+                DispatchQueue.main.async {
+                    self.notificationsEnabled = false
+                }
             case .notDetermined:
                 print("Notification permission haven't been asked yet")
             case .provisional:
-                // @available(iOS 12.0, *)
                 print("The application is authorized to post non-interruptive user notifications.")
             case .ephemeral:
-                // @available(iOS 14.0, *)
                 print("The application is temporarily authorized to post notifications. Only available to app clips.")
             @unknown default:
                 print("Unknow Status")
@@ -53,7 +55,7 @@ final class NotificationsViewModel: NSObject, ObservableObject {
 }
 
 extension NotificationsViewModel: UNUserNotificationCenterDelegate {
-    func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         print("Device Token: \(deviceTokenString)")
         UserDefaults.standard.set(deviceTokenString, forKey: kDeviceToken)
@@ -66,11 +68,12 @@ extension NotificationsViewModel: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.badge, .alert, .sound])
+        completionHandler([.badge, .sound])
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         UIApplication.shared.applicationIconBadgeNumber = 0
         let data = response.notification.request.content.userInfo
+        print(data)
     }
 }

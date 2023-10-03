@@ -35,9 +35,10 @@ final class SignUpViewModel: NSObject, ObservableObject {
         authWebService.register(email: email, password: password) { [weak self] result in
             guard let self = self else { return }
             
+            UIApplication.shared.hideLoader()
+            
             switch result {
-            case .success(let token):
-                UserDefaults.standard.set(token, forKey: kUserToken)
+            case .success:
                 UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
                 self.proceed()
             case .failure(let error):
@@ -63,9 +64,10 @@ final class SignUpViewModel: NSObject, ObservableObject {
         authWebService.login(email: email, password: password) { [weak self] result in
             guard let self = self else { return }
             
+            UIApplication.shared.hideLoader()
+            
             switch result {
-            case .success(let token):
-                UserDefaults.standard.set(token, forKey: kUserToken)
+            case .success:
                 UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
                 self.proceed()
             case .failure(let error):
@@ -90,10 +92,10 @@ final class SignUpViewModel: NSObject, ObservableObject {
         authWebService.social(socialID: socialLoginID, loginType: Int(loginType) ?? 0) { [weak self] result in
             guard let self = self else { return }
             
+            UIApplication.shared.hideLoader()
+            
             switch result {
-            case .success(let token):
-                UserDefaults.standard.set(token, forKey: kUserToken)
-                UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+            case .success:
                 self.proceed()
             case .failure(let error):
                 if let error = error as? ApiError, let errorDesc = error.errorDescription {
@@ -118,8 +120,6 @@ final class SignUpViewModel: NSObject, ObservableObject {
     private func proceed() {
         userWebService.getUser { [weak self] result in
             guard let self = self else { return }
-            
-            UIApplication.shared.hideLoader()
             
             switch result {
             case .success(let user):

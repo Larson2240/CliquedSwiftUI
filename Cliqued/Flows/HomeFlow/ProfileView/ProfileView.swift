@@ -23,11 +23,7 @@ struct ProfileView: View {
     
     var body: some View {
         ZStack {
-            if viewModel.profileCompleted {
-                content
-            } else {
-                completeProfileView
-            }
+            content
             
             presentables
         }
@@ -47,23 +43,23 @@ struct ProfileView: View {
                     
                     ProfileCommonCell(imageName: "ic_lookingfor",
                                       title: Constants.label_lookingFor,
-                                      details: viewModel.userDetails.lookingForIds)
+                                      details: Constants.loggedInUser?.lookingForTitle ?? "")
                     
                     ProfileCommonCell(imageName: "ic_location_black",
                                       title: Constants.label_location,
-                                      details: "\(viewModel.userDetails.location.first?.city ?? ""), \(viewModel.userDetails.location.first?.state ?? "")")
+                                      details: "\(Constants.loggedInUser?.userAddress?.city ?? ""), \(Constants.loggedInUser?.userAddress?.state ?? "")")
                     
                     ProfileCommonCell(imageName: "ic_height",
                                       title: "\(Constants.label_height) \(Constants.label_heightInCm)",
-                                      details: viewModel.userDetails.height == "0" ? "-" : viewModel.userDetails.height)
+                                      details: Constants.loggedInUser?.height == 0 ? "-" : String(Constants.loggedInUser?.height ?? 0))
                     
                     ProfileCommonCell(imageName: "ic_kids",
                                       title: Constants.label_kids,
-                                      details: viewModel.userDetails.kids.isEmpty ? "No" : viewModel.userDetails.kids)
+                                      details: Constants.loggedInUser?.preferenceKids ?? false ? "Yes" : "No")
                     
                     ProfileCommonCell(imageName: "ic_smoking",
                                       title: Constants.label_smoking,
-                                      details: viewModel.userDetails.smoking.isEmpty ? "No" : viewModel.userDetails.smoking)
+                                      details: Constants.loggedInUser?.preferenceKids ?? false ? "Yes" : "No")
                     
                     distanceStack
                     
@@ -78,32 +74,10 @@ struct ProfileView: View {
         .ignoresSafeArea()
     }
     
-    private var completeProfileView: some View {
-        VStack(spacing: 16) {
-            Text(Constants.validMsg_profileIncompleteMsg)
-                .font(.themeMedium(14))
-                .foregroundColor(.colorDarkGrey)
-                .multilineTextAlignment(.center)
-            
-            Button(action: { viewModel.manageSetupProfileNavigationFlow() }) {
-                ZStack {
-                    Color.theme
-                    
-                    Text(Constants.btn_continue)
-                        .font(.themeBold(20))
-                        .foregroundColor(.colorWhite)
-                }
-            }
-            .frame(height: 60)
-            .cornerRadius(30)
-        }
-        .padding(30)
-    }
-    
     private var imageContainer: some View {
         ZStack {
-            if viewModel.userDetails.profileCollection.count > 0 {
-                pagerView
+            if Constants.loggedInUser?.userProfileMedia != nil {
+//                pagerView
                 
                 gradient
             } else {
@@ -123,22 +97,22 @@ struct ProfileView: View {
         .frame(width: screenSize.width, height: 300)
     }
     
-    private var pagerView: some View {
-        Pager(page: page, data: viewModel.userDetails.profileCollection, id: \.self) { object in
-            WebImage(url: viewModel.profileImageURL(for: object, imageSize: CGSize(width: screenSize.width, height: 300)))
-                .placeholder {
-                    placeholderImage
-                }
-                .resizable()
-                .frame(width: screenSize.width, height: 300)
-                .onTapGesture {
-                    viewModel.imageTapped(object)
-                }
-        }
-        .onPageChanged {
-            currentPage = $0
-        }
-    }
+//    private var pagerView: some View {
+//        Pager(page: page, data: viewModel.userDetails.profileCollection, id: \.self) { object in
+//            WebImage(url: viewModel.profileImageURL(for: object, imageSize: CGSize(width: screenSize.width, height: 300)))
+//                .placeholder {
+//                    placeholderImage
+//                }
+//                .resizable()
+//                .frame(width: screenSize.width, height: 300)
+//                .onTapGesture {
+//                    viewModel.imageTapped(object)
+//                }
+//        }
+//        .onPageChanged {
+//            currentPage = $0
+//        }
+//    }
     
     private var gradient: some View {
         VStack {
@@ -168,8 +142,8 @@ struct ProfileView: View {
     
     @ViewBuilder
     private var pageIndicator: some View {
-        if viewModel.userDetails.profileCollection.count > 0 {
-            PageIndicator(numPages: viewModel.userDetails.profileCollection.count, selectedIndex: $currentPage)
+        if Constants.loggedInUser?.userProfileMedia != nil {
+            PageIndicator(numPages: Constants.loggedInUser?.userProfileMedia?.count ?? 0, selectedIndex: $currentPage)
                 .allowsHitTesting(false)
                 .padding(.bottom)
         }
@@ -179,14 +153,16 @@ struct ProfileView: View {
         VStack {
             Spacer()
             
-            HStack {
-                Text("\(viewModel.userDetails.name), \(viewModel.userDetails.age)")
-                
-                Spacer()
+            if let name = Constants.loggedInUser?.name, let age = Constants.loggedInUser?.userAge() {
+                HStack {
+                    Text("\(name), \(age)")
+                    
+                    Spacer()
+                }
             }
             
             HStack {
-                Text(viewModel.userDetails.location.first?.city ?? "")
+                Text(Constants.loggedInUser?.userAddress?.city ?? "")
                 
                 Spacer()
             }
@@ -216,7 +192,7 @@ struct ProfileView: View {
             .padding(.horizontal)
             
             HStack {
-                Text(viewModel.userDetails.aboutMe)
+                Text(Constants.loggedInUser?.aboutMe ?? "")
                     .font(.themeBook(14))
                     .foregroundColor(.colorDarkGrey)
                 
@@ -240,14 +216,14 @@ struct ProfileView: View {
             .padding(.horizontal)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
-                    ForEach($viewModel.userDetails.favoriteCategoryActivity) { activity in
-                        imageCell(activity.wrappedValue)
-                            .cornerRadius(10)
-                    }
-                    .frame(width: 110)
-                }
-                .padding(.horizontal)
+//                HStack(spacing: 6) {
+//                    ForEach($viewModel.userDetails.favoriteCategoryActivity) { activity in
+//                        imageCell(activity.wrappedValue)
+//                            .cornerRadius(10)
+//                    }
+//                    .frame(width: 110)
+//                }
+//                .padding(.horizontal)
             }
             .frame(height: 140)
             
@@ -260,16 +236,16 @@ struct ProfileView: View {
             let cellWidth: CGFloat = 110
             let cellHeight: CGFloat = 140
             
-            WebImage(url: viewModel.activityImageURL(for: activity, size: CGSize(width: cellWidth, height: cellHeight)))
-                .placeholder {
-                    Image("placeholder_detailpage")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: cellWidth, height: cellHeight)
-                }
-                .resizable()
-                .scaledToFill()
-                .frame(width: cellWidth, height: cellHeight)
+//            WebImage(url: viewModel.activityImageURL(for: activity, size: CGSize(width: cellWidth, height: cellHeight)))
+//                .placeholder {
+//                    Image("placeholder_detailpage")
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(width: cellWidth, height: cellHeight)
+//                }
+//                .resizable()
+//                .scaledToFill()
+//                .frame(width: cellWidth, height: cellHeight)
             
             LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
             
@@ -304,25 +280,25 @@ struct ProfileView: View {
             }
             .padding(.horizontal)
             
-            StepSlider(selected: $viewModel.userDetails.distancePreference,
-                       values: viewModel.distanceValues) { value in
-                Text(value)
-                    .foregroundColor(.colorDarkGrey)
-            } thumbLabels: { value in
-                ZStack {
-                    Color.theme
-                        .ignoresSafeArea()
-                    
-                    Text(value)
-                        .foregroundColor(.white)
-                }
-            } accessibilityLabels: { value in
-                Text(value)
-            }
-            .allowsHitTesting(false)
-            .accentColor(.theme)
-            .frame(height: 60)
-            .padding(.horizontal)
+//            StepSlider(selected: $viewModel.,
+//                       values: viewModel.distanceValues) { value in
+//                Text(value)
+//                    .foregroundColor(.colorDarkGrey)
+//            } thumbLabels: { value in
+//                ZStack {
+//                    Color.theme
+//                        .ignoresSafeArea()
+//
+//                    Text(value)
+//                        .foregroundColor(.white)
+//                }
+//            } accessibilityLabels: { value in
+//                Text(value)
+//            }
+//            .allowsHitTesting(false)
+//            .accentColor(.theme)
+//            .frame(height: 60)
+//            .padding(.horizontal)
             
             separator
         }
@@ -394,8 +370,8 @@ struct ProfileView: View {
         
         slider = CustomSlider(minBound: 45,
                               maxBound: 99,
-                              lowValue: Double(viewModel.userDetails.startAge) ?? 45,
-                              highValue: Double(viewModel.userDetails.endAge) ?? 99,
+                              lowValue: Double(Constants.loggedInUser?.preferenceAgeFrom ?? 45),
+                              highValue: Double(Constants.loggedInUser?.preferenceAgeTo ?? 99),
                               width: screenSize.width - 80)
     }
 }

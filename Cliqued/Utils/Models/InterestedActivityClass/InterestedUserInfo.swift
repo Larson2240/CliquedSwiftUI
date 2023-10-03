@@ -58,7 +58,6 @@ struct InterestedUserInfo: Codable {
     var is_last_seen_enabled: String?
     var receiver_is_online: String?
     
-    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         isInterested = try container.decodeIfPresent(String.self, forKey: .isInterested)

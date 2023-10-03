@@ -13,7 +13,6 @@ struct LocationView: View {
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     
-    @StateObject private var onboardingViewModel = OnboardingViewModel.shared
     @StateObject private var locationViewModel = LocationViewModel()
     
     @State private var distanceValues: [String] = ["5km", "10km", "50km", "100km", "200km"]

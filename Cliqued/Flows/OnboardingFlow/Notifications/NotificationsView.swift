@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct NotificationsView: View {
-    @StateObject private var onboardingViewModel = OnboardingViewModel.shared
     @StateObject private var notificationsViewModel = NotificationsViewModel()
     
     @State private var startExploringViewPresented = false
+    private let userWebService = UserWebService()
     
     var body: some View {
         NavigationView {
@@ -21,7 +21,7 @@ struct NotificationsView: View {
                 presentables
             }
             .background(background)
-            .onAppear { onAppearConfig() }
+            .onAppear { notificationsViewModel.registerForPushNotifications() }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).map { _ in }, perform: {
             notificationsViewModel.checkNotificationsPermission()
@@ -120,39 +120,20 @@ struct NotificationsView: View {
         .isDetailLink(false)
     }
     
-    private func onAppearConfig() {
-        notificationsViewModel.registerForPushNotifications()
-        
-        onboardingViewModel.nextAction = {
-            startExploringViewPresented.toggle()
-        }
-    }
-    
     private func continueAction() {
-        onboardingViewModel.profileSetupType = ProfileSetupType().completed
-        managenotificationValue(typeOfOption: notificationsViewModel.notificationsEnabled == true ? NotificationPermissionTypeIds().Yes : NotificationPermissionTypeIds().No)
+        guard var user = Constants.loggedInUser else { return }
+        user.profileSetupType = 10
+        Constants.saveUser(user: user)
         
-        UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
-        UserDefaults.standard.set(true, forKey: UserDefaultKey().isRemeberMe)
-        
-        onboardingViewModel.callSignUpProcessAPI()
-    }
-    
-    func managenotificationValue(typeOfOption: String) {
-        var arrayOfPreference = [PreferenceClass]()
-        var arrayOfTypeOption = [TypeOptions]()
-        
-        arrayOfPreference = Constants.getPreferenceData?.filter({$0.typesOfPreference == PreferenceTypeIds().notification_enable}) ?? []
-        
-        if arrayOfPreference.count > 0 {
-            arrayOfTypeOption = arrayOfPreference[0].typeOptions ?? []
-            if arrayOfTypeOption.count > 0 {
-                arrayOfTypeOption = arrayOfTypeOption.filter({$0.typeOfOptions == typeOfOption})
-                var dict = NotificationParam()
-                dict.notificationPreferenceId = arrayOfTypeOption[0].preferenceId?.description ?? ""
-                dict.notificationOptionId = arrayOfTypeOption[0].id?.description ?? ""
+        userWebService.updateUser(user: user) { result in
+            switch result {
+            case .success:
+                UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+                UserDefaults.standard.set(true, forKey: UserDefaultKey().isRemeberMe)
                 
-                onboardingViewModel.notification = dict
+                startExploringViewPresented.toggle()
+            case .failure(let error):
+                print(error)
             }
         }
     }

@@ -153,7 +153,6 @@
 		6040111729CD9D2D0079FEE2 /* ActivityLikeUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6040111529CD9D2D0079FEE2 /* ActivityLikeUserCell.xib */; };
 		6040111A29CDA8320079FEE2 /* TVSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040111829CDA8320079FEE2 /* TVSectionCell.swift */; };
 		6040111B29CDA8320079FEE2 /* TVSectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6040111929CDA8320079FEE2 /* TVSectionCell.xib */; };
-		604075D9298797D500CEB67F /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604075D8298797D500CEB67F /* OnboardingViewModel.swift */; };
 		6050E57C29B1BEA9006B7707 /* GuideManagerCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6050E57A29B1BEA9006B7707 /* GuideManagerCVCell.swift */; };
 		6050E57D29B1BEA9006B7707 /* GuideManagerCVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6050E57B29B1BEA9006B7707 /* GuideManagerCVCell.xib */; };
 		6050E58029B208A1006B7707 /* GuideManagerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6050E57F29B208A1006B7707 /* GuideManagerDataSource.swift */; };
@@ -526,7 +525,6 @@
 		6040111529CD9D2D0079FEE2 /* ActivityLikeUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActivityLikeUserCell.xib; sourceTree = "<group>"; };
 		6040111829CDA8320079FEE2 /* TVSectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVSectionCell.swift; sourceTree = "<group>"; };
 		6040111929CDA8320079FEE2 /* TVSectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TVSectionCell.xib; sourceTree = "<group>"; };
-		604075D8298797D500CEB67F /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		6050E57A29B1BEA9006B7707 /* GuideManagerCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideManagerCVCell.swift; sourceTree = "<group>"; };
 		6050E57B29B1BEA9006B7707 /* GuideManagerCVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GuideManagerCVCell.xib; sourceTree = "<group>"; };
 		6050E57F29B208A1006B7707 /* GuideManagerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideManagerDataSource.swift; sourceTree = "<group>"; };
@@ -825,7 +823,6 @@
 		0A16E7182A1E4D4700B8CA3F /* OnboardingFlow */ = {
 			isa = PBXGroup;
 			children = (
-				604075D8298797D500CEB67F /* OnboardingViewModel.swift */,
 				0A16E7192A1E518500B8CA3F /* WelcomeView.swift */,
 				0A16E71B2A1E856E00B8CA3F /* NameView.swift */,
 				0ACE846C2A1FD43E008B196C /* AgeView.swift */,
@@ -2620,7 +2617,6 @@
 				601245C8297A9EBA00441F09 /* AddActivityViewModel.swift in Sources */,
 				646F620829D44EA400C63FF0 /* ExampleCoreAudioDevice.m in Sources */,
 				608B542629FAB15B00E22669 /* LicenseLibraryNameCell.swift in Sources */,
-				604075D9298797D500CEB67F /* OnboardingViewModel.swift in Sources */,
 				6084A23C29ADFB50009129A6 /* IAPHelper + Extension.swift in Sources */,
 				0A16E70A2A1D29DF00B8CA3F /* SignUpView.swift in Sources */,
 				6040111629CD9D2D0079FEE2 /* ActivityLikeUserCell.swift in Sources */,

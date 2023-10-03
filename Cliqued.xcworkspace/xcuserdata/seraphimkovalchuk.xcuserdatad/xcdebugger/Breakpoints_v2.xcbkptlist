@@ -68,16 +68,94 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "30012414-3944-4D40-BE99-BE3FE7DFD264"
+            uuid = "FEEAE219-6DA7-40A6-9052-797B53A34570"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/Flows/HomeFlow/ProfileView/ProfileView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
+            landmarkName = "userDetailsStack"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "FEEAE219-6DA7-40A6-9052-797B53A34570 - b4de6552fb91f4ab"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Spacer, Swift.Optional&lt;SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;&gt;, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;)&gt; in cliqued.ProfileView.userDetailsStack.getter : some"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/ProfileView/ProfileView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "156"
+                  endingLineNumber = "156"
+                  offsetFromSymbolStart = "164">
+               </Location>
+               <Location
+                  uuid = "FEEAE219-6DA7-40A6-9052-797B53A34570 - b4de6552fb91f4ab"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Spacer, Swift.Optional&lt;SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;&gt;, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;)&gt; in cliqued.ProfileView.userDetailsStack.getter : some"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/ProfileView/ProfileView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "156"
+                  endingLineNumber = "156"
+                  offsetFromSymbolStart = "424">
+               </Location>
+               <Location
+                  uuid = "FEEAE219-6DA7-40A6-9052-797B53A34570 - b4de6552fb91f4ab"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Spacer, Swift.Optional&lt;SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;&gt;, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;)&gt; in cliqued.ProfileView.userDetailsStack.getter : some"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/ProfileView/ProfileView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "156"
+                  endingLineNumber = "156"
+                  offsetFromSymbolStart = "684">
+               </Location>
+               <Location
+                  uuid = "FEEAE219-6DA7-40A6-9052-797B53A34570 - b4de6552fb91f4ab"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Spacer, Swift.Optional&lt;SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;&gt;, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;)&gt; in cliqued.ProfileView.userDetailsStack.getter : some"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/ProfileView/ProfileView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "156"
+                  endingLineNumber = "156"
+                  offsetFromSymbolStart = "732">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9A54008F-42BD-4C1D-A10E-67203A211AF3"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Cliqued/NetworkLayer/User/UserWebService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "updateUserMedia(image:completion:)"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "getUser(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

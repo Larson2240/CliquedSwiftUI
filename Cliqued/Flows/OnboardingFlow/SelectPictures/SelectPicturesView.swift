@@ -12,7 +12,6 @@ struct SelectPicturesView: View {
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     
-    @StateObject private var onboardingViewModel = OnboardingViewModel.shared
     @StateObject private var picturesViewModel = SelectPicturesViewModel()
     
     @State private var locationViewPresented = false
@@ -182,16 +181,6 @@ struct SelectPicturesView: View {
     }
     
     private func onAppearConfig() {
-        onboardingViewModel.nextAction = {
-            if isFromEditProfile {
-                presentationMode.wrappedValue.dismiss()
-            } else {
-                onboardingViewModel.profileImages.removeAll()
-                onboardingViewModel.thumbnails.removeAll()
-                locationViewPresented.toggle()
-            }
-        }
-        
         if isFromEditProfile {
             setupProfileImageCollection()
         }

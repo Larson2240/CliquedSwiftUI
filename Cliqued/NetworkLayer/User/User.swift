@@ -54,7 +54,23 @@ struct User: Codable {
     var lookingForTitle: String?
     
     func profileSetupCompleted() -> Bool {
-        return profileSetupType == 1
+        return profileSetupType == 10
+    }
+    
+    func userAge() -> Int {
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        guard let birthdate = birthdate, let date = dateFormatter.date(from: birthdate) else { return 0 }
+        
+        let calendar = Calendar.current
+        
+        let ageComponents = calendar.dateComponents([.year], from: date, to: now)
+        guard let age = ageComponents.year else { return 0 }
+        
+        return age
     }
 }
 

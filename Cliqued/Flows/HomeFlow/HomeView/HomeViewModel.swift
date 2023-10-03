@@ -87,37 +87,37 @@ final class HomeViewModel: ObservableObject {
             return
         }
         
-        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateNotificationToken, parameters: params) { [weak self] response, error, message in
-            guard let self = self else { return }
-            
-            if error != nil && response == nil {
-                UIApplication.shared.showAlertPopup(message: message ?? "")
-            } else {
-                let json = response as? NSDictionary
-                let status = json?[API_STATUS] as? Int
-                let msg = json?[API_MESSAGE] as? String
-                
-                guard
-                    status == SUCCESS,
-                    let userArray = json?["user"] as? NSArray,
-                    userArray.count > 0
-                else {
-                    UIApplication.shared.showAlertPopup(message: msg ?? "")
-                    return
-                }
-                
-                let dicUser = userArray[0] as! NSDictionary
-                let decoder = JSONDecoder()
-                
-                do {
-                    let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
-                    let objUser = try decoder.decode(User.self, from: jsonData)
-                    self.saveUserInfoAndProceed(user: objUser)
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }
-        }
+//        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateNotificationToken, parameters: params) { [weak self] response, error, message in
+//            guard let self = self else { return }
+//
+//            if error != nil && response == nil {
+//                UIApplication.shared.showAlertPopup(message: message ?? "")
+//            } else {
+//                let json = response as? NSDictionary
+//                let status = json?[API_STATUS] as? Int
+//                let msg = json?[API_MESSAGE] as? String
+//
+//                guard
+//                    status == SUCCESS,
+//                    let userArray = json?["user"] as? NSArray,
+//                    userArray.count > 0
+//                else {
+//                    UIApplication.shared.showAlertPopup(message: msg ?? "")
+//                    return
+//                }
+//
+//                let dicUser = userArray[0] as! NSDictionary
+//                let decoder = JSONDecoder()
+//
+//                do {
+//                    let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
+//                    let objUser = try decoder.decode(User.self, from: jsonData)
+//                    self.saveUserInfoAndProceed(user: objUser)
+//                } catch {
+//                    print(error.localizedDescription)
+//                }
+//            }
+//        }
     }
     
     //MARK: Call Get Preferences Data API
@@ -161,7 +161,7 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: Save preference data in UserDefault
-    func savePreferenceData(preference: [PreferenceClass]){
+    func savePreferenceData(preference: [PreferenceClass]) {
         Constants.savePreferenceData(preferene: preference)
     }
     

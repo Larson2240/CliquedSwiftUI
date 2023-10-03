@@ -14,14 +14,20 @@ final class AuthWebService {
     func register(
         email: String,
         password: String,
-        completion: @escaping (Result<String, Error>) -> Void
+        completion: @escaping (Result<Void, Error>) -> Void
     ) {
         authProvider.request(.register(email: email, password: password)) { result in
             switch result {
             case .success(let response):
                 do {
                     let model = try JSONDecoder().decode(TokenModel.self, from: response.data)
-                    completion(.success(model.token))
+                    let cookie = response.response?.headers["Set-Cookie"] as? String
+                    let filteredCookie = cookie?.components(separatedBy: ";")
+                    
+                    UserDefaults.standard.set(model.token, forKey: kUserToken)
+                    UserDefaults.standard.set(filteredCookie?[0], forKey: kUserCookie)
+                    
+                    completion(.success(Void()))
                 } catch {
                     if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
                         completion(.failure(ApiError.custom(errorDescription: model.message)))
@@ -38,14 +44,20 @@ final class AuthWebService {
     func login(
         email: String,
         password: String,
-        completion: @escaping (Result<String, Error>) -> Void
+        completion: @escaping (Result<Void, Error>) -> Void
     ) {
         authProvider.request(.login(email: email, password: password)) { result in
             switch result {
             case .success(let response):
                 do {
                     let model = try JSONDecoder().decode(TokenModel.self, from: response.data)
-                    completion(.success(model.token))
+                    let cookie = response.response?.headers["Set-Cookie"] as? String
+                    let filteredCookie = cookie?.components(separatedBy: ";")
+                    
+                    UserDefaults.standard.set(model.token, forKey: kUserToken)
+                    UserDefaults.standard.set(filteredCookie?[0], forKey: kUserCookie)
+                    
+                    completion(.success(Void()))
                 } catch {
                     if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
                         completion(.failure(ApiError.custom(errorDescription: model.message)))
@@ -62,14 +74,20 @@ final class AuthWebService {
     func social(
         socialID: String,
         loginType: Int,
-        completion: @escaping (Result<String, Error>) -> Void
+        completion: @escaping (Result<Void, Error>) -> Void
     ) {
         authProvider.request(.social(socialID: socialID, loginType: loginType)) { result in
             switch result {
             case .success(let response):
                 do {
                     let model = try JSONDecoder().decode(TokenModel.self, from: response.data)
-                    completion(.success(model.token))
+                    let cookie = response.response?.headers["Set-Cookie"] as? String
+                    let filteredCookie = cookie?.components(separatedBy: ";")
+                    
+                    UserDefaults.standard.set(model.token, forKey: kUserToken)
+                    UserDefaults.standard.set(filteredCookie?[0], forKey: kUserCookie)
+                    
+                    completion(.success(Void()))
                 } catch {
                     if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
                         completion(.failure(ApiError.custom(errorDescription: model.message)))
