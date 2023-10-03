@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.presentationMode) private var presentationMode
+    @StateObject private var viewModel = SettingsViewModel()
     
     var body: some View {
         ZStack {
@@ -244,13 +245,13 @@ struct SettingsView: View {
     
     private var bottomButtons: some View {
         VStack {
-            Button(action: {  }) {
+            Button(action: { viewModel.deleteAccount() }) {
                 Text(Constants_Message.title_delete_account)
                     .font(.themeBold(16))
                     .foregroundColor(.theme)
             }
             
-            Button(action: {  }) {
+            Button(action: { viewModel.logout() }) {
                 ZStack {
                     Color.theme
                     

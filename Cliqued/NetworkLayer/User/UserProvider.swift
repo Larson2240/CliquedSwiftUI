@@ -11,7 +11,7 @@ import Moya
 enum UserProvider {
     case getUser
     case deleteUser
-    case updateUser(user: User)
+    case updateUser(parameters: [String: Any])
     case updateUserMedia(user: User, image: UIImage)
     case matches
     case potentialMatches
@@ -58,8 +58,8 @@ extension UserProvider: TargetType {
         switch self {
         case .getUser, .deleteUser, .matches, .potentialMatches:
             return .requestPlain
-        case .updateUser(let user):
-            return .requestCustomJSONEncodable(user, encoder: JSONEncoder())
+        case .updateUser(let parameters):
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .updateUserMedia(let user, let image):
             let imageData = image.jpegData(compressionQuality: 0)
             let memberIdData = "\(user.name ?? "")".data(using: String.Encoding.utf8) ?? Data()
@@ -70,10 +70,11 @@ extension UserProvider: TargetType {
     }
     
     var headers: [String : String]? {
-        guard let userCookie = UserDefaults.standard.string(forKey: kUserCookie) else { return nil }
+        var header = ["Accept": "application/json"]
         
-        let header = ["Cookie": userCookie,
-                      "Accept": "application/json"]
+        if let userCookie = UserDefaults.standard.string(forKey: kUserCookie) {
+            header["Cookie"] = userCookie
+        }
         
         return header
     }

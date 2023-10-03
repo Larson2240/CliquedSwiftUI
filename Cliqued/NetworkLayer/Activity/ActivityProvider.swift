@@ -41,10 +41,11 @@ extension ActivityProvider: TargetType {
     }
     
     var headers: [String : String]? {
-        guard let userCookie = UserDefaults.standard.string(forKey: kUserCookie) else { return nil }
+        var header = ["Accept": "application/json"]
         
-        let header = ["Cookie": userCookie,
-                      "Accept": "application/json"]
+        if let userCookie = UserDefaults.standard.string(forKey: kUserCookie) {
+            header["Cookie"] = userCookie
+        }
         
         return header
     }

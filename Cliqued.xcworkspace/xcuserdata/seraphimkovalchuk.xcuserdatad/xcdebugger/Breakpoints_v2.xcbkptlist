@@ -68,77 +68,47 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FEEAE219-6DA7-40A6-9052-797B53A34570"
+            uuid = "1C916923-17FD-4484-96F1-AD06F9E143CD"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Cliqued/Flows/HomeFlow/ProfileView/ProfileView.swift"
+            filePath = "Cliqued/NetworkLayer/User/UserWebService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
-            landmarkName = "userDetailsStack"
-            landmarkType = "24">
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "updateUserMedia(image:completion:)"
+            landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "FEEAE219-6DA7-40A6-9052-797B53A34570 - b4de6552fb91f4ab"
+                  uuid = "1C916923-17FD-4484-96F1-AD06F9E143CD - 9a43830b05bbb076"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Spacer, Swift.Optional&lt;SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;&gt;, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;)&gt; in cliqued.ProfileView.userDetailsStack.getter : some"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUserMedia(image: __C.UIImage, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "cliqued"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/ProfileView/ProfileView.swift"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "156"
-                  endingLineNumber = "156"
-                  offsetFromSymbolStart = "164">
+                  startingLineNumber = "82"
+                  endingLineNumber = "82"
+                  offsetFromSymbolStart = "296">
                </Location>
                <Location
-                  uuid = "FEEAE219-6DA7-40A6-9052-797B53A34570 - b4de6552fb91f4ab"
+                  uuid = "1C916923-17FD-4484-96F1-AD06F9E143CD - 9a43830b05bbbf4c"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Spacer, Swift.Optional&lt;SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;&gt;, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;)&gt; in cliqued.ProfileView.userDetailsStack.getter : some"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUserMedia(image: __C.UIImage, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "cliqued"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/ProfileView/ProfileView.swift"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "156"
-                  endingLineNumber = "156"
-                  offsetFromSymbolStart = "424">
-               </Location>
-               <Location
-                  uuid = "FEEAE219-6DA7-40A6-9052-797B53A34570 - b4de6552fb91f4ab"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Spacer, Swift.Optional&lt;SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;&gt;, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;)&gt; in cliqued.ProfileView.userDetailsStack.getter : some"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/ProfileView/ProfileView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "156"
-                  endingLineNumber = "156"
-                  offsetFromSymbolStart = "684">
-               </Location>
-               <Location
-                  uuid = "FEEAE219-6DA7-40A6-9052-797B53A34570 - b4de6552fb91f4ab"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Spacer, Swift.Optional&lt;SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;&gt;, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer)&gt;&gt;)&gt; in cliqued.ProfileView.userDetailsStack.getter : some"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/ProfileView/ProfileView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "156"
-                  endingLineNumber = "156"
-                  offsetFromSymbolStart = "732">
+                  startingLineNumber = "168"
+                  endingLineNumber = "168"
+                  offsetFromSymbolStart = "296">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -146,16 +116,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9A54008F-42BD-4C1D-A10E-67203A211AF3"
+            uuid = "2FDAC298-ADEF-4B14-B8D8-E07FAB575D6D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Cliqued/NetworkLayer/User/UserWebService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
-            landmarkName = "getUser(completion:)"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "updateUser(user:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2FDAC298-ADEF-4B14-B8D8-E07FAB575D6D - 276d41e4fd8ec935"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "296">
+               </Location>
+               <Location
+                  uuid = "2FDAC298-ADEF-4B14-B8D8-E07FAB575D6D - 276d41e4fd8f3c1b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "143"
+                  endingLineNumber = "143"
+                  offsetFromSymbolStart = "296">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "71D04703-58CF-446D-96B3-01BB07B5F98D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/NetworkLayer/User/UserWebService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "deleteUser(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

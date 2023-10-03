@@ -5,185 +5,57 @@
 //  Created by C211 on 23/01/23.
 //
 
-import UIKit
+import SwiftUI
 
-class SettingsViewModel {
+final class SettingsViewModel: ObservableObject {
+    private let userWebService = UserWebService()
+    private let authWebService = AuthWebService()
     
-    var isMessage: Dynamic<String> = Dynamic(String())
-    var isLoaderShow: Dynamic<Bool> = Dynamic(true)
-    var isDataGet: Dynamic<Bool> = Dynamic(false)
-    var isLogout: Dynamic<Bool> = Dynamic(false)
-    
-    //MARK: Variables
-    private struct structUserStatus {
-        var user_id = ""
-        var is_online = ""
-        var is_last_seen = ""
-        var profileSetupType = ""
-    }
-    
-    private var structUserStatusValue = structUserStatus()
-    private let apiParams = ApiParams()
-    
-    //MARK: Save user data in UserDefault
-    func saveUserInfoAndProceed(user: User){
-        Constants.saveUser(user: user)
-    }
-    
-    //MARK: - API Call
-    func apiUpdateUserChatStatus() {
-        let params: NSDictionary = [
-            apiParams.userID: getUserId(),
-            apiParams.is_online: getIsOnline(),
-            apiParams.last_seen: getIsLastSeen(),
-            apiParams.profile_setup_type : getProfileSetupType()
-        ]
+    func logout() {
+        guard Connectivity.isConnectedToInternet() else {
+            UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
+            return
+        }
         
-        print(params)
+        UIApplication.shared.showLoader()
         
-        if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async { [weak self] in
-                self?.isLoaderShow.value = true
-            }
+        authWebService.logout { result in
+            UIApplication.shared.hideLoader()
             
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.UpdateProfile, parameters: params) { [weak self] response, error, message in
-                guard let self = self else { return }
+            switch result {
+            case .success:
+                UserDefaults.standard.set(false, forKey: UserDefaultKey().isLoggedIn)
+                UserDefaults.standard.set(false, forKey: UserDefaultKey().isRemeberMe)
                 
-                DispatchQueue.main.async {
-                    self.isLoaderShow.value = false
-                }
-                
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
-                } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    let message = json?[API_MESSAGE] as? String
-                    
-                    if status == SUCCESS {
-                        if let userArray = json?["user"] as? NSArray {
-                            if userArray.count > 0 {
-                                let dicUser = userArray[0] as! NSDictionary
-                                let decoder = JSONDecoder()
-                                do {
-                                    let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
-                                    let objUser = try decoder.decode(User.self, from: jsonData)
-                                    self.saveUserInfoAndProceed(user: objUser)
-                                    self.isDataGet.value = true
-                                } catch {
-                                    print(error.localizedDescription)
-                                }
-                                //self.isDataGet.value = true
-                            }
-                        }
-                    } else {
-                        self.isMessage.value = message ?? ""
-                    }
-                }
+                let registerOptionsView = UIHostingController(rootView: RegisterOptionsView())
+                APP_DELEGATE.window?.rootViewController = registerOptionsView
+            case .failure(let error):
+                UIApplication.shared.showAlertPopup(message: error.localizedDescription)
             }
-        } else {
-            self.isMessage.value = Constants.alert_InternetConnectivity
         }
     }
     
-    //MARK: Call Update Profile API
-    func callLogoutAPI() {
-        let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-        ]
+    func deleteAccount() {
+        guard Connectivity.isConnectedToInternet() else {
+            UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
+            return
+        }
         
-        if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async { [weak self] in
-                self?.isLoaderShow.value = true
-            }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.Logout, parameters: params) { [weak self] response, error, message in
-                guard let self = self else { return }
-                
-                self.isLoaderShow.value = false
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
-                } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    let message = json?[API_MESSAGE] as? String
-                    
-                    if status == SUCCESS {
-                        self.isLogout.value = true
-                    } else {
-                        self.isMessage.value = message ?? ""
-                    }
-                }
-            }
-        } else {
-            self.isMessage.value = Constants.alert_InternetConnectivity
-        }
-    }
-    
-    func callDeleteAccountAPI() {
-        let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-        ]
+        UIApplication.shared.showLoader()
         
-        if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async { [weak self] in
-                self?.isLoaderShow.value = true
+        userWebService.deleteUser { result in
+            UIApplication.shared.hideLoader()
+            
+            switch result {
+            case .success:
+                UserDefaults.standard.set(false, forKey: UserDefaultKey().isLoggedIn)
+                UserDefaults.standard.set(false, forKey: UserDefaultKey().isRemeberMe)
+                
+                let registerOptionsView = UIHostingController(rootView: RegisterOptionsView())
+                APP_DELEGATE.window?.rootViewController = registerOptionsView
+            case .failure(let error):
+                UIApplication.shared.showAlertPopup(message: error.localizedDescription)
             }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.DeleteAccount, parameters: params) { [weak self] response, error, message in
-                guard let self = self else { return }
-                self.isLoaderShow.value = false
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
-                } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    let message = json?[API_MESSAGE] as? String
-                    
-                    if status == SUCCESS {
-                        self.isLogout.value = true
-                    } else {
-                        self.isMessage.value = message ?? ""
-                    }
-                }
-            }
-        } else {
-            self.isMessage.value = Constants.alert_InternetConnectivity
         }
-    }
-}
-
-extension SettingsViewModel {
-    
-    // getter methods
-    func getUserId() -> String {
-        return structUserStatusValue.user_id
-    }
-    
-    func getIsOnline() -> String {
-        return structUserStatusValue.is_online
-    }
-    
-    func getIsLastSeen() -> String {
-        return structUserStatusValue.is_last_seen
-    }
-    
-    func getProfileSetupType() -> String {
-        return structUserStatusValue.profileSetupType
-    }
-    
-    // setter methods
-    func setUserId(value:String) {
-        structUserStatusValue.user_id = value
-    }
-    
-    func setIsOnline(value:String) {
-        structUserStatusValue.is_online = value
-    }
-    
-    func setIsLastSeen(value:String) {
-        structUserStatusValue.is_last_seen = value
-    }
-    
-    func setProfileSetupType(value:String) {
-        structUserStatusValue.profileSetupType = value
     }
 }

@@ -100,4 +100,19 @@ final class AuthWebService {
             }
         }
     }
+    
+    func logout(completion: @escaping (Result<Void, Error>) -> Void) {
+        authProvider.request(.logout) { result in
+            switch result {
+            case .success(let response):
+                if response.statusCode == 200 || response.statusCode == 201 {
+                    completion(.success(Void()))
+                } else {
+                    completion(.failure(ApiError.parsing))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }

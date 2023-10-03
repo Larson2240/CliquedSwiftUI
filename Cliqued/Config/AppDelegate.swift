@@ -106,10 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        
-        if socketIOHandler != nil{
-            socketIOHandler?.background()
-        }
+        socketIOHandler?.background()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {

@@ -61,7 +61,7 @@ struct User: Codable {
         let now = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         guard let birthdate = birthdate, let date = dateFormatter.date(from: birthdate) else { return 0 }
         
