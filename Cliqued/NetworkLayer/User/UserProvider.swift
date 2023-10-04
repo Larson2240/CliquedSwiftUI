@@ -12,7 +12,7 @@ enum UserProvider {
     case getUser
     case deleteUser
     case updateUser(parameters: [String: Any])
-    case updateUserMedia(user: User, image: UIImage)
+    case updateUserMedia(image: UIImage, position: Int)
     case matches
     case potentialMatches
 }
@@ -60,12 +60,14 @@ extension UserProvider: TargetType {
             return .requestPlain
         case .updateUser(let parameters):
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
-        case .updateUserMedia(let user, let image):
-            let imageData = image.jpegData(compressionQuality: 0)
-            let memberIdData = "\(user.name ?? "")".data(using: String.Encoding.utf8) ?? Data()
-            var formData: [Moya.MultipartFormData] = [Moya.MultipartFormData(provider: .data(imageData!), name: "profile_image", fileName: "asdas.png", mimeType: "image/jpeg")]
-            formData.append(Moya.MultipartFormData(provider: .data(memberIdData), name: "user_id"))
-            return .uploadMultipart(formData)
+        case .updateUserMedia(let image, let position):
+            let data = image.jpegData(compressionQuality: 0.5)!
+            
+            let gifData = MultipartFormData(provider: .data(data), name: "file", fileName: "gif.lpeg", mimeType: "image/lpeg")
+            let descriptionData = MultipartFormData(provider: .data(withUnsafeBytes(of: position, { Data($0) })), name: "position")
+            let multipartData = [gifData, descriptionData]
+            
+            return .uploadMultipart(multipartData)
         }
     }
     

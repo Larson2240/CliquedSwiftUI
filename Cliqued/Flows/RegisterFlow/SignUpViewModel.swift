@@ -96,6 +96,8 @@ final class SignUpViewModel: NSObject, ObservableObject {
             
             switch result {
             case .success:
+                UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+                
                 self.proceed()
             case .failure(let error):
                 if let error = error as? ApiError, let errorDesc = error.errorDescription {

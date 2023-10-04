@@ -239,9 +239,9 @@ extension HomeActivitiesVC: KolodaViewDataSource {
             card.labelLocationDistance.text = "\(distance) \(Constants.label_kmAway)"
             
             if let arr = activityData.userProfileMedia, arr.count > 0 {
-                let isImageData = arr.filter({$0.mediaType == "0"})
+                let isImageData = arr.filter({$0.mediaType == 0})
                 let img = isImageData[0].url
-                let strUrl = UrlProfileImage + img!
+                let strUrl = UrlProfileImage + img
                 let imageWidth = card.imageview.frame.size.width
                 let imageHeight = card.imageview.frame.size.height
                 let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth)&h=\(imageHeight)&zc=1&src=\(strUrl)"

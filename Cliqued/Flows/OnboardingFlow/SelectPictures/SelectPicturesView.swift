@@ -187,65 +187,46 @@ struct SelectPicturesView: View {
     }
     
     private func continueAction() {
-        locationViewPresented.toggle()
-//        userWebService.updateUserMedia(image: picturesViewModel.arrayOfSelectedImages.first!.image!) { result in
-//
-//        }
+        guard var user = Constants.loggedInUser else { return }
         
-//        onboardingViewModel.profileImages.removeAll()
-//        onboardingViewModel.thumbnails.removeAll()
-//
-//        if !isFromEditProfile {
-//            for profileData in picturesViewModel.arrayOfSelectedImages {
-//                if profileData.mediaType == 0 {
-//                    onboardingViewModel.profileImages.append(profileData.image ?? UIImage())
-//                    onboardingViewModel.thumbnails.append(profileData.image ?? UIImage())
-//                } else if profileData.mediaType == 1 {
-//                    onboardingViewModel.profileImages.append(profileData.videoURL ?? URL.self)
-//                    onboardingViewModel.thumbnails.append(profileData.thumbnail ?? UIImage())
-//                }
-//            }
-//
-//            //Check array count
-//            if onboardingViewModel.profileImages.count > 1 {
-//                //Check at least one image is selected or not.
-//                let isImageContain = picturesViewModel.arrayOfSelectedImages.contains(where: { $0.mediaType == 0 })
-//
-//                if isImageContain {
-//                    onboardingViewModel.profileSetupType = ProfileSetupType().profile_images
-//                    onboardingViewModel.callSignUpProcessAPI()
-//                } else {
-//                    UIApplication.shared.showAlertPopup(message: Constants.validMsg_selectImage)
-//                }
-//            } else {
-//                UIApplication.shared.showAlertPopup(message: Constants.validMsg_selectPicture)
-//            }
-//        } else {
-//            if picturesViewModel.arrayOfSelectedImages.count > 1 {
-//                for profileData in picturesViewModel.arrayOfEditedImages {
-//                    if profileData.mediaType == 0 {
-//                        onboardingViewModel.profileImages.append(profileData.image ?? UIImage())
-//                        onboardingViewModel.thumbnails.append(profileData.image ?? UIImage())
-//                    } else if profileData.mediaType == 1 {
-//                        onboardingViewModel.profileImages.append(profileData.videoURL ?? URL.self)
-//                        onboardingViewModel.thumbnails.append(profileData.thumbnail ?? UIImage())
-//                    }
-//                }
-//
-//                //Check at least one image is selected or not.
-//                let isImageContain = picturesViewModel.arrayOfSelectedImages.contains(where: { $0.mediaType == 0 })
-//                if isImageContain {
-//                    onboardingViewModel.profileSetupType = ProfileSetupType().completed
-//                    onboardingViewModel.deletedImageIds = picturesViewModel.arrayOfDeletedImageIds.map({ String($0) }).joined(separator: ", ")
-//
-//                    onboardingViewModel.callSignUpProcessAPI()
-//                } else {
-//                    UIApplication.shared.showAlertPopup(message: Constants.validMsg_selectImage)
-//                }
-//            } else {
-//                UIApplication.shared.showAlertPopup(message: Constants.validMsg_selectPicture)
-//            }
-//        }
+        guard picturesViewModel.arrayOfSelectedImages.isEmpty == false else {
+            UIApplication.shared.showAlertPopup(message: Constants.validMsg_selectPicture)
+            return
+        }
+        
+        guard Connectivity.isConnectedToInternet() else {
+            UIApplication.shared.showAlertPopup(message: Constants.alert_InternetConnectivity)
+            return
+        }
+        
+        let dispatchGroup = DispatchGroup()
+        
+        UIApplication.shared.showLoader()
+        
+        for (i, media) in picturesViewModel.arrayOfSelectedImages.enumerated() {
+            guard let image = media.image else { continue }
+            
+            dispatchGroup.enter()
+            
+            userWebService.updateUserMedia(image: image, position: i) { result in
+                switch result {
+                case .success(let media):
+                    guard user.userProfileMedia?.contains(media) == false else { return }
+                    
+                    user.userProfileMedia?.append(media)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+                
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            Constants.saveUser(user: user)
+            UIApplication.shared.hideLoader()
+            locationViewPresented.toggle()
+        }
     }
     
     private func setupProfileImageCollection() {

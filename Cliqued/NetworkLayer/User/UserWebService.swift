@@ -9,7 +9,7 @@ import UIKit
 import Moya
 
 final class UserWebService {
-    private let userProvider = MoyaProvider<UserProvider>()
+    private let userProvider = MoyaProvider<UserProvider>(plugins: [VerbosePlugin()])
     
     func getUser(completion: @escaping (Result<User, Error>) -> Void) {
         userProvider.request(.getUser) { result in
@@ -157,16 +157,15 @@ final class UserWebService {
     
     func updateUserMedia(
         image: UIImage,
-        completion: @escaping (Result<User, Error>) -> Void
+        position: Int,
+        completion: @escaping (Result<ProfileMediaFile, Error>) -> Void
     ) {
-        guard let user = Constants.loggedInUser else { return }
-        
-        userProvider.request(.updateUserMedia(user: user, image: image)) { result in
+        userProvider.request(.updateUserMedia(image: image, position: position)) { result in
             switch result {
             case .success(let response):
                 do {
-                    let model = try JSONDecoder().decode(ApiUserModel.self, from: response.data)
-                    completion(.success(model.user))
+                    let model = try JSONDecoder().decode(ProfileMediaFile.self, from: response.data)
+                    completion(.success(model))
                 } catch {
                     if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
                         completion(.failure(ApiError.custom(errorDescription: model.message)))

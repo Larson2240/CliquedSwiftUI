@@ -32,7 +32,7 @@ struct User: Codable {
     var createdDate: String?
     var id: Int?
     var guid: String?
-    var userProfileMedia: [UserProfileImages]?
+    var userProfileMedia: [ProfileMediaFile]?
     var likesCounter: Int?
     var height: Int?
     var isBlocked: String?
@@ -78,4 +78,10 @@ struct Address: Codable {
     let address: String
     let latitude, longitude: Double
     let city, state, country, pincode: String
+}
+
+struct ProfileMediaFile: Codable, Equatable, Identifiable {
+    let id: Int
+    let url: String
+    let mediaType, position: Int
 }
