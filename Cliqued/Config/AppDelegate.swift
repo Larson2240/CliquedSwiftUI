@@ -356,26 +356,18 @@ extension AppDelegate : PKPushRegistryDelegate {
     }
     
     func registerForPushNotifications() {
+        // For iOS 10 display notification (sent via APNS)
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.delegate = self
         
-        if #available(iOS 10.0, *) {
-            // For iOS 10 display notification (sent via APNS)
-            let notificationCenter = UNUserNotificationCenter.current()
-            notificationCenter.delegate = self
-            
-            //Remove all pending and delivered notifications
-            notificationCenter.removeAllDeliveredNotifications()
-            notificationCenter.removeAllPendingNotificationRequests()
-            
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            notificationCenter.requestAuthorization(
-                options: authOptions,
-                completionHandler: {_, _ in })
-            
-        } else {
-            let settings: UIUserNotificationSettings =
-            UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            UIApplication.shared.registerUserNotificationSettings(settings)
-        }
+        //Remove all pending and delivered notifications
+        notificationCenter.removeAllDeliveredNotifications()
+        notificationCenter.removeAllPendingNotificationRequests()
+        
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        notificationCenter.requestAuthorization(
+            options: authOptions,
+            completionHandler: {_, _ in })
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             UIApplication.shared.registerForRemoteNotifications()

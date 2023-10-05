@@ -108,9 +108,7 @@ struct NotificationsView: View {
         }
         .frame(height: 60)
         .cornerRadius(30)
-        .padding(.horizontal, 30)
-        .padding(.bottom, 30)
-        .padding(.top, 16)
+        .padding(30)
     }
     
     private var presentables: some View {

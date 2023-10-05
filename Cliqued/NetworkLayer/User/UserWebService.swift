@@ -35,7 +35,7 @@ final class UserWebService {
         userProvider.request(.deleteUser) { result in
             switch result {
             case .success(let response):
-                if response.statusCode == 200 || response.statusCode == 201 {
+                if response.statusCode == 200 || response.statusCode == 201 || response.statusCode == 204 {
                     completion(.success(Void()))
                 } else {
                     completion(.failure(ApiError.parsing))
@@ -114,12 +114,12 @@ final class UserWebService {
             parameters["ageTo"] = ageTo
         }
         
-        if let interestedActivityCategories = user.interestedActivityCategories {
-            parameters["interestedActivityCategories"] = interestedActivityCategories
+        if let interestedActivityCategories = user.favouriteActivityCategories {
+            parameters["favouriteActivityCategories"] = interestedActivityCategories.map { $0.id }
         }
         
         if let interestedActivitySubcategories = user.interestedActivitySubcategories {
-            parameters["interestedActivitySubcategories"] = interestedActivitySubcategories
+            parameters["favouriteActivitySubcategories"] = interestedActivitySubcategories
         }
         
         if let address = user.userAddress {

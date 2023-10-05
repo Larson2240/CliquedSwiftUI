@@ -10,7 +10,6 @@ import SDWebImageSwiftUI
 
 struct PickActivityView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @Environment(\.safeAreaInsets) private var safeAreaInsets
     
     @StateObject private var viewModel = PickActivityViewModel()
     
@@ -46,10 +45,10 @@ struct PickActivityView: View {
                 
                 imagesStack
             }
+            .edgesIgnoringSafeArea(.bottom)
             
             continueButton
         }
-        .edgesIgnoringSafeArea(.bottom)
     }
     
     private var header: some View {
@@ -99,7 +98,7 @@ struct PickActivityView: View {
             let cellWidth = (screenSize.width - 40) / 2
             let cellHeight = cellWidth + (cellWidth * 0.2)
             
-            Image(activity.icon ?? "placeholder_activity")
+            Image(activity.title + "_image")
                 .resizable()
                 .scaledToFill()
                 .frame(width: cellWidth, height: cellHeight)
@@ -157,9 +156,7 @@ struct PickActivityView: View {
             }
             .frame(height: 60)
             .cornerRadius(30)
-            .padding(.horizontal, 30)
-            .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
-            .padding(.top, 16)
+            .padding(30)
         }
     }
     
@@ -189,17 +186,17 @@ struct PickActivityView: View {
         
         guard var user = Constants.loggedInUser else { return }
         
-        user.interestedActivityCategories = selectedActivities.map { $0.id }
+        user.favouriteActivityCategories = selectedActivities
         Constants.saveUser(user: user)
         
         subActivityViewPresented.toggle()
     }
     
     private func setupSelectedActivity() {
-        guard let user = Constants.loggedInUser, let activities = user.interestedActivityCategories else { return }
+        guard let user = Constants.loggedInUser, let activities = user.favouriteActivityCategories else { return }
         
         for activity in viewModel.arrayOfActivity {
-            if activities.contains(activity.id) {
+            if activities.contains(activity) {
                 selectedActivities.append(activity)
             }
         }

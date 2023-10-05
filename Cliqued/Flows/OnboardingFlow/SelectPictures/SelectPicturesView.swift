@@ -10,7 +10,6 @@ import SDWebImageSwiftUI
 
 struct SelectPicturesView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @Environment(\.safeAreaInsets) private var safeAreaInsets
     
     @StateObject private var picturesViewModel = SelectPicturesViewModel()
     
@@ -51,7 +50,6 @@ struct SelectPicturesView: View {
             }
             
             continueButton
-                .ignoresSafeArea()
         }
     }
     
@@ -168,8 +166,7 @@ struct SelectPicturesView: View {
             }
             .frame(height: 60)
             .cornerRadius(30)
-            .padding(.horizontal, 30)
-            .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
+            .padding(30)
         }
     }
     

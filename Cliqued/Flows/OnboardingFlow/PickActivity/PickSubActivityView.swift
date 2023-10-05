@@ -10,7 +10,6 @@ import SDWebImageSwiftUI
 
 struct PickSubActivityView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @Environment(\.safeAreaInsets) private var safeAreaInsets
     
     var isFromEditProfile: Bool
     
@@ -46,10 +45,10 @@ struct PickSubActivityView: View {
                 
                 subActivityStack
             }
+            .edgesIgnoringSafeArea(.bottom)
             
             continueButton
         }
-        .edgesIgnoringSafeArea(.bottom)
     }
     
     private var header: some View {
@@ -79,9 +78,9 @@ struct PickSubActivityView: View {
     private var subActivityStack: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 16) {
-                if let user = Constants.loggedInUser, let pickedActivities = user.interestedActivityCategories, let allActivities = Constants.activityCategories {
+                if let user = Constants.loggedInUser, let pickedActivities = user.favouriteActivityCategories, let allActivities = Constants.activityCategories {
                     ForEach(allActivities) { activity in
-                        if pickedActivities.contains(activity.id) {
+                        if pickedActivities.contains(activity) {
                             categoryStack(for: activity)
                         }
                     }
@@ -107,18 +106,14 @@ struct PickSubActivityView: View {
             }
             .frame(height: 60)
             .cornerRadius(30)
-            .padding(.horizontal, 30)
-            .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
-            .padding(.top, 16)
+            .padding(30)
         }
     }
     
     private func categoryStack(for activity: Activity) -> some View {
         VStack {
             HStack {
-                if let imageString = activity.image {
-                    Image(imageString)
-                }
+                Image(activity.title + "_icon")
                 
                 Text(activity.title)
                     .font(.themeMedium(14))
@@ -171,11 +166,12 @@ struct PickSubActivityView: View {
     }
     
     private func continueAction() {
-        guard var user = Constants.loggedInUser, let pickedActivities = user.interestedActivityCategories else { return }
+        guard var user = Constants.loggedInUser, let pickedActivities = user.favouriteActivityCategories else { return }
+        
         var subActivitiesCount = 0
         
         for pickedActivity in pickedActivities {
-            let subActivities = selectedSubActivities.filter({ $0.parentID == pickedActivity })
+            let subActivities = selectedSubActivities.filter({ $0.parentID == pickedActivity.id })
             
             if subActivities.count > 0 {
                 subActivitiesCount += 1

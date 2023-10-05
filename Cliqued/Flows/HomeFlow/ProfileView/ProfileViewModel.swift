@@ -26,7 +26,7 @@ final class ProfileViewModel: ObservableObject {
         
     }
     
-    func imageTapped(_ object: UserProfileImages) {
+    func imageTapped(_ object: ProfileMediaFile) {
         guard let rootVC = UIApplication.shared.keyWindow?.rootViewController else { return }
         
 //        if object.mediaType == mediaType.image {

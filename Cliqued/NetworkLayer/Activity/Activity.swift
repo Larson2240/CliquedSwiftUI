@@ -7,16 +7,14 @@
 
 import Foundation
 
-struct Activity: Codable, Identifiable, Equatable {
+struct Activity: Codable, Identifiable, Equatable, Hashable {
     let id: Int
-    let icon: String?
     let parentID: Int?
-    let image: String?
     let title: String
-
+    
     enum CodingKeys: String, CodingKey {
-        case id, icon
+        case id
         case parentID = "parentId"
-        case image, title
+        case title
     }
 }

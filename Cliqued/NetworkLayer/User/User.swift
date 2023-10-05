@@ -27,7 +27,7 @@ struct User: Codable {
     var lastSeen: String?
     var isOnline: Bool?
     var isVerified: String?
-    var interestedActivityCategories: [Int]?
+    var favouriteActivityCategories: [Activity]?
     var interestedActivitySubcategories: [Int]?
     var createdDate: String?
     var id: Int?
@@ -80,7 +80,7 @@ struct Address: Codable {
     let city, state, country, pincode: String
 }
 
-struct ProfileMediaFile: Codable, Equatable, Identifiable {
+struct ProfileMediaFile: Codable, Hashable, Equatable, Identifiable {
     let id: Int
     let url: String
     let mediaType, position: Int

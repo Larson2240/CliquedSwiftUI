@@ -9,7 +9,6 @@ import SwiftUI
 
 struct RelationshipView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @Environment(\.safeAreaInsets) private var safeAreaInsets
     
     var isFromEditProfile: Bool
     
@@ -49,7 +48,6 @@ struct RelationshipView: View {
             
             continueButton
         }
-        .edgesIgnoringSafeArea(.bottom)
     }
     
     
@@ -218,8 +216,7 @@ struct RelationshipView: View {
         .cornerRadius(30)
         .frame(height: 60)
         .disabled(romancePreference == nil && friendshipPreference == nil)
-        .padding(.horizontal, 30)
-        .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
+        .padding(30)
     }
     
     private var presentables: some View {

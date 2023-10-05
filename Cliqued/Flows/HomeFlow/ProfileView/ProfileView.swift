@@ -77,7 +77,7 @@ struct ProfileView: View {
     private var imageContainer: some View {
         ZStack {
             if Constants.loggedInUser?.userProfileMedia != nil {
-//                pagerView
+                pagerView
                 
                 gradient
             } else {
@@ -97,22 +97,25 @@ struct ProfileView: View {
         .frame(width: screenSize.width, height: 300)
     }
     
-//    private var pagerView: some View {
-//        Pager(page: page, data: viewModel.userDetails.profileCollection, id: \.self) { object in
-//            WebImage(url: viewModel.profileImageURL(for: object, imageSize: CGSize(width: screenSize.width, height: 300)))
-//                .placeholder {
-//                    placeholderImage
-//                }
-//                .resizable()
-//                .frame(width: screenSize.width, height: 300)
-//                .onTapGesture {
-//                    viewModel.imageTapped(object)
-//                }
-//        }
-//        .onPageChanged {
-//            currentPage = $0
-//        }
-//    }
+    @ViewBuilder
+    private var pagerView: some View {
+        if let userMedia = Constants.loggedInUser?.userProfileMedia {
+            Pager(page: page, data: userMedia) { object in
+                WebImage(url: URL(string: "https://cliqued.michal.es/\(object.url)"))
+                    .placeholder {
+                        placeholderImage
+                    }
+                    .resizable()
+                    .frame(width: screenSize.width, height: 300)
+                    .onTapGesture {
+                        viewModel.imageTapped(object)
+                    }
+            }
+            .onPageChanged {
+                currentPage = $0
+            }
+        }
+    }
     
     private var gradient: some View {
         VStack {
@@ -215,37 +218,35 @@ struct ProfileView: View {
             }
             .padding(.horizontal)
             
-            ScrollView(.horizontal, showsIndicators: false) {
-//                HStack(spacing: 6) {
-//                    ForEach($viewModel.userDetails.favoriteCategoryActivity) { activity in
-//                        imageCell(activity.wrappedValue)
-//                            .cornerRadius(10)
-//                    }
-//                    .frame(width: 110)
-//                }
-//                .padding(.horizontal)
+            if let user = Constants.loggedInUser, let activities = user.favouriteActivityCategories {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 6) {
+                        ForEach(activities, id: \.self) { activity in
+                            if activity.parentID == nil {
+                                imageCell(activity)
+                                    .cornerRadius(10)
+                            }
+                        }
+                        .frame(width: 110)
+                    }
+                    .padding(.horizontal)
+                }
+                .frame(height: 140)
             }
-            .frame(height: 140)
             
             separator
         }
     }
     
-    private func imageCell(_ activity: UserInterestedCategory) -> some View {
+    private func imageCell(_ activity: Activity) -> some View {
         ZStack {
             let cellWidth: CGFloat = 110
             let cellHeight: CGFloat = 140
             
-//            WebImage(url: viewModel.activityImageURL(for: activity, size: CGSize(width: cellWidth, height: cellHeight)))
-//                .placeholder {
-//                    Image("placeholder_detailpage")
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(width: cellWidth, height: cellHeight)
-//                }
-//                .resizable()
-//                .scaledToFill()
-//                .frame(width: cellWidth, height: cellHeight)
+            Image(activity.title + "_image")
+                .resizable()
+                .scaledToFill()
+                .frame(width: cellWidth, height: cellHeight)
             
             LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
             
@@ -253,7 +254,7 @@ struct ProfileView: View {
                 Spacer()
                 
                 HStack {
-                    Text(activity.activityCategoryTitle ?? "")
+                    Text(activity.title)
                         .font(.themeMedium(10))
                         .foregroundColor(.white)
                         .padding(8)

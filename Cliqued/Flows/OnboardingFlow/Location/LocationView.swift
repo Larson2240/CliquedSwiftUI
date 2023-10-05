@@ -11,7 +11,6 @@ import MapKit
 
 struct LocationView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @Environment(\.safeAreaInsets) private var safeAreaInsets
     
     @StateObject private var locationViewModel = LocationViewModel()
     
@@ -29,7 +28,6 @@ struct LocationView: View {
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .background(background)
-        .onAppear { onAppearConfig() }
         .navigationBarHidden(true)
     }
     
@@ -49,7 +47,6 @@ struct LocationView: View {
             
             continueButton
         }
-        .edgesIgnoringSafeArea(.bottom)
     }
     
     private var header: some View {
@@ -178,9 +175,7 @@ struct LocationView: View {
         }
         .cornerRadius(30)
         .frame(height: 60)
-        .padding(.horizontal, 30)
-        .padding(.bottom, safeAreaInsets.bottom == 0 ? 16 : safeAreaInsets.bottom)
-        .padding(.top, 16)
+        .padding(30)
     }
     
     private var presentables: some View {
@@ -188,12 +183,6 @@ struct LocationView: View {
                        isActive: $notificationsViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)
-    }
-    
-    private func onAppearConfig() {
-        locationViewModel.isFromEditProfile = isFromEditProfile
-//        locationViewModel.addressId = addressId
-//        locationViewModel.setupUserLocation(with: objAddress)
     }
     
     private func continueAction() {
