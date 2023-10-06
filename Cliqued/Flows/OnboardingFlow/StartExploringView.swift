@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct StartExploringView: View {
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -42,7 +44,7 @@ struct StartExploringView: View {
     
     private var title: some View {
         VStack {
-            Text("Hi \(Constants.loggedInUser?.name ?? "")!")
+            Text("Hi \(loggedInUser?.name ?? "")!")
                 .font(.themeBold(30))
                 .foregroundColor(.colorDarkGrey)
                 .multilineTextAlignment(.center)

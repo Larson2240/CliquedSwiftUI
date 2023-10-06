@@ -174,13 +174,13 @@ extension ChatDataSource : UITableViewDelegate, UITableViewDataSource {
                 let obj = viewModel.arrConversation[indexPath.row]
                 let dict:NSMutableDictionary = NSMutableDictionary()
                 
-                if obj.senderId == (Constants.loggedInUser?.id)! {
-                    dict.setValue("\(obj.receiverId)", forKey: "receiver_id")
-                    dict.setValue("\(obj.senderId)", forKey: "user_id")
-                } else {
-                    dict.setValue("\(obj.senderId)", forKey: "receiver_id")
-                    dict.setValue("\(obj.receiverId)", forKey: "user_id")
-                }
+//                if obj.senderId == (Constants.loggedInUser?.id)! {
+//                    dict.setValue("\(obj.receiverId)", forKey: "receiver_id")
+//                    dict.setValue("\(obj.senderId)", forKey: "user_id")
+//                } else {
+//                    dict.setValue("\(obj.senderId)", forKey: "receiver_id")
+//                    dict.setValue("\(obj.receiverId)", forKey: "user_id")
+//                }
                 APP_DELEGATE.socketIOHandler?.updateUserChatStatus(data: dict)
             }
         }
@@ -401,13 +401,13 @@ extension ChatDataSource : UICollectionViewDelegateFlowLayout, UICollectionViewD
                         viewController.selectedSection = indexPath.section
                         let dict:NSMutableDictionary = NSMutableDictionary()
                         
-                        if obj.userId == Constants.loggedInUser?.id {
-                            dict.setValue("\(obj.counterUserId ?? 0)", forKey: "receiver_id")
-                            dict.setValue("\(obj.userId ?? 0)", forKey: "user_id")
-                        } else {
-                            dict.setValue("\(obj.userId ?? 0)", forKey: "receiver_id")
-                            dict.setValue("\(obj.counterUserId ?? 0)", forKey: "user_id")
-                        }
+//                        if obj.userId == Constants.loggedInUser?.id {
+//                            dict.setValue("\(obj.counterUserId ?? 0)", forKey: "receiver_id")
+//                            dict.setValue("\(obj.userId ?? 0)", forKey: "user_id")
+//                        } else {
+//                            dict.setValue("\(obj.userId ?? 0)", forKey: "receiver_id")
+//                            dict.setValue("\(obj.counterUserId ?? 0)", forKey: "user_id")
+//                        }
                         APP_DELEGATE.socketIOHandler?.updateUserChatStatus(data: dict)
                     } else {
                         let subscriptionplanvc = SubscriptionPlanVC.loadFromNib()

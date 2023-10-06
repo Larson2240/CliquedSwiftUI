@@ -50,7 +50,7 @@ final class HomeActivitiesViewModel: ObservableObject {
     //MARK: Call Get Preferences Data API
     func callGetUserActivityAPI() {
         let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+//            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
             apiParams.activityId : getActivityId(),
             apiParams.activitySubCategoryId : getActivitySubCatIds(),
             apiParams.looking_for : getLookingForIds(),
@@ -121,7 +121,7 @@ final class HomeActivitiesViewModel: ObservableObject {
     //MARK: Call Like Dislike profile API
     func callLikeDislikeUserAPI(isShowLoader: Bool) {
         let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+//            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
             apiParams.counterUserId : getCounterUserId(),
             apiParams.isFollow : getIsFollow()
         ]

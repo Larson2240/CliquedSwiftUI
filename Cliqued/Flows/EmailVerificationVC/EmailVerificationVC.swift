@@ -76,8 +76,7 @@ extension EmailVerificationVC {
     func viewDidLoadMethod() {
         setupNavigationBar()
         
-        viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
-        viewModel.setEmailId(value: "\(Constants.loggedInUser?.connectedAccount![0].emailId ?? "")")
+        
         viewModel.setNewEmailId(value: newEmailId)
         
         handleApiResponse()

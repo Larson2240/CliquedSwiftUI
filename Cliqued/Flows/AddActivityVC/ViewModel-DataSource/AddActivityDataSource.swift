@@ -101,23 +101,23 @@ class AddActivityDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
         let diffInDays = Calendar.current.dateComponents([.day], from: Date(), to: sender.date).day ?? 0
         
         //Check selected date and current date diference is greater than 30 for basic plan user
-        if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-            if diffInDays > 30 {
-                self.viewModel.setIsSelectedDateNotValid(value: true)
-                self.viewModel.setDate(value: selectedDate)
-                viewController.alertCustom(btnNo:Constants.btn_cancel, btnYes: Constants.btn_viewPlan, title: "", message: Constants_Message.activity_wrongSelectDate_validation) {
-                    let subscriptionplanvc = SubscriptionPlanVC.loadFromNib()
-                    subscriptionplanvc.isFromOtherScreen = true
-                    self.viewController.present(subscriptionplanvc, animated: true)
-                }
-            } else {
-                self.viewModel.setIsSelectedDateNotValid(value: false)
-                self.viewModel.setDate(value: selectedDate)
-            }
-        } else {
-            self.viewModel.setIsSelectedDateNotValid(value: false)
-            self.viewModel.setDate(value: selectedDate)
-        }
+//        if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+//            if diffInDays > 30 {
+//                self.viewModel.setIsSelectedDateNotValid(value: true)
+//                self.viewModel.setDate(value: selectedDate)
+//                viewController.alertCustom(btnNo:Constants.btn_cancel, btnYes: Constants.btn_viewPlan, title: "", message: Constants_Message.activity_wrongSelectDate_validation) {
+//                    let subscriptionplanvc = SubscriptionPlanVC.loadFromNib()
+//                    subscriptionplanvc.isFromOtherScreen = true
+//                    self.viewController.present(subscriptionplanvc, animated: true)
+//                }
+//            } else {
+//                self.viewModel.setIsSelectedDateNotValid(value: false)
+//                self.viewModel.setDate(value: selectedDate)
+//            }
+//        } else {
+//            self.viewModel.setIsSelectedDateNotValid(value: false)
+//            self.viewModel.setDate(value: selectedDate)
+//        }
     }
     
     @objc func buttonSetCurrentLocation(_ sender: UIButton) {

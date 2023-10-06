@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RelationshipView: View {
     @Environment(\.presentationMode) private var presentationMode
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
     
     var isFromEditProfile: Bool
     
@@ -25,8 +26,8 @@ struct RelationshipView: View {
         }
         .background(background)
         .onAppear {
-            romancePreference = Constants.loggedInUser?.preferenceRomance
-            friendshipPreference = Constants.loggedInUser?.preferenceFriendship
+            romancePreference = loggedInUser?.preferenceRomance
+            friendshipPreference = loggedInUser?.preferenceFriendship
         }
         .navigationBarHidden(true)
     }
@@ -227,12 +228,9 @@ struct RelationshipView: View {
     }
     
     private func continueAction() {
-        guard var user = Constants.loggedInUser else { return }
+        loggedInUser?.preferenceRomance = romancePreference
+        loggedInUser?.preferenceFriendship = friendshipPreference
         
-        user.preferenceRomance = romancePreference
-        user.preferenceFriendship = friendshipPreference
-        
-        Constants.saveUser(user: user)
         activityViewPresented.toggle()
     }
 }

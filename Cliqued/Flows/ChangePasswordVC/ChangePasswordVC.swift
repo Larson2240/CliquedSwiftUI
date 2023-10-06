@@ -149,7 +149,7 @@ extension ChangePasswordVC {
         
     func viewDidLoadMethod() {
         setupNavigationBar()
-        viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
+//        viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
         handleApiResponse()
     }
     

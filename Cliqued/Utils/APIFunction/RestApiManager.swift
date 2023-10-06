@@ -348,38 +348,38 @@ class RestApiManager {
 
 //MARK: Call Update Profile API
 func callLogoutAPI() {
-    let params: NSDictionary = [
-        ApiParams().userID : "\(Constants.loggedInUser?.id ?? 0)",
-    ]
-    var topVC = UIViewController()
-    topVC = UIApplication.getTopViewController() ?? UIViewController()
-    if(Connectivity.isConnectedToInternet()){
-        DispatchQueue.main.async {
-            topVC.showLoader()
-        }
-        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.Logout, parameters: params) { response, error, message in
-            topVC.dismissLoader()
-            if(error != nil && response == nil) {
-                topVC.showAlertPopup(message: error?.localizedDescription ?? "")
-            } else {
-                let json = response as? NSDictionary
-                let status = json?[API_STATUS] as? Int
-                let message = json?[API_MESSAGE] as? String
-                
-                if(status == FAILED) {
-                    topVC.showAlertPopup(message: message ?? "")
-                }
-                else {
-                    topVC.dismissLoader()
-                    UserDefaults.standard.clearUserDefault()
-                    checkSecurity()
-                    APP_DELEGATE.setRegisterOptionRootViewController()
-                }
-            }
-        }
-    } else {
-        topVC.showAlertPopup(message: Constants.alert_InternetConnectivity)
-    }
+//    let params: NSDictionary = [
+//        ApiParams().userID : "\(Constants.loggedInUser?.id ?? 0)",
+//    ]
+//    var topVC = UIViewController()
+//    topVC = UIApplication.getTopViewController() ?? UIViewController()
+//    if(Connectivity.isConnectedToInternet()){
+//        DispatchQueue.main.async {
+//            topVC.showLoader()
+//        }
+//        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.Logout, parameters: params) { response, error, message in
+//            topVC.dismissLoader()
+//            if(error != nil && response == nil) {
+//                topVC.showAlertPopup(message: error?.localizedDescription ?? "")
+//            } else {
+//                let json = response as? NSDictionary
+//                let status = json?[API_STATUS] as? Int
+//                let message = json?[API_MESSAGE] as? String
+//                
+//                if(status == FAILED) {
+//                    topVC.showAlertPopup(message: message ?? "")
+//                }
+//                else {
+//                    topVC.dismissLoader()
+//                    UserDefaults.standard.clearUserDefault()
+//                    checkSecurity()
+//                    APP_DELEGATE.setRegisterOptionRootViewController()
+//                }
+//            }
+//        }
+//    } else {
+//        topVC.showAlertPopup(message: Constants.alert_InternetConnectivity)
+//    }
 }
 
 

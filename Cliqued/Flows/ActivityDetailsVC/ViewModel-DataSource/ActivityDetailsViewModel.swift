@@ -69,58 +69,58 @@ class ActivityDetailsViewModel {
     //MARK: Call API
     func callInterestedActivityListAPI() {
         
-        let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            apiParams.activityId: self.getActivityId()
-        ]
-        
-        if(Connectivity.isConnectedToInternet()){
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetActivityInterestedPeople, parameters: params) { [weak self] response, error, message in
-                guard let self = self else { return }
-                
-                self.isDataLoad = true
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
-                } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    let message = json?[API_MESSAGE] as? String
-                    
-                    if status == SUCCESS {
-                        if let activityArray = json?["activity"] as? NSArray {
-                            if activityArray.count > 0 {
-                                let dicActivity = activityArray[0] as! NSDictionary
-                                let userArray = dicActivity["user_info"] as! NSArray
-                                if userArray.count > 0 {
-                                    for userInfo in userArray {
-                                        let dicUser = userInfo as! NSDictionary
-                                        let decoder = JSONDecoder()
-                                        do {
-                                            let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
-                                            let objUser = try decoder.decode(InterestedUserInfo.self, from: jsonData)
-                                            self.arrayOfInterestedUserList.append(objUser)
-                                        } catch {
-                                            print(error.localizedDescription)
-                                        }
-                                    }
-                                    self.isDataGet.value = true
-                                } else {
-                                    self.isDataGet.value = true
-                                }
-                            }
-                        }
-                    } else if status == LIMIT_FINISH {
-                        self.isDataGet.value = true
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        self.isMessage.value = message ?? ""
-                        self.isDataGet.value = true
-                    }
-                }
-            }
-        } else {
-            self.isMessage.value = Constants.alert_InternetConnectivity
-        }
+//        let params: NSDictionary = [
+//            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+//            apiParams.activityId: self.getActivityId()
+//        ]
+//
+//        if(Connectivity.isConnectedToInternet()){
+//            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetActivityInterestedPeople, parameters: params) { [weak self] response, error, message in
+//                guard let self = self else { return }
+//
+//                self.isDataLoad = true
+//                if(error != nil && response == nil) {
+//                    self.isMessage.value = message ?? ""
+//                } else {
+//                    let json = response as? NSDictionary
+//                    let status = json?[API_STATUS] as? Int
+//                    let message = json?[API_MESSAGE] as? String
+//
+//                    if status == SUCCESS {
+//                        if let activityArray = json?["activity"] as? NSArray {
+//                            if activityArray.count > 0 {
+//                                let dicActivity = activityArray[0] as! NSDictionary
+//                                let userArray = dicActivity["user_info"] as! NSArray
+//                                if userArray.count > 0 {
+//                                    for userInfo in userArray {
+//                                        let dicUser = userInfo as! NSDictionary
+//                                        let decoder = JSONDecoder()
+//                                        do {
+//                                            let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
+//                                            let objUser = try decoder.decode(InterestedUserInfo.self, from: jsonData)
+//                                            self.arrayOfInterestedUserList.append(objUser)
+//                                        } catch {
+//                                            print(error.localizedDescription)
+//                                        }
+//                                    }
+//                                    self.isDataGet.value = true
+//                                } else {
+//                                    self.isDataGet.value = true
+//                                }
+//                            }
+//                        }
+//                    } else if status == LIMIT_FINISH {
+//                        self.isDataGet.value = true
+//                        self.isMessage.value = message ?? ""
+//                    } else {
+//                        self.isMessage.value = message ?? ""
+//                        self.isDataGet.value = true
+//                    }
+//                }
+//            }
+//        } else {
+//            self.isMessage.value = Constants.alert_InternetConnectivity
+//        }
     }
     
 }

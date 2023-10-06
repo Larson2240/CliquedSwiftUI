@@ -84,7 +84,7 @@ class SubscriptionPlanViewModel {
     //MARK: Social Login API
     func callAddSubscriptionDetailsAPI() {
         let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+//            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
             apiParams.subscriptionId : self.getSubscriptionId(),
             apiParams.transactionId : self.getTransactionId(),
             apiParams.amount : self.getAmount(),

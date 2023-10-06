@@ -186,7 +186,7 @@ class VideoCallVC: UIViewController {
         data["call_id"] = Calling.call_id
         data["call_status"] = callStatus
         data["call_end_time"] = Date().localToUTC(format: "yyyy-MM-dd hh:mm:ss")
-        data["receiverId"] = Constants.loggedInUser?.id ?? 0
+//        data["receiverId"] = Constants.loggedInUser?.id ?? 0
         data["is_privateRoom"] = Calling.is_privateRoom
         data["is_host"] = Calling.is_host
         data["room_name"] = Calling.room_Name
@@ -618,7 +618,7 @@ extension VideoCallVC : RoomDelegate {
                 data["call_start_time"] = Calling.call_start_time
                 data["call_end_time"] = ""
                 data["call_id"] = Calling.call_id
-                data["receiverId"] = (Constants.loggedInUser?.id)
+//                data["receiverId"] = (Constants.loggedInUser?.id)
                 data["is_privateRoom"] = Calling.is_privateRoom
                 data["is_host"] = Calling.is_host
                 data["is_audio_call"] = Calling.is_audio_call
@@ -685,7 +685,7 @@ extension VideoCallVC : RoomDelegate {
             data["call_id"] = Calling.call_id
             data["call_status"] = callStatus
             data["call_end_time"] = Date().localToUTC(format: "yyyy-MM-dd hh:mm:ss")
-            data["receiverId"] = Constants.loggedInUser?.id ?? 0
+//            data["receiverId"] = Constants.loggedInUser?.id ?? 0
             data["is_privateRoom"] = Calling.is_privateRoom
             data["is_host"] = Calling.is_host
             data["room_name"] = Calling.room_Name
@@ -783,7 +783,7 @@ extension VideoCallVC : RoomDelegate {
         data["call_id"] = Calling.call_id
         data["call_status"] = callStatus
         data["call_end_time"] = Date().localToUTC(format: "yyyy-MM-dd hh:mm:ss")
-        data["receiverId"] = Constants.loggedInUser?.id ?? 0
+//        data["receiverId"] = Constants.loggedInUser?.id ?? 0
         data["is_privateRoom"] = Calling.is_privateRoom
         data["is_host"] = Calling.is_host
         data["room_name"] = Calling.room_Name

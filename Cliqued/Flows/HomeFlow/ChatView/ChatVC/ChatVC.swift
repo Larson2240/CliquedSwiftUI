@@ -96,7 +96,7 @@ class ChatVC: UIViewController {
     //MARK: Variable
     var dataSource : ChatDataSource?
     var viewModel = ChatViewModel()
-    var user_id = "\(Constants.loggedInUser?.id ?? 0)"
+    var user_id = UserDefaults.standard.string(forKey: kUserToken)
     var strSearch = ""
     var selectedUser = -1
     var selectedSection = -1
@@ -119,13 +119,13 @@ class ChatVC: UIViewController {
         UIApplication.shared.applicationIconBadgeNumber = 0
         if isProfileCompleted() {
             strSearch = ""
-            self.viewModel.setUserId(value: user_id)
+            self.viewModel.setUserId(value: user_id!)
             self.labelNoDataFound.isHidden = true
             APP_DELEGATE.socketIOHandler?.delegate = self
             
             self.viewModel.callUserLikesListAPI()
             
-            self.viewModel.setSenderId(value: self.user_id)
+            self.viewModel.setSenderId(value: self.user_id!)
             let dict = NSMutableDictionary()
             dict.setValue(self.viewModel.getSenderId(), forKey: "sender_id")
             APP_DELEGATE.socketIOHandler?.getConversation(data: dict)
@@ -147,7 +147,7 @@ class ChatVC: UIViewController {
     
     //MARK: Button complete profile tap
     @IBAction func btnCompleteProfileTap(_ sender: Any) {
-        manageSetupProfileNavigationFlow()
+        
     }
     
     //MARK: - Fetch From Local
@@ -263,7 +263,7 @@ extension ChatVC {
                 if self.viewModel.arrUserMatchesList.count > 0 {
                     let arrList = self.viewModel.arrUserMatchesList
                     
-                    let filteredSingleArray = arrList.filter({$0.counterUserId == Constants.loggedInUser?.id && $0.isMeetup == 0 && $0.isFollow == "1" && $0.counterUserFollowStatus == nil && ($0.blockStatus == nil || $0.blockStatus == "0")})
+                    let filteredSingleArray = arrList.filter({String($0.counterUserId ?? 0) == self.user_id && $0.isMeetup == 0 && $0.isFollow == "1" && $0.counterUserFollowStatus == nil && ($0.blockStatus == nil || $0.blockStatus == "0")})
                     self.viewModel.arrSingleLikesList = filteredSingleArray
                     
                     let filteredArray = arrList.filter({$0.isMeetup == 1})
@@ -297,71 +297,15 @@ extension ChatVC {
     
     //MARK: Function manage if user profile not complete
     func isProfileCompleted() -> Bool {
-        if let user = Constants.loggedInUser, user.profileSetupCompleted() {
             self.viewProfileNotComplete.isHidden = true
             self.viewCollection.isHidden = false
             self.viewMessagesSection.isHidden = false
             self.imageviewLine.isHidden = false
             return true
-        } else {
-            bindUserDetailsData()
-            self.viewCollection.isHidden = true
-            self.viewMessagesSection.isHidden = true
-            self.imageviewLine.isHidden = true
-            self.viewProfileNotComplete.isHidden = false
-            return false
-        }
-    }
-    
-    //MARK: Setup profile navigation flow
-    func manageSetupProfileNavigationFlow() {
-        let strCount: String?
-        if let user = Constants.loggedInUser, user.profileSetupCompleted() {
-            let profile_setup_count = (Constants.loggedInUser?.profileSetupType)!
-            strCount = "\(profile_setup_count)"
-        } else {
-            let profile_setup_count = (Constants.loggedInUser?.profileSetupType)! + 1
-            strCount = "\(profile_setup_count)"
-        }
-        switch strCount {
-        case profileSetupType.name:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NameView())
-            
-        case profileSetupType.birthdate:
-            APP_DELEGATE.window?.rootViewController =  UIHostingController(rootView: AgeView())
-            
-        case profileSetupType.gender:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: GenderView())
-            
-        case profileSetupType.relationship:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: RelationshipView(isFromEditProfile: false))
-            
-        case profileSetupType.category:
-            let pickActivityView = PickActivityView(isFromEditProfile: false, activitiesFlowPresented: .constant(false))
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: pickActivityView)
-            
-        case profileSetupType.sub_category:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: PickSubActivityView(isFromEditProfile: false, activitiesFlowPresented: .constant(false)))
-            
-        case profileSetupType.profile_images:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: SelectPicturesView(arrayOfProfileImage: [], isFromEditProfile: false))
-            
-        case profileSetupType.location:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: LocationView(isFromEditProfile: false))
-            
-        case profileSetupType.notification_enable:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: NotificationsView())
-            
-        case profileSetupType.completed:
-            APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())
-        default:
-            break
-        }
     }
     
     //MARK: Bind data on screen from the user object.
     func bindUserDetailsData() {
-        let userData = Constants.loggedInUser!
         
     }
 }
@@ -410,7 +354,7 @@ extension ChatVC : SocketIOHandlerDelegate {
                 if UIApplication.getTopViewController() is ChatVC {
                     let vc = MessageVC.loadFromNib()
                     vc.hidesBottomBarWhenPushed = true
-                    vc.sender_id = Int(user_id)!
+                    vc.sender_id = user_id
                     
                     if "\(obj.senderId)" == user_id {
                         vc.receiver_id = Int(obj.receiverId)
@@ -442,7 +386,7 @@ extension ChatVC : SocketIOHandlerDelegate {
                     if UIApplication.getTopViewController() is ChatVC {
                         let vc = MessageVC.loadFromNib()
                         vc.hidesBottomBarWhenPushed = true
-                        vc.sender_id = Int(user_id)!
+                        vc.sender_id = user_id
                         
                         if "\(obj.userId ?? 0)" == user_id {
                             vc.receiver_id = obj.counterUserId!

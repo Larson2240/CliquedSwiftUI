@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct GenderView: View {
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     @State private var gender: Int? = nil
     @State private var relationshipViewPresented = false
     
@@ -19,7 +21,7 @@ struct GenderView: View {
         }
         .background(background)
         .onAppear {
-            if let user = Constants.loggedInUser, let gender = user.gender {
+            if let user = loggedInUser, let gender = user.gender {
                 self.gender = gender
             }
         }
@@ -128,10 +130,7 @@ struct GenderView: View {
             return
         }
         
-        guard var user = Constants.loggedInUser else { return }
-        
-        user.gender = gender
-        Constants.saveUser(user: user)
+        loggedInUser?.gender = gender
         relationshipViewPresented.toggle()
     }
 }

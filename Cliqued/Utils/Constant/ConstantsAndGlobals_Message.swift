@@ -183,7 +183,7 @@ class Calling {
     static var room_sid = ""
     static var room_Name = String()
     static var sender_access_token = ""
-    static var receiverId = Constants.loggedInUser?.id?.description
+    static var receiverId = UserDefaults.standard.string(forKey: kUserToken)?.description
     static var call_id = "0"
     static var call_start_time = ""
     static var call_end_time = ""
@@ -195,8 +195,8 @@ class Calling {
     static var is_audio_call = "1"
     static var call_status = "0"
     static var user_count = 0
-    static var loginUserId = Constants.loggedInUser?.id
-    static var firstName = Constants.loggedInUser?.name
+    static var loginUserId = UserDefaults.standard.string(forKey: kUserToken)
+    static var firstName = ""
     static var otherUserProfile = ""
 }
 

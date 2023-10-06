@@ -60,24 +60,24 @@ extension ActivityDetailsVC {
     }
     //MARK: Back Button Action
     @objc func buttonEditActivityTap() {
-        if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-            let subscriptionplanvc = SubscriptionPlanVC.loadFromNib()
-            subscriptionplanvc.isFromOtherScreen = true
-            self.present(subscriptionplanvc, animated: true)
-        } else {
-            let addactivityvc = AddActivityVC.loadFromNib()
-            
-            addactivityvc.isEditActivity = true
-            addactivityvc.objActivityDetails = objActivityDetails
-            
-            addactivityvc.callbackForUpdateActivityData = { [weak self] objActivityDetails in
-                guard let self = self else { return }
-                
-                self.viewModel.bindActivityDetailsData(activityDetails: objActivityDetails)
-                self.tableview.reloadData()
-            }
-            self.navigationController?.pushViewController(addactivityvc, animated: true)
-        }
+//        if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+//            let subscriptionplanvc = SubscriptionPlanVC.loadFromNib()
+//            subscriptionplanvc.isFromOtherScreen = true
+//            self.present(subscriptionplanvc, animated: true)
+//        } else {
+//            let addactivityvc = AddActivityVC.loadFromNib()
+//            
+//            addactivityvc.isEditActivity = true
+//            addactivityvc.objActivityDetails = objActivityDetails
+//            
+//            addactivityvc.callbackForUpdateActivityData = { [weak self] objActivityDetails in
+//                guard let self = self else { return }
+//                
+//                self.viewModel.bindActivityDetailsData(activityDetails: objActivityDetails)
+//                self.tableview.reloadData()
+//            }
+//            self.navigationController?.pushViewController(addactivityvc, animated: true)
+//        }
     }
     
     //MARK: Handle API response
@@ -109,11 +109,11 @@ extension ActivityDetailsVC {
                     let arrayUsers = self.viewModel.getAllInterestedUserData()
                     var counterUser = 0
                     
-                    if followersData.userId == Constants.loggedInUser?.id {
-                        counterUser = followersData.counterUserId ?? 0
-                    } else {
-                        counterUser = followersData.userId ?? 0
-                    }
+//                    if followersData.userId == Constants.loggedInUser?.id {
+//                        counterUser = followersData.counterUserId ?? 0
+//                    } else {
+//                        counterUser = followersData.userId ?? 0
+//                    }
                     
                     let filterArray = arrayUsers.filter({$0.interestedUserId == counterUser})
                     
@@ -133,19 +133,19 @@ extension ActivityDetailsVC {
         }
         
         viewModel1.isViewLimitFinish.bind { [weak self] isSuccess in
-            if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == self?.isPremium.NotPremium {
-                    self?.showSubscriptionPlanScreen()
-                }
-            }
+//            if isSuccess {
+//                if Constants.loggedInUser?.isPremiumUser == self?.isPremium.NotPremium {
+//                    self?.showSubscriptionPlanScreen()
+//                }
+//            }
         }
         
         viewModel1.isLikeLimitFinish.bind { [weak self] isSuccess in
-            if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == self?.isPremium.NotPremium {
-                    self?.showSubscriptionPlanScreen()
-                }
-            }
+//            if isSuccess {
+//                if Constants.loggedInUser?.isPremiumUser == self?.isPremium.NotPremium {
+//                    self?.showSubscriptionPlanScreen()
+//                }
+//            }
         }
         
         //Loader hide & show

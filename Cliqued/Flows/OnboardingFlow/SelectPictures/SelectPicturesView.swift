@@ -11,6 +11,8 @@ import SDWebImageSwiftUI
 struct SelectPicturesView: View {
     @Environment(\.presentationMode) private var presentationMode
     
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     @StateObject private var picturesViewModel = SelectPicturesViewModel()
     
     @State private var locationViewPresented = false
@@ -184,8 +186,6 @@ struct SelectPicturesView: View {
     }
     
     private func continueAction() {
-        guard var user = Constants.loggedInUser else { return }
-        
         guard picturesViewModel.arrayOfSelectedImages.isEmpty == false else {
             UIApplication.shared.showAlertPopup(message: Constants.validMsg_selectPicture)
             return
@@ -208,9 +208,9 @@ struct SelectPicturesView: View {
             userWebService.updateUserMedia(image: image, position: i) { result in
                 switch result {
                 case .success(let media):
-                    guard user.userProfileMedia?.contains(media) == false else { return }
+                    guard loggedInUser?.userProfileMedia?.contains(media) == false else { return }
                     
-                    user.userProfileMedia?.append(media)
+                    loggedInUser?.userProfileMedia?.append(media)
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -220,7 +220,6 @@ struct SelectPicturesView: View {
         }
         
         dispatchGroup.notify(queue: .main) {
-            Constants.saveUser(user: user)
             UIApplication.shared.hideLoader()
             locationViewPresented.toggle()
         }

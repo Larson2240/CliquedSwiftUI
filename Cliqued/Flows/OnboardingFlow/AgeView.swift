@@ -11,6 +11,8 @@ struct AgeView: View {
     @State private var date = Date()
     @State private var genderViewPresented = false
     
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     private let minAge: Date = Calendar.current.date(byAdding: .year, value: -45, to: Date())!
     private let maxAge: Date = Calendar.current.date(byAdding: .year, value: -150, to: Date())!
     
@@ -94,7 +96,7 @@ struct AgeView: View {
     }
     
     private func title() -> String {
-        return "\(Constants.label_ageScreenTitleBeforName) \(Constants.loggedInUser?.name ?? "") \(Constants.label_ageScreenTitleAfterName)"
+        return "\(Constants.label_ageScreenTitleBeforName) \(loggedInUser?.name ?? "") \(Constants.label_ageScreenTitleAfterName)"
     }
     
     private func continueAction() {
@@ -106,10 +108,7 @@ struct AgeView: View {
             return
         }
         
-        guard var user = Constants.loggedInUser else { return }
-        
-        user.birthdate = dateFormatter.string(from: date)
-        Constants.saveUser(user: user)
+        loggedInUser?.birthdate = dateFormatter.string(from: date)
         genderViewPresented.toggle()
     }
     

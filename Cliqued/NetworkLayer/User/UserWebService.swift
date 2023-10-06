@@ -5,11 +5,12 @@
 //  Created by Seraphim Kovalchuk on 27.09.2023.
 //
 
-import UIKit
+import SwiftUI
 import Moya
 
 final class UserWebService {
     private let userProvider = MoyaProvider<UserProvider>(plugins: [VerbosePlugin()])
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
     
     func getUser(completion: @escaping (Result<User, Error>) -> Void) {
         userProvider.request(.getUser) { result in
@@ -50,7 +51,7 @@ final class UserWebService {
         user: User,
         completion: @escaping (Result<User, Error>) -> Void
     ) {
-        guard let user = Constants.loggedInUser else { return }
+        guard let user = loggedInUser else { return }
         
         var parameters: [String: Any] = [:]
         

@@ -92,29 +92,29 @@ class MatchScreenVC: UIViewController {
             
             let objFollower = arrayOfFollowers.first
             
-            if objFollower?.userId == Constants.loggedInUser?.id ?? 0 {
-                if objFollower?.receiverIsBlockedByAdmin == "1" {
-                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_admin_chat)
-                } else if objFollower?.receiverIsBlockedByUser == "1" {
-                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
-                } else {
-                    let dict:NSMutableDictionary = NSMutableDictionary()
-                    dict.setValue("\(objFollower?.counterUserId ?? 0)", forKey: "receiver_id")
-                    dict.setValue("\(objFollower?.userId ?? 0)", forKey: "user_id")
-                    APP_DELEGATE.socketIOHandler?.updateUserChatStatus(data: dict)
-                }
-            } else {
-                if objFollower?.senderIsBlockedByAdmin == "1" {
-                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_admin_chat)
-                } else if objFollower?.senderIsBlockedByUser == "1" {
-                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
-                } else {
-                    let dict:NSMutableDictionary = NSMutableDictionary()
-                    dict.setValue("\(objFollower?.userId ?? 0)", forKey: "receiver_id")
-                    dict.setValue("\(objFollower?.counterUserId ?? 0)", forKey: "user_id")
-                    APP_DELEGATE.socketIOHandler?.updateUserChatStatus(data: dict)
-                }
-            }
+//            if objFollower?.userId == Constants.loggedInUser?.id ?? 0 {
+//                if objFollower?.receiverIsBlockedByAdmin == "1" {
+//                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_admin_chat)
+//                } else if objFollower?.receiverIsBlockedByUser == "1" {
+//                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
+//                } else {
+//                    let dict:NSMutableDictionary = NSMutableDictionary()
+//                    dict.setValue("\(objFollower?.counterUserId ?? 0)", forKey: "receiver_id")
+//                    dict.setValue("\(objFollower?.userId ?? 0)", forKey: "user_id")
+//                    APP_DELEGATE.socketIOHandler?.updateUserChatStatus(data: dict)
+//                }
+//            } else {
+//                if objFollower?.senderIsBlockedByAdmin == "1" {
+//                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_admin_chat)
+//                } else if objFollower?.senderIsBlockedByUser == "1" {
+//                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
+//                } else {
+//                    let dict:NSMutableDictionary = NSMutableDictionary()
+//                    dict.setValue("\(objFollower?.userId ?? 0)", forKey: "receiver_id")
+//                    dict.setValue("\(objFollower?.counterUserId ?? 0)", forKey: "user_id")
+//                    APP_DELEGATE.socketIOHandler?.updateUserChatStatus(data: dict)
+//                }
+//            }
         }
     }
     
@@ -164,14 +164,14 @@ extension MatchScreenVC : SocketIOHandlerDelegate {
                 self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
             } else {
                 let vc = MessageVC.loadFromNib()
-                vc.hidesBottomBarWhenPushed = true
-                vc.sender_id = Constants.loggedInUser?.id ?? 0
-                
-                if "\(obj.senderId)" == "\(Constants.loggedInUser?.id ?? 0)" {
-                    vc.receiver_id = Int(obj.receiverId)
-                } else {
-                    vc.receiver_id = Int(obj.senderId)
-                }
+//                vc.hidesBottomBarWhenPushed = true
+//                vc.sender_id = Constants.loggedInUser?.id ?? 0
+//
+//                if "\(obj.senderId)" == "\(Constants.loggedInUser?.id ?? 0)" {
+//                    vc.receiver_id = Int(obj.receiverId)
+//                } else {
+//                    vc.receiver_id = Int(obj.senderId)
+//                }
                 
 //                vc.receiver_id = Int(obj.receiverId)
                 vc.receiver_name = "\(obj.receiverName ?? "Cliqued User")"
@@ -190,76 +190,76 @@ extension MatchScreenVC : SocketIOHandlerDelegate {
             
         } else {
             
-            if arrayOfFollowers.count > 0 {
-                
-                let objFollower = arrayOfFollowers.last
-                
-                if objFollower?.userId == Constants.loggedInUser?.id ?? 0 {
-                    if objFollower?.receiverIsBlockedByAdmin == "1" {
-                        self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_admin_chat)
-                    } else if objFollower?.receiverIsBlockedByUser == "1" {
-                        self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
-                    } else {
-                        let vc = MessageVC.loadFromNib()
-                        vc.hidesBottomBarWhenPushed = true
-                        vc.sender_id = Constants.loggedInUser?.id ?? 0
-                        
-                        if "\(objFollower?.userId ?? 0)" == "\(Constants.loggedInUser?.id ?? 0)" {
-                            vc.receiver_id = (objFollower?.counterUserId!)!
-                            vc.receiver_profile = "\(objFollower?.receiverProfile ?? "")"
-                            vc.receiver_name = "\(objFollower?.receiverName ?? "")"
-                            vc.receiver_last_seen = "\(objFollower?.receiverLastSeen ?? "")"
-                            vc.receiver_is_online = "\(objFollower?.receiverIsOnline ?? "")"
-                            vc.receiver_is_last_seen_enable = "\(objFollower?.receiverIsLastSeenEnabled ?? "")"
-                            vc.recevier_chat_status = "\(objFollower?.receiverChatStatus ?? "")"
-                        } else {
-                            vc.receiver_id = (objFollower?.userId!)!
-                            vc.receiver_profile = "\(objFollower?.senderProfile ?? "")"
-                            vc.receiver_name = "\(objFollower?.senderName ?? "")"
-                            vc.receiver_last_seen = "\(objFollower?.senderLastSeen ?? "")"
-                            vc.receiver_is_online = "\(objFollower?.senderIsOnline ?? "")"
-                            vc.receiver_is_last_seen_enable = "\(objFollower?.senderIsLastSeenEnabled ?? "")"
-                            vc.recevier_chat_status = "\(objFollower?.senderChatStatus ?? "")"
-                        }
-                                              
-                        vc.conversation_id = objFollower?.conversationId ?? 0
-                        vc.is_fromMatchScreen = true
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }
-                } else {
-                    if objFollower?.senderIsBlockedByAdmin == "1" {
-                        self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_admin_chat)
-                    } else if objFollower?.senderIsBlockedByUser == "1" {
-                        self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
-                    } else {
-                        let vc = MessageVC.loadFromNib()
-                        vc.hidesBottomBarWhenPushed = true
-                        
-                        if "\(objFollower?.userId ?? 0)" == "\(Constants.loggedInUser?.id ?? 0)" {
-                            vc.receiver_id = (objFollower?.counterUserId!)!
-                            vc.receiver_profile = "\(objFollower?.receiverProfile ?? "")"
-                            vc.receiver_name = "\(objFollower?.receiverName ?? "")"
-                            vc.receiver_last_seen = "\(objFollower?.receiverLastSeen ?? "")"
-                            vc.receiver_is_online = "\(objFollower?.receiverIsOnline ?? "")"
-                            vc.receiver_is_last_seen_enable = "\(objFollower?.receiverIsLastSeenEnabled ?? "")"
-                            vc.recevier_chat_status = "\(objFollower?.receiverChatStatus ?? "")"
-                        } else {
-                            vc.receiver_id = (objFollower?.userId!)!
-                            vc.receiver_profile = "\(objFollower?.senderProfile ?? "")"
-                            vc.receiver_name = "\(objFollower?.senderName ?? "")"
-                            vc.receiver_last_seen = "\(objFollower?.senderLastSeen ?? "")"
-                            vc.receiver_is_online = "\(objFollower?.senderIsOnline ?? "")"
-                            vc.receiver_is_last_seen_enable = "\(objFollower?.senderIsLastSeenEnabled ?? "")"
-                            vc.recevier_chat_status = "\(objFollower?.senderChatStatus ?? "")"
-                        }
-                        
-                        vc.sender_id = Constants.loggedInUser?.id ?? 0
-                        vc.conversation_id = objFollower?.conversationId ?? 0
-                        vc.is_fromMatchScreen = true
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }
-                }
-            }
+//            if arrayOfFollowers.count > 0 {
+//
+//                let objFollower = arrayOfFollowers.last
+//
+//                if objFollower?.userId == Constants.loggedInUser?.id ?? 0 {
+//                    if objFollower?.receiverIsBlockedByAdmin == "1" {
+//                        self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_admin_chat)
+//                    } else if objFollower?.receiverIsBlockedByUser == "1" {
+//                        self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
+//                    } else {
+//                        let vc = MessageVC.loadFromNib()
+//                        vc.hidesBottomBarWhenPushed = true
+//                        vc.sender_id = Constants.loggedInUser?.id ?? 0
+//
+//                        if "\(objFollower?.userId ?? 0)" == "\(Constants.loggedInUser?.id ?? 0)" {
+//                            vc.receiver_id = (objFollower?.counterUserId!)!
+//                            vc.receiver_profile = "\(objFollower?.receiverProfile ?? "")"
+//                            vc.receiver_name = "\(objFollower?.receiverName ?? "")"
+//                            vc.receiver_last_seen = "\(objFollower?.receiverLastSeen ?? "")"
+//                            vc.receiver_is_online = "\(objFollower?.receiverIsOnline ?? "")"
+//                            vc.receiver_is_last_seen_enable = "\(objFollower?.receiverIsLastSeenEnabled ?? "")"
+//                            vc.recevier_chat_status = "\(objFollower?.receiverChatStatus ?? "")"
+//                        } else {
+//                            vc.receiver_id = (objFollower?.userId!)!
+//                            vc.receiver_profile = "\(objFollower?.senderProfile ?? "")"
+//                            vc.receiver_name = "\(objFollower?.senderName ?? "")"
+//                            vc.receiver_last_seen = "\(objFollower?.senderLastSeen ?? "")"
+//                            vc.receiver_is_online = "\(objFollower?.senderIsOnline ?? "")"
+//                            vc.receiver_is_last_seen_enable = "\(objFollower?.senderIsLastSeenEnabled ?? "")"
+//                            vc.recevier_chat_status = "\(objFollower?.senderChatStatus ?? "")"
+//                        }
+//
+//                        vc.conversation_id = objFollower?.conversationId ?? 0
+//                        vc.is_fromMatchScreen = true
+//                        self.navigationController?.pushViewController(vc, animated: true)
+//                    }
+//                } else {
+//                    if objFollower?.senderIsBlockedByAdmin == "1" {
+//                        self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_admin_chat)
+//                    } else if objFollower?.senderIsBlockedByUser == "1" {
+//                        self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
+//                    } else {
+//                        let vc = MessageVC.loadFromNib()
+//                        vc.hidesBottomBarWhenPushed = true
+//
+//                        if "\(objFollower?.userId ?? 0)" == "\(Constants.loggedInUser?.id ?? 0)" {
+//                            vc.receiver_id = (objFollower?.counterUserId!)!
+//                            vc.receiver_profile = "\(objFollower?.receiverProfile ?? "")"
+//                            vc.receiver_name = "\(objFollower?.receiverName ?? "")"
+//                            vc.receiver_last_seen = "\(objFollower?.receiverLastSeen ?? "")"
+//                            vc.receiver_is_online = "\(objFollower?.receiverIsOnline ?? "")"
+//                            vc.receiver_is_last_seen_enable = "\(objFollower?.receiverIsLastSeenEnabled ?? "")"
+//                            vc.recevier_chat_status = "\(objFollower?.receiverChatStatus ?? "")"
+//                        } else {
+//                            vc.receiver_id = (objFollower?.userId!)!
+//                            vc.receiver_profile = "\(objFollower?.senderProfile ?? "")"
+//                            vc.receiver_name = "\(objFollower?.senderName ?? "")"
+//                            vc.receiver_last_seen = "\(objFollower?.senderLastSeen ?? "")"
+//                            vc.receiver_is_online = "\(objFollower?.senderIsOnline ?? "")"
+//                            vc.receiver_is_last_seen_enable = "\(objFollower?.senderIsLastSeenEnabled ?? "")"
+//                            vc.recevier_chat_status = "\(objFollower?.senderChatStatus ?? "")"
+//                        }
+//
+//                        vc.sender_id = Constants.loggedInUser?.id ?? 0
+//                        vc.conversation_id = objFollower?.conversationId ?? 0
+//                        vc.is_fromMatchScreen = true
+//                        self.navigationController?.pushViewController(vc, animated: true)
+//                    }
+//                }
+//            }
         }
     }
 }
@@ -314,11 +314,11 @@ extension MatchScreenVC {
             let objFollower = arrayOfFollowers.first
             
             //For send push notification and email
-            if objFollower?.counterUserId == Constants.loggedInUser?.id {
-                viewModel.setCounterUserId(value: "\(objFollower?.userId ?? 0)")
-            } else {
-                viewModel.setCounterUserId(value: "\(objFollower?.counterUserId ?? 0)")
-            }
+//            if objFollower?.counterUserId == Constants.loggedInUser?.id {
+//                viewModel.setCounterUserId(value: "\(objFollower?.userId ?? 0)")
+//            } else {
+//                viewModel.setCounterUserId(value: "\(objFollower?.counterUserId ?? 0)")
+//            }
             if isFromActivityScreen {
                 viewModel.setIsActivity(value: "1")
             } else {

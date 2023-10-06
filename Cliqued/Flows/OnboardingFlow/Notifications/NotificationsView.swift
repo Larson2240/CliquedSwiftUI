@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct NotificationsView: View {
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     @StateObject private var notificationsViewModel = NotificationsViewModel()
     
     @State private var startExploringViewPresented = false
@@ -119,17 +121,16 @@ struct NotificationsView: View {
     }
     
     private func continueAction() {
-        guard var user = Constants.loggedInUser else { return }
+        guard var user = loggedInUser else { return }
         
         user.notifications = notificationsViewModel.notificationsEnabled ?? false ? 1 : 0
-        Constants.saveUser(user: user)
         
         userWebService.updateUser(user: user) { result in
             switch result {
             case .success(let user):
                 UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
                 UserDefaults.standard.set(true, forKey: UserDefaultKey().isRemeberMe)
-                Constants.saveUser(user: user)
+                loggedInUser = user
                 
                 startExploringViewPresented.toggle()
             case .failure(let error):

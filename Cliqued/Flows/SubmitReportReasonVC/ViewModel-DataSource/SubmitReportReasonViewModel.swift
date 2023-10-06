@@ -74,7 +74,7 @@ class SubmitReportReasonViewModel {
             self.isMessage.value = Constants.validMsg_reportReason
         } else {
             let params: NSDictionary = [
-                apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+//                apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
                 apiParams.reportedUserId : self.getReportedUserId(),
                 apiParams.reportReasonId : self.getReportReasonId()
             ]

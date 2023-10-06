@@ -53,7 +53,7 @@ extension OtherUserActivityDetailsVC {
         dataSource = OtherUserActivityDetailsDataSource(tableView: tableview, viewModel: viewModel, viewController: self)
         tableview.delegate = dataSource
         tableview.dataSource = dataSource
-        self.viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
+//        self.viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
         self.viewModel.setActivityId(value: activity_id)
         self.viewModel.bindActivityDetailsData(activityDetails: objActivityDetails)
         handleApiResponse()

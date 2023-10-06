@@ -11,6 +11,8 @@ import SDWebImageSwiftUI
 struct PickSubActivityView: View {
     @Environment(\.presentationMode) private var presentationMode
     
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     var isFromEditProfile: Bool
     
     @Binding var activitiesFlowPresented: Bool
@@ -78,11 +80,9 @@ struct PickSubActivityView: View {
     private var subActivityStack: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 16) {
-                if let user = Constants.loggedInUser, let pickedActivities = user.favouriteActivityCategories, let allActivities = Constants.activityCategories {
-                    ForEach(allActivities) { activity in
-                        if pickedActivities.contains(activity) {
-                            categoryStack(for: activity)
-                        }
+                if let user = loggedInUser, let pickedActivities = user.favouriteActivityCategories {
+                    ForEach(pickedActivities) { activity in
+                        categoryStack(for: activity)
                     }
                 }
             }
@@ -166,7 +166,7 @@ struct PickSubActivityView: View {
     }
     
     private func continueAction() {
-        guard var user = Constants.loggedInUser, let pickedActivities = user.favouriteActivityCategories else { return }
+        guard var user = loggedInUser, let pickedActivities = user.favouriteActivityCategories else { return }
         
         var subActivitiesCount = 0
         
@@ -179,8 +179,7 @@ struct PickSubActivityView: View {
         }
         
         if subActivitiesCount >= 3 {
-            user.interestedActivitySubcategories = selectedSubActivities.map { $0.id }
-            Constants.saveUser(user: user)
+            loggedInUser?.interestedActivitySubcategories = selectedSubActivities.map { $0.id }
             
             selectPicturesViewPresented.toggle()
         } else {

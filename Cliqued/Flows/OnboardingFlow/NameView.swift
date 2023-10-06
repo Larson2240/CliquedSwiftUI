@@ -10,6 +10,8 @@ import SwiftUI
 struct NameView: View {
     @Environment(\.presentationMode) private var presentationMode
     
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     @State private var name = ""
     @State private var ageViewPresented = false
     
@@ -122,10 +124,8 @@ struct NameView: View {
             return
         }
         
-        guard var user = Constants.loggedInUser else { return }
+        loggedInUser?.name = name
         
-        user.name = name
-        Constants.saveUser(user: user)
         ageViewPresented.toggle()
     }
 }

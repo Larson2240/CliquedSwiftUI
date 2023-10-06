@@ -133,7 +133,7 @@ extension ProviderDelegate
         data["call_start_time"] = ""
         data["call_end_time"] = ""
         data["call_id"] = Calling.call_id
-        data["receiverId"] = Constants.loggedInUser?.id ?? 0
+//        data["receiverId"] = Constants.loggedInUser?.id ?? 0
         data["is_privateRoom"] = Calling.is_privateRoom
         data["is_host"] = Calling.is_host
         data["room_name"] = Calling.room_Name

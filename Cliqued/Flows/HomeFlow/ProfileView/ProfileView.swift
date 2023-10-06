@@ -13,6 +13,8 @@ import StepSlider
 struct ProfileView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     @StateObject private var viewModel = ProfileViewModel()
     @StateObject private var page: Page = .first()
     
@@ -43,23 +45,23 @@ struct ProfileView: View {
                     
                     ProfileCommonCell(imageName: "ic_lookingfor",
                                       title: Constants.label_lookingFor,
-                                      details: Constants.loggedInUser?.lookingForTitle ?? "")
+                                      details: loggedInUser?.lookingForTitle ?? "")
                     
                     ProfileCommonCell(imageName: "ic_location_black",
                                       title: Constants.label_location,
-                                      details: "\(Constants.loggedInUser?.userAddress?.city ?? ""), \(Constants.loggedInUser?.userAddress?.state ?? "")")
+                                      details: "\(loggedInUser?.userAddress?.city ?? ""), \(loggedInUser?.userAddress?.state ?? "")")
                     
                     ProfileCommonCell(imageName: "ic_height",
                                       title: "\(Constants.label_height) \(Constants.label_heightInCm)",
-                                      details: Constants.loggedInUser?.height == 0 ? "-" : String(Constants.loggedInUser?.height ?? 0))
+                                      details: loggedInUser?.height == 0 ? "-" : String(loggedInUser?.height ?? 0))
                     
                     ProfileCommonCell(imageName: "ic_kids",
                                       title: Constants.label_kids,
-                                      details: Constants.loggedInUser?.preferenceKids ?? false ? "Yes" : "No")
+                                      details: loggedInUser?.preferenceKids ?? false ? "Yes" : "No")
                     
                     ProfileCommonCell(imageName: "ic_smoking",
                                       title: Constants.label_smoking,
-                                      details: Constants.loggedInUser?.preferenceKids ?? false ? "Yes" : "No")
+                                      details: loggedInUser?.preferenceKids ?? false ? "Yes" : "No")
                     
                     distanceStack
                     
@@ -76,7 +78,7 @@ struct ProfileView: View {
     
     private var imageContainer: some View {
         ZStack {
-            if Constants.loggedInUser?.userProfileMedia != nil {
+            if loggedInUser?.userProfileMedia != nil {
                 pagerView
                 
                 gradient
@@ -99,7 +101,7 @@ struct ProfileView: View {
     
     @ViewBuilder
     private var pagerView: some View {
-        if let userMedia = Constants.loggedInUser?.userProfileMedia {
+        if let userMedia = loggedInUser?.userProfileMedia {
             Pager(page: page, data: userMedia) { object in
                 WebImage(url: URL(string: "https://cliqued.michal.es/\(object.url)"))
                     .placeholder {
@@ -145,8 +147,8 @@ struct ProfileView: View {
     
     @ViewBuilder
     private var pageIndicator: some View {
-        if Constants.loggedInUser?.userProfileMedia != nil {
-            PageIndicator(numPages: Constants.loggedInUser?.userProfileMedia?.count ?? 0, selectedIndex: $currentPage)
+        if loggedInUser?.userProfileMedia != nil {
+            PageIndicator(numPages: loggedInUser?.userProfileMedia?.count ?? 0, selectedIndex: $currentPage)
                 .allowsHitTesting(false)
                 .padding(.bottom)
         }
@@ -156,7 +158,7 @@ struct ProfileView: View {
         VStack {
             Spacer()
             
-            if let name = Constants.loggedInUser?.name, let age = Constants.loggedInUser?.userAge() {
+            if let name = loggedInUser?.name, let age = loggedInUser?.userAge() {
                 HStack {
                     Text("\(name), \(age)")
                     
@@ -165,7 +167,7 @@ struct ProfileView: View {
             }
             
             HStack {
-                Text(Constants.loggedInUser?.userAddress?.city ?? "")
+                Text(loggedInUser?.userAddress?.city ?? "")
                 
                 Spacer()
             }
@@ -195,7 +197,7 @@ struct ProfileView: View {
             .padding(.horizontal)
             
             HStack {
-                Text(Constants.loggedInUser?.aboutMe ?? "")
+                Text(loggedInUser?.aboutMe ?? "")
                     .font(.themeBook(14))
                     .foregroundColor(.colorDarkGrey)
                 
@@ -218,7 +220,7 @@ struct ProfileView: View {
             }
             .padding(.horizontal)
             
-            if let user = Constants.loggedInUser, let activities = user.favouriteActivityCategories {
+            if let user = loggedInUser, let activities = user.favouriteActivityCategories {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 6) {
                         ForEach(activities, id: \.self) { activity in
@@ -281,25 +283,27 @@ struct ProfileView: View {
             }
             .padding(.horizontal)
             
-//            StepSlider(selected: $viewModel.,
-//                       values: viewModel.distanceValues) { value in
-//                Text(value)
-//                    .foregroundColor(.colorDarkGrey)
-//            } thumbLabels: { value in
-//                ZStack {
-//                    Color.theme
-//                        .ignoresSafeArea()
-//
-//                    Text(value)
-//                        .foregroundColor(.white)
-//                }
-//            } accessibilityLabels: { value in
-//                Text(value)
-//            }
-//            .allowsHitTesting(false)
-//            .accentColor(.theme)
-//            .frame(height: 60)
-//            .padding(.horizontal)
+            if let distance = loggedInUser?.preferenceDistance {
+                StepSlider(selected: .constant("\(distance)km"),
+                           values: viewModel.distanceValues) { value in
+                    Text(value)
+                        .foregroundColor(.colorDarkGrey)
+                } thumbLabels: { value in
+                    ZStack {
+                        Color.theme
+                            .ignoresSafeArea()
+                        
+                        Text(value)
+                            .foregroundColor(.white)
+                    }
+                } accessibilityLabels: { value in
+                    Text(value)
+                }
+                .allowsHitTesting(false)
+                .accentColor(.theme)
+                .frame(height: 60)
+                .padding(.horizontal)
+            }
             
             separator
         }
@@ -371,8 +375,8 @@ struct ProfileView: View {
         
         slider = CustomSlider(minBound: 45,
                               maxBound: 99,
-                              lowValue: Double(Constants.loggedInUser?.preferenceAgeFrom ?? 45),
-                              highValue: Double(Constants.loggedInUser?.preferenceAgeTo ?? 99),
+                              lowValue: Double(loggedInUser?.preferenceAgeFrom ?? 45),
+                              highValue: Double(loggedInUser?.preferenceAgeTo ?? 99),
                               width: screenSize.width - 80)
     }
 }

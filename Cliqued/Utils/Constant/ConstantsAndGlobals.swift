@@ -377,20 +377,6 @@ struct Constants_String {
         }
     }
     
-    //MARK: Save user details in UserDefaults
-    var loggedInUser: User? {
-        get {
-            UserDefaults.standard.getCustom(User.self, forKey: UserDefaultKey().userData)
-        }
-        set {
-            UserDefaults.standard.setCustom(newValue, forKey: UserDefaultKey().userData)
-        }
-    }
-    func saveUser(user: User) {
-        UserDefaults.standard.setCustom(user, forKey: UserDefaultKey().userData)
-        UserDefaults.standard.set(user.guid, forKey: kUserGUID)
-    }
-    
     //MARK: Save preference data in UserDefaults
     var getPreferenceData: [PreferenceClass]? {
         get {

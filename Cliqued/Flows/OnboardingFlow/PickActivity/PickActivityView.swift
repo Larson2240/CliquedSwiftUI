@@ -11,6 +11,8 @@ import SDWebImageSwiftUI
 struct PickActivityView: View {
     @Environment(\.presentationMode) private var presentationMode
     
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     @StateObject private var viewModel = PickActivityViewModel()
     
     var isFromEditProfile: Bool
@@ -184,16 +186,13 @@ struct PickActivityView: View {
             return
         }
         
-        guard var user = Constants.loggedInUser else { return }
-        
-        user.favouriteActivityCategories = selectedActivities
-        Constants.saveUser(user: user)
+        loggedInUser?.favouriteActivityCategories = selectedActivities
         
         subActivityViewPresented.toggle()
     }
     
     private func setupSelectedActivity() {
-        guard let user = Constants.loggedInUser, let activities = user.favouriteActivityCategories else { return }
+        guard let user = loggedInUser, let activities = user.favouriteActivityCategories else { return }
         
         for activity in viewModel.arrayOfActivity {
             if activities.contains(activity) {

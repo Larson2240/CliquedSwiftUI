@@ -50,7 +50,7 @@ extension DiscoverActivityVC {
     func viewDidLoadMethod() {
         setupNavigationBar()
         setupKolodaCard()
-        self.viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
+//        self.viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
         
         // Manage api request for logged in user preferences and categories
         
@@ -106,11 +106,11 @@ extension DiscoverActivityVC {
             guard let self = self else { return }
             
             if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
-                    self.isLikeLimitFinish = true
-                    self.viewActivityCard.revertAction()
-                    self.showSubscriptionPlanScreen()
-                }
+//                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                    self.isLikeLimitFinish = true
+//                    self.viewActivityCard.revertAction()
+//                    self.showSubscriptionPlanScreen()
+//                }
             }
         }
         
@@ -283,7 +283,7 @@ extension DiscoverActivityVC: KolodaViewDataSource {
             if direction == .up || direction == .topLeft || direction == .topRight {
                 if viewModel.getAllDuplicationOhterActivityData().count > 0 {
                     let activityData = viewModel.getDuplicateOtherActivityData(at: index)
-                    viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
+//                    viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
                     viewModel.setActivityId(value: "\(activityData.id ?? 0)")
                     viewModel.setActivityInterestStatus(value: "1")
                     viewModel.setOwnerId(value: "\(activityData.userId ?? 0)")
@@ -292,16 +292,16 @@ extension DiscoverActivityVC: KolodaViewDataSource {
                     
                     if viewModel.getLikesLimit() != 0 {
                         if !isLikeLimitFinish {
-                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-                                showGoogleAds()
-                            }
+//                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+//                                showGoogleAds()
+//                            }
                         }
                     }
                 }
             } else if direction == .down || direction == .bottomLeft || direction == .bottomRight {
                 if viewModel.getAllDuplicationOhterActivityData().count > 0 {
                     let activityData = viewModel.getDuplicateOtherActivityData(at: index)
-                    viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
+//                    viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
                     viewModel.setActivityId(value: "\(activityData.id ?? 0)")
                     viewModel.setActivityInterestStatus(value: "0")
                     viewModel.setOwnerId(value: "\(activityData.userId ?? 0)")
@@ -310,9 +310,9 @@ extension DiscoverActivityVC: KolodaViewDataSource {
                     
                     if viewModel.getLikesLimit() != 0 {
                         if !isLikeLimitFinish {
-                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-                                showGoogleAds()
-                            }
+//                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+//                                showGoogleAds()
+//                            }
                         }
                     }
                 }
@@ -347,11 +347,11 @@ extension DiscoverActivityVC: KolodaViewDataSource {
     
     //MARK: Button Undo Activity Tap
     @objc func buttonUndoActivityRap(_ sender: UIButton) {
-        if Constants.loggedInUser?.isPremiumUser == isPremium.Premium {
-            viewActivityCard.revertAction()
-        } else{
-            showSubscriptionPlanScreen()
-        }
+//        if Constants.loggedInUser?.isPremiumUser == isPremium.Premium {
+//            viewActivityCard.revertAction()
+//        } else{
+//            showSubscriptionPlanScreen()
+//        }
     }
     
     //MARK: Button User Details Activity Tap

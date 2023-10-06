@@ -11,6 +11,8 @@ import GoogleSignIn
 import AuthenticationServices
 
 final class SignUpViewModel: NSObject, ObservableObject {
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     @Published var email = ""
     @Published var password = ""
     @Published var repeatPassword = ""
@@ -125,10 +127,10 @@ final class SignUpViewModel: NSObject, ObservableObject {
             
             switch result {
             case .success(let user):
-                Constants.saveUser(user: user)
+                loggedInUser = user
                 UserDefaults.standard.set(self.rememberMeSelected, forKey: UserDefaultKey().isRemeberMe)
                 
-                if let user = Constants.loggedInUser, user.profileSetupCompleted() {
+                if user.profileSetupCompleted() {
                     APP_DELEGATE.socketIOHandler = SocketIOHandler()
                     
                     APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())

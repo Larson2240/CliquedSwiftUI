@@ -12,7 +12,9 @@ import Introspect
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     
-    @State private var selectedCategory: ActivityCategoryClass?
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
+    @State private var selectedCategory: Activity?
     @State private var guideViewPresented = false
     @State private var activitiesViewPresented = false
     @State private var uiTabBarController: UITabBarController?
@@ -29,18 +31,13 @@ struct HomeView: View {
             presentables
         }
         .background(background)
-        .onAppear { onAppearConfig() }
     }
     
     private var content: some View {
         VStack(spacing: 0) {
             header
             
-            if viewModel.profileCompleted {
-                activitiesStack
-            } else {
-                completeProfileView
-            }
+            activitiesStack
             
             if guideViewPresented {
                 guideView
@@ -66,10 +63,14 @@ struct HomeView: View {
     private var activitiesStack: some View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columns, spacing: 16) {
-                ForEach($viewModel.arrayOfHomeCategory) { activity in
-                    imageCell(activity.wrappedValue)
-                        .frame(maxHeight: 210)
-                        .cornerRadius(15)
+                if let user = loggedInUser, let activities = user.favouriteActivityCategories {
+                    ForEach(activities) { activity in
+                        if activity.parentID == nil {
+                            imageCell(activity)
+                                .frame(maxHeight: 210)
+                                .cornerRadius(15)
+                        }
+                    }
                 }
             }
             .padding(.horizontal, 16)
@@ -79,18 +80,12 @@ struct HomeView: View {
         .ignoresSafeArea()
     }
     
-    private func imageCell(_ activity: ActivityCategoryClass) -> some View {
+    private func imageCell(_ activity: Activity) -> some View {
         ZStack {
             let cellWidth = (screenSize.width - 40) / 2
             let cellHeight = cellWidth + (cellWidth * 0.2)
             
-            WebImage(url: viewModel.imageURL(for: activity, imageSize: CGSize(width: cellWidth, height: cellHeight)))
-                .placeholder {
-                    Image("placeholder_activity")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: cellWidth, height: cellHeight)
-                }
+            Image(activity.title + "_image")
                 .resizable()
                 .scaledToFill()
                 .frame(width: cellWidth, height: cellHeight)
@@ -101,7 +96,7 @@ struct HomeView: View {
                 Spacer()
                 
                 HStack {
-                    Text(activity.title ?? "")
+                    Text(activity.title)
                         .font(.themeMedium(14))
                         .foregroundColor(.white)
                     
@@ -137,39 +132,11 @@ struct HomeView: View {
             }
     }
     
-    private var completeProfileView: some View {
-        VStack(spacing: 16) {
-            Text(Constants.validMsg_profileIncompleteMsg)
-                .font(.themeMedium(14))
-                .foregroundColor(.colorDarkGrey)
-                .multilineTextAlignment(.center)
-            
-            Button(action: { viewModel.manageSetupProfileNavigationFlow() }) {
-                ZStack {
-                    Color.theme
-                    
-                    Text(Constants.btn_continue)
-                        .font(.themeBold(20))
-                        .foregroundColor(.colorWhite)
-                }
-            }
-            .frame(height: 60)
-            .cornerRadius(30)
-        }
-        .padding(30)
-    }
-    
     private var presentables: some View {
-        NavigationLink(destination: ActivitiesViewRepresentable(category: selectedCategory).ignoresSafeArea(),
+        NavigationLink(destination: ActivitiesViewRepresentable().ignoresSafeArea(),
                        isActive: $activitiesViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)
-    }
-    
-    private func onAppearConfig() {
-        viewModel.checkProfileCompletion()
-        viewModel.callGetPreferenceDataAPI()
-        viewModel.callGetUserInterestedCategoryAPI()
     }
 }
 

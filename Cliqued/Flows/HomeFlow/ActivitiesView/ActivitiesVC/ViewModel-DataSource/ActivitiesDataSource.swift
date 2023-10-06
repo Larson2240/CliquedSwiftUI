@@ -111,17 +111,17 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
                 
                 if isEditButton {
                     if isClick {
-                        if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
-                            let subscriptionplanvc = SubscriptionPlanVC.loadFromNib()
-                            subscriptionplanvc.isFromOtherScreen = true
-                            self.viewController.present(subscriptionplanvc, animated: true)
-                        } else {
-                            let addactivityvc = AddActivityVC.loadFromNib()
-                            addactivityvc.hidesBottomBarWhenPushed = true
-                            addactivityvc.isEditActivity = true
-                            addactivityvc.objActivityDetails = self.viewModel.arrMyActivities[selectedIndex]
-                            self.viewController.navigationController?.pushViewController(addactivityvc, animated: true)
-                        }
+//                        if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                            let subscriptionplanvc = SubscriptionPlanVC.loadFromNib()
+//                            subscriptionplanvc.isFromOtherScreen = true
+//                            self.viewController.present(subscriptionplanvc, animated: true)
+//                        } else {
+//                            let addactivityvc = AddActivityVC.loadFromNib()
+//                            addactivityvc.hidesBottomBarWhenPushed = true
+//                            addactivityvc.isEditActivity = true
+//                            addactivityvc.objActivityDetails = self.viewModel.arrMyActivities[selectedIndex]
+//                            self.viewController.navigationController?.pushViewController(addactivityvc, animated: true)
+//                        }
                     }
                 } else {
                     let isIndexValid = self.viewModel.arrMyActivities.indices.contains(selectedIndex)
@@ -224,22 +224,22 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
     
     @objc func buttonAddActivityTap(_ sender: UIButton) {
         if sender.tag == enumActivitiesTableRow.yourActivities.rawValue {
-            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-                if Int(self.viewModel.getUserActivityCreateCount()) ?? 0 > 0 {
-                    let addactivityvc = AddActivityVC.loadFromNib()
-                    addactivityvc.hidesBottomBarWhenPushed = true
-                    addactivityvc.isEditActivity = false
-                    self.viewController.navigationController?.pushViewController(addactivityvc, animated: true)
-                } else {
-                    self.viewController.showAlertPopup(message: Constants_Message.user_create_activity_validation)
-                    showSubscriptionPlanScreen()
-                }
-            } else {
-                let addactivityvc = AddActivityVC.loadFromNib()
-                addactivityvc.hidesBottomBarWhenPushed = true
-                addactivityvc.isEditActivity = false
-                self.viewController.navigationController?.pushViewController(addactivityvc, animated: true)
-            }
+//            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+//                if Int(self.viewModel.getUserActivityCreateCount()) ?? 0 > 0 {
+//                    let addactivityvc = AddActivityVC.loadFromNib()
+//                    addactivityvc.hidesBottomBarWhenPushed = true
+//                    addactivityvc.isEditActivity = false
+//                    self.viewController.navigationController?.pushViewController(addactivityvc, animated: true)
+//                } else {
+//                    self.viewController.showAlertPopup(message: Constants_Message.user_create_activity_validation)
+//                    showSubscriptionPlanScreen()
+//                }
+//            } else {
+//                let addactivityvc = AddActivityVC.loadFromNib()
+//                addactivityvc.hidesBottomBarWhenPushed = true
+//                addactivityvc.isEditActivity = false
+//                self.viewController.navigationController?.pushViewController(addactivityvc, animated: true)
+//            }
         } else {
             let vc = DiscoverActivityVC.loadFromNib()
             vc.hidesBottomBarWhenPushed = true

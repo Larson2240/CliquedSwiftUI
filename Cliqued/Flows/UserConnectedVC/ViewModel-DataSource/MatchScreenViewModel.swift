@@ -27,7 +27,7 @@ class MatchScreenViewModel {
     func callSendPushNotificationAPI() {
         
         let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+//            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
             apiParams.counterUserId : self.getCounterUserId(),
             apiParams.isActivity : self.getIsActivity()
         ]

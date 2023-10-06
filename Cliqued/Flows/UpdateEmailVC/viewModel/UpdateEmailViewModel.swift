@@ -28,7 +28,7 @@ class UpdateEmailViewModel {
     
     //MARK: Save user data in UserDefault
     func saveUserInfoAndProceed(user: User){
-        Constants.saveUser(user: user)
+//        Constants.saveUser(user: user)
     }
     
     //MARK: Check Validation
@@ -36,19 +36,19 @@ class UpdateEmailViewModel {
         var flag = false
         let isEmailAddressValid = isValidEmail(getNewEmailId())
         
-        if getUserId().isEmpty {
-            self.isMessage.value = Constants_Message.user_id_validation
-        } else if getEmailId().isEmpty {
-            self.isMessage.value = Constants_Message.validMsg_old_emailId
-        } else if getNewEmailId().trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            self.isMessage.value = Constants.validMsg_emailId
-        } else if getNewEmailId() == Constants.loggedInUser?.connectedAccount![0].emailId {
-            self.isMessage.value = Constants.validMsg_alredyHaveEmailId
-        } else if !isEmailAddressValid {
-            self.isMessage.value = Constants.validMsg_invalidEmail
-        } else {
-            flag = true
-        }
+//        if getUserId().isEmpty {
+//            self.isMessage.value = Constants_Message.user_id_validation
+//        } else if getEmailId().isEmpty {
+//            self.isMessage.value = Constants_Message.validMsg_old_emailId
+//        } else if getNewEmailId().trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+//            self.isMessage.value = Constants.validMsg_emailId
+//        } else if getNewEmailId() == Constants.loggedInUser?.connectedAccount![0].emailId {
+//            self.isMessage.value = Constants.validMsg_alredyHaveEmailId
+//        } else if !isEmailAddressValid {
+//            self.isMessage.value = Constants.validMsg_invalidEmail
+//        } else {
+//            flag = true
+//        }
         return flag
     }
     

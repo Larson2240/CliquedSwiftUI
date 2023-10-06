@@ -69,8 +69,8 @@ extension UpdateEmailVC {
     func viewDidLoadMethod() {
         setupNavigationBar()
         
-        viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
-        viewModel.setEmailId(value: "\(Constants.loggedInUser?.connectedAccount![0].emailId ?? "")")
+//        viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
+//        viewModel.setEmailId(value: "\(Constants.loggedInUser?.connectedAccount![0].emailId ?? "")")
         
         textField.text = viewModel.getEmailId()
         

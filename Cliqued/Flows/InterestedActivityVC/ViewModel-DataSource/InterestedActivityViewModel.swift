@@ -33,7 +33,7 @@ class InterestedActivityViewModel {
     func callInterestedActivityListAPI() {
         
         let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+//            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
             apiParams.activityId: self.getActivityId()
         ]
         
@@ -96,7 +96,7 @@ class InterestedActivityViewModel {
     func callLikeDislikeActivityAPI(isShowLoader: Bool) {
         
         let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+//            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
             apiParams.activityId : self.getActivityId(),
             apiParams.interestedUserId : self.getInterestedUserId(),
             apiParams.isFollow : self.getIsFollow(),

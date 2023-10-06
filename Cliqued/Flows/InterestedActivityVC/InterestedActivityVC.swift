@@ -121,9 +121,9 @@ extension InterestedActivityVC {
                     } else {
                         if self.viewModel.getLikesLimit() != 0 {
                             if !self.isLikeLimitFinish {
-                                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
-                                    self.showGoogleAds()
-                                }
+//                                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                                    self.showGoogleAds()
+//                                }
                             }
                         }
                     }
@@ -135,10 +135,10 @@ extension InterestedActivityVC {
             guard let self = self else { return }
             
             if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
-                    self.labelNoActivityAvailable.text = Constants.label_noDataFound
-                    self.showSubscriptionPlanScreen()
-                }
+//                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                    self.labelNoActivityAvailable.text = Constants.label_noDataFound
+//                    self.showSubscriptionPlanScreen()
+//                }
             }
         }
         
@@ -146,11 +146,11 @@ extension InterestedActivityVC {
             guard let self = self else { return }
             
             if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
-                    self.isLikeLimitFinish = true
-                    self.viewActivityCard.revertAction()
-                    self.showSubscriptionPlanScreen()
-                }
+//                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                    self.isLikeLimitFinish = true
+//                    self.viewActivityCard.revertAction()
+//                    self.showSubscriptionPlanScreen()
+//                }
             }
         }
         
@@ -210,9 +210,9 @@ extension InterestedActivityVC: KolodaViewDelegate {
             labelNoActivityAvailable.isHidden = false
             labelNoActivityAvailable.text = Constants.label_noDataFound
             //Show subscription screen for basic user
-            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-                showSubscriptionPlanScreen()
-            }
+//            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+//                showSubscriptionPlanScreen()
+//            }
         }
     }
     
@@ -332,9 +332,9 @@ extension InterestedActivityVC: KolodaViewDataSource {
                 }
                 if viewModel.getLikesLimit() != 0 {
                     if !isLikeLimitFinish {
-                        if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-                            showGoogleAds()
-                        }
+//                        if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+//                            showGoogleAds()
+//                        }
                     }
                 }
             }
@@ -404,7 +404,7 @@ extension InterestedActivityVC: KolodaViewDataSource {
             } else {
                 let dict:NSMutableDictionary = NSMutableDictionary()
                 dict.setValue("\(objFollower.interestedUserId ?? 0)", forKey: "receiver_id")
-                dict.setValue("\(Constants.loggedInUser?.id ?? 0)", forKey: "user_id")
+//                dict.setValue("\(Constants.loggedInUser?.id ?? 0)", forKey: "user_id")
                 APP_DELEGATE.socketIOHandler?.updateUserChatStatus(data: dict)
             }
         }
@@ -466,13 +466,13 @@ extension InterestedActivityVC : SocketIOHandlerDelegate {
             } else {
                 let vc = MessageVC.loadFromNib()
                 vc.hidesBottomBarWhenPushed = true
-                vc.sender_id = Constants.loggedInUser?.id ?? 0
+//                vc.sender_id = Constants.loggedInUser?.id ?? 0
                 
-                if "\(obj.senderId)" == "\(Constants.loggedInUser?.id ?? 0)" {
-                    vc.receiver_id = Int(obj.receiverId)
-                } else {
-                    vc.receiver_id = Int(obj.senderId)
-                }
+//                if "\(obj.senderId)" == "\(Constants.loggedInUser?.id ?? 0)" {
+//                    vc.receiver_id = Int(obj.receiverId)
+//                } else {
+//                    vc.receiver_id = Int(obj.senderId)
+//                }
                                 
                 vc.receiver_name = "\(obj.receiverName ?? "Cliqued User")"
                 vc.receiver_profile = "\(obj.receiverProfile ?? "")"
@@ -498,7 +498,7 @@ extension InterestedActivityVC : SocketIOHandlerDelegate {
                 } else {
                     let vc = MessageVC.loadFromNib()
                     vc.hidesBottomBarWhenPushed = true
-                    vc.sender_id = Constants.loggedInUser?.id ?? 0
+//                    vc.sender_id = Constants.loggedInUser?.id ?? 0
                     
                     
                     vc.receiver_id = (objFollower.interestedUserId)!

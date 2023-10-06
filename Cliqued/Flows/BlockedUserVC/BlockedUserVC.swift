@@ -16,7 +16,7 @@ class BlockedUserVC: UIViewController {
     //MARK: Variables
     var viewModel = BlockedUserViewModel()
     var dataSource: BlockedUserDataSource?
-    var user_id = Constants.loggedInUser?.id ?? 0
+    var user_id = UserDefaults.standard.string(forKey: kUserToken)
 
     //MARK: viewDidLoad Method
     override func viewDidLoad() {

@@ -88,39 +88,39 @@ class ActivityUserDetailsViewModel {
     //MARK: Call SignIn API
     func callBlcokUserAPI(counterUserId: String) {
         
-        let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            apiParams.counterUserId : counterUserId,
-            apiParams.isBlock : isBlock.Block,
-            apiParams.blockType : "0"
-        ]
-        
-        if(Connectivity.isConnectedToInternet()){
-            DispatchQueue.main.async { [weak self] in
-                self?.isLoaderShow.value = true
-            }
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.BlcokUser, parameters: params) { [weak self] response, error, message in
-                guard let self = self else { return }
-                
-                self.isLoaderShow.value = false
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
-                } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    let message = json?[API_MESSAGE] as? String
-                    
-                    if status == SUCCESS {
-                        self.isDataGet.value = true
-                        self.isMessage.value = message ?? ""
-                    }  else {
-                        self.isMessage.value = message ?? ""
-                    }
-                }
-            }
-        } else {
-            self.isMessage.value = Constants.alert_InternetConnectivity
-        }
+//        let params: NSDictionary = [
+//            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
+//            apiParams.counterUserId : counterUserId,
+//            apiParams.isBlock : isBlock.Block,
+//            apiParams.blockType : "0"
+//        ]
+//        
+//        if(Connectivity.isConnectedToInternet()){
+//            DispatchQueue.main.async { [weak self] in
+//                self?.isLoaderShow.value = true
+//            }
+//            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.BlcokUser, parameters: params) { [weak self] response, error, message in
+//                guard let self = self else { return }
+//                
+//                self.isLoaderShow.value = false
+//                if(error != nil && response == nil) {
+//                    self.isMessage.value = message ?? ""
+//                } else {
+//                    let json = response as? NSDictionary
+//                    let status = json?[API_STATUS] as? Int
+//                    let message = json?[API_MESSAGE] as? String
+//                    
+//                    if status == SUCCESS {
+//                        self.isDataGet.value = true
+//                        self.isMessage.value = message ?? ""
+//                    }  else {
+//                        self.isMessage.value = message ?? ""
+//                    }
+//                }
+//            }
+//        } else {
+//            self.isMessage.value = Constants.alert_InternetConnectivity
+//        }
     }
 }
 //MARK: getter/setter method

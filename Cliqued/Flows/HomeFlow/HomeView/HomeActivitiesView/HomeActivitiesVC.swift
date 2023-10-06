@@ -135,23 +135,23 @@ extension HomeActivitiesVC {
         viewModel.isViewLimitFinish.bind { [weak self] isSuccess in
             guard let self = self else { return }
             
-            if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
-                    self.showSubscriptionPlanScreen()
-                    self.labelNoActivityAvailable.text = Constants.label_noDataFound
-                }
-            }
+//            if isSuccess {
+//                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                    self.showSubscriptionPlanScreen()
+//                    self.labelNoActivityAvailable.text = Constants.label_noDataFound
+//                }
+//            }
         }
         
         viewModel.isLikeLimitFinish.bind { [weak self] isSuccess in
             guard let self = self else { return }
             
             if isSuccess {
-                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
-                    self.isLikeLimitFinish = true
-                    self.viewActivityCard.revertAction()
-                    self.showSubscriptionPlanScreen()
-                }
+//                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                    self.isLikeLimitFinish = true
+//                    self.viewActivityCard.revertAction()
+//                    self.showSubscriptionPlanScreen()
+//                }
             }
         }
         
@@ -168,9 +168,9 @@ extension HomeActivitiesVC {
                 } else {
                     if self.viewModel.getLikesLimit() != 0 {
                         if !self.isLikeLimitFinish {
-                            if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
-                                self.showGoogleAds()
-                            }
+//                            if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                                self.showGoogleAds()
+//                            }
                         }
                     }
                 }
@@ -318,9 +318,9 @@ extension HomeActivitiesVC: KolodaViewDataSource {
                     
                     if viewModel.getLikesLimit() != 0 {
                         if !isLikeLimitFinish {
-                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-                                showGoogleAds()
-                            }
+//                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+//                                showGoogleAds()
+//                            }
                         }
                     }
                 }
@@ -355,11 +355,11 @@ extension HomeActivitiesVC: KolodaViewDataSource {
     
     //MARK: Button Undo Activity Tap
     @objc func buttonUndoActivityRap(_ sender: UIButton) {
-        if Constants.loggedInUser?.isPremiumUser == isPremium.Premium {
-            viewActivityCard.revertAction()
-        } else{
-            showSubscriptionPlanScreen()
-        }
+//        if Constants.loggedInUser?.isPremiumUser == isPremium.Premium {
+//            viewActivityCard.revertAction()
+//        } else{
+//            showSubscriptionPlanScreen()
+//        }
     }
     
     //MARK: Button User Details Activity Tap

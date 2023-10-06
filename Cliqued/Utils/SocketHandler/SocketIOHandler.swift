@@ -22,14 +22,13 @@ import SocketIO
 }
 
 class SocketIOHandler: NSObject {
+    var delegate:SocketIOHandlerDelegate?
     
-   var delegate:SocketIOHandlerDelegate?
-	   
-   var manager: SocketManager?
-   var socket: SocketIOClient?
-   var isHandlerAdded:Bool = false
-   var isJoinSocket:Bool = false
-   var user_id = Constants.loggedInUser?.id ?? 0
+    var manager: SocketManager?
+    var socket: SocketIOClient?
+    var isHandlerAdded:Bool = false
+    var isJoinSocket:Bool = false
+    var user_id = UserDefaults.standard.string(forKey: kUserToken)
     
     override init() {
         super.init()
@@ -37,7 +36,7 @@ class SocketIOHandler: NSObject {
     }
     
     //MARK:- ConnectWithSocket
-	
+    
     func connectWithSocket() {
         if manager==nil && socket == nil {
             manager = SocketManager(socketURL: URL(string: APIConstant.SOCKET_SERVER_PATH)!, config: [.log(true), .compress])
@@ -75,68 +74,68 @@ class SocketIOHandler: NSObject {
     
     func callFunctionsAfterConnection()  {
         print("Connected")
-         
+        
         let dict:NSMutableDictionary = NSMutableDictionary()
-        dict.setValue(Constants.loggedInUser?.id ?? 0, forKey: "user_id")
+        dict.setValue(user_id, forKey: "user_id")
         joinSocketWithData(data: dict)
     }
     
     func background(){
         let dict:NSMutableDictionary = NSMutableDictionary()
-        dict.setValue(Constants.loggedInUser?.id ?? 0, forKey: "user_id")
+        dict.setValue(user_id, forKey: "user_id")
         socket?.emit(APIConstant.APISocketBackground, dict)
     }
-
+    
     func foreground(){
         let dict:NSMutableDictionary = NSMutableDictionary()
-        dict.setValue(Constants.loggedInUser?.id ?? 0, forKey: "user_id")
+        dict.setValue(user_id, forKey: "user_id")
         socket?.emit(APIConstant.APISocketForeground, dict)
-
+        
         let dict1:NSMutableDictionary = NSMutableDictionary()
-        dict1.setValue("\(Constants.loggedInUser?.id ?? 0)", forKey: "receiver_id")
+        dict1.setValue("\(user_id)", forKey: "receiver_id")
         dict1.setValue("0", forKey: "message_id")
         dict1.setValue("0", forKey: "sender_id")
         dict1.setValue("\(enumMessageStatus.delivered.rawValue)", forKey: "message_status")
         updateMessageStatus(data: dict1)
     }
-
+    
     func disconnectSocket() {
-      
+        
         socket?.removeAllHandlers()
         socket?.disconnect()
         manager?.removeSocket(socket!)
     }
     
-	//MARK:- Join Socket With User
-	  func joinSocketWithData(data:NSDictionary) {
-		 
-       
+    //MARK:- Join Socket With User
+    func joinSocketWithData(data:NSDictionary) {
+        
+        
         socket?.emit(APIConstant.APISocketJoin_Socket, data)
         isJoinSocket = true
-          
-          let dict1:NSMutableDictionary = NSMutableDictionary()
-          dict1.setValue("\(Constants.loggedInUser?.id ?? 0)", forKey: "receiver_id")
-          dict1.setValue("0", forKey: "message_id")
-          dict1.setValue("0", forKey: "sender_id")
-          dict1.setValue("\(enumMessageStatus.delivered.rawValue)", forKey: "message_status")
-          updateMessageStatus(data: dict1)
-          
-            AddHandlers()
-	  }
+        
+        let dict1:NSMutableDictionary = NSMutableDictionary()
+        dict1.setValue("\(user_id)", forKey: "receiver_id")
+        dict1.setValue("0", forKey: "message_id")
+        dict1.setValue("0", forKey: "sender_id")
+        dict1.setValue("\(enumMessageStatus.delivered.rawValue)", forKey: "message_status")
+        updateMessageStatus(data: dict1)
+        
+        AddHandlers()
+    }
     
-	//MARK:- Add Handlers
-	func AddHandlers()
-	{
-       
+    //MARK:- Add Handlers
+    func AddHandlers()
+    {
+        
         socket?.on(APIConstant.APIBlockedInChat) {data, ack in
             print(data)
             
             if ((data[0] as! NSDictionary).value(forKey: "status")) as! Int == 1 {
                 if let topVC = UIApplication.getTopViewController(), topVC.isKind(of: MessageVC.self) {
-                        topVC.navigationController?.popViewController(animated: true)
+                    topVC.navigationController?.popViewController(animated: true)
                 }
             }
-        }        
+        }
         
         socket?.on(APIConstant.APIUserSecurityToken) {data, ack in
             print(data)
@@ -148,9 +147,9 @@ class SocketIOHandler: NSObject {
                 
                 if let topVC = UIApplication.getTopViewController(), topVC.isKind(of: MessageVC.self) {
                     
-                    if strUserId == Constants.loggedInUser?.id {
+                    if strUserId == Int(self.user_id ?? "0") ?? 0 {
                         if let appToken = UserDefaults.standard.value(forKey: kAppToken) as? String {
-                         
+                            
                             for i in 0..<arrMessage.count {
                                 let dictMessage = arrMessage[i] as! NSMutableDictionary
                                 
@@ -189,7 +188,7 @@ class SocketIOHandler: NSObject {
                 
                 let dic:NSDictionary = (data[0] as! NSDictionary)
                 print(dic)
-               
+                
                 let dictMessage = dic.value(forKey: "recipients") as! NSMutableDictionary
                 
                 let msgId = dictMessage.value(forKey: "message_id")
@@ -201,7 +200,7 @@ class SocketIOHandler: NSObject {
                 let senderId = "\(dictMessage.value(forKey: "sender_id") ?? "0")"
                 let receiverId = dictMessage.value(forKey: "receiver_id")
                 let modifiedDate = dictMessage.value(forKey: "modified_date")
-                                
+                
                 var receiverName = ""
                 var receiver_profile = ""
                 var receiver_last_seen = ""
@@ -212,7 +211,7 @@ class SocketIOHandler: NSObject {
                 var is_blocked_by_user = ""
                 var is_blocked_by_receiver = ""
                 
-                if self.user_id == Int(senderId) {
+                if self.user_id == senderId {
                     receiverName = dictMessage.value(forKey: "receiver_name") as! String
                     receiver_profile = "\(dictMessage.value(forKey: "receiver_profile") ?? "")"
                     receiver_last_seen = dictMessage.value(forKey: "receiver_last_seen") as! String
@@ -255,7 +254,7 @@ class SocketIOHandler: NSObject {
                 if (CoreDataAdaptor.sharedDataAdaptor.updateMessageID(messageID: "\(msgId!)", conversationId: "\(conversationId!)", mediaId: "\(mediaId!)", createdDate: dictMessage.value(forKey: "created_date") as! String, modifiedDate: dictMessage.value(forKey: "modified_date") as! String, uniqueId: "\(uniqueId!)", userCallId: "\(userCallId!)", parentMessageId: "\(parentMessageId!)", forwardedMessageId: "\(forwardedMessageId!)", isEdited: "\(isEdited!)", messageStatus: "\(messageStatus!)", callStatus: "\(callStatus!)", host_by: "\(host_by!)", callduration: "\(callduration!)", thumbnailUrl: "\(thumbnailUrl!)")) {
                     
                     self.delegate?.reloadMessagesStatus?()
-                }                
+                }
             }
         }
         
@@ -263,9 +262,9 @@ class SocketIOHandler: NSObject {
             guard let self = self else { return }
             
             if ((data[0] as! NSDictionary).value(forKey: "status")) as! Int == 1 {
-               
+                
                 let dic:NSDictionary = (data[0] as! NSDictionary)
-               
+                
                 let arrMessage = dic.value(forKey: "Conversation") as! NSMutableArray
                 let dictMessage = arrMessage[0] as! NSMutableDictionary
                 
@@ -274,7 +273,7 @@ class SocketIOHandler: NSObject {
                 let receiverId = "\(dictMessage.value(forKey: "receiver_id") ?? "0")"
                 let messageId = "\(dictMessage.value(forKey: "message_id") ?? "0")"
                 let mediaId = "\(dictMessage.value(forKey: "media_id") ?? "0")"
-                               
+                
                 let msgText = dictMessage.value(forKey: "message_text")
                 let msgType = dictMessage.value(forKey: "message_type")
                 
@@ -287,8 +286,8 @@ class SocketIOHandler: NSObject {
                 var is_blocked_by_admin = ""
                 var is_blocked_by_user = ""
                 var is_blocked_by_receiver = ""
-                                            
-                if self.user_id == Int(senderId) {
+                
+                if self.user_id == senderId {
                     receiverName = dictMessage.value(forKey: "receiver_name") as! String
                     receiver_profile = "\(dictMessage.value(forKey: "receiver_profile") ?? "")"
                     receiver_last_seen = dictMessage.value(forKey: "receiver_last_seen") as! String
@@ -311,7 +310,7 @@ class SocketIOHandler: NSObject {
                     is_blocked_by_user = "\(dictMessage.value(forKey: "sender_blocked_in_app") ?? "")"
                     is_blocked_by_receiver = "\(dictMessage.value(forKey: "receiver_blocked_in_app") ?? "")"
                 }
-                          
+                
                 let strPredicate = "(senderId = \(senderId) and receiverId = \(receiverId)) or (senderId = \(receiverId) and receiverId = \(senderId))"
                 
                 let arrayList = CoreDataAdaptor.sharedDataAdaptor.fetchListWhere(predicate: NSPredicate (format: strPredicate as String))
@@ -319,8 +318,8 @@ class SocketIOHandler: NSObject {
                 if arrayList.count == 0 {
                     let dictList = NSMutableDictionary()
                     dictList.setValue(conversationId, forKey: "conversation_id")
-                                       
-                    if self.user_id == Int(senderId) {
+                    
+                    if self.user_id == senderId {
                         dictList.setValue(senderId, forKey: "sender_id")
                         dictList.setValue(receiverId, forKey: "receiver_id")
                         dictList.setValue(is_last_seen_enable, forKey: "is_last_seen_enable")
@@ -335,7 +334,7 @@ class SocketIOHandler: NSObject {
                         dictList.setValue(is_blocked_by_user, forKey: "is_blocked_by_user")
                         dictList.setValue(is_blocked_by_receiver, forKey: "is_blocked_by_receiver")
                     }
-                     
+                    
                     
                     dictList.setValue(senderId, forKey: "sender_id")
                     dictList.setValue(receiverId, forKey: "receiver_id")
@@ -392,11 +391,11 @@ class SocketIOHandler: NSObject {
                 dictMsg.setValue("\(dictMessage.value(forKey: "host_by") ?? "")", forKey: "host_by")
                 dictMsg.setValue("\(dictMessage.value(forKey: "call_duration") ?? "")", forKey: "call_duration")
                 dictMsg.setValue("\(dictMessage.value(forKey: "thumbnail_url") ?? "")", forKey: "thumbnail_url")
-               
+                
                 let arrayChat = NSMutableArray()
                 arrayChat.add(dictMsg)
                 
-               let arrayObjMessage = CoreDataAdaptor.sharedDataAdaptor.saveMessage(array: arrayChat)
+                let arrayObjMessage = CoreDataAdaptor.sharedDataAdaptor.saveMessage(array: arrayChat)
                 if arrayObjMessage.count != 0 {
                     
                     let dict:NSMutableDictionary = NSMutableDictionary()
@@ -407,22 +406,22 @@ class SocketIOHandler: NSObject {
                     self.updateMessageStatus(data: dict)
                     
                     self.delegate?.InitialMessage?(array: arrayObjMessage)
-              }  else {
-                  
-                  let dict:NSMutableDictionary = NSMutableDictionary()
-                  dict.setValue(receiverId, forKey: "receiver_id")
-                  dict.setValue(messageId, forKey: "message_id")
-                  dict.setValue(senderId, forKey: "sender_id")
-                  dict.setValue("\(enumMessageStatus.delivered.rawValue)", forKey: "message_status")
-                  self.updateMessageStatus(data: dict)
-                  
-                  self.delegate?.reloadMessages?()
-              }
+                }  else {
+                    
+                    let dict:NSMutableDictionary = NSMutableDictionary()
+                    dict.setValue(receiverId, forKey: "receiver_id")
+                    dict.setValue(messageId, forKey: "message_id")
+                    dict.setValue(senderId, forKey: "sender_id")
+                    dict.setValue("\(enumMessageStatus.delivered.rawValue)", forKey: "message_status")
+                    self.updateMessageStatus(data: dict)
+                    
+                    self.delegate?.reloadMessages?()
+                }
             }
         }
         
         socket?.on(APIConstant.APISockerCall_Init_Receivers, callback: { data, ack in
-                      
+            
             
             if let dic = data[0] as? NSDictionary {
                 Calling.room_sid = dic["room_sid"] as? String ?? ""
@@ -436,12 +435,12 @@ class SocketIOHandler: NSObject {
         
         socket?.on(APIConstant.APICallDismissBySender, callback: { data, ack in
             print(data)
-                        
+            
             APP_DELEGATE.providerDelegate.RejectSessionSub(callStatus: enumCallStatus.rejected.rawValue)
         })
         
         socket?.on(APIConstant.APICallStatusUpdate, callback: { data, ack in
-                        
+            
             if let dicMain = data[0] as? NSDictionary {
                 if let dic = dicMain["Conversation"] as? NSDictionary {
                     let userCount = dicMain["user_count"] as? Int ?? -1
@@ -470,7 +469,7 @@ class SocketIOHandler: NSObject {
                                 if (status == enumCallStatus.rejected.rawValue ) {
                                     NotificationCenter.default.post(name: .rejectCall, object:nil)
                                 } else if (status == enumCallStatus.ended.rawValue ) {
-
+                                    
                                     APP_DELEGATE.providerDelegate.RejectSessionSub(callStatus: enumCallStatus.ended.rawValue)
                                 }
                             }
@@ -503,7 +502,7 @@ class SocketIOHandler: NSObject {
                 }
             }
         })
-	}
+    }
     
     //MARK: - Chat Module
     
@@ -526,82 +525,82 @@ class SocketIOHandler: NSObject {
             guard let self = self else { return }
             
             if ((data[0] as! NSDictionary).value(forKey: "status")) as! Int == 1 {
-            let dic:NSDictionary = (data[0] as! NSDictionary)
-           
-            let arrMessage = dic.value(forKey: "conversations") as! NSMutableArray
-            
-            let arrayChat = NSMutableArray()
-            for i in 0..<arrMessage.count {
-                let dictMessage = arrMessage[i] as! NSMutableDictionary
-                let strConversation_id = "\(dictMessage.value(forKey: "conversation_id") ?? "0")"
-                let strSender_id = "\(dictMessage.value(forKey: "sender_id") ?? "0")"
-                let strReceiver_id = "\(dictMessage.value(forKey: "receiver_id") ?? "0")"
-                                
-                if self.user_id == Int(strSender_id) {
-                                      
-                    var receiverName = ""
-                    var receiverProfile = ""
-                    var receiver_last_seen = ""
-                    var receiver_is_online = ""
-                    var receiver_chat_status = ""
+                let dic:NSDictionary = (data[0] as! NSDictionary)
+                
+                let arrMessage = dic.value(forKey: "conversations") as! NSMutableArray
+                
+                let arrayChat = NSMutableArray()
+                for i in 0..<arrMessage.count {
+                    let dictMessage = arrMessage[i] as! NSMutableDictionary
+                    let strConversation_id = "\(dictMessage.value(forKey: "conversation_id") ?? "0")"
+                    let strSender_id = "\(dictMessage.value(forKey: "sender_id") ?? "0")"
+                    let strReceiver_id = "\(dictMessage.value(forKey: "receiver_id") ?? "0")"
                     
-                    receiverName = "\(dictMessage.value(forKey: "receiver_name") ?? "Cliqued User")"
-                    receiverProfile = "\(dictMessage.value(forKey: "receiver_profile") ?? "")"
-                    receiver_last_seen = "\(dictMessage.value(forKey: "receiver_last_seen") ?? "")"
-                    receiver_is_online = "\(dictMessage.value(forKey: "receiver_is_online") ?? "")"
-                    receiver_chat_status = "\(dictMessage.value(forKey: "receiver_chat_status") ?? "")"
-                   
-                    let dictList = NSMutableDictionary()
-                    dictList.setValue(strConversation_id, forKey: "conversation_id")
-                    dictList.setValue(strSender_id, forKey: "sender_id")
-                    dictList.setValue(strReceiver_id, forKey: "receiver_id")
-                    dictList.setValue(receiverName, forKey: "receiver_name")
-                    dictList.setValue(receiverProfile, forKey: "receiver_profile")
-                    dictList.setValue("\(dictMessage.value(forKey: "created_date") ?? "")", forKey: "created_date")
-                    dictList.setValue("\(dictMessage.value(forKey: "modified_date") ?? "")", forKey: "modified_date")
-                    dictList.setValue(receiver_last_seen, forKey: "receiver_last_seen")
-                    dictList.setValue(receiver_is_online, forKey: "receiver_is_online")
-                    dictList.setValue(receiver_chat_status, forKey: "receiver_chat_status")
-                    
-                    dictList.setValue("\(dictMessage.value(forKey: "message_text") ?? "")", forKey: "message_text")
-                    dictList.setValue("\(dictMessage.value(forKey: "message_type") ?? "")", forKey: "message_type")
-                    
-                    arrayChat.add(dictList)
-                } else {
-                                        
-                    var receiverName = ""
-                    var receiverProfile = ""
-                    var receiver_last_seen = ""
-                    var receiver_is_online = ""
-                    var receiver_chat_status = ""
-                   
-                    receiverName = "\(dictMessage.value(forKey: "sender_name") ?? "Cliqued User")"
-                    receiverProfile = "\(dictMessage.value(forKey: "sender_profile") ?? "")"
-                    receiver_last_seen = "\(dictMessage.value(forKey: "sender_last_seen") ?? "")"
-                    receiver_is_online = "\(dictMessage.value(forKey: "sender_is_online") ?? "")"
-                    receiver_chat_status = "\(dictMessage.value(forKey: "sender_chat_status") ?? "")"
-                    
-                    let dictList = NSMutableDictionary()
-                    dictList.setValue(strConversation_id, forKey: "conversation_id")
-                    dictList.setValue(strReceiver_id, forKey: "sender_id")
-                    dictList.setValue(strSender_id, forKey: "receiver_id")
-                    dictList.setValue(receiverName, forKey: "receiver_name")
-                    dictList.setValue(receiverProfile, forKey: "receiver_profile")
-                    dictList.setValue("\(dictMessage.value(forKey: "created_date") ?? "")", forKey: "created_date")
-                    dictList.setValue("\(dictMessage.value(forKey: "modified_date") ?? "")", forKey: "modified_date")
-                    dictList.setValue(receiver_last_seen, forKey: "receiver_last_seen")
-                    dictList.setValue(receiver_is_online, forKey: "receiver_is_online")
-                    dictList.setValue(receiver_chat_status, forKey: "receiver_chat_status")
-                    
-                    dictList.setValue("\(dictMessage.value(forKey: "message_text") ?? "")", forKey: "message_text")
-                    dictList.setValue("\(dictMessage.value(forKey: "message_type") ?? "")", forKey: "message_type")
-                    
-                    arrayChat.add(dictList)
+                    if self.user_id == strSender_id {
+                        
+                        var receiverName = ""
+                        var receiverProfile = ""
+                        var receiver_last_seen = ""
+                        var receiver_is_online = ""
+                        var receiver_chat_status = ""
+                        
+                        receiverName = "\(dictMessage.value(forKey: "receiver_name") ?? "Cliqued User")"
+                        receiverProfile = "\(dictMessage.value(forKey: "receiver_profile") ?? "")"
+                        receiver_last_seen = "\(dictMessage.value(forKey: "receiver_last_seen") ?? "")"
+                        receiver_is_online = "\(dictMessage.value(forKey: "receiver_is_online") ?? "")"
+                        receiver_chat_status = "\(dictMessage.value(forKey: "receiver_chat_status") ?? "")"
+                        
+                        let dictList = NSMutableDictionary()
+                        dictList.setValue(strConversation_id, forKey: "conversation_id")
+                        dictList.setValue(strSender_id, forKey: "sender_id")
+                        dictList.setValue(strReceiver_id, forKey: "receiver_id")
+                        dictList.setValue(receiverName, forKey: "receiver_name")
+                        dictList.setValue(receiverProfile, forKey: "receiver_profile")
+                        dictList.setValue("\(dictMessage.value(forKey: "created_date") ?? "")", forKey: "created_date")
+                        dictList.setValue("\(dictMessage.value(forKey: "modified_date") ?? "")", forKey: "modified_date")
+                        dictList.setValue(receiver_last_seen, forKey: "receiver_last_seen")
+                        dictList.setValue(receiver_is_online, forKey: "receiver_is_online")
+                        dictList.setValue(receiver_chat_status, forKey: "receiver_chat_status")
+                        
+                        dictList.setValue("\(dictMessage.value(forKey: "message_text") ?? "")", forKey: "message_text")
+                        dictList.setValue("\(dictMessage.value(forKey: "message_type") ?? "")", forKey: "message_type")
+                        
+                        arrayChat.add(dictList)
+                    } else {
+                        
+                        var receiverName = ""
+                        var receiverProfile = ""
+                        var receiver_last_seen = ""
+                        var receiver_is_online = ""
+                        var receiver_chat_status = ""
+                        
+                        receiverName = "\(dictMessage.value(forKey: "sender_name") ?? "Cliqued User")"
+                        receiverProfile = "\(dictMessage.value(forKey: "sender_profile") ?? "")"
+                        receiver_last_seen = "\(dictMessage.value(forKey: "sender_last_seen") ?? "")"
+                        receiver_is_online = "\(dictMessage.value(forKey: "sender_is_online") ?? "")"
+                        receiver_chat_status = "\(dictMessage.value(forKey: "sender_chat_status") ?? "")"
+                        
+                        let dictList = NSMutableDictionary()
+                        dictList.setValue(strConversation_id, forKey: "conversation_id")
+                        dictList.setValue(strReceiver_id, forKey: "sender_id")
+                        dictList.setValue(strSender_id, forKey: "receiver_id")
+                        dictList.setValue(receiverName, forKey: "receiver_name")
+                        dictList.setValue(receiverProfile, forKey: "receiver_profile")
+                        dictList.setValue("\(dictMessage.value(forKey: "created_date") ?? "")", forKey: "created_date")
+                        dictList.setValue("\(dictMessage.value(forKey: "modified_date") ?? "")", forKey: "modified_date")
+                        dictList.setValue(receiver_last_seen, forKey: "receiver_last_seen")
+                        dictList.setValue(receiver_is_online, forKey: "receiver_is_online")
+                        dictList.setValue(receiver_chat_status, forKey: "receiver_chat_status")
+                        
+                        dictList.setValue("\(dictMessage.value(forKey: "message_text") ?? "")", forKey: "message_text")
+                        dictList.setValue("\(dictMessage.value(forKey: "message_type") ?? "")", forKey: "message_type")
+                        
+                        arrayChat.add(dictList)
+                    }
                 }
+                
+                let _ = CoreDataAdaptor.sharedDataAdaptor.saveConversation(array: arrayChat)
             }
-            
-            let _ = CoreDataAdaptor.sharedDataAdaptor.saveConversation(array: arrayChat)
-        }
             self.delegate?.reloadConversation?()
         }
     }
@@ -647,7 +646,7 @@ class SocketIOHandler: NSObject {
             let dic:NSDictionary = (data[0] as! NSDictionary)
             
             if  let arrMessage = dic.value(forKey: "Conversation") as? NSMutableArray {
-            
+                
                 for i in 0..<arrMessage.count {
                     let dictMessage = arrMessage[i] as! NSMutableDictionary
                     
@@ -671,8 +670,8 @@ class SocketIOHandler: NSObject {
                     var is_blocked_by_user = ""
                     var is_blocked_by_receiver = ""
                     
-                    if self.user_id == Int("\(senderId ?? 0)") {
-                                                                  
+                    if self.user_id == "\(senderId ?? 0)" {
+                        
                         receiverName = "\(dictMessage.value(forKey: "receiver_name") ?? "Cliqued User")"
                         receiverProfile = "\(dictMessage.value(forKey: "receiver_profile") ?? "")"
                         receiver_last_seen = "\(dictMessage.value(forKey: "receiver_last_seen") ?? "")"
@@ -683,21 +682,21 @@ class SocketIOHandler: NSObject {
                         is_last_seen_enable = "\(dictMessage.value(forKey: "receiver_is_last_seen_enable") ?? "")"
                         is_blocked_by_user = "\(dictMessage.value(forKey: "receiver_blocked_in_app") ?? "")"
                         is_blocked_by_receiver = "\(dictMessage.value(forKey: "sender_blocked_in_app") ?? "")"
-                       
-                   } else {
-                                              
+                        
+                    } else {
+                        
                         receiverName = "\(dictMessage.value(forKey: "sender_name") ?? "Cliqued User")"
                         receiverProfile = "\(dictMessage.value(forKey: "sender_profile") ?? "")"
                         receiver_last_seen = "\(dictMessage.value(forKey: "sender_last_seen") ?? "")"
                         receiver_is_online = "\(dictMessage.value(forKey: "sender_is_online") ?? "")"
                         receiver_chat_status = "\(dictMessage.value(forKey: "sender_chat_status") ?? "")"
-                       
-                       is_blocked_by_admin = "\(dictMessage.value(forKey: "sender_is_blocked_admin") ?? "")"
-                       is_last_seen_enable = "\(dictMessage.value(forKey: "sender_is_last_seen_enable") ?? "")"
-                       is_blocked_by_user = "\(dictMessage.value(forKey: "sender_blocked_in_app") ?? "")"
-                       is_blocked_by_receiver = "\(dictMessage.value(forKey: "receiver_blocked_in_app") ?? "")"
+                        
+                        is_blocked_by_admin = "\(dictMessage.value(forKey: "sender_is_blocked_admin") ?? "")"
+                        is_last_seen_enable = "\(dictMessage.value(forKey: "sender_is_last_seen_enable") ?? "")"
+                        is_blocked_by_user = "\(dictMessage.value(forKey: "sender_blocked_in_app") ?? "")"
+                        is_blocked_by_receiver = "\(dictMessage.value(forKey: "receiver_blocked_in_app") ?? "")"
                     }
-                                        
+                    
                     let userCallId = dictMessage.value(forKey: "user_call_id")
                     let parentMessageId = dictMessage.value(forKey: "parent_message_id")
                     let forwardedMessageId = dictMessage.value(forKey: "forwared_message_id")
@@ -729,7 +728,7 @@ class SocketIOHandler: NSObject {
             let dic:NSDictionary = (data[0] as! NSDictionary)
             
             if  let arrMessage = dic.value(forKey: "Conversation") as? NSMutableArray {
-            
+                
                 let dictMessage = arrMessage[0] as! NSMutableDictionary
                 
                 let msgId = dictMessage.value(forKey: "message_id")
@@ -761,7 +760,7 @@ class SocketIOHandler: NSObject {
                 let callStatus = dictMessage.value(forKey: "call_status")
                 let host_by = dictMessage.value(forKey: "host_by")
                 let callduration = dictMessage.value(forKey: "call_duration")
-                let thumbnailUrl = dictMessage.value(forKey: "thumbnail_url")                
+                let thumbnailUrl = dictMessage.value(forKey: "thumbnail_url")
                 
                 let updateConFlag = CoreDataAdaptor.sharedDataAdaptor.updateConversation(conversationId: "\(conversationId!)", senderId: "\(senderId!)", receiverId: "\(receiverId!)", receiverName: "\(receiverName!)", receiverProfile: "\(receiverProfile!)", lastDate: "\(modifiedDate!)",messageText: "\(msgText!)",messageType:"\(msgType!)")
                 
@@ -775,7 +774,7 @@ class SocketIOHandler: NSObject {
     }
     
     func fetchNewMessagesOfSender(data:NSDictionary)  {
-
+        
         socket?.emitWithAck(APIConstant.APISocketFetchMessages, data).timingOut(after: 0) { [weak self] data in
             guard let self = self else { return }
             
@@ -786,7 +785,7 @@ class SocketIOHandler: NSObject {
                     
                     if array.count > 0 {
                         let dictMessage = array.lastObject as! NSMutableDictionary
-                       
+                        
                         let msgText = dictMessage.value(forKey: "message_text")
                         let msgType = dictMessage.value(forKey: "message_type")
                         let conversationId = dictMessage.value(forKey: "conversation_id")
@@ -816,8 +815,8 @@ class SocketIOHandler: NSObject {
                         let sender_is_blocked_by_user = dictMessage.value(forKey: "sender_blocked_in_app")
                         
                         
-                        if self.user_id == Int("\(senderId!)") {
-                        
+                        if self.user_id == "\(senderId!)" {
+                            
                             let updateConFlag = CoreDataAdaptor.sharedDataAdaptor.updateConversation(conversationId: "\(conversationId!)", senderId: "\(senderId!)", receiverId: "\(receiverId!)", receiverName: "\(receiverName!)", receiverProfile: "\(receiverProfile!)", lastDate: "\(modifiedDate!)",messageText: "\(msgText!)",messageType:"\(msgType!)")
                             
                             let updateConStatusFlag = CoreDataAdaptor.sharedDataAdaptor.updateConversationChatStatus(conversationId: "\(conversationId!)", senderId: "\(senderId!)", receiverId: "\(receiverId!)", receiverIsOnline: "\(receiverIsOnline!)", receiverChatStatus: "\(receiverChatStatus!)", lastseen: "\(receiverLastSeen!)",isLastEnable: "\(receiver_is_last_seen_enable!)",isBlockedByAdmin: "\(receiver_is_blocked_by_admin!)",isBlockedByUser: "\(receiver_is_blocked_by_user!)",isBlockedByReceiver: "\(sender_is_blocked_by_user!)")
@@ -829,15 +828,15 @@ class SocketIOHandler: NSObject {
                         }
                         
                         let dict1:NSMutableDictionary = NSMutableDictionary()
-                        dict1.setValue("\(Constants.loggedInUser?.id ?? 0)", forKey: "receiver_id")
+                        dict1.setValue("\(user_id)", forKey: "receiver_id")
                         dict1.setValue("0", forKey: "message_id")
                         dict1.setValue("0", forKey: "sender_id")
                         dict1.setValue("\(enumMessageStatus.read.rawValue)", forKey: "message_status")
                         self.updateMessageStatus(data: dict1)
-                    
+                        
                         let arrayObjMessage = CoreDataAdaptor.sharedDataAdaptor.saveMessage(array: array)
                         if arrayObjMessage.count != 0 {
-                                self.delegate?.InitialMessage?(array: arrayObjMessage)
+                            self.delegate?.InitialMessage?(array: arrayObjMessage)
                         } else {
                             self.delegate?.reloadMessages?()
                         }
@@ -864,7 +863,7 @@ class SocketIOHandler: NSObject {
                     
                     if array.count > 0 {
                         let dictMessage = array.lastObject as! NSMutableDictionary
-                       
+                        
                         let msgText = dictMessage.value(forKey: "message_text")
                         let msgType = dictMessage.value(forKey: "message_type")
                         let conversationId = dictMessage.value(forKey: "conversation_id")
@@ -883,7 +882,7 @@ class SocketIOHandler: NSObject {
                         let receiver_is_blocked_by_admin = dictMessage.value(forKey: "receiver_is_blocked_admin")
                         let receiver_is_last_seen_enable = dictMessage.value(forKey: "receiver_is_last_seen_enable")
                         let receiver_is_blocked_by_user = dictMessage.value(forKey: "receiver_blocked_in_app")
-                                             
+                        
                         let senderLastSeen = dictMessage.value(forKey: "sender_last_seen")
                         let senderIsOnline = dictMessage.value(forKey: "sender_is_online")
                         let senderChatStatus = dictMessage.value(forKey: "sender_chat_status")
@@ -893,8 +892,8 @@ class SocketIOHandler: NSObject {
                         let sender_is_blocked_by_user = dictMessage.value(forKey: "sender_blocked_in_app")
                         
                         
-                        if self.user_id == Int("\(senderId!)") {
-                        
+                        if self.user_id == "\(senderId!)" {
+                            
                             let updateConFlag = CoreDataAdaptor.sharedDataAdaptor.updateConversation(conversationId: "\(conversationId!)", senderId: "\(senderId!)", receiverId: "\(receiverId!)", receiverName: "\(receiverName!)", receiverProfile: "\(receiverProfile!)", lastDate: "\(modifiedDate!)",messageText: "\(msgText!)",messageType:"\(msgType!)")
                             
                             let updateConStatusFlag = CoreDataAdaptor.sharedDataAdaptor.updateConversationChatStatus(conversationId: "\(conversationId!)", senderId: "\(senderId!)", receiverId: "\(receiverId!)", receiverIsOnline: "\(receiverIsOnline!)", receiverChatStatus: "\(receiverChatStatus!)", lastseen: "\(receiverLastSeen!)",isLastEnable: "\(receiver_is_last_seen_enable!)",isBlockedByAdmin: "\(receiver_is_blocked_by_admin!)",isBlockedByUser: "\(receiver_is_blocked_by_user!)",isBlockedByReceiver: "\(sender_is_blocked_by_user!)")
@@ -904,10 +903,10 @@ class SocketIOHandler: NSObject {
                             
                             let updateConStatusFlag = CoreDataAdaptor.sharedDataAdaptor.updateConversationChatStatus(conversationId: "\(conversationId!)", senderId: "\(senderId!)", receiverId: "\(receiverId!)", receiverIsOnline: "\(senderIsOnline!)", receiverChatStatus: "\(senderChatStatus!)", lastseen: "\(senderLastSeen!)",isLastEnable: "\(sender_is_last_seen_enable!)",isBlockedByAdmin: "\(sender_is_blocked_by_admin!)",isBlockedByUser: "\(sender_is_blocked_by_user!)",isBlockedByReceiver: "\(receiver_is_blocked_by_user!)")
                         }
-                         
+                        
                         let arrayObjMessage = CoreDataAdaptor.sharedDataAdaptor.saveMessage(array: array)
                         if arrayObjMessage.count != 0 {
-                                self.delegate?.InitialMessage?(array: arrayObjMessage)
+                            self.delegate?.InitialMessage?(array: arrayObjMessage)
                         } else {
                             self.delegate?.reloadMessages?()
                         }
@@ -925,12 +924,12 @@ class SocketIOHandler: NSObject {
     
     func VideoCallCreateRoom(data:NSDictionary,response: @escaping () -> Void,
                              error: @escaping () -> Void)  {
-                
+        
         socket?.emitWithAck(APIConstant.APISocketCreateRoomForVideoCall, data).timingOut(after: 0) {data in
             print(data)
             if ((data[0] as! NSDictionary).value(forKey: "status")) as! Int == 1 {
                 let dic:NSDictionary = (data[0] as! NSDictionary)
-              
+                
                 
                 Calling.room_sid = dic["room_sid"] as? String ?? ""
                 Calling.room_Name = dic["room_name"] as? String ?? ""
@@ -946,7 +945,7 @@ class SocketIOHandler: NSObject {
     }
     
     func checkNewMessage(data:NSDictionary) {
-       
+        
         socket?.emit(APIConstant.APISOCKETGetNewMessage, data)
     }
     
@@ -955,7 +954,7 @@ class SocketIOHandler: NSObject {
         
         
         socket?.emitWithAck(APIConstant.APISocketUpdateCallStatusParticipants, data).timingOut(after: 0) { data in
-          
+            
             
             if let dic = data[0] as? NSDictionary {
                 Calling.call_id = (dic["result"] as! NSDictionary)["call_id"] as? String ?? ""
@@ -989,7 +988,7 @@ class SocketIOHandler: NSObject {
                             }
                         }else {
                             if let dictObj = (obj as? NSDictionary) {
-                                if dictObj["receiver_id"] as? Int != Constants.loggedInUser?.id {
+                                if dictObj["receiver_id"] as? String != self.user_id {
                                     arrOnlineUsersImg.append(dictObj["profile_photo"] as? String ?? "")
                                 }
                             }

@@ -12,10 +12,12 @@ import MapKit
 struct LocationView: View {
     @Environment(\.presentationMode) private var presentationMode
     
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
+    
     @StateObject private var locationViewModel = LocationViewModel()
     
     @State private var distanceValues: [String] = ["5km", "10km", "50km", "100km", "200km"]
-    @State var selectedDistance = "5km"
+    @State private var selectedDistance = "5km"
     @State private var notificationsViewPresented = false
     
     var isFromEditProfile: Bool
@@ -195,12 +197,8 @@ struct LocationView: View {
                                       country: locationViewModel.country,
                                       pincode: locationViewModel.pincode)
             
-            guard var user = Constants.loggedInUser else { return }
-            
-            user.userAddress = userAddress
-            user.preferenceDistance = Int(selectedDistance.replacingOccurrences(of: "km", with: ""))
-            
-            Constants.saveUser(user: user)
+            loggedInUser?.userAddress = userAddress
+            loggedInUser?.preferenceDistance = Int(selectedDistance.replacingOccurrences(of: "km", with: ""))
             
             notificationsViewPresented.toggle()
         } else {

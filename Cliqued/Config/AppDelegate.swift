@@ -18,6 +18,7 @@ import SwiftUI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
     
     var window: UIWindow?
     var socketIOHandler:SocketIOHandler?
@@ -79,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         setLanguage()
         
         if UserDefaults.standard.bool(forKey: UserDefaultKey().isLoggedIn) && UserDefaults.standard.bool(forKey: UserDefaultKey().isRemeberMe) {
-            if let user = Constants.loggedInUser, user.profileSetupCompleted() {
+            if let user = loggedInUser, user.profileSetupCompleted() {
                 socketIOHandler = SocketIOHandler()
                 APP_DELEGATE.window?.rootViewController = UIHostingController(rootView: TabBarView())
             } else {
@@ -392,63 +393,7 @@ extension AppDelegate : PKPushRegistryDelegate {
     }
     
     func checkPushNotificationEnabled() {
-        let current = UNUserNotificationCenter.current()
         
-        current.getNotificationSettings(completionHandler: { (settings) in
-            if settings.authorizationStatus == .notDetermined {
-                DispatchQueue.main.async {
-                    self.callUpdateUserDeviceTokenAPI(is_enabled: false)
-                }
-                // Notification permission has not been asked yet, go for it!
-            } else if settings.authorizationStatus == .denied {
-                
-                DispatchQueue.main.async {
-                    self.callUpdateUserDeviceTokenAPI(is_enabled: false)
-                }
-                
-                // Notification permission was previously denied, go to settings & privacy to re-enable
-            } else if settings.authorizationStatus == .authorized {
-                // Notification permission was already granted
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self.callUpdateUserDeviceTokenAPI(is_enabled: true)
-                }
-            }
-        })
-    }
-    
-    //MARK: Call Get Preferences Data API
-    func callUpdateUserDeviceTokenAPI(is_enabled: Bool) {
-        
-        let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-            apiParams.deviceType: "1",
-            apiParams.deviceToken : UserDefaults.standard.object(forKey: kDeviceToken) ?? "123",
-            apiParams.voipToken: UserDefaults.standard.object(forKey: USER_DEFAULT_KEYS.VOIP_TOKEN) ?? "123",
-            apiParams.isPushEnabled : is_enabled ? "\(preferenceOptionIds.yes)" : "\(preferenceOptionIds.no)"
-        ]
-    }
-    
-    func callLogoutAPI() {
-        let params: NSDictionary = [
-            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-        ]
-        
-        if(Connectivity.isConnectedToInternet()){
-            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.Logout, parameters: params) { response, error, message in
-                
-                if(error != nil && response == nil) {
-                    
-                } else {
-                    
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    
-                    if status == SUCCESS {
-                        UserDefaults.standard.clearUserDefaultWithSocket()
-                    }
-                }
-            }
-        }
     }
     
     func pushRegistry(_ registry: PKPushRegistry, didUpdate credentials: PKPushCredentials, for type: PKPushType) {

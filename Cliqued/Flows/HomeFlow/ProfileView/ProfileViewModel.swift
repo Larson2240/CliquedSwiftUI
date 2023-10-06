@@ -22,7 +22,7 @@ final class ProfileViewModel: ObservableObject {
     let distanceValues = ["5km", "10km", "50km", "100km", "200km"]
     
     func viewAppeared() {
-        guard let user = Constants.loggedInUser else { return }
+        
         
     }
     

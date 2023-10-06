@@ -71,7 +71,7 @@ extension AddActivityVC {
         tableview.delegate = dataSource
         tableview.dataSource = dataSource
                    
-        viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
+//        viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
         
         if isEditActivity {
             viewModel.objActivityDetails = objActivityDetails

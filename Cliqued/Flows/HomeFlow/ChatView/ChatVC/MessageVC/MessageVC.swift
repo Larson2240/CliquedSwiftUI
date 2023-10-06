@@ -64,7 +64,7 @@ class MessageVC: UIViewController,AVAudioRecorderDelegate, AVAudioPlayerDelegate
     var viewModel = MessageViewModel()
     var viewModelBlockedUser = ActivityUserDetailsViewModel()
     var dataSource: MessageDataSource?
-    var sender_id = Constants.loggedInUser?.id ?? 0
+    var sender_id = UserDefaults.standard.string(forKey: kUserToken)
     var receiver_id  = 0
     var receiver_name = ""
     var receiver_profile = ""
@@ -497,7 +497,7 @@ extension MessageVC {
             if isSuccess {
                 
                 let dict:NSMutableDictionary = NSMutableDictionary()
-                dict.setValue(Constants.loggedInUser?.id ?? 0, forKey: "user_id")
+                dict.setValue(sender_id, forKey: "user_id")
                 dict.setValue(self.receiver_id, forKey: "receiver_id")
                 APP_DELEGATE.socketIOHandler?.UserBlockedEvent(data: dict)
                 
@@ -947,7 +947,7 @@ extension MessageVC: SocketIOHandlerDelegate {
       
     
     func reloadUserstatus(user_id: String, onlineStatus: String, lastSeen: String) {
-        let strPredicate = NSString(format: "(senderId = %d AND receiverId = %d) OR (senderId = %d AND receiverId = %d)",sender_id,receiver_id,receiver_id,sender_id)
+        let strPredicate = NSString(format: "(senderId = %d AND receiverId = %d) OR (senderId = %d AND receiverId = %d)",sender_id!,receiver_id,receiver_id,sender_id!)
         let arr = CoreDataAdaptor.sharedDataAdaptor.fetchListWhere(predicate: NSPredicate (format: strPredicate as String))
         
         if arr.count > 0 {
