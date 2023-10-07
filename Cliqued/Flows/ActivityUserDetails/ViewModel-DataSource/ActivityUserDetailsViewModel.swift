@@ -38,11 +38,11 @@ class ActivityUserDetailsViewModel {
     
     //MARK: Bind data on screen from the user object.
     func bindActivityUserDetailsData(userData: User) {
-        self.setActivityUserId(value: "\(userData.id ?? 0)")
-        self.setName(value: userData.name ?? "")
+//        self.setActivityUserId(value: "\(userData.id ?? 0)")
+//        self.setName(value: userData.name ?? "")
         
 //        self.setName(value: "\(userData.name ?? "") - \(userData.gender == "1" ? "Male" : "Female")")
-        self.setAge(value: "\(userData.age ?? 0)")
+//        self.setAge(value: "\(userData.age ?? 0)")
         
        /*
         if userData.userPreferences?.count ?? 0 > 0 {
@@ -80,7 +80,7 @@ class ActivityUserDetailsViewModel {
         */
                  
         
-        self.setLookingFor(value: "\(userData.lookingForTitle ?? "")")
+//        self.setLookingFor(value: "\(userData.lookingForTitle ?? "")")
         
        
     }

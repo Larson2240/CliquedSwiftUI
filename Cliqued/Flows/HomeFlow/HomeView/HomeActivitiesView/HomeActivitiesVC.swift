@@ -233,10 +233,10 @@ extension HomeActivitiesVC: KolodaViewDataSource {
             
             //Checking user is premium or not for undo activity
             let activityData = viewModel.getDuplicateUserActivityData(at: index)
-            card.labelUserNameAndAge.text = "\(activityData.name ?? ""), \(activityData.age ?? 0)"
-            
-            let distance = activityData.preferenceDistance
-            card.labelLocationDistance.text = "\(distance) \(Constants.label_kmAway)"
+//            card.labelUserNameAndAge.text = "\(activityData.name ?? ""), \(activityData.age ?? 0)"
+//
+//            let distance = activityData.preferenceDistance
+//            card.labelLocationDistance.text = "\(distance) \(Constants.label_kmAway)"
             
             if let arr = activityData.userProfileMedia, arr.count > 0 {
                 let isImageData = arr.filter({$0.mediaType == 0})
@@ -297,7 +297,7 @@ extension HomeActivitiesVC: KolodaViewDataSource {
             if direction == .up || direction == .topLeft || direction == .topRight {
                 if viewModel.getAllDuplicationUserActivityData().count > 0 {
                     let activityData = viewModel.getDuplicateUserActivityData(at: index)
-                    viewModel.setCounterUserId(value: "\(activityData.id ?? 0)")
+//                    viewModel.setCounterUserId(value: "\(activityData.id ?? 0)")
                     viewModel.setIsFollow(value: "1")
                     viewModel.callLikeDislikeUserAPI(isShowLoader: false)
                     
@@ -312,7 +312,7 @@ extension HomeActivitiesVC: KolodaViewDataSource {
             } else if direction == .down || direction == .bottomLeft || direction == .bottomRight {
                 if viewModel.getAllDuplicationUserActivityData().count > 0 {
                     let activityData = viewModel.getDuplicateUserActivityData(at: index)
-                    viewModel.setCounterUserId(value: "\(activityData.id ?? 0)")
+//                    viewModel.setCounterUserId(value: "\(activityData.id ?? 0)")
                     viewModel.setIsFollow(value: "0")
                     viewModel.callLikeDislikeUserAPI(isShowLoader: false)
                     

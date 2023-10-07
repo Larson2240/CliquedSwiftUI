@@ -24,7 +24,8 @@ struct EditProfileView: View {
     @State private var editActivitiesViewPresented = false
     @State private var romanceViewPresented = false
     @State private var locationViewPresented = false
-    @State private var kidsSelection = ""
+    @State private var kids = false
+    @State private var smoking = false
     @State private var name = ""
     @State private var aboutMe = ""
     @State private var height = ""
@@ -61,9 +62,9 @@ struct EditProfileView: View {
                     
                     heightStack
                     
-                    kids
+                    kidsStack
                     
-                    smoking
+                    smokingStack
                     
                     distanceAndAge
                 }
@@ -117,6 +118,7 @@ struct EditProfileView: View {
                     .onTapGesture {
                         viewModel.imageTapped(object)
                     }
+                    .zIndex(0)
             }
             .onPageChanged {
                 currentPage = $0
@@ -191,8 +193,10 @@ struct EditProfileView: View {
                 HStack(spacing: 6) {
                     if let activities = loggedInUser?.favouriteActivityCategories {
                         ForEach(activities) { activity in
-                            imageCell(activity)
-                                .cornerRadius(10)
+                            if activity.parentID == nil {
+                                imageCell(activity)
+                                    .cornerRadius(10)
+                            }
                         }
                         .frame(width: 110)
                     }
@@ -357,7 +361,7 @@ struct EditProfileView: View {
         .padding(.horizontal, 20)
     }
     
-    private var kids: some View {
+    private var kidsStack: some View {
         VStack(spacing: 16) {
             HStack {
                 Text(Constants.label_kids)
@@ -368,11 +372,11 @@ struct EditProfileView: View {
             }
             
             Menu {
-                Button(action: { viewModel.kidsOptionPicked(option: Constants.label_titleYes) }) {
+                Button(action: { kids = true }) {
                     Text(Constants.label_titleYes)
                 }
                 
-                Button(action: { viewModel.kidsOptionPicked(option: Constants.label_titleNo) }) {
+                Button(action: { kids = false }) {
                     Text(Constants.label_titleNo)
                 }
             } label: {
@@ -381,7 +385,7 @@ struct EditProfileView: View {
                         .stroke(Color.gray.opacity(0.6), lineWidth: 1)
                     
                     HStack {
-                        Text(loggedInUser?.preferenceKids ?? false ? "No" : "Yes")
+                        Text(kids ? Constants.label_titleYes : Constants.label_titleNo)
                             .font(.themeBook(14))
                             .padding(.horizontal, 12)
                         
@@ -395,7 +399,7 @@ struct EditProfileView: View {
         .padding(.horizontal, 20)
     }
     
-    private var smoking: some View {
+    private var smokingStack: some View {
         VStack(spacing: 16) {
             HStack {
                 Text(Constants.label_smoking)
@@ -406,11 +410,11 @@ struct EditProfileView: View {
             }
             
             Menu {
-                Button(action: { viewModel.smokingOptionPicked(option: Constants.label_titleYes) }) {
+                Button(action: { smoking = true }) {
                     Text(Constants.label_titleYes)
                 }
                 
-                Button(action: { viewModel.smokingOptionPicked(option: Constants.label_titleNo) }) {
+                Button(action: { smoking = false }) {
                     Text(Constants.label_titleNo)
                 }
             } label: {
@@ -419,7 +423,7 @@ struct EditProfileView: View {
                         .stroke(Color.gray.opacity(0.6), lineWidth: 1)
                     
                     HStack {
-                        Text(loggedInUser?.preferenceSmoking ?? false ? "No" : "Yes")
+                        Text(smoking ? Constants.label_titleYes : Constants.label_titleNo)
                             .font(.themeBook(14))
                             .padding(.horizontal, 12)
                         
@@ -508,11 +512,7 @@ struct EditProfileView: View {
     }
     
     private var saveButton: some View {
-        Button(action: {
-            viewModel.saveAgePreferences(ageMinValue: slider?.lowHandle.currentValue ?? 45,
-                                         ageMaxValue: slider?.highHandle.currentValue ?? 99)
-            viewModel.save()
-        }) {
+        Button(action: { save() }) {
             ZStack {
                 Color.theme
                 
@@ -547,6 +547,21 @@ struct EditProfileView: View {
         }
     }
     
+    private func save() {
+        loggedInUser?.name = name
+        loggedInUser?.aboutMe = aboutMe
+        loggedInUser?.height = Int(height) ?? 0
+        loggedInUser?.preferenceKids = kids
+        loggedInUser?.preferenceSmoking = smoking
+        loggedInUser?.preferenceDistance = Int(distancePreference.replacingOccurrences(of: "km", with: ""))
+        loggedInUser?.preferenceAgeFrom = slider?.lowHandle.currentValue
+        loggedInUser?.preferenceAgeTo = slider?.highHandle.currentValue
+        
+        viewModel.updateAPI {
+            presentationMode.wrappedValue.dismiss()
+        }
+    }
+    
     private func onAppearConfig() {
         slider = CustomSlider(minBound: 45,
                               maxBound: 99,
@@ -554,8 +569,28 @@ struct EditProfileView: View {
                               highValue: Double(loggedInUser?.preferenceAgeTo ?? 99),
                               width: screenSize.width - 80)
         
-        viewModel.successAction = {
-            presentationMode.wrappedValue.dismiss()
+        if let name = loggedInUser?.name {
+            self.name = name
+        }
+        
+        if let aboutMe = loggedInUser?.aboutMe {
+            self.aboutMe = aboutMe
+        }
+        
+        if let height = loggedInUser?.height {
+            self.height = String(height)
+        }
+        
+        if let distance = loggedInUser?.preferenceDistance {
+            self.distancePreference = "\(distance)km"
+        }
+        
+        if let kidsPreference = loggedInUser?.preferenceKids {
+            kids = kidsPreference
+        }
+        
+        if let smokingPreference = loggedInUser?.preferenceSmoking {
+            smoking = smokingPreference
         }
     }
     

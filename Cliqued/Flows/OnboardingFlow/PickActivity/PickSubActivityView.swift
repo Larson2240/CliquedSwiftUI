@@ -179,7 +179,7 @@ struct PickSubActivityView: View {
         }
         
         if subActivitiesCount >= 3 {
-            loggedInUser?.interestedActivitySubcategories = selectedSubActivities.map { $0.id }
+            loggedInUser?.favouriteActivityCategories! += selectedSubActivities
             
             selectPicturesViewPresented.toggle()
         } else {

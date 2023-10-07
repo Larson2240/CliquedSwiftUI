@@ -121,9 +121,9 @@ struct NotificationsView: View {
     }
     
     private func continueAction() {
-        guard var user = loggedInUser else { return }
+        loggedInUser?.notifications = notificationsViewModel.notificationsEnabled ?? false ? 1 : 0
         
-        user.notifications = notificationsViewModel.notificationsEnabled ?? false ? 1 : 0
+        guard let user = loggedInUser else { return }
         
         userWebService.updateUser(user: user) { result in
             switch result {

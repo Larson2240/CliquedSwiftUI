@@ -45,7 +45,7 @@ struct ProfileView: View {
                     
                     ProfileCommonCell(imageName: "ic_lookingfor",
                                       title: Constants.label_lookingFor,
-                                      details: loggedInUser?.lookingForTitle ?? "")
+                                      details: "")
                     
                     ProfileCommonCell(imageName: "ic_location_black",
                                       title: Constants.label_location,
@@ -57,11 +57,11 @@ struct ProfileView: View {
                     
                     ProfileCommonCell(imageName: "ic_kids",
                                       title: Constants.label_kids,
-                                      details: loggedInUser?.preferenceKids ?? false ? "Yes" : "No")
+                                      details: loggedInUser?.preferenceKids ?? false ? Constants.label_titleYes : Constants.label_titleNo)
                     
                     ProfileCommonCell(imageName: "ic_smoking",
                                       title: Constants.label_smoking,
-                                      details: loggedInUser?.preferenceKids ?? false ? "Yes" : "No")
+                                      details: loggedInUser?.preferenceSmoking ?? false ? Constants.label_titleYes : Constants.label_titleNo)
                     
                     distanceStack
                     
@@ -371,7 +371,6 @@ struct ProfileView: View {
     }
     
     private func onAppearConfig() {
-        viewModel.viewAppeared()
         
         slider = CustomSlider(minBound: 45,
                               maxBound: 99,

@@ -22,10 +22,12 @@ final class AuthWebService {
                 do {
                     let model = try JSONDecoder().decode(TokenModel.self, from: response.data)
                     let cookie = response.response?.headers["Set-Cookie"] as? String
-                    let filteredCookie = cookie?.components(separatedBy: ";")
+                    
+                    guard let filteredCookie = cookie?.components(separatedBy: ";").first(where: { $0.contains("PHP") }) else { return }
+                    guard let finalCookie = filteredCookie.components(separatedBy: ",").first(where: { $0.contains("PHP") }) else { return }
                     
                     UserDefaults.standard.set(model.token, forKey: kUserToken)
-                    UserDefaults.standard.set(filteredCookie?[0], forKey: kUserCookie)
+                    UserDefaults.standard.set(finalCookie, forKey: kUserCookie)
                     
                     completion(.success(Void()))
                 } catch {
@@ -52,10 +54,12 @@ final class AuthWebService {
                 do {
                     let model = try JSONDecoder().decode(TokenModel.self, from: response.data)
                     let cookie = response.response?.headers["Set-Cookie"] as? String
-                    let filteredCookie = cookie?.components(separatedBy: ";")
+                    
+                    guard let filteredCookie = cookie?.components(separatedBy: ";").first(where: { $0.contains("PHP") }) else { return }
+                    guard let finalCookie = filteredCookie.components(separatedBy: ",").first(where: { $0.contains("PHP") }) else { return }
                     
                     UserDefaults.standard.set(model.token, forKey: kUserToken)
-                    UserDefaults.standard.set(filteredCookie?[0], forKey: kUserCookie)
+                    UserDefaults.standard.set(finalCookie, forKey: kUserCookie)
                     
                     completion(.success(Void()))
                 } catch {
@@ -82,10 +86,12 @@ final class AuthWebService {
                 do {
                     let model = try JSONDecoder().decode(TokenModel.self, from: response.data)
                     let cookie = response.response?.headers["Set-Cookie"] as? String
-                    let filteredCookie = cookie?.components(separatedBy: ";")
+                    
+                    guard let filteredCookie = cookie?.components(separatedBy: ";").first(where: { $0.contains("PHP") }) else { return }
+                    guard let finalCookie = filteredCookie.components(separatedBy: ",").first(where: { $0.contains("PHP") }) else { return }
                     
                     UserDefaults.standard.set(model.token, forKey: kUserToken)
-                    UserDefaults.standard.set(filteredCookie?[0], forKey: kUserCookie)
+                    UserDefaults.standard.set(finalCookie, forKey: kUserCookie)
                     
                     completion(.success(Void()))
                 } catch {

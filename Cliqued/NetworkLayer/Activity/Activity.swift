@@ -11,7 +11,7 @@ struct Activity: Codable, Identifiable, Equatable, Hashable {
     let id: Int
     let parentID: Int?
     let title: String
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case parentID = "parentId"

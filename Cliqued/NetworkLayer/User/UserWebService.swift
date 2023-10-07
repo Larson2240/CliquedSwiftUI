@@ -87,10 +87,6 @@ final class UserWebService {
             parameters["isOnline"] = isOnline
         }
         
-        if let chatStatus = user.chatStatus {
-            parameters["chatStatus"] = chatStatus
-        }
-        
         if let lastSeen = user.isUserLastSeenEnable {
             parameters["isUserLastSeenEnable"] = lastSeen
         }
@@ -117,10 +113,6 @@ final class UserWebService {
         
         if let interestedActivityCategories = user.favouriteActivityCategories {
             parameters["favouriteActivityCategories"] = interestedActivityCategories.map { $0.id }
-        }
-        
-        if let interestedActivitySubcategories = user.interestedActivitySubcategories {
-            parameters["favouriteActivitySubcategories"] = interestedActivitySubcategories
         }
         
         if let address = user.userAddress {
@@ -159,13 +151,13 @@ final class UserWebService {
     func updateUserMedia(
         image: UIImage,
         position: Int,
-        completion: @escaping (Result<ProfileMediaFile, Error>) -> Void
+        completion: @escaping (Result<UserProfileMedia, Error>) -> Void
     ) {
         userProvider.request(.updateUserMedia(image: image, position: position)) { result in
             switch result {
             case .success(let response):
                 do {
-                    let model = try JSONDecoder().decode(ProfileMediaFile.self, from: response.data)
+                    let model = try JSONDecoder().decode(UserProfileMedia.self, from: response.data)
                     completion(.success(model))
                 } catch {
                     if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {

@@ -190,12 +190,12 @@ struct LocationView: View {
     private func continueAction() {
         if locationViewModel.latitude != 0 && locationViewModel.longitude != 0 && locationViewModel.city != "" && locationViewModel.state != "" {
             let userAddress = Address(address: locationViewModel.address,
-                                      latitude: locationViewModel.latitude,
-                                      longitude: locationViewModel.longitude,
                                       city: locationViewModel.city,
-                                      state: locationViewModel.state,
+                                      longitude: locationViewModel.longitude,
                                       country: locationViewModel.country,
-                                      pincode: locationViewModel.pincode)
+                                      latitude: locationViewModel.latitude,
+                                      pincode: locationViewModel.pincode,
+                                      state: locationViewModel.state)
             
             loggedInUser?.userAddress = userAddress
             loggedInUser?.preferenceDistance = Int(selectedDistance.replacingOccurrences(of: "km", with: ""))

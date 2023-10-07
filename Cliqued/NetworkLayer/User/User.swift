@@ -8,50 +8,31 @@
 import Foundation
 
 struct ApiUserModel: Codable {
+    let email: String
     let user: User
 }
 
 struct User: Codable {
-    var gender: Int?
-    var name: String?
-    var age: Int?
-    var preferenceDistance: Int?
-    var preferenceRomance: Int?
-    var preferenceFriendship: Int?
-    var userAddress: Address?
-    var modifiedDate: String?
-    var profileSetupType: Int?
-    var connectedAccount: [ConnectedAccount]?
-    var isTestdata: String?
-    var birthdate: String?
-    var lastSeen: String?
     var isOnline: Bool?
-    var isVerified: String?
-    var favouriteActivityCategories: [Activity]?
-    var interestedActivitySubcategories: [Int]?
-    var createdDate: String?
-    var id: Int?
-    var guid: String?
-    var userProfileMedia: [ProfileMediaFile]?
-    var likesCounter: Int?
-    var height: Int?
-    var isBlocked: String?
-    var userMergeIds: String?
-    var isUserLastSeenEnable: Bool?
-
-    var preferenceKids: Bool?
-    var preferenceSmoking: Bool?
-    var notifications: Int?
-    var preferenceAgeFrom: Int?
-    var preferenceAgeTo: Int?
-    
     var aboutMe: String?
-    var chatStatus: Bool?
-    var activityCount: Int?
-    var userProfileViewCount: Int?
-    var activityUserViewCount: Int?
-    var isPremiumUser: String?
-    var lookingForTitle: String?
+    var preferenceAgeTo, preferenceAgeFrom: Int?
+    var profileSetupType: Int?
+    var name: String?
+    var preferenceRomance: Int?
+    var userSubscriptionDetails: [UserSubscriptionDetail]?
+    var userProfileMedia: [UserProfileMedia]?
+    var gender: Int?
+    var preferenceKids: Bool?
+    var favouriteActivityCategories: [Activity]?
+    var preferenceDistance: Int?
+    var birthdate: String?
+    var height: Int?
+    var userAddress: Address?
+    var preferenceFriendship: Int?
+    var isUserLastSeenEnable: Bool?
+    var preferenceSmoking: Bool?
+    var userSettings: [UserSetting]?
+    var notifications: Int?
     
     func profileSetupCompleted() -> Bool {
         return profileSetupType == 10
@@ -75,13 +56,36 @@ struct User: Codable {
 }
 
 struct Address: Codable {
-    let address: String
-    let latitude, longitude: Double
-    let city, state, country, pincode: String
+    let address, city: String
+    let longitude: Double
+    let country: String
+    let latitude: Double
+    let pincode, state: String
 }
 
-struct ProfileMediaFile: Codable, Hashable, Equatable, Identifiable {
-    let id: Int
+struct UserProfileMedia: Codable, Equatable, Identifiable {
+    let id, mediaType: Int
     let url: String
-    let mediaType, position: Int
+    let position: Int
+}
+
+struct UserSetting: Codable {
+    let setting: Setting
+    let value: Bool
+}
+
+struct Setting: Codable {
+    let id: Int
+    let code: String
+}
+
+struct UserSubscriptionDetail: Codable {
+    let amount: Int
+    let isActive: Bool
+    let subscription: Subscription
+    let transactionEndDate: String
+}
+
+struct Subscription: Codable {
+    let title, subTitle, planDuration: String
 }
