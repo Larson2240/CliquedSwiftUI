@@ -42,6 +42,8 @@ final class SignUpViewModel: NSObject, ObservableObject {
             switch result {
             case .success:
                 UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+                UserDefaults.standard.set(self.rememberMeSelected, forKey: UserDefaultKey().isRemeberMe)
+                
                 self.proceed()
             case .failure(let error):
                 if let error = error as? ApiError, let errorDesc = error.errorDescription {
@@ -71,6 +73,8 @@ final class SignUpViewModel: NSObject, ObservableObject {
             switch result {
             case .success:
                 UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+                UserDefaults.standard.set(self.rememberMeSelected, forKey: UserDefaultKey().isRemeberMe)
+                
                 self.proceed()
             case .failure(let error):
                 if let error = error as? ApiError, let errorDesc = error.errorDescription {
@@ -99,6 +103,7 @@ final class SignUpViewModel: NSObject, ObservableObject {
             switch result {
             case .success:
                 UserDefaults.standard.set(true, forKey: UserDefaultKey().isLoggedIn)
+                UserDefaults.standard.set(self.rememberMeSelected, forKey: UserDefaultKey().isRemeberMe)
                 
                 self.proceed()
             case .failure(let error):
@@ -128,7 +133,6 @@ final class SignUpViewModel: NSObject, ObservableObject {
             switch result {
             case .success(let user):
                 loggedInUser = user
-                UserDefaults.standard.set(self.rememberMeSelected, forKey: UserDefaultKey().isRemeberMe)
                 
                 if user.profileSetupCompleted() {
                     APP_DELEGATE.socketIOHandler = SocketIOHandler()

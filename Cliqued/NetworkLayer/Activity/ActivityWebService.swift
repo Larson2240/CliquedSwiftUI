@@ -30,4 +30,24 @@ final class ActivityWebService {
             }
         }
     }
+    
+    func getUserActivities(completion: @escaping (Result<[UserActivityClass], Error>) -> Void) {
+        activityProvider.request(.getUserActivities) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let model = try JSONDecoder().decode([UserActivityClass].self, from: response.data)
+                    completion(.success(model))
+                } catch {
+                    if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
+                        completion(.failure(ApiError.custom(errorDescription: model.message)))
+                    } else {
+                        completion(.failure(ApiError.parsing))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }

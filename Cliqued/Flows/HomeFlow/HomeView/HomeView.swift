@@ -133,7 +133,7 @@ struct HomeView: View {
     }
     
     private var presentables: some View {
-        NavigationLink(destination: ActivitiesViewRepresentable().ignoresSafeArea(),
+        NavigationLink(destination: ActivitiesViewRepresentable(selectedActivity: selectedCategory).ignoresSafeArea(),
                        isActive: $activitiesViewPresented,
                        label: EmptyView.init)
         .isDetailLink(false)

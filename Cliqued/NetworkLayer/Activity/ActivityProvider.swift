@@ -10,6 +10,7 @@ import Moya
 
 enum ActivityProvider {
     case getActivityCategories
+    case getUserActivities
 }
 
 extension ActivityProvider: TargetType {
@@ -21,12 +22,14 @@ extension ActivityProvider: TargetType {
         switch self {
         case .getActivityCategories:
             return "/activity_categories"
+        case .getUserActivities:
+            return "/user_activities"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getActivityCategories:
+        case .getActivityCategories, .getUserActivities:
             return .get
         }
     }
@@ -35,7 +38,7 @@ extension ActivityProvider: TargetType {
     
     var task: Task {
         switch self {
-        case .getActivityCategories:
+        case .getActivityCategories, .getUserActivities:
             return .requestPlain
         }
     }

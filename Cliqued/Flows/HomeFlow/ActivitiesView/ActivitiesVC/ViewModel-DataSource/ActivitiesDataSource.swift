@@ -48,7 +48,7 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
     }
     
     //MARK: Pull To Refresh
-    func setupPullToRefresh() {      
+    func setupPullToRefresh() {
         viewController.pullToRefreshHeaderSetUpForTableview(tableview: tableView, strStatus: "") { [weak self] in
             guard let self = self else { return }
             

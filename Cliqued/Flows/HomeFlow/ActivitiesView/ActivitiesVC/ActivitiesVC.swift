@@ -9,19 +9,9 @@ import UIKit
 import SwiftUI
 
 class ActivitiesVC: UIViewController {
-
     //MARK: IBOutlet
     @IBOutlet weak var viewNavigationBar: UINavigationViewClass!
     @IBOutlet weak var tableview: UITableView!
-    @IBOutlet weak var viewProfileNotComplete: UIView!
-    @IBOutlet weak var labelProfileMsg: UILabel!{
-        didSet{
-            labelProfileMsg.text = Constants.validMsg_profileIncompleteMsg
-            labelProfileMsg.font = CustomFont.THEME_FONT_Medium(14)
-            labelProfileMsg.textColor = Constants.color_DarkGrey
-        }
-    }
-    @IBOutlet weak var buttonCompleteProfile: UIButton!
     
     //MARK: Variable
     var dataSource : ActivitiesDataSource?
@@ -43,31 +33,17 @@ class ActivitiesVC: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.tabBarController?.tabBar.isHidden = false
-        if isProfileCompleted() {
-            
-        }
-    }
-    
-    //MARK: viewDidLayoutSubviews Method
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        setupButtonUI(buttonName: buttonCompleteProfile, buttonTitle: Constants.btn_completeProfile)
-    }
-    
-    //MARK: Button complete profile tap
-    @IBAction func btnCompleteProfileTap(_ sender: Any) {
-        
     }
 }
-//MARK: Extension UDF
+
 extension ActivitiesVC {
-    
     func viewDidLoadMethod() {
         setupNavigationBar()
         dataSource = ActivitiesDataSource(tableView: tableview, viewModel: viewModel, viewController: self)
         tableview.delegate = dataSource
         tableview.dataSource = dataSource
         handleApiResponse()
+        viewModel.callAllActivityListAPI()
     }
     
     //MARK: Setup Navigation Bar
@@ -100,7 +76,6 @@ extension ActivitiesVC {
             guard let self = self else { return }
             
             if isSuccess {
-                               
                 self.tableview.reloadData()
                 self.dataSource!.hideHeaderLoader()
             }
@@ -120,7 +95,7 @@ extension ActivitiesVC {
     //MARK: Function manage if user profile not complete
     func isProfileCompleted() -> Bool {
         
-            return false
+        return false
     }
     
     //MARK: Bind data on screen from the user object.

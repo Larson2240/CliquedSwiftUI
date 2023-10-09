@@ -19,7 +19,9 @@ final class UserWebService {
                 do {
                     let model = try JSONDecoder().decode(ApiUserModel.self, from: response.data)
                     completion(.success(model.user))
-                } catch {
+                } catch let error {
+                    print(error)
+                    
                     if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
                         completion(.failure(ApiError.custom(errorDescription: model.message)))
                     } else {
@@ -60,7 +62,7 @@ final class UserWebService {
         }
         
         if let birthdate = user.birthdate {
-            parameters["birthdate"] = birthdate
+            parameters["birthdate"] = birthdate.replacingOccurrences(of: " 00:00:00", with: "")
         }
         
         if let gender = user.gender {
@@ -135,7 +137,9 @@ final class UserWebService {
                 do {
                     let model = try JSONDecoder().decode(ApiUserModel.self, from: response.data)
                     completion(.success(model.user))
-                } catch {
+                } catch let error {
+                    print(error)
+                    
                     if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
                         completion(.failure(ApiError.custom(errorDescription: model.message)))
                     } else {
@@ -159,7 +163,9 @@ final class UserWebService {
                 do {
                     let model = try JSONDecoder().decode(UserProfileMedia.self, from: response.data)
                     completion(.success(model))
-                } catch {
+                } catch let error {
+                    print(error)
+                    
                     if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
                         completion(.failure(ApiError.custom(errorDescription: model.message)))
                     } else {

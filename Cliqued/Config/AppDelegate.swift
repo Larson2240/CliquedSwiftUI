@@ -286,7 +286,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if UIApplication.getTopViewController() is MessageVC {
                 completionHandler([])
             } else {
-                completionHandler([.alert, .badge, .sound])
+                completionHandler([.badge, .sound])
             }
         }
     }
@@ -386,14 +386,6 @@ extension AppDelegate : PKPushRegistryDelegate {
         device_token = tokenParts.joined()
         UserDefaults.standard.setValue(device_token, forKey: kDeviceToken)
         print("deviceToken :\(device_token)")
-        
-        if UserDefaults.standard.bool(forKey: UserDefaultKey().isLoggedIn) {
-            checkPushNotificationEnabled()
-        }
-    }
-    
-    func checkPushNotificationEnabled() {
-        
     }
     
     func pushRegistry(_ registry: PKPushRegistry, didUpdate credentials: PKPushCredentials, for type: PKPushType) {

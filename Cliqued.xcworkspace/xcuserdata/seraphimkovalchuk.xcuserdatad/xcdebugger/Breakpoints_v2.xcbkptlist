@@ -100,92 +100,79 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "109684FB-419C-4432-9D83-EE0898040389"
+            uuid = "8C8B19A2-66A5-4D54-B974-66FDC2CA5F71"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Cliqued/NetworkLayer/User/UserWebService.swift"
+            filePath = "Cliqued/NetworkLayer/Matches/MatchesWebService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
-            landmarkName = "updateUser(user:completion:)"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "getMatchingActivities(completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5A7BF13F-1B9C-4FAA-A6F1-06057B1913CD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/NetworkLayer/Matches/MatchesWebService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "getMatchesForActivity(for:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7279E17B-660C-41F0-89D6-0B9910F78D21"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/NetworkLayer/Matches/MatchesWebService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "getMatchesHome(completion:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "109684FB-419C-4432-9D83-EE0898040389 - 6e8a5bf90bc7e9a7"
+                  uuid = "7279E17B-660C-41F0-89D6-0B9910F78D21 - dc669140df3da12e"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.MatchesWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "cliqued"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/Matches/MatchesWebService.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "138"
-                  endingLineNumber = "138"
-                  offsetFromSymbolStart = "236">
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "308">
                </Location>
                <Location
-                  uuid = "109684FB-419C-4432-9D83-EE0898040389 - 6e8a5bf90bc7e9a7"
+                  uuid = "7279E17B-660C-41F0-89D6-0B9910F78D21 - 2352565f94ee6893"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.MatchesWebService.getMatchesHome(completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "cliqued"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/Matches/MatchesWebService.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "138"
-                  endingLineNumber = "138"
-                  offsetFromSymbolStart = "280">
-               </Location>
-               <Location
-                  uuid = "109684FB-419C-4432-9D83-EE0898040389 - 6e8a5bf90bc7e923"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "134"
-                  endingLineNumber = "134"
-                  offsetFromSymbolStart = "232">
-               </Location>
-               <Location
-                  uuid = "109684FB-419C-4432-9D83-EE0898040389 - 276d41e4fd8f3f22"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "134"
-                  endingLineNumber = "134"
-                  offsetFromSymbolStart = "232">
-               </Location>
-               <Location
-                  uuid = "109684FB-419C-4432-9D83-EE0898040389 - 6e8a5bf90bc7e923"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "134"
-                  endingLineNumber = "134"
-                  offsetFromSymbolStart = "268">
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "308">
                </Location>
             </Locations>
          </BreakpointContent>

@@ -8,7 +8,6 @@
 import UIKit
 
 class ActivitiesViewModel {
-    
     var isMessage: Dynamic<String> = Dynamic(String())
     var isLoaderShow: Dynamic<Bool> = Dynamic(true)
     var isDataGet: Dynamic<Bool> = Dynamic(false)
@@ -36,89 +35,30 @@ class ActivitiesViewModel {
     private var isRefresh: Bool = false
     private var isDataLoad: Bool = false
     
+    private let activityWebService = ActivityWebService()
+    
     //MARK: Call All Activities API
     func callAllActivityListAPI() {
-               
-            let params: NSDictionary = [
-                apiParams.userID : self.getUserId(),
-                apiParams.activityCategoryId: self.getActivityCategoryId(),
-                apiParams.activitySubCategoryId: self.getActivitySubCategoryId(),
-                apiParams.looking_for : self.getLookingForIds(),
-                apiParams.kids_option_id : self.getKidsOptionId(),
-                apiParams.smoking_option_id : self.getSmokingOptionId(),
-                apiParams.ageStartPrefId : self.getAgeStartPrefId(),
-                apiParams.ageEndPrefId : self.getAgeEndPrefId(),
-                apiParams.distancePrefId : self.getDistancePrefId(),
-                apiParams.offset: self.getOffset()
-            ]
-            
-            if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    
-                    self.arrMyActivities.removeAll()
-                    self.arrOtherActivities.removeAll()
-                }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetAllActivityList, parameters: params) { [weak self] response, error, message in
-                    guard let self = self else { return }
-                    
-                    self.setIsDataLoad(value: true)
-                    if(error != nil && response == nil) {
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        let json = response as? NSDictionary
-                        let status = json?[API_STATUS] as? Int
-                        let message = json?[API_MESSAGE] as? String
-                        
-                        self.setUserActivityCreateCount(value: "\(json?["user_activity_create_count"] as? Int ?? 0)")
-                        self.setOtherActivityCounter(value: "\(json?["activity_counter"] as? Int ?? 0)")
-                                            
-                        if status == SUCCESS {
-                            
-                            if let userArray = json?["my_activity"] as? NSArray {
-                                                               
-                                if userArray.count > 0 {
-                                    self.arrMyActivities.removeAll()
-                                    for userInfo in userArray {
-                                        let dicUser = userInfo as! NSDictionary
-                                        let decoder = JSONDecoder()
-                                        do {
-                                            let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
-                                            let objUser = try decoder.decode(UserActivityClass.self, from: jsonData)
-                                            self.arrMyActivities.append(objUser)
-                                        } catch {
-                                            print(error.localizedDescription)
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            if let userArray = json?["other_activity"] as? NSArray {
-                                if userArray.count > 0 {
-                                    self.arrOtherActivities.removeAll()
-                                    for userInfo in userArray {
-                                        let dicUser = userInfo as! NSDictionary
-                                        let decoder = JSONDecoder()
-                                        do {
-                                            let jsonData = try JSONSerialization.data(withJSONObject:dicUser)
-                                            let objUser = try decoder.decode(UserActivityClass.self, from: jsonData)
-                                            self.arrOtherActivities.append(objUser)
-                                        } catch {
-                                            print(error.localizedDescription)
-                                        }
-                                    }
-                                }
-                            }
-                            self.isDataGet.value = true
-                    } else {
-                            self.isMessage.value = message ?? ""
-                        }
-                    }
-                }
-            } else {
-                self.isMessage.value = Constants.alert_InternetConnectivity
-            }
+        guard Connectivity.isConnectedToInternet() else {
+            isMessage.value = Constants.alert_InternetConnectivity
+            return
         }
+        
+        activityWebService.getUserActivities { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let activities):
+                self.setUserActivityCreateCount(value: "\(activities.count)")
+                self.arrMyActivities = activities
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            
+            self.isDataLoad = true
+            self.isDataGet.value = true
+        }
+    }
 }
 
 

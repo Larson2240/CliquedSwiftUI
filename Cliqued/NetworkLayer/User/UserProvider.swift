@@ -15,6 +15,7 @@ enum UserProvider {
     case updateUserMedia(image: UIImage, position: Int)
     case matches
     case potentialMatches
+    case activityMatches
 }
 
 extension UserProvider: TargetType {
@@ -36,12 +37,14 @@ extension UserProvider: TargetType {
             return "/user/potential_matches"
         case .updateUserMedia:
             return "/user_profile_media"
+        case .activityMatches:
+            return "/user/activity_matches"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getUser, .matches, .potentialMatches:
+        case .getUser, .matches, .potentialMatches, .activityMatches:
             return .get
         case .deleteUser:
             return .delete
@@ -56,7 +59,7 @@ extension UserProvider: TargetType {
     
     var task: Task {
         switch self {
-        case .getUser, .deleteUser, .matches, .potentialMatches:
+        case .getUser, .deleteUser, .matches, .potentialMatches, .activityMatches:
             return .requestPlain
         case .updateUser(let parameters):
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)

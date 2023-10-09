@@ -64,16 +64,16 @@ class ActivityUserDetailsVC: UIViewController {
     
     //MARK: Button Like Click
     @IBAction func btnLikeClick(_ sender: Any) {
-        viewModelActivity.setIsFollow(value: "1")
-        viewModelActivity.setCounterUserId(value: viewModel.getActivityUserId())
-        viewModelActivity.callLikeDislikeUserAPI(isShowLoader: true)
+//        viewModelActivity.setIsFollow(value: "1")
+//        viewModelActivity.setCounterUserId(value: viewModel.getActivityUserId())
+//        viewModelActivity.callLikeDislikeUserAPI(isShowLoader: true)
     }
     
     //MARK: Button Dislike Click
     @IBAction func btnDislikeClick(_ sender: Any) {
-        viewModelActivity.setIsFollow(value: "0")
-        viewModelActivity.setCounterUserId(value: viewModel.getActivityUserId())
-        viewModelActivity.callLikeDislikeUserAPI(isShowLoader: true)
+//        viewModelActivity.setIsFollow(value: "0")
+//        viewModelActivity.setCounterUserId(value: viewModel.getActivityUserId())
+//        viewModelActivity.callLikeDislikeUserAPI(isShowLoader: true)
     }
     
 }
@@ -118,49 +118,49 @@ extension ActivityUserDetailsVC {
     //MARK: Handle API response
     func handleApiResponse() {
         //If API success
-        viewModel.isDataGet.bind { [weak self] isSuccess in
-            guard let self = self else { return }
-            
-            if isSuccess {
-                self.callbackForBlockUser?(true)
-                self.navigationController?.popViewController(animated: true)
-            }
-        }
-        
-        //If API success
-        viewModelActivity.isLikdDislikeSuccess.bind { [weak self] isSuccess in
-            guard let self = self else { return }
-            
-            if isSuccess {
-                let followersData = self.viewModelActivity.getFollowersData(at: 0)
-                if followersData.isMeetup == self.isMeetup.Matched  {
-                    /* comment added by srm
-                    let matchscreenvc = MatchScreenVC.loadFromNib()
-                    matchscreenvc.isFromUserDetailsScreen = true
-                    matchscreenvc.arrayOfFollowers = self.viewModelActivity.getAllFollowersData()
-                    matchscreenvc.hidesBottomBarWhenPushed = true
-                    self.navigationController?.pushViewController(matchscreenvc, animated: true)
-                     */
-                } else {
-                    if followersData.isFollow == "1" {
-                        self.callbackForIsLiked?(true)
-                    } else {
-                        self.callbackForIsLiked?(false)
-                    }
-                    self.navigationController?.popViewController(animated: true)
-                }
-            }
-        }
-
-        //Loader hide & show
-        viewModel.isLoaderShow.bind { [weak self] isLoader in
-            guard let self = self else { return }
-            
-            if isLoader {
-                self.showLoader()
-            } else {
-                self.dismissLoader()
-            }
-        }
+//        viewModel.isDataGet.bind { [weak self] isSuccess in
+//            guard let self = self else { return }
+//
+//            if isSuccess {
+//                self.callbackForBlockUser?(true)
+//                self.navigationController?.popViewController(animated: true)
+//            }
+//        }
+//
+//        //If API success
+//        viewModelActivity.isLikdDislikeSuccess.bind { [weak self] isSuccess in
+//            guard let self = self else { return }
+//
+//            if isSuccess {
+//                let followersData = self.viewModelActivity.getFollowersData(at: 0)
+//                if followersData.isMeetup == self.isMeetup.Matched  {
+//                    /* comment added by srm
+//                    let matchscreenvc = MatchScreenVC.loadFromNib()
+//                    matchscreenvc.isFromUserDetailsScreen = true
+//                    matchscreenvc.arrayOfFollowers = self.viewModelActivity.getAllFollowersData()
+//                    matchscreenvc.hidesBottomBarWhenPushed = true
+//                    self.navigationController?.pushViewController(matchscreenvc, animated: true)
+//                     */
+//                } else {
+//                    if followersData.isFollow == "1" {
+//                        self.callbackForIsLiked?(true)
+//                    } else {
+//                        self.callbackForIsLiked?(false)
+//                    }
+//                    self.navigationController?.popViewController(animated: true)
+//                }
+//            }
+//        }
+//
+//        //Loader hide & show
+//        viewModel.isLoaderShow.bind { [weak self] isLoader in
+//            guard let self = self else { return }
+//
+//            if isLoader {
+//                self.showLoader()
+//            } else {
+//                self.dismissLoader()
+//            }
+//        }
     }
 }
