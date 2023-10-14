@@ -22,6 +22,22 @@
 		0A1C0FB92A1AA79E00E9979C /* Font + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1C0FB82A1AA79E00E9979C /* Font + Extension.swift */; };
 		0A1C0FBB2A1AA8D800E9979C /* Color + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1C0FBA2A1AA8D800E9979C /* Color + Extension.swift */; };
 		0A24D67F2A827F09008FD623 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A24D67E2A827F09008FD623 /* SettingsView.swift */; };
+		0A28EC0B2ADABE7F00D108C8 /* ActivityCategoryProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC0A2ADABE7F00D108C8 /* ActivityCategoryProvider.swift */; };
+		0A28EC0D2ADABEE400D108C8 /* ActivityCategoryWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC0C2ADABEE400D108C8 /* ActivityCategoryWebService.swift */; };
+		0A28EC102ADABF4D00D108C8 /* BlockedUserProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC0F2ADABF4D00D108C8 /* BlockedUserProvider.swift */; };
+		0A28EC122ADABF5600D108C8 /* BlockedUserWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC112ADABF5600D108C8 /* BlockedUserWebService.swift */; };
+		0A28EC152ADAC25000D108C8 /* PasswordProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC142ADAC25000D108C8 /* PasswordProvider.swift */; };
+		0A28EC172ADAC25F00D108C8 /* PasswordWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC162ADAC25F00D108C8 /* PasswordWebService.swift */; };
+		0A28EC1A2ADAC60F00D108C8 /* TokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC192ADAC60F00D108C8 /* TokenProvider.swift */; };
+		0A28EC1C2ADAC61700D108C8 /* TokenWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC1B2ADAC61700D108C8 /* TokenWebService.swift */; };
+		0A28EC1F2ADACAE700D108C8 /* ReportProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC1E2ADACAE700D108C8 /* ReportProvider.swift */; };
+		0A28EC212ADACAEF00D108C8 /* ReportWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC202ADACAEF00D108C8 /* ReportWebService.swift */; };
+		0A28EC242ADACF7000D108C8 /* UserInterestedActivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC232ADACF7000D108C8 /* UserInterestedActivityProvider.swift */; };
+		0A28EC262ADACF7700D108C8 /* UserInterestedActivityWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC252ADACF7700D108C8 /* UserInterestedActivityWebService.swift */; };
+		0A28EC292ADADCBB00D108C8 /* UserProfileMediaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC282ADADCBB00D108C8 /* UserProfileMediaProvider.swift */; };
+		0A28EC2B2ADADCC600D108C8 /* UserProfileMediaWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC2A2ADADCC600D108C8 /* UserProfileMediaWebService.swift */; };
+		0A28EC2E2ADAE42C00D108C8 /* UserSettingsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC2D2ADAE42C00D108C8 /* UserSettingsProvider.swift */; };
+		0A28EC302ADAE43400D108C8 /* UserSettingsWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC2F2ADAE43400D108C8 /* UserSettingsWebService.swift */; };
 		0A315A022A26A66000CE9709 /* StepSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 0A315A012A26A66000CE9709 /* StepSlider */; };
 		0A315A042A26BE3B00CE9709 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A315A032A26BE3B00CE9709 /* LocationViewModel.swift */; };
 		0A33A2172A431ED000EE262D /* ProfileCommonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33A2162A431ED000EE262D /* ProfileCommonCell.swift */; };
@@ -394,6 +410,22 @@
 		0A1C0FB82A1AA79E00E9979C /* Font + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font + Extension.swift"; sourceTree = "<group>"; };
 		0A1C0FBA2A1AA8D800E9979C /* Color + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color + Extension.swift"; sourceTree = "<group>"; };
 		0A24D67E2A827F09008FD623 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0A28EC0A2ADABE7F00D108C8 /* ActivityCategoryProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCategoryProvider.swift; sourceTree = "<group>"; };
+		0A28EC0C2ADABEE400D108C8 /* ActivityCategoryWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCategoryWebService.swift; sourceTree = "<group>"; };
+		0A28EC0F2ADABF4D00D108C8 /* BlockedUserProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserProvider.swift; sourceTree = "<group>"; };
+		0A28EC112ADABF5600D108C8 /* BlockedUserWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserWebService.swift; sourceTree = "<group>"; };
+		0A28EC142ADAC25000D108C8 /* PasswordProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordProvider.swift; sourceTree = "<group>"; };
+		0A28EC162ADAC25F00D108C8 /* PasswordWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordWebService.swift; sourceTree = "<group>"; };
+		0A28EC192ADAC60F00D108C8 /* TokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenProvider.swift; sourceTree = "<group>"; };
+		0A28EC1B2ADAC61700D108C8 /* TokenWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenWebService.swift; sourceTree = "<group>"; };
+		0A28EC1E2ADACAE700D108C8 /* ReportProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportProvider.swift; sourceTree = "<group>"; };
+		0A28EC202ADACAEF00D108C8 /* ReportWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportWebService.swift; sourceTree = "<group>"; };
+		0A28EC232ADACF7000D108C8 /* UserInterestedActivityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInterestedActivityProvider.swift; sourceTree = "<group>"; };
+		0A28EC252ADACF7700D108C8 /* UserInterestedActivityWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInterestedActivityWebService.swift; sourceTree = "<group>"; };
+		0A28EC282ADADCBB00D108C8 /* UserProfileMediaProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileMediaProvider.swift; sourceTree = "<group>"; };
+		0A28EC2A2ADADCC600D108C8 /* UserProfileMediaWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileMediaWebService.swift; sourceTree = "<group>"; };
+		0A28EC2D2ADAE42C00D108C8 /* UserSettingsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsProvider.swift; sourceTree = "<group>"; };
+		0A28EC2F2ADAE43400D108C8 /* UserSettingsWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsWebService.swift; sourceTree = "<group>"; };
 		0A315A032A26BE3B00CE9709 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		0A33A2162A431ED000EE262D /* ProfileCommonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCommonCell.swift; sourceTree = "<group>"; };
 		0A33A2182A43DE5000EE262D /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
@@ -846,6 +878,78 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		0A28EC092ADABE6C00D108C8 /* ActivityCategory */ = {
+			isa = PBXGroup;
+			children = (
+				0A28EC0A2ADABE7F00D108C8 /* ActivityCategoryProvider.swift */,
+				0A28EC0C2ADABEE400D108C8 /* ActivityCategoryWebService.swift */,
+			);
+			path = ActivityCategory;
+			sourceTree = "<group>";
+		};
+		0A28EC0E2ADABF3D00D108C8 /* BlockedUser */ = {
+			isa = PBXGroup;
+			children = (
+				0A28EC0F2ADABF4D00D108C8 /* BlockedUserProvider.swift */,
+				0A28EC112ADABF5600D108C8 /* BlockedUserWebService.swift */,
+			);
+			path = BlockedUser;
+			sourceTree = "<group>";
+		};
+		0A28EC132ADAC24400D108C8 /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				0A28EC142ADAC25000D108C8 /* PasswordProvider.swift */,
+				0A28EC162ADAC25F00D108C8 /* PasswordWebService.swift */,
+			);
+			path = Password;
+			sourceTree = "<group>";
+		};
+		0A28EC182ADAC60500D108C8 /* Token */ = {
+			isa = PBXGroup;
+			children = (
+				0A28EC192ADAC60F00D108C8 /* TokenProvider.swift */,
+				0A28EC1B2ADAC61700D108C8 /* TokenWebService.swift */,
+			);
+			path = Token;
+			sourceTree = "<group>";
+		};
+		0A28EC1D2ADACAD400D108C8 /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				0A28EC1E2ADACAE700D108C8 /* ReportProvider.swift */,
+				0A28EC202ADACAEF00D108C8 /* ReportWebService.swift */,
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
+		0A28EC222ADACF5E00D108C8 /* UserInterestedActivity */ = {
+			isa = PBXGroup;
+			children = (
+				0A28EC232ADACF7000D108C8 /* UserInterestedActivityProvider.swift */,
+				0A28EC252ADACF7700D108C8 /* UserInterestedActivityWebService.swift */,
+			);
+			path = UserInterestedActivity;
+			sourceTree = "<group>";
+		};
+		0A28EC272ADADCA100D108C8 /* UserProfileMedia */ = {
+			isa = PBXGroup;
+			children = (
+				0A28EC282ADADCBB00D108C8 /* UserProfileMediaProvider.swift */,
+				0A28EC2A2ADADCC600D108C8 /* UserProfileMediaWebService.swift */,
+			);
+			path = UserProfileMedia;
+			sourceTree = "<group>";
+		};
+		0A28EC2C2ADAE41A00D108C8 /* UserSettings */ = {
+			isa = PBXGroup;
+			children = (
+				0A28EC2D2ADAE42C00D108C8 /* UserSettingsProvider.swift */,
+				0A28EC2F2ADAE43400D108C8 /* UserSettingsWebService.swift */,
+			);
+			path = UserSettings;
+			sourceTree = "<group>";
+		};
 		0A36E7FB2A1A451000588F71 /* Config */ = {
 			isa = PBXGroup;
 			children = (
@@ -956,10 +1060,18 @@
 		0A97EF642AAB6C1100A06B5C /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
+				0A28EC092ADABE6C00D108C8 /* ActivityCategory */,
+				0A28EC0E2ADABF3D00D108C8 /* BlockedUser */,
+				0A28EC132ADAC24400D108C8 /* Password */,
+				0A28EC182ADAC60500D108C8 /* Token */,
 				0A57C0192AC3E43900DE377F /* Auth */,
+				0AFD45AC2AD2340600A0D1CE /* Matches */,
+				0A28EC1D2ADACAD400D108C8 /* Report */,
 				0A57C01A2AC3E43C00DE377F /* User */,
 				0A907E7F2AC66CE0000D2000 /* Activity */,
-				0AFD45AC2AD2340600A0D1CE /* Matches */,
+				0A28EC222ADACF5E00D108C8 /* UserInterestedActivity */,
+				0A28EC272ADADCA100D108C8 /* UserProfileMedia */,
+				0A28EC2C2ADAE41A00D108C8 /* UserSettings */,
 				0A57C0132AC3DB4800DE377F /* TokenModel.swift */,
 				0A57C0172AC3E0A000DE377F /* ApiErrorModel.swift */,
 				0AFD45A62ACD586100A0D1CE /* VerbosePlugin.swift */,
@@ -2465,6 +2577,7 @@
 				648CB9EF2990D944003171E1 /* ActivityMedia.swift in Sources */,
 				644806D929A773B30028EB33 /* CallUserCVCell.swift in Sources */,
 				648CBA342990DC1D003171E1 /* SenderTVCell.swift in Sources */,
+				0A28EC1F2ADACAE700D108C8 /* ReportProvider.swift in Sources */,
 				60CBDF29296D4442004CEE25 /* HBSegmentedControl.swift in Sources */,
 				0AF1D75F2A251D2100BBC440 /* SelectPicturesViewModel.swift in Sources */,
 				603FCEA829A38CBA0015C26B /* KeychainItem.swift in Sources */,
@@ -2475,6 +2588,7 @@
 				648CBA032990DB55003171E1 /* CDMessage+CoreDataClass.swift in Sources */,
 				0A57C0142AC3DB4800DE377F /* TokenModel.swift in Sources */,
 				600D446629796880001DEBA1 /* ReportUserVC.swift in Sources */,
+				0A28EC1A2ADAC60F00D108C8 /* TokenProvider.swift in Sources */,
 				600D446F29796FF9001DEBA1 /* SubmitReportReasonViewModel.swift in Sources */,
 				648CBA022990DB55003171E1 /* CDConversation+CoreDataProperties.swift in Sources */,
 				0AFD45A72ACD586100A0D1CE /* VerbosePlugin.swift in Sources */,
@@ -2489,6 +2603,7 @@
 				601245CA297A9ECB00441F09 /* AddActivityDataSource.swift in Sources */,
 				60EA7BBF299A791800A745CA /* TypeOptions.swift in Sources */,
 				0A16E7172A1E3D4800B8CA3F /* ForgotPasswordView.swift in Sources */,
+				0A28EC2E2ADAE42C00D108C8 /* UserSettingsProvider.swift in Sources */,
 				64D586C629A8CDA300FDA1AF /* SubscriptionPlanVC.swift in Sources */,
 				60CBDF20296D440F004CEE25 /* UserDefaultUtils.swift in Sources */,
 				644806DD29A775430028EB33 /* VideoCallDataSource.swift in Sources */,
@@ -2502,6 +2617,8 @@
 				0A37E26A2A2BC95900BAA6E9 /* StartExploringView.swift in Sources */,
 				0A907E832AC66D9C000D2000 /* ActivityWebService.swift in Sources */,
 				64B624A3299E66CC00D26F8D /* OTPTextField.swift in Sources */,
+				0A28EC302ADAE43400D108C8 /* UserSettingsWebService.swift in Sources */,
+				0A28EC242ADACF7000D108C8 /* UserInterestedActivityProvider.swift in Sources */,
 				64D34AC5299CA70D00811B45 /* CallManager.swift in Sources */,
 				600A26EB2976BF9E00231BB6 /* HomeViewModel.swift in Sources */,
 				0A37E2682A2BC29100BAA6E9 /* NotificationsViewModel.swift in Sources */,
@@ -2509,6 +2626,7 @@
 				60CBDF3B296D4447004CEE25 /* NSData+Base64.m in Sources */,
 				60CBDF4D296D4451004CEE25 /* Optional+Extensions.swift in Sources */,
 				60FD459D299D10C300E54C92 /* Followers.swift in Sources */,
+				0A28EC292ADADCBB00D108C8 /* UserProfileMediaProvider.swift in Sources */,
 				60622AB229EEB82300F8253A /* WebviewVC.swift in Sources */,
 				60ED7C2E298134DF00CD6A78 /* UserAddress.swift in Sources */,
 				0A57C0162AC3DB9A00DE377F /* ApiError.swift in Sources */,
@@ -2519,6 +2637,7 @@
 				0A97EF692AAB6D8400A06B5C /* AuthProvider.swift in Sources */,
 				0A24D67F2A827F09008FD623 /* SettingsView.swift in Sources */,
 				600D445F29795176001DEBA1 /* UserProfilePicturesCVCell.swift in Sources */,
+				0A28EC102ADABF4D00D108C8 /* BlockedUserProvider.swift in Sources */,
 				60CBF0AE29A5EE25000FF4FB /* InterestedActivityClass.swift in Sources */,
 				60C4D9C929703175007C2428 /* ButtonCell.swift in Sources */,
 				0A0B9AA12A28CDCD0086AB79 /* ClickGesture.swift in Sources */,
@@ -2527,6 +2646,8 @@
 				64D34AC6299CA70D00811B45 /* ProviderDelegate.swift in Sources */,
 				0ACE84712A1FDF66008B196C /* RelationshipView.swift in Sources */,
 				60CBDF26296D4442004CEE25 /* Dynamic.swift in Sources */,
+				0A28EC1C2ADAC61700D108C8 /* TokenWebService.swift in Sources */,
+				0A28EC172ADAC25F00D108C8 /* PasswordWebService.swift in Sources */,
 				64D586CE29A8CDA300FDA1AF /* SubscriptionPlanDataSource.swift in Sources */,
 				64D586CA29A8CDA300FDA1AF /* PlanCollectionCell.swift in Sources */,
 				6025E4AE299223BF00080812 /* ActivityCategoryClass.swift in Sources */,
@@ -2539,6 +2660,7 @@
 				64193B6529FA940D00B0066F /* iOSDevCenters + GIF.swift in Sources */,
 				600D447129797009001DEBA1 /* SubmitReportReasonDataSource.swift in Sources */,
 				60ED7C2F298134DF00CD6A78 /* UserInterestedCategory.swift in Sources */,
+				0A28EC0B2ADABE7F00D108C8 /* ActivityCategoryProvider.swift in Sources */,
 				60CBDF7B296D86FB004CEE25 /* SafeAreaView.swift in Sources */,
 				648CB9E42990D8F6003171E1 /* DiscoverActivityDataSource.swift in Sources */,
 				6086ECE229FBE9C300221D4E /* ConstantLibraryDescription.swift in Sources */,
@@ -2547,11 +2669,13 @@
 				64D34AC3299CA70D00811B45 /* Audio.swift in Sources */,
 				0A16E71C2A1E856E00B8CA3F /* NameView.swift in Sources */,
 				648CBA392990DCBE003171E1 /* ArrayExtension.swift in Sources */,
+				0A28EC2B2ADADCC600D108C8 /* UserProfileMediaWebService.swift in Sources */,
 				601245C8297A9EBA00441F09 /* AddActivityViewModel.swift in Sources */,
 				646F620829D44EA400C63FF0 /* ExampleCoreAudioDevice.m in Sources */,
 				608B542629FAB15B00E22669 /* LicenseLibraryNameCell.swift in Sources */,
 				6084A23C29ADFB50009129A6 /* IAPHelper + Extension.swift in Sources */,
 				0A16E70A2A1D29DF00B8CA3F /* SignUpView.swift in Sources */,
+				0A28EC0D2ADABEE400D108C8 /* ActivityCategoryWebService.swift in Sources */,
 				6040111629CD9D2D0079FEE2 /* ActivityLikeUserCell.swift in Sources */,
 				60C666D5298000020038213E /* ConnectedAccountVC.swift in Sources */,
 				6025E4AD299223BF00080812 /* SubCategory.swift in Sources */,
@@ -2602,6 +2726,7 @@
 				648CBA322990DC1D003171E1 /* SenderProfileTVCell.swift in Sources */,
 				60CBDF53296D4452004CEE25 /* UIView+Extension.swift in Sources */,
 				644806DF29A775670028EB33 /* VideoCallViewModel.swift in Sources */,
+				0A28EC262ADACF7700D108C8 /* UserInterestedActivityWebService.swift in Sources */,
 				0AD997882A29473800F5C095 /* LocationAnnotationView.swift in Sources */,
 				600D445529793B57001DEBA1 /* FavoriteActivityCell.swift in Sources */,
 				0AFD45AB2ACF1EEB00A0D1CE /* Binding + Extension.swift in Sources */,
@@ -2613,6 +2738,7 @@
 				6032B3A82975303F00363C1E /* ActivityCVCell.swift in Sources */,
 				648CB9EE2990D944003171E1 /* ActivitySubCategory.swift in Sources */,
 				648CBA222990DC1D003171E1 /* ChatDataSource.swift in Sources */,
+				0A28EC152ADAC25000D108C8 /* PasswordProvider.swift in Sources */,
 				60C666EA29800BBA0038213E /* EmailPasswordChangeDataSource.swift in Sources */,
 				0A33A2192A43DE5000EE262D /* RangeSlider.swift in Sources */,
 				600D4451297939CA001DEBA1 /* ReportAndBlockCell.swift in Sources */,
@@ -2622,6 +2748,7 @@
 				60C666DE298001E10038213E /* ConnectedAccountDataSource.swift in Sources */,
 				6084BB5329F2B50B00905323 /* UIDevice+Extension.swift in Sources */,
 				60C666E829800BAB0038213E /* EmailPasswordChangeViewModel.swift in Sources */,
+				0A28EC122ADABF5600D108C8 /* BlockedUserWebService.swift in Sources */,
 				601245BD297A76FA00441F09 /* ActivitiesViewModel.swift in Sources */,
 				60D352FD29715B95007E09E8 /* TermsConditionTextCell.swift in Sources */,
 				6077BD5E2A01277400969FAB /* MatchScreenViewModel.swift in Sources */,
@@ -2650,6 +2777,7 @@
 				0AA87C052A3070A200C313D8 /* OnboardingProgressView.swift in Sources */,
 				6040111A29CDA8320079FEE2 /* TVSectionCell.swift in Sources */,
 				648CB9EB2990D939003171E1 /* UserActivityClass.swift in Sources */,
+				0A28EC212ADACAEF00D108C8 /* ReportWebService.swift in Sources */,
 				60C666BB297FBA5B0038213E /* OtherUserActivityDetailsViewModel.swift in Sources */,
 				64C2A3502994C0720052E1F3 /* SenderAudioTVCell.swift in Sources */,
 				0A50CAAD2A36116A00B598A4 /* ActivityView.swift in Sources */,

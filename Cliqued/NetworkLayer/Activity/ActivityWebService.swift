@@ -11,26 +11,6 @@ import Moya
 final class ActivityWebService {
     private let activityProvider = MoyaProvider<ActivityProvider>()
     
-    func getActivityCategories(completion: @escaping (Result<[Activity], Error>) -> Void) {
-        activityProvider.request(.getActivityCategories) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let model = try JSONDecoder().decode([Activity].self, from: response.data)
-                    completion(.success(model))
-                } catch {
-                    if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
-                        completion(.failure(ApiError.custom(errorDescription: model.message)))
-                    } else {
-                        completion(.failure(ApiError.parsing))
-                    }
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
     func getUserActivities(completion: @escaping (Result<[UserActivityClass], Error>) -> Void) {
         activityProvider.request(.getUserActivities) { result in
             switch result {
@@ -74,13 +54,18 @@ final class ActivityWebService {
         }
     }
     
-    func updateActivity(activityID: String, parameters: [String: Any], completion: @escaping (Result<Void, Error>) -> Void) {
+    func updateActivity(
+        activityID: String,
+        parameters: [String: Any],
+        completion: @escaping (Result<UserActivityClass, Error>) -> Void
+    ) {
         activityProvider.request(.updateActivity(activityID: activityID, parameters: parameters)) { result in
             switch result {
             case .success(let response):
-                if response.statusCode == 200 || response.statusCode == 201 {
-                    completion(.success(Void()))
-                } else {
+                do {
+                    let model = try JSONDecoder().decode(UserActivityClass.self, from: response.data)
+                    completion(.success(model))
+                } catch {
                     if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
                         completion(.failure(ApiError.custom(errorDescription: model.message)))
                     } else {
@@ -138,6 +123,29 @@ final class ActivityWebService {
                 if response.statusCode == 200 || response.statusCode == 201 {
                     completion(.success(Void()))
                 } else {
+                    if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
+                        completion(.failure(ApiError.custom(errorDescription: model.message)))
+                    } else {
+                        completion(.failure(ApiError.parsing))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getInterestedActivityUsers(
+        activityID: String,
+        completion: @escaping (Result<[User], Error>) -> Void
+    ) {
+        activityProvider.request(.getInterestedActivityUsers(id: activityID)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let model = try JSONDecoder().decode([User].self, from: response.data)
+                    completion(.success(model))
+                } catch {
                     if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
                         completion(.failure(ApiError.custom(errorDescription: model.message)))
                     } else {

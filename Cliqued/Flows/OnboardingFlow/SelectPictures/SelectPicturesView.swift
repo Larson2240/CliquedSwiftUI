@@ -22,6 +22,7 @@ struct SelectPicturesView: View {
     
     private let mediaType = MediaType()
     private let userWebService = UserWebService()
+    private let userProfileMediaWebService = UserProfileMediaWebService()
     
     let columns = [
         GridItem(.flexible()),
@@ -205,7 +206,7 @@ struct SelectPicturesView: View {
             
             dispatchGroup.enter()
             
-            userWebService.updateUserMedia(image: image, position: i) { result in
+            userProfileMediaWebService.postUserMedia(image: image, position: i) { result in
                 switch result {
                 case .success(let media):
                     guard loggedInUser?.userProfileMedia?.contains(media) == false else { return }

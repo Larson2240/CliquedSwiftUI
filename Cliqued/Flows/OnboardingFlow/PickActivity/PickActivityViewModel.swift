@@ -10,7 +10,7 @@ import SwiftUI
 final class PickActivityViewModel: ObservableObject {
     @Published var arrayOfActivity = [Activity]()
     
-    private let activityWebService = ActivityWebService()
+    private let activityCategoryWebService = ActivityCategoryWebService()
     
     //MARK: Call Get Preferences Data API
     func callGetActivityDataAPI(completion: @escaping () -> Void) {
@@ -25,7 +25,7 @@ final class PickActivityViewModel: ObservableObject {
         } else {
             UIApplication.shared.showLoader()
             
-            activityWebService.getActivityCategories { [weak self] result in
+            activityCategoryWebService.getActivityCategories { [weak self] result in
                 UIApplication.shared.hideLoader()
                 
                 switch result {

@@ -9,12 +9,12 @@ import UIKit
 import Moya
 
 enum ActivityProvider {
-    case getActivityCategories
     case getUserActivities
     case createActivity(parameters: [String: Any])
     case updateActivity(activityID: String, parameters: [String: Any])
     case updateActivityMedia(id: String, image: UIImage)
     case deleteActivity(id: String)
+    case getInterestedActivityUsers(id: String)
 }
 
 extension ActivityProvider: TargetType {
@@ -24,8 +24,6 @@ extension ActivityProvider: TargetType {
     
     var path: String {
         switch self {
-        case .getActivityCategories:
-            return "/activity_categories"
         case .getUserActivities, .createActivity:
             return "/user_activities"
         case .updateActivity(let id, _):
@@ -34,12 +32,14 @@ extension ActivityProvider: TargetType {
             return "/user_activities/\(id)/medias"
         case .deleteActivity(let id):
             return "/user_activities/\(id)"
+        case .getInterestedActivityUsers(let id):
+            return "/user_activities/\(id)/interested_people"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getActivityCategories, .getUserActivities:
+        case .getUserActivities, .getInterestedActivityUsers:
             return .get
         case .createActivity, .updateActivityMedia:
             return .post
@@ -54,7 +54,7 @@ extension ActivityProvider: TargetType {
     
     var task: Task {
         switch self {
-        case .getActivityCategories, .getUserActivities, .deleteActivity:
+        case .getUserActivities, .deleteActivity, .getInterestedActivityUsers:
             return .requestPlain
         case .createActivity(let parameters):
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)

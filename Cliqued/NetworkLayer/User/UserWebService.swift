@@ -151,30 +151,4 @@ final class UserWebService {
             }
         }
     }
-    
-    func updateUserMedia(
-        image: UIImage,
-        position: Int,
-        completion: @escaping (Result<UserProfileMedia, Error>) -> Void
-    ) {
-        userProvider.request(.updateUserMedia(image: image, position: position)) { result in
-            switch result {
-            case .success(let response):
-                do {
-                    let model = try JSONDecoder().decode(UserProfileMedia.self, from: response.data)
-                    completion(.success(model))
-                } catch let error {
-                    print(error)
-                    
-                    if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
-                        completion(.failure(ApiError.custom(errorDescription: model.message)))
-                    } else {
-                        completion(.failure(ApiError.parsing))
-                    }
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
 }

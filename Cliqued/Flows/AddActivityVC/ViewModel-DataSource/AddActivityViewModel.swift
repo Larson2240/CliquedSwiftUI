@@ -81,7 +81,6 @@ class AddActivityViewModel {
         return flag
     }
     
-    
     //MARK: Call Activity API
     func callCreateActivityAPI() {
         guard checkValidation() else { return }
@@ -114,7 +113,11 @@ class AddActivityViewModel {
             
             switch result {
             case .success(let activity):
-                guard let image = structAddActivityValue.activity_media.first else { return }
+                guard let image = structAddActivityValue.activity_media.first else {
+                    self.isLoaderShow.value = false
+                    self.isDataGet.value = true
+                    return
+                }
                 
                 self.activityWebService.updateActivityMedia(activityID: String(activity.id),
                                                             image: image) { result in
@@ -125,6 +128,8 @@ class AddActivityViewModel {
                 if let error = error as? ApiError, let message = error.errorDescription {
                     UIApplication.shared.showAlertPopup(message: message)
                 }
+                
+                self.isLoaderShow.value = false
             }
         }
     }
@@ -160,53 +165,27 @@ class AddActivityViewModel {
         activityWebService.updateActivity(activityID: String(activityID), parameters: params) { [weak self] result in
             guard let self = self else { return }
             
-            self.isLoaderShow.value = false
-            
             switch result {
-            case .success:
-                self.isDataGet.value = true
+            case .success(let activity):
+                guard let image = structAddActivityValue.activity_media.first else {
+                    self.isLoaderShow.value = false
+                    self.isDataGet.value = true
+                    return
+                }
+                
+                self.activityWebService.updateActivityMedia(activityID: String(activity.id),
+                                                            image: image) { result in
+                    self.isLoaderShow.value = false
+                    self.isDataGet.value = true
+                }
             case .failure(let error):
                 if let error = error as? ApiError, let message = error.errorDescription {
                     UIApplication.shared.showAlertPopup(message: message)
                 }
+                
+                self.isLoaderShow.value = false
             }
         }
-        
-//        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.EditActivity, parameters: params) { [weak self] response, error, message in
-//            guard let self = self else { return }
-//
-//            self.isLoaderShow.value = false
-//            if(error != nil && response == nil) {
-//                self.isMessage.value = message ?? ""
-//            } else {
-//                let json = response as? NSDictionary
-//                let status = json?[API_STATUS] as? Int
-//                let message = json?[API_MESSAGE] as? String
-//
-//                if status == SUCCESS {
-//                    if let userActivity = json?["user_activity"] as? NSArray {
-//                        if userActivity.count > 0 {
-//                            let dicActivity = userActivity[0] as! NSDictionary
-//                            let decoder = JSONDecoder()
-//                            do {
-//                                let jsonData = try JSONSerialization.data(withJSONObject:dicActivity)
-//                                let objActivityData = try decoder.decode(UserActivityClass.self, from: jsonData)
-//                                self.objActivityDetails = objActivityData
-//                                //                                        self.setObjActivityDetails(value: objActivityData)
-//                            } catch {
-//                                print(error.localizedDescription)
-//                            }
-//                        } else {
-//                            self.isDataGet.value = true
-//                        }
-//                    }
-//                    self.isDataGet.value = true
-//                    self.isMessage.value = message ?? ""
-//                } else {
-//                    self.isMessage.value = message ?? ""
-//                }
-//            }
-//        }
     }
 }
 
