@@ -41,11 +41,11 @@ class ActivityDetailsViewModel {
     //MARK: Bind data on screen from the activity object.
     func bindActivityDetailsData(activityDetails: UserActivityClass) {
         
-        let activityId = "\(activityDetails.id ?? 0)"
-        let userProfile = activityDetails.userProfile ?? ""
-        let categoryName = activityDetails.activityCategoryTitle ?? ""
-        let activityDate = activityDetails.activityDate ?? ""
-        let activityDescription = activityDetails.descriptionValue ?? ""
+        let activityId = "\(activityDetails.id)"
+        let userProfile = activityDetails.user
+        let categoryName = activityDetails.activityCategories.first ?? ""
+        let activityDate = activityDetails.activityDate
+        let activityDescription = activityDetails.description
         
         self.setActivityId(value: activityId)
         self.setUserProfileUrl(value: userProfile)
@@ -53,28 +53,24 @@ class ActivityDetailsViewModel {
         self.setDate(value: activityDate)
         self.setDescription(value: activityDescription)
         
-        if let arr = activityDetails.activityMedia, arr.count > 0 {
-            let img = arr[0].url ?? ""
-            let strUrl = UrlUserActivity + img
-            self.setImageUrl(value: strUrl)
+        if activityDetails.medias.count > 0 {
+            let img = activityDetails.medias[0]
+            self.setImageUrl(value: "https://cliqued.michal.es" + img.url)
         }
         
-        if let arrAddress = activityDetails.activityDetails,arrAddress.count > 0 {
-            let obj = arrAddress[0]
-            let address = obj.address ?? ""
-            self.setLocation(value: address)
-        }
+        let address = activityDetails.address
+        self.setLocation(value: address)
     }
     
     //MARK: Call API
     func callInterestedActivityListAPI() {
+        guard Connectivity.isConnectedToInternet() else {
+            self.isMessage.value = Constants.alert_InternetConnectivity
+            return
+        }
         
-//        let params: NSDictionary = [
-//            apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-//            apiParams.activityId: self.getActivityId()
-//        ]
-//
-//        if(Connectivity.isConnectedToInternet()){
+        
+        
 //            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.GetActivityInterestedPeople, parameters: params) { [weak self] response, error, message in
 //                guard let self = self else { return }
 //
@@ -119,7 +115,7 @@ class ActivityDetailsViewModel {
 //                }
 //            }
 //        } else {
-//            self.isMessage.value = Constants.alert_InternetConnectivity
+//
 //        }
     }
     

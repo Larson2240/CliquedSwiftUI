@@ -75,8 +75,8 @@ extension AuthProvider: TargetType {
     var headers: [String : String]? {
         var header = ["Accept": "application/json"]
         
-        if let userCookie = UserDefaults.standard.string(forKey: kUserCookie) {
-            header["Cookie"] = userCookie
+        if let userCookie = UserDefaults.standard.string(forKey: kUserCookie), let rememberME = UserDefaults.standard.string(forKey: kUserRememberMe) {
+            header["Cookie"] = userCookie + ";" + rememberME
         }
         
         return header

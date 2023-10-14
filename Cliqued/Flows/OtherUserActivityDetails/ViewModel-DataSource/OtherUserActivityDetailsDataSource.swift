@@ -87,16 +87,16 @@ class OtherUserActivityDetailsDataSource: NSObject, UITableViewDelegate, UITable
             cell.imageviewUser.sd_imageIndicator = SDWebImageActivityIndicator.gray
             cell.imageviewUser.sd_setImage(with: urlProfile, placeholderImage: UIImage(named: "placeholder_matchuser"), options: .refreshCached, context: nil)
             
-            if let imgUrl = viewController.objActivityDetails?.userProfile {
-                let strUrl = UrlProfileImage + imgUrl
-                let imageWidth1 = cell.imageviewUser.frame.size.width
-                let imageHeight1 = cell.imageviewUser.frame.size.height
-                let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth1 * 3)&h=\(imageHeight1 * 3)&zc=1&src=\(strUrl)"
-                let url = URL(string: baseTimbThumb)
-                
-                cell.imageviewUser.sd_imageIndicator = SDWebImageActivityIndicator.gray
-                cell.imageviewUser.sd_setImage(with: url, placeholderImage: UIImage(), options: .refreshCached, context: nil)
-            }
+//            if let imgUrl = viewController.objActivityDetails?.userProfile {
+//                let strUrl = UrlProfileImage + imgUrl
+//                let imageWidth1 = cell.imageviewUser.frame.size.width
+//                let imageHeight1 = cell.imageviewUser.frame.size.height
+//                let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth1 * 3)&h=\(imageHeight1 * 3)&zc=1&src=\(strUrl)"
+//                let url = URL(string: baseTimbThumb)
+//
+//                cell.imageviewUser.sd_imageIndicator = SDWebImageActivityIndicator.gray
+//                cell.imageviewUser.sd_setImage(with: url, placeholderImage: UIImage(), options: .refreshCached, context: nil)
+//            }
             
             return cell
         case .date:
@@ -137,35 +137,32 @@ class OtherUserActivityDetailsDataSource: NSObject, UITableViewDelegate, UITable
             cell.mapview.isZoomEnabled = false
             cell.mapview.isScrollEnabled = false
             
-            if let arrAddress = viewController.objActivityDetails?.activityDetails,arrAddress.count > 0 {
-                
-                let obj = arrAddress[0]
-                
-                let lat = Double(obj.latitude!)
-                let long = Double(obj.longitude!)
-                
-                let locValue:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat!, longitude: long!)
-                let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                let region = MKCoordinateRegion(center: locValue, span: span)
-                cell.mapview.setRegion(region, animated: true)
-                
-                let newPin = MKPointAnnotation()
-                newPin.coordinate = locValue
-                cell.mapview.addAnnotation(newPin)
-                
-                if let coor = cell.mapview.userLocation.location?.coordinate {
-                    cell.mapview.setCenter(coor, animated: true)
-                }
-                
-                if (obj.city != "") && (obj.state != "") {
-                    let address = "\(obj.city ?? "-"), \(obj.state ?? "")"
-                    cell.buttonCurrentLocation.setTitle(address, for: .normal)
-                } else {
-                    let address = "-"
-                    cell.buttonCurrentLocation.setTitle(address, for: .normal)
-                }
-                cell.buttonCurrentLocation.setImage(nil, for: .normal)
+            let obj = viewController.objActivityDetails
+            
+            let lat = Double(obj?.latitude ?? 0)
+            let long = Double(obj?.longitude ?? 0)
+            
+            let locValue:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat, longitude: long)
+            let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            let region = MKCoordinateRegion(center: locValue, span: span)
+            cell.mapview.setRegion(region, animated: true)
+            
+            let newPin = MKPointAnnotation()
+            newPin.coordinate = locValue
+            cell.mapview.addAnnotation(newPin)
+            
+            if let coor = cell.mapview.userLocation.location?.coordinate {
+                cell.mapview.setCenter(coor, animated: true)
             }
+            
+            if (obj?.city != "") && (obj?.state != "") {
+                let address = "\(obj?.city ?? "-"), \(obj?.state ?? "")"
+                cell.buttonCurrentLocation.setTitle(address, for: .normal)
+            } else {
+                let address = "-"
+                cell.buttonCurrentLocation.setTitle(address, for: .normal)
+            }
+            cell.buttonCurrentLocation.setImage(nil, for: .normal)
             return cell
         }
     }

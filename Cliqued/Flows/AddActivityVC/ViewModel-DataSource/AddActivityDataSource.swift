@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import DropDown
 import TLPhotoPicker
 import Photos
@@ -29,6 +30,7 @@ struct activitySubCategoryStruct {
 }
 
 class AddActivityDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
     
     private let viewController: AddActivityVC
     private let tableView: UITableView
@@ -102,18 +104,18 @@ class AddActivityDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
         
         //Check selected date and current date diference is greater than 30 for basic plan user
 //        if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-//            if diffInDays > 30 {
-//                self.viewModel.setIsSelectedDateNotValid(value: true)
-//                self.viewModel.setDate(value: selectedDate)
-//                viewController.alertCustom(btnNo:Constants.btn_cancel, btnYes: Constants.btn_viewPlan, title: "", message: Constants_Message.activity_wrongSelectDate_validation) {
-//                    let subscriptionplanvc = SubscriptionPlanVC.loadFromNib()
-//                    subscriptionplanvc.isFromOtherScreen = true
-//                    self.viewController.present(subscriptionplanvc, animated: true)
-//                }
-//            } else {
-//                self.viewModel.setIsSelectedDateNotValid(value: false)
-//                self.viewModel.setDate(value: selectedDate)
-//            }
+            if diffInDays > 30 {
+                self.viewModel.setIsSelectedDateNotValid(value: true)
+                self.viewModel.setDate(value: selectedDate)
+                viewController.alertCustom(btnNo:Constants.btn_cancel, btnYes: Constants.btn_viewPlan, title: "", message: Constants_Message.activity_wrongSelectDate_validation) {
+                    let subscriptionplanvc = SubscriptionPlanVC.loadFromNib()
+                    subscriptionplanvc.isFromOtherScreen = true
+                    self.viewController.present(subscriptionplanvc, animated: true)
+                }
+            } else {
+                self.viewModel.setIsSelectedDateNotValid(value: false)
+                self.viewModel.setDate(value: selectedDate)
+            }
 //        } else {
 //            self.viewModel.setIsSelectedDateNotValid(value: false)
 //            self.viewModel.setDate(value: selectedDate)
@@ -142,6 +144,45 @@ class AddActivityDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
     @objc func buttonDropDownAction(_ sender: UIButton) {
         setupDropDownUI()
         
+        if let arrCategory = loggedInUser?.favouriteActivityCategories {
+            var arrCategoryTitle = arrCategory.map({$0.title})
+            arrCategoryTitle = arrCategoryTitle.removeDuplicates()
+            
+            var arrActivityId = arrCategory.map({$0.id})
+            arrActivityId = arrActivityId.removeDuplicates()
+            
+            let settingView = DropDown()
+            settingView.dataSource = arrCategoryTitle
+            settingView.width = sender.width
+            settingView.anchorView = sender
+            settingView.direction = .bottom
+            settingView.bottomOffset = CGPoint(x: 0, y:(settingView.anchorView?.plainView.bounds.height)!)
+            settingView.selectionAction = { [unowned self] (index: Int, item: String) in
+                
+                print(item)
+                
+                self.viewModel.removeActivityAllSubCategory()
+                self.viewModel.setActivityCategoryTitle(value: item)
+                self.viewModel.structAddActivityValue.activity_id = String(arrCategory[index].id)
+                
+                let arrSubCategory = arrCategory.filter({$0.id == arrActivityId[index]})
+                
+                for i in 0..<arrSubCategory.count {
+                    let obj = arrSubCategory[i]
+                    
+                    var dict = activitySubCategoryStruct()
+                    dict.activity_category_id = "\(arrActivityId[index] ?? 0)"
+                    dict.activity_sub_category_id = "\(obj.id ?? 0)"
+                    
+                    self.viewModel.setActivitySubCategory(value: dict)
+                }
+                
+                self.tableView.reloadRows(at: [IndexPath(row:enumAddActivityTableRow.category.rawValue, section:0)], with: .none)
+                
+                settingView.hide()
+            }
+            settingView.show()
+        }
     }
     
     //MARK: Dropdown Popup UI
@@ -291,10 +332,6 @@ class AddActivityDataSource: NSObject, UITableViewDelegate, UITableViewDataSourc
             } else {
                 determineCurrentLocation()
             }
-            
-            //            if let coor = cell.mapview.userLocation.location?.coordinate {
-            //                cell.mapview.setCenter(coor, animated: true)
-            //            }
             
             let gestureRecognizer = UITapGestureRecognizer(
                 target: self, action:#selector(handleTap))
@@ -601,13 +638,6 @@ extension AddActivityDataSource: CLLocationManagerDelegate,MKMapViewDelegate {
                     print(addressString)
                     self.viewModel.removeActivityAddress()
                     self.activityAddressValues.address = addressString
-                    
-                    if self.viewController.isEditActivity {
-                        if let arrAddress = self.viewController.objActivityDetails?.activityDetails, arrAddress.count > 0 {
-                            let obj = arrAddress[0]
-                            self.activityAddressValues.address_id = "\(obj.id ?? 0)"
-                        }
-                    }
                     
                     self.viewModel.setActivityAddress(value: self.activityAddressValues)
                     

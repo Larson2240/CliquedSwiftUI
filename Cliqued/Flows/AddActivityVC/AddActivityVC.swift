@@ -78,42 +78,35 @@ extension AddActivityVC {
             
             viewModel.setDate(value: (objActivityDetails?.activityDate)!)
             viewModel.setTitle(value: (objActivityDetails?.title)!)
-            viewModel.setDescription(value: (objActivityDetails?.descriptionValue)!)
-            viewModel.setActivityCategoryTitle(value: (objActivityDetails?.activityCategoryTitle)!)
+            viewModel.setDescription(value: (objActivityDetails?.description)!)
+            viewModel.setActivityCategoryTitle(value: (objActivityDetails?.title)!)
             viewModel.setActivityId(value: "\(objActivityDetails?.id ?? 0)")
             
-            if let arrCat = objActivityDetails?.activitySubCategory {
-                for i in arrCat {
-                    var objStructCategory = activitySubCategoryStruct()
-                    objStructCategory.activity_category_id = "\(i.activityCategoryId ?? 0)"
-                    objStructCategory.activity_sub_category_id = "\(i.subCategoryId ?? 0)"
-                    
-                    viewModel.setActivitySubCategory(value: objStructCategory)
-                }
-            }
+//            if let arrCat = objActivityDetails?.activitySubCategory {
+//                for i in arrCat {
+//                    var objStructCategory = activitySubCategoryStruct()
+//                    objStructCategory.activity_category_id = "\(i.activityCategoryId ?? 0)"
+//                    objStructCategory.activity_sub_category_id = "\(i.subCategoryId ?? 0)"
+//
+//                    viewModel.setActivitySubCategory(value: objStructCategory)
+//                }
+//            }
             
-            if let arrAddress = objActivityDetails?.activityDetails {
-                for i in arrAddress {
-                    var objStructAddress = activityAddressStruct()
-                    objStructAddress.address = i.address!
-                    objStructAddress.latitude = i.latitude!
-                    objStructAddress.longitude = i.longitude!
-                    objStructAddress.city = "\(i.city ?? "")"
-                    objStructAddress.state = "\(i.state ?? "")"
-                    objStructAddress.country = "\(i.country ?? "")"
-                    objStructAddress.pincode = "\(i.pincode ?? "")"
-                    objStructAddress.address_id = "\(i.id ?? 0)"
+            var objStructAddress = activityAddressStruct()
+            objStructAddress.address = objActivityDetails?.address ?? ""
+            objStructAddress.latitude = String(objActivityDetails?.latitude ?? 0)
+            objStructAddress.longitude = String(objActivityDetails?.longitude ?? 0)
+            objStructAddress.city = objActivityDetails?.city ?? ""
+            objStructAddress.state = objActivityDetails?.state ?? ""
+            objStructAddress.country = objActivityDetails?.country ?? ""
+            objStructAddress.pincode = objActivityDetails?.pincode ?? ""
+            objStructAddress.address_id = String(objActivityDetails?.id ?? 0)
                     
                     viewModel.setActivityAddress(value: objStructAddress)
-                }
-            }
             
-            if let arrMedia = objActivityDetails?.activityMedia {
+            if let arrMedia = objActivityDetails?.medias {
                 for i in arrMedia {
-                    let img = i.url
-                    let strUrl = UrlUserActivity + img!
-                    
-                    guard let url = URL(string: strUrl) else { return }
+                    guard let url = URL(string: "https://cliqued.michal.es" + i.url) else { return }
 
                     UIImage.loadFrom(url: url) { image in
                         self.viewModel.setActivityMedia(value: image!)

@@ -65,18 +65,18 @@ extension ActivityDetailsVC {
 //            subscriptionplanvc.isFromOtherScreen = true
 //            self.present(subscriptionplanvc, animated: true)
 //        } else {
-//            let addactivityvc = AddActivityVC.loadFromNib()
-//            
-//            addactivityvc.isEditActivity = true
-//            addactivityvc.objActivityDetails = objActivityDetails
-//            
-//            addactivityvc.callbackForUpdateActivityData = { [weak self] objActivityDetails in
-//                guard let self = self else { return }
-//                
-//                self.viewModel.bindActivityDetailsData(activityDetails: objActivityDetails)
-//                self.tableview.reloadData()
-//            }
-//            self.navigationController?.pushViewController(addactivityvc, animated: true)
+            let addactivityvc = AddActivityVC.loadFromNib()
+
+            addactivityvc.isEditActivity = true
+            addactivityvc.objActivityDetails = objActivityDetails
+
+            addactivityvc.callbackForUpdateActivityData = { [weak self] objActivityDetails in
+                guard let self = self else { return }
+
+                self.viewModel.bindActivityDetailsData(activityDetails: objActivityDetails)
+                self.tableview.reloadData()
+            }
+            self.navigationController?.pushViewController(addactivityvc, animated: true)
 //        }
     }
     

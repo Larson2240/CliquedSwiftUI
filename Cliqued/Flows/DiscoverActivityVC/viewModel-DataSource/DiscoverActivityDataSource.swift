@@ -115,18 +115,14 @@ extension DiscoverActivityDataSource: UICollectionViewDelegate, UICollectionView
             cell.buttonInterestedCount.isHidden = true
             cell.buttonEditActivity.isHidden = true
             
-            if let arr = obj.activityMedia, arr.count > 0 {
-                let img = arr[0].url
-                let strUrl = UrlUserActivity + img!
-                let imageWidth = cell.imageviewActivity.frame.size.width
-                let imageHeight = cell.imageviewActivity.frame.size.height
-                let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(strUrl)"
-                let url = URL(string: baseTimbThumb)
+            if obj.medias.count > 0 {
+                let img = obj.medias[0]
+                let url = URL(string: "https://cliqued.michal.es" + img.url)
                 cell.imageviewActivity.sd_imageIndicator = SDWebImageActivityIndicator.gray
                 cell.imageviewActivity.sd_setImage(with: url, placeholderImage: UIImage(), options: .refreshCached, context: nil)
             }
             
-            cell.labelMainCategory.text = obj.activityCategoryTitle
+            cell.labelMainCategory.text = obj.title
             cell.labelSubCategory.text = obj.title
         }       
         return cell

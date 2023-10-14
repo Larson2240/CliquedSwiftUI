@@ -288,9 +288,9 @@ struct EditProfileView: View {
                         .stroke(Color.gray.opacity(0.6), lineWidth: 1)
                     
                     HStack {
-//                        Text(viewModel.userDetails.lookingForIds)
-//                            .font(.themeBook(14))
-//                            .foregroundColor(.colorDarkGrey)
+                        Text("\(loggedInUser?.preferenceRomance != nil ? Constants.btn_romance : "") \(loggedInUser?.preferenceRomance != nil && loggedInUser?.preferenceFriendship != nil ? "& " : "")\(loggedInUser?.preferenceFriendship != nil ? Constants.btn_friendship : "")")
+                            .font(.themeBook(14))
+                            .foregroundColor(.colorDarkGrey)
                         
                         Spacer()
                         

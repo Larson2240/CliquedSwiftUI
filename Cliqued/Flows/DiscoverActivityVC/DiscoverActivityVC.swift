@@ -208,40 +208,30 @@ extension DiscoverActivityVC: KolodaViewDataSource {
             let card = DiscoveryActivityView()
             
             let activityData = viewModel.getDuplicateOtherActivityData(at: index)
-            card.labelCategoryName.text = activityData.activityCategoryTitle ?? ""
-            card.labelActivityName.text = activityData.title ?? ""
+            card.labelCategoryName.text = activityData.activityCategories.first
+            card.labelActivityName.text = activityData.title
             
-            if let arr = activityData.activityMedia, arr.count > 0 {
-                let isImageData = arr.filter({$0.mediaType == "0"})
-                let img = isImageData[0].url
-                let strUrl = UrlUserActivity + img!
-                
-                let imageWidth = card.imageview.frame.size.width
-                let imageHeight = card.imageview.frame.size.height
-                
-                let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(strUrl)"
-                
-                print("user profile = \(baseTimbThumb)")
-                
-                let url = URL(string: baseTimbThumb)
+            if activityData.medias.count > 0 {
+                let img = activityData.medias[0]
+                let url = URL(string: "https://cliqued.michal.es" + img.url)
                 
                 card.imageview.sd_imageIndicator = SDWebImageActivityIndicator.gray
                 card.imageview.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_swipecard"), options: .refreshCached, context: nil)
             }
             
-            if let image = activityData.userProfile {
-                let strUrl = UrlProfileImage + image
-                
-                let imageWidth1 = card.imageviewActivityOwner.frame.size.width
-                let imageHeight1 = card.imageviewActivityOwner.frame.size.height
-                
-                let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth1 * 3)&h=\(imageHeight1 * 3)&zc=1&src=\(strUrl)"
-                let url = URL(string: baseTimbThumb)
-                card.imageviewActivityOwner.sd_imageIndicator = SDWebImageActivityIndicator.gray
-                card.imageviewActivityOwner.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_matchuser"), options: .refreshCached, context: nil)
-            } else {
+//            if let image = activityData.userProfile {
+//                let strUrl = UrlProfileImage + image
+//
+//                let imageWidth1 = card.imageviewActivityOwner.frame.size.width
+//                let imageHeight1 = card.imageviewActivityOwner.frame.size.height
+//
+//                let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth1 * 3)&h=\(imageHeight1 * 3)&zc=1&src=\(strUrl)"
+//                let url = URL(string: baseTimbThumb)
+//                card.imageviewActivityOwner.sd_imageIndicator = SDWebImageActivityIndicator.gray
+//                card.imageviewActivityOwner.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_matchuser"), options: .refreshCached, context: nil)
+//            } else {
                 card.imageviewActivityOwner.image = UIImage(named: "placeholder_matchuser")
-            }
+//            }
             
             
             card.buttonInfo.tag = index
@@ -284,9 +274,9 @@ extension DiscoverActivityVC: KolodaViewDataSource {
                 if viewModel.getAllDuplicationOhterActivityData().count > 0 {
                     let activityData = viewModel.getDuplicateOtherActivityData(at: index)
 //                    viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
-                    viewModel.setActivityId(value: "\(activityData.id ?? 0)")
+                    viewModel.setActivityId(value: "\(activityData.user)")
                     viewModel.setActivityInterestStatus(value: "1")
-                    viewModel.setOwnerId(value: "\(activityData.userId ?? 0)")
+                    viewModel.setOwnerId(value: "\(activityData.user)")
                     viewModel.setActivityName(value: "\(activityData.title ?? "")")
                     viewModel.callMarkActivityStatusAPI()
                     
@@ -304,7 +294,7 @@ extension DiscoverActivityVC: KolodaViewDataSource {
 //                    viewModel.setUserId(value: "\(Constants.loggedInUser?.id ?? 0)")
                     viewModel.setActivityId(value: "\(activityData.id ?? 0)")
                     viewModel.setActivityInterestStatus(value: "0")
-                    viewModel.setOwnerId(value: "\(activityData.userId ?? 0)")
+                    viewModel.setOwnerId(value: "\(activityData.user)")
                     viewModel.setActivityName(value: "\(activityData.title ?? "")")
                     viewModel.callMarkActivityStatusAPI()
                     
@@ -378,8 +368,8 @@ extension DiscoverActivityVC: KolodaViewDataSource {
     
     //MARK: Button Owner User Details Activity Tap
     @objc func buttonOwnerUserDetailsTap(_ sender: UIButton) {
-        let obj = self.viewModel.arrOtherActivities[sender.tag]
-        viewModel.callGetUserDetailsAPI(user_id: obj.userId ?? 0)
+//        let obj = self.viewModel.arrOtherActivities[sender.tag]
+//        viewModel.callGetUserDetailsAPI(user_id: obj.userId ?? 0)
     }
 }
 //MARK: Extension UDF

@@ -93,7 +93,7 @@ extension YourActivitiesCell: UICollectionViewDelegate, UICollectionViewDataSour
             cell.buttonInterestedCount.isHidden = false
             cell.buttonEditActivity.isHidden = false
             cell.buttonEditActivity.tag = indexPath.item
-            cell.buttonInterestedCount.setTitle("\(obj.interestedCount ?? 0)", for: .normal)
+//            cell.buttonInterestedCount.setTitle("\(obj.interestedCount ?? 0)", for: .normal)
             
 //            if obj.interestedCount != 0 {
 //                cell.buttonInterestedCount.isHidden = false
@@ -103,14 +103,9 @@ extension YourActivitiesCell: UICollectionViewDelegate, UICollectionViewDataSour
 //            }
             
             
-            if let arr = obj.activityMedia, arr.count > 0 {
-                let img = arr[0].url
-                let strUrl = UrlUserActivity + img!
-                
-                let imageWidth = cell.imageviewActivity.frame.size.width
-                let imageHeight = cell.imageviewActivity.frame.size.height
-                let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(strUrl)"
-                let url = URL(string: baseTimbThumb)
+            if obj.medias.count > 0 {
+                let img = obj.medias[0]
+                let url = URL(string: "https://cliqued.michal.es" + img.url)
                 
                 cell.imageviewActivity.sd_imageIndicator = SDWebImageActivityIndicator.gray
                 cell.imageviewActivity.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_activity"), options: .refreshCached, context: nil)
@@ -118,16 +113,16 @@ extension YourActivitiesCell: UICollectionViewDelegate, UICollectionViewDataSour
                 cell.imageviewActivity.image = UIImage(named: "placeholder_activity")
             }
             
-            cell.labelMainCategory.text = obj.activityCategoryTitle
+            cell.labelMainCategory.text = obj.activityCategories.first
             cell.labelSubCategory.text = obj.title
             
             cell.buttonEditActivity.tag = indexPath.item
             cell.buttonEditActivity.addTarget(self, action: #selector(buttonEditActivityTap(_:)), for: .touchUpInside)
             
             cell.buttonInterestedCount.tag = indexPath.item
-            if obj.interestedCount != 0 {
-                cell.buttonInterestedCount.addTarget(self, action: #selector(buttonInterestedCountTap(_:)), for: .touchUpInside)
-            }
+//            if obj.interestedCount != 0 {
+//                cell.buttonInterestedCount.addTarget(self, action: #selector(buttonInterestedCountTap(_:)), for: .touchUpInside)
+//            }
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: YourActivityCVCell.identifier, for: indexPath) as! YourActivityCVCell
@@ -145,21 +140,16 @@ extension YourActivitiesCell: UICollectionViewDelegate, UICollectionViewDataSour
             cell.buttonInterestedCount.isHidden = true
             cell.buttonEditActivity.isHidden = true
             
-            if let arr = obj.activityMedia, arr.count > 0 {
-                let img = arr[0].url
-                let strUrl = UrlUserActivity + img!
-                
-                let imageWidth = cell.imageviewActivity.frame.size.width
-                let imageHeight = cell.imageviewActivity.frame.size.height
-                let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(strUrl)"
-                let url = URL(string: baseTimbThumb)
+            if obj.medias.count > 0 {
+                let img = obj.medias[0]
+                let url = URL(string: "https://cliqued.michal.es" + img.url)
                 
                 cell.imageviewActivity.sd_imageIndicator = SDWebImageActivityIndicator.gray
                 cell.imageviewActivity.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_activity"), options: .refreshCached, context: nil)
             } else {
                 cell.imageviewActivity.image = UIImage(named: "placeholder_activity")
             }
-            cell.labelMainCategory.text = obj.activityCategoryTitle
+            cell.labelMainCategory.text = obj.activityCategories.first
             cell.labelSubCategory.text = obj.title
             return cell
         }

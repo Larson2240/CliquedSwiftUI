@@ -45,7 +45,7 @@ struct ProfileView: View {
                     
                     ProfileCommonCell(imageName: "ic_lookingfor",
                                       title: Constants.label_lookingFor,
-                                      details: "")
+                                      details: "\(loggedInUser?.preferenceRomance != nil ? Constants.btn_romance : "") \(loggedInUser?.preferenceRomance != nil && loggedInUser?.preferenceFriendship != nil ? "& " : "")\(loggedInUser?.preferenceFriendship != nil ? Constants.btn_friendship : "")")
                     
                     ProfileCommonCell(imageName: "ic_location_black",
                                       title: Constants.label_location,

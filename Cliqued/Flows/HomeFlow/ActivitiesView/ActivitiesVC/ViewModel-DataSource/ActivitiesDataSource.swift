@@ -80,7 +80,7 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
         case .yourActivities:
             let cell = tableView.dequeueReusableCell(withIdentifier: YourActivitiesCell.identifier) as! YourActivitiesCell
             cell.selectionStyle = .none
-            cell.isDataLoad = self.viewModel.getIsDataLoad()
+            cell.isDataLoad = viewModel.getIsDataLoad()
             
             if viewModel.getIsDataLoad() && viewModel.arrMyActivities.count == 0 {
                 cell.collectionview.isHidden = true
@@ -116,11 +116,11 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
 //                            subscriptionplanvc.isFromOtherScreen = true
 //                            self.viewController.present(subscriptionplanvc, animated: true)
 //                        } else {
-//                            let addactivityvc = AddActivityVC.loadFromNib()
-//                            addactivityvc.hidesBottomBarWhenPushed = true
-//                            addactivityvc.isEditActivity = true
-//                            addactivityvc.objActivityDetails = self.viewModel.arrMyActivities[selectedIndex]
-//                            self.viewController.navigationController?.pushViewController(addactivityvc, animated: true)
+                            let addactivityvc = AddActivityVC.loadFromNib()
+                            addactivityvc.hidesBottomBarWhenPushed = true
+                            addactivityvc.isEditActivity = true
+                            addactivityvc.objActivityDetails = self.viewModel.arrMyActivities[selectedIndex]
+                            self.viewController.navigationController?.pushViewController(addactivityvc, animated: true)
 //                        }
                     }
                 } else {
@@ -131,7 +131,7 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
                         interestedactivityvc.hidesBottomBarWhenPushed = true
                         interestedactivityvc.activity_id = "\(self.viewModel.arrMyActivities[selectedIndex].id ?? 0)"
                         interestedactivityvc.categoryName = self.viewModel.arrMyActivities[selectedIndex].title ?? ""
-                        interestedactivityvc.subCategoryName = self.viewModel.arrMyActivities[selectedIndex].activityCategoryTitle ?? ""
+                        interestedactivityvc.subCategoryName = self.viewModel.arrMyActivities[selectedIndex].title
                         self.viewController.navigationController?.pushViewController(interestedactivityvc, animated: true)
                     }
                 }
@@ -235,10 +235,10 @@ class ActivitiesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
 //                    showSubscriptionPlanScreen()
 //                }
 //            } else {
-//                let addactivityvc = AddActivityVC.loadFromNib()
-//                addactivityvc.hidesBottomBarWhenPushed = true
-//                addactivityvc.isEditActivity = false
-//                self.viewController.navigationController?.pushViewController(addactivityvc, animated: true)
+                let addactivityvc = AddActivityVC.loadFromNib()
+                addactivityvc.hidesBottomBarWhenPushed = true
+                addactivityvc.isEditActivity = false
+                self.viewController.navigationController?.pushViewController(addactivityvc, animated: true)
 //            }
         } else {
             let vc = DiscoverActivityVC.loadFromNib()

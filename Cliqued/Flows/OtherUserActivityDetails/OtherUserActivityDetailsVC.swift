@@ -57,11 +57,11 @@ extension OtherUserActivityDetailsVC {
         self.viewModel.setActivityId(value: activity_id)
         self.viewModel.bindActivityDetailsData(activityDetails: objActivityDetails)
         handleApiResponse()
-        if self.objActivityDetails?.interestedActivityStatus == nil {
-            self.viewActivityAction.isHidden = false
-        } else {
-            self.viewActivityAction.isHidden = true
-        }
+//        if self.objActivityDetails?.interestedActivityStatus == nil {
+//            self.viewActivityAction.isHidden = false
+//        } else {
+//            self.viewActivityAction.isHidden = true
+//        }
     }
     //MARK: Setup Navigation Bar
     func setupNavigationBar() {
@@ -91,11 +91,11 @@ extension OtherUserActivityDetailsVC {
             
             if isSuccess {
                 self.viewNavigationBar.labelNavigationTitle.text = self.viewModel.objActivityDetails?.title
-                if self.viewModel.objActivityDetails?.interestedActivityStatus == nil {
-                    self.viewActivityAction.isHidden = false
-                } else {
-                    self.viewActivityAction.isHidden = true
-                }
+//                if self.viewModel.objActivityDetails?.interestedActivityStatus == nil {
+//                    self.viewActivityAction.isHidden = false
+//                } else {
+//                    self.viewActivityAction.isHidden = true
+//                }
                 self.tableview.reloadData()
             }
         }

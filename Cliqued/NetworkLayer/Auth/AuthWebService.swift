@@ -23,11 +23,17 @@ final class AuthWebService {
                     let model = try JSONDecoder().decode(TokenModel.self, from: response.data)
                     let cookie = response.response?.headers["Set-Cookie"] as? String
                     
-                    guard let filteredCookie = cookie?.components(separatedBy: ";").first(where: { $0.contains("PHP") }) else { return }
-                    guard let finalCookie = filteredCookie.components(separatedBy: ",").first(where: { $0.contains("PHP") }) else { return }
+                    guard
+                        let phpCookie = cookie?.components(separatedBy: ";").first(where: { $0.contains("PHP") }),
+                        let phpFinal = phpCookie.components(separatedBy: ",").first(where: { $0.contains("PHP") }),
+                        let rememberMe = cookie?.components(separatedBy: ";").first(where: { $0.contains("REMEMBERME") })
+                    else {
+                        return
+                    }
                     
                     UserDefaults.standard.set(model.token, forKey: kUserToken)
-                    UserDefaults.standard.set(finalCookie, forKey: kUserCookie)
+                    UserDefaults.standard.set(phpFinal, forKey: kUserCookie)
+                    UserDefaults.standard.set(rememberMe, forKey: kUserRememberMe)
                     
                     completion(.success(Void()))
                 } catch {
@@ -55,11 +61,17 @@ final class AuthWebService {
                     let model = try JSONDecoder().decode(TokenModel.self, from: response.data)
                     let cookie = response.response?.headers["Set-Cookie"] as? String
                     
-                    guard let filteredCookie = cookie?.components(separatedBy: ";").first(where: { $0.contains("PHP") }) else { return }
-                    guard let finalCookie = filteredCookie.components(separatedBy: ",").first(where: { $0.contains("PHP") }) else { return }
+                    guard
+                        let phpCookie = cookie?.components(separatedBy: ";").first(where: { $0.contains("PHP") }),
+                        let phpFinal = phpCookie.components(separatedBy: ",").first(where: { $0.contains("PHP") }),
+                        let rememberMe = cookie?.components(separatedBy: ";").first(where: { $0.contains("REMEMBERME") })
+                    else {
+                        return
+                    }
                     
                     UserDefaults.standard.set(model.token, forKey: kUserToken)
-                    UserDefaults.standard.set(finalCookie, forKey: kUserCookie)
+                    UserDefaults.standard.set(phpFinal, forKey: kUserCookie)
+                    UserDefaults.standard.set(rememberMe, forKey: kUserRememberMe)
                     
                     completion(.success(Void()))
                 } catch {
@@ -87,11 +99,17 @@ final class AuthWebService {
                     let model = try JSONDecoder().decode(TokenModel.self, from: response.data)
                     let cookie = response.response?.headers["Set-Cookie"] as? String
                     
-                    guard let filteredCookie = cookie?.components(separatedBy: ";").first(where: { $0.contains("PHP") }) else { return }
-                    guard let finalCookie = filteredCookie.components(separatedBy: ",").first(where: { $0.contains("PHP") }) else { return }
+                    guard
+                        let phpCookie = cookie?.components(separatedBy: ";").first(where: { $0.contains("PHP") }),
+                        let phpFinal = phpCookie.components(separatedBy: ",").first(where: { $0.contains("PHP") }),
+                        let rememberMe = cookie?.components(separatedBy: ";").first(where: { $0.contains("REMEMBERME") })
+                    else {
+                        return
+                    }
                     
                     UserDefaults.standard.set(model.token, forKey: kUserToken)
-                    UserDefaults.standard.set(finalCookie, forKey: kUserCookie)
+                    UserDefaults.standard.set(phpFinal, forKey: kUserCookie)
+                    UserDefaults.standard.set(rememberMe, forKey: kUserRememberMe)
                     
                     completion(.success(Void()))
                 } catch {

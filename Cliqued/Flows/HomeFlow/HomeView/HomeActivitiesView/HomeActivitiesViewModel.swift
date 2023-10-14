@@ -11,7 +11,7 @@ final class HomeActivitiesViewModel: ObservableObject {
     private let matchesWebService = MatchesWebService()
     
     func callGetUserActivityAPI(id: String) {
-        matchesWebService.getMatchesForActivity(for: id) { result in
+        matchesWebService.getMatchesHome { result in
             
         }
     }

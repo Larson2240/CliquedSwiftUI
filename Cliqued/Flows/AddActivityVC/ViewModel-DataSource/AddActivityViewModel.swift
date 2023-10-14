@@ -14,9 +14,10 @@ class AddActivityViewModel {
     var isDataGet: Dynamic<Bool> = Dynamic(false)
     
     private let apiParams = ApiParams()
+    private let activityWebService = ActivityWebService()
     
     //MARK: Variables
-    private struct addActivityParams {
+    struct addActivityParams {
         var user_id = ""
         var title = ""
         var description = ""
@@ -27,7 +28,7 @@ class AddActivityViewModel {
         var activity_category_title = ""
         var activity_id = ""
     }
-    private var structAddActivityValue = addActivityParams()
+    var structAddActivityValue = addActivityParams()
     var objActivityDetails : UserActivityClass?
     var isSelectedDateNotValid: Bool = false
     
@@ -83,105 +84,129 @@ class AddActivityViewModel {
     
     //MARK: Call Activity API
     func callCreateActivityAPI() {
-               
-        if checkValidation() {
-            let params: NSDictionary = [
-                apiParams.userID : self.getUserId(),
-                apiParams.title : self.getTitle(),
-                apiParams.description : self.getDescription(),
-                apiParams.date : self.getActivityDate(),
-                apiParams.activity_address : self.convertAddressStructToString(),
-                apiParams.activity_sub_category : self.convertSubCategoryStructToString(),
-                apiParams.activity_media : self.getActivityAllMedia(),
-                apiParams.thumbnail : self.getActivityAllMedia()
-            ]
+        guard checkValidation() else { return }
+        
+        guard Connectivity.isConnectedToInternet() else {
+            self.isMessage.value = Constants.alert_InternetConnectivity
+            return
+        }
+        
+        let params: [String: Any] = [
+            "activityCategories": ["/api/activity_categories/\(structAddActivityValue.activity_id)"],
+            "title": getTitle(),
+            "description": getDescription(),
+            "activityDate": getActivityDate(),
+            "address": structAddActivityValue.activity_address.first?.address ?? "",
+            "latitude": Double(structAddActivityValue.activity_address.first?.latitude ?? "0") ?? 0,
+            "longitude": Double(structAddActivityValue.activity_address.first?.longitude ?? "0") ?? 0,
+            "city": structAddActivityValue.activity_address.first?.city ?? "",
+            "state": structAddActivityValue.activity_address.first?.state ?? "",
+            "country": structAddActivityValue.activity_address.first?.country ?? "",
+            "pincode": structAddActivityValue.activity_address.first?.pincode ?? ""
+        ]
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.isLoaderShow.value = true
+        }
+        
+        activityWebService.createActivity(parameters: params) { [weak self] result in
+            guard let self = self else { return }
             
-            if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async { [weak self] in
-                    self?.isLoaderShow.value = true
-                }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.AddUserActivity, parameters: params) { [weak self] response, error, message in
-                    guard let self = self else { return }
-                    
+            switch result {
+            case .success(let activity):
+                guard let image = structAddActivityValue.activity_media.first else { return }
+                
+                self.activityWebService.updateActivityMedia(activityID: String(activity.id),
+                                                            image: image) { result in
                     self.isLoaderShow.value = false
-                    if(error != nil && response == nil) {
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        let json = response as? NSDictionary
-                        let status = json?[API_STATUS] as? Int
-                        let message = json?[API_MESSAGE] as? String
-                                            
-                        if status == SUCCESS {
-                            self.isDataGet.value = true
-                        } else {
-                            self.isMessage.value = message ?? ""
-                        }
-                    }
+                    self.isDataGet.value = true
                 }
-            } else {
-                self.isMessage.value = Constants.alert_InternetConnectivity
+            case .failure(let error):
+                if let error = error as? ApiError, let message = error.errorDescription {
+                    UIApplication.shared.showAlertPopup(message: message)
+                }
             }
         }
     }
     
     func callEditActivityAPI() {
-               
-        if checkEditValidation() {
-            let params: NSDictionary = [
-                apiParams.userID : self.getUserId(),
-                apiParams.title : self.getTitle(),
-                apiParams.description : self.getDescription(),
-                apiParams.date : self.getActivityDate(),
-                apiParams.activity_address : self.convertAddressStructToString(),
-                apiParams.activity_sub_category : self.convertSubCategoryStructToString(),
-                apiParams.activity_media : self.getActivityAllMedia(),
-                apiParams.thumbnail : self.getActivityAllMedia(),
-                apiParams.activityId : self.getActivityId()
-            ]
+        guard checkEditValidation() else { return }
+        
+        guard Connectivity.isConnectedToInternet() else {
+            self.isMessage.value = Constants.alert_InternetConnectivity
+            return
+        }
+        
+        let params: [String: Any] = [
+              "activityCategories": ["/api/activity_categories/\(structAddActivityValue.activity_id)"],
+              "title": getTitle(),
+              "description": getDescription(),
+              "activityDate": getActivityDate(),
+              "address": structAddActivityValue.activity_address.first?.address ?? "",
+              "latitude": Double(structAddActivityValue.activity_address.first?.latitude ?? "0") ?? 0,
+              "longitude": Double(structAddActivityValue.activity_address.first?.longitude ?? "0") ?? 0,
+              "city": structAddActivityValue.activity_address.first?.city ?? "",
+              "state": structAddActivityValue.activity_address.first?.state ?? "",
+              "country": structAddActivityValue.activity_address.first?.country ?? "",
+              "pincode": structAddActivityValue.activity_address.first?.pincode ?? ""
+        ]
+        
+        guard let activityID = objActivityDetails?.id else { return }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.isLoaderShow.value = true
+        }
+        
+        activityWebService.updateActivity(activityID: String(activityID), parameters: params) { [weak self] result in
+            guard let self = self else { return }
             
-            if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async { [weak self] in
-                    self?.isLoaderShow.value = true
+            self.isLoaderShow.value = false
+            
+            switch result {
+            case .success:
+                self.isDataGet.value = true
+            case .failure(let error):
+                if let error = error as? ApiError, let message = error.errorDescription {
+                    UIApplication.shared.showAlertPopup(message: message)
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.EditActivity, parameters: params) { [weak self] response, error, message in
-                    guard let self = self else { return }
-                    
-                    self.isLoaderShow.value = false
-                    if(error != nil && response == nil) {
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        let json = response as? NSDictionary
-                        let status = json?[API_STATUS] as? Int
-                        let message = json?[API_MESSAGE] as? String
-                                            
-                        if status == SUCCESS {
-                            if let userActivity = json?["user_activity"] as? NSArray {
-                                if userActivity.count > 0 {
-                                    let dicActivity = userActivity[0] as! NSDictionary
-                                    let decoder = JSONDecoder()
-                                    do {
-                                        let jsonData = try JSONSerialization.data(withJSONObject:dicActivity)
-                                        let objActivityData = try decoder.decode(UserActivityClass.self, from: jsonData)
-                                        self.objActivityDetails = objActivityData
-//                                        self.setObjActivityDetails(value: objActivityData)
-                                    } catch {
-                                        print(error.localizedDescription)
-                                    }
-                                } else {
-                                    self.isDataGet.value = true
-                                }
-                            }
-                            self.isDataGet.value = true
-                            self.isMessage.value = message ?? ""
-                        } else {
-                            self.isMessage.value = message ?? ""
-                        }
-                    }
-                }
-            } else {
-                self.isMessage.value = Constants.alert_InternetConnectivity
             }
         }
+        
+//        RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.EditActivity, parameters: params) { [weak self] response, error, message in
+//            guard let self = self else { return }
+//
+//            self.isLoaderShow.value = false
+//            if(error != nil && response == nil) {
+//                self.isMessage.value = message ?? ""
+//            } else {
+//                let json = response as? NSDictionary
+//                let status = json?[API_STATUS] as? Int
+//                let message = json?[API_MESSAGE] as? String
+//
+//                if status == SUCCESS {
+//                    if let userActivity = json?["user_activity"] as? NSArray {
+//                        if userActivity.count > 0 {
+//                            let dicActivity = userActivity[0] as! NSDictionary
+//                            let decoder = JSONDecoder()
+//                            do {
+//                                let jsonData = try JSONSerialization.data(withJSONObject:dicActivity)
+//                                let objActivityData = try decoder.decode(UserActivityClass.self, from: jsonData)
+//                                self.objActivityDetails = objActivityData
+//                                //                                        self.setObjActivityDetails(value: objActivityData)
+//                            } catch {
+//                                print(error.localizedDescription)
+//                            }
+//                        } else {
+//                            self.isDataGet.value = true
+//                        }
+//                    }
+//                    self.isDataGet.value = true
+//                    self.isMessage.value = message ?? ""
+//                } else {
+//                    self.isMessage.value = message ?? ""
+//                }
+//            }
+//        }
     }
 }
 

@@ -5,12 +5,16 @@
 //  Created by Seraphim Kovalchuk on 29.09.2023.
 //
 
-import Foundation
+import UIKit
 import Moya
 
 enum ActivityProvider {
     case getActivityCategories
     case getUserActivities
+    case createActivity(parameters: [String: Any])
+    case updateActivity(activityID: String, parameters: [String: Any])
+    case updateActivityMedia(id: String, image: UIImage)
+    case deleteActivity(id: String)
 }
 
 extension ActivityProvider: TargetType {
@@ -22,8 +26,14 @@ extension ActivityProvider: TargetType {
         switch self {
         case .getActivityCategories:
             return "/activity_categories"
-        case .getUserActivities:
+        case .getUserActivities, .createActivity:
             return "/user_activities"
+        case .updateActivity(let id, _):
+            return "/user_activities/\(id)"
+        case .updateActivityMedia(let id, _):
+            return "/user_activities/\(id)/medias"
+        case .deleteActivity(let id):
+            return "/user_activities/\(id)"
         }
     }
     
@@ -31,6 +41,12 @@ extension ActivityProvider: TargetType {
         switch self {
         case .getActivityCategories, .getUserActivities:
             return .get
+        case .createActivity, .updateActivityMedia:
+            return .post
+        case .updateActivity:
+            return .patch
+        case .deleteActivity:
+            return .delete
         }
     }
     
@@ -38,16 +54,27 @@ extension ActivityProvider: TargetType {
     
     var task: Task {
         switch self {
-        case .getActivityCategories, .getUserActivities:
+        case .getActivityCategories, .getUserActivities, .deleteActivity:
             return .requestPlain
+        case .createActivity(let parameters):
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        case .updateActivity(_, let parameters):
+            return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
+        case .updateActivityMedia(_, let image):
+            let data = image.jpegData(compressionQuality: 0.5)!
+            
+            let gifData = MultipartFormData(provider: .data(data), name: "file", fileName: "gif.lpeg", mimeType: "image/lpeg")
+            let multipartData = [gifData]
+            
+            return .uploadMultipart(multipartData)
         }
     }
     
     var headers: [String : String]? {
         var header = ["Accept": "application/json"]
         
-        if let userCookie = UserDefaults.standard.string(forKey: kUserCookie) {
-            header["Cookie"] = userCookie
+        if let userCookie = UserDefaults.standard.string(forKey: kUserCookie), let rememberME = UserDefaults.standard.string(forKey: kUserRememberMe) {
+            header["Cookie"] = userCookie + ";" + rememberME
         }
         
         return header

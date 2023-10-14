@@ -5,12 +5,13 @@
 //  Created by C211 on 24/03/23.
 //
 
-import UIKit
+import SwiftUI
 import SDWebImage
 import MapKit
 import CoreLocation
 
 class ActivityDetailsDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
     
     private let viewController: ActivityDetailsVC
     private let tableView: UITableView
@@ -120,18 +121,12 @@ class ActivityDetailsDataSource: NSObject, UITableViewDelegate, UITableViewDataS
             cell.labelCategoryName.text = viewModel.getCategoryName()
 
             let strUrl = viewModel.getImageUrl()
-            let imageWidth = cell.imageviewActivity.frame.size.width
-            let imageHeight = cell.imageviewActivity.frame.size.height
-            let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(strUrl)"
-            let url = URL(string: baseTimbThumb)
+            let url = URL(string: strUrl)
             cell.imageviewActivity.sd_imageIndicator = SDWebImageActivityIndicator.gray
             cell.imageviewActivity.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_detailpage"), options: .refreshCached, context: nil)
             
-            let profileImgUrl = UrlProfileImage + viewModel.getUserProfileUrl()
-            let imageWidth1 = cell.imageviewUser.frame.size.width
-            let imageHeight1 = cell.imageviewUser.frame.size.height
-            let baseTimbThumb1 = "\(URLBaseThumb)w=\(imageWidth1 * 3)&h=\(imageHeight1 * 3)&zc=1&src=\(profileImgUrl)"
-            let urlProfile = URL(string: baseTimbThumb1)
+            let profileImgUrl = "https://cliqued.michal.es/\(loggedInUser?.userProfileMedia?.first?.url ?? "")"
+            let urlProfile = URL(string: profileImgUrl)
             cell.imageviewUser.sd_imageIndicator = SDWebImageActivityIndicator.gray
             cell.imageviewUser.sd_setImage(with: urlProfile, placeholderImage: UIImage(named: "placeholder_matchuser"), options: .refreshCached, context: nil)
             

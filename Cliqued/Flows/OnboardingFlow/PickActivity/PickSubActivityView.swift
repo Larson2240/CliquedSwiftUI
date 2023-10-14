@@ -33,6 +33,7 @@ struct PickSubActivityView: View {
                 presentables
             }
             .background(background)
+            .onAppear { preselectActivities() }
         }
         .navigationBarHidden(true)
         .navigationViewStyle(.stack)
@@ -165,6 +166,16 @@ struct PickSubActivityView: View {
         .isDetailLink(false)
     }
     
+    private func preselectActivities() {
+        guard var user = loggedInUser, let pickedActivities = user.favouriteActivityCategories else { return }
+        
+        for activity in pickedActivities {
+            if activity.parentID != nil {
+                selectedSubActivities.append(activity)
+            }
+        }
+    }
+    
     private func continueAction() {
         guard var user = loggedInUser, let pickedActivities = user.favouriteActivityCategories else { return }
         
@@ -179,9 +190,14 @@ struct PickSubActivityView: View {
         }
         
         if subActivitiesCount >= 3 {
+            loggedInUser?.favouriteActivityCategories?.removeAll(where: { $0.parentID != nil })
             loggedInUser?.favouriteActivityCategories! += selectedSubActivities
             
-            selectPicturesViewPresented.toggle()
+            if isFromEditProfile {
+                activitiesFlowPresented.toggle()
+            } else {
+                selectPicturesViewPresented.toggle()
+            }
         } else {
             UIApplication.shared.showAlertPopup(message: Constants.validMsg_pickSubActivity)
         }

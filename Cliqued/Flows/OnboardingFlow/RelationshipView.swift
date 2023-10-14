@@ -231,7 +231,11 @@ struct RelationshipView: View {
         loggedInUser?.preferenceRomance = romancePreference
         loggedInUser?.preferenceFriendship = friendshipPreference
         
-        activityViewPresented.toggle()
+        if isFromEditProfile {
+            presentationMode.wrappedValue.dismiss()
+        } else {
+            activityViewPresented.toggle()
+        }
     }
 }
 

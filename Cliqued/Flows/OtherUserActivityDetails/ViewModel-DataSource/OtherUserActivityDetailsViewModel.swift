@@ -168,10 +168,10 @@ class OtherUserActivityDetailsViewModel {
     //MARK: Bind data on screen from the user object.
     func bindActivityDetailsData(activityDetails: UserActivityClass) {
         
-        let userProfile = activityDetails.userProfile ?? ""
-        let categoryName = activityDetails.activityCategoryTitle ?? ""
-        let activityDate = activityDetails.activityDate ?? ""
-        let activityDescription = activityDetails.descriptionValue ?? ""
+        let userProfile = activityDetails.user
+        let categoryName = activityDetails.title
+        let activityDate = activityDetails.activityDate
+        let activityDescription = activityDetails.description
         
         
         self.setUserProfileUrl(value: userProfile)
@@ -179,21 +179,17 @@ class OtherUserActivityDetailsViewModel {
         self.setDate(value: activityDate)
         self.setDescription(value: activityDescription)
         
-        activity_owner_id = activityDetails.userId!
+        activity_owner_id = Int(activityDetails.user) ?? 0
         self.setOwnerId(value: "\(activity_owner_id)")
-        self.setActivityName(value: activityDetails.title ?? "")
+        self.setActivityName(value: activityDetails.title)
         
-        if let arr = activityDetails.activityMedia, arr.count > 0 {
-            let img = arr[0].url ?? ""
-            let strUrl = UrlUserActivity + img
-            self.setImageUrl(value: strUrl)
+        if activityDetails.medias.count > 0 {
+            let img = activityDetails.medias[0]
+            self.setImageUrl(value: "https://cliqued.michal.es" + img.url)
         }
         
-        if let arrAddress = activityDetails.activityDetails,arrAddress.count > 0 {
-            let obj = arrAddress[0]
-            let address = obj.address ?? ""
-            self.setLocation(value: address)
-        }
+        let address = activityDetails.address
+        self.setLocation(value: address)
     }
     
     func callMarkActivityStatusAPI() {
