@@ -56,13 +56,13 @@ final class MatchesWebService {
         }
     }
     
-    func getMatchesHome(completion: @escaping (Result<User, Error>) -> Void) {
+    func getMatchesHome(completion: @escaping (Result<[User], Error>) -> Void) {
         matchesProvider.request(.getMatchesHome) { result in
             switch result {
             case .success(let response):
                 do {
-                    let model = try JSONDecoder().decode(ApiUserModel.self, from: response.data)
-                    completion(.success(model.user))
+                    let model = try JSONDecoder().decode([User].self, from: response.data)
+                    completion(.success(model))
                 } catch let error {
                     print(error)
                     

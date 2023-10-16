@@ -123,7 +123,58 @@ extension HomeActivitiesVC {
     
     //MARK: Handle API response
     func handleApiResponse() {
+        viewModel.dataReceivedAction = { [weak self] in
+            guard let self = self else { return }
+            
+            self.viewActivityCard.countOfVisibleCards = self.viewModel.userMatches.count
+            self.viewActivityCard.reloadData()
+        }
         
+//        viewModel.isViewLimitFinish.bind { [weak self] isSuccess in
+//            guard let self = self else { return }
+//
+//            if isSuccess {
+//                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                    self.showSubscriptionPlanScreen()
+//                    self.labelNoActivityAvailable.text = Constants.label_noDataFound
+//                }
+//            }
+//        }
+        
+//        viewModel.isLikeLimitFinish.bind { [weak self] isSuccess in
+//            guard let self = self else { return }
+//
+//            if isSuccess {
+//                if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                    self.isLikeLimitFinish = true
+//                    self.viewActivityCard.revertAction()
+//                    self.showSubscriptionPlanScreen()
+//                }
+//            }
+//        }
+        
+        viewModel.likeDislikeAction = { [weak self] isSuccess in
+            guard let self = self else { return }
+
+//            if isSuccess {
+//                let followersData = self.viewModel.getFollowersData(at: 0)
+//
+//                if followersData.isMeetup == self.isMeetup.Matched  {
+//                    let matchscreenvc = MatchScreenVC.loadFromNib()
+//                    matchscreenvc.arrayOfFollowers = self.viewModel.getAllFollowersData()
+//                    matchscreenvc.hidesBottomBarWhenPushed = true
+//                    self.navigationController?.pushViewController(matchscreenvc, animated: true)
+//                } else {
+//                    if self.viewModel.getLikesLimit() != 0 {
+//                        if !self.isLikeLimitFinish {
+//                            if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                                self.showGoogleAds()
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+        }
     }
     
     //MARK: Show subscription screen for basic user
@@ -138,6 +189,15 @@ extension HomeActivitiesVC: KolodaViewDelegate {
     func kolodaDidRunOutOfCards(_ koloda: KolodaView) {
         koloda.reloadData()
         
+//        if viewModel.getLikesLimit() != 0 {
+//            viewModel.arrayOfDuplicateUserList.removeAll()
+//        }
+        
+        if viewModel.userMatches.count == 0 {
+            viewActivityCard.isHidden = true
+            labelNoActivityAvailable.isHidden = false
+            labelNoActivityAvailable.text = Constants.label_noDataFound
+        }
     }
     
     
@@ -146,11 +206,10 @@ extension HomeActivitiesVC: KolodaViewDelegate {
     }
 }
 
-//MARK: Extension for Koloda DataSource Method
 extension HomeActivitiesVC: KolodaViewDataSource {
     
     func kolodaNumberOfCards(_ koloda: KolodaView) -> Int {
-        return 0
+        return viewModel.userMatches.count
     }
     
     func kolodaSpeedThatCardShouldDrag(_ koloda: KolodaView) -> DragSpeed {
@@ -162,48 +221,44 @@ extension HomeActivitiesVC: KolodaViewDataSource {
     }
     
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
-//        if !viewModel.isCheckEmptyData() {
-//            let card = ActivityView()
-//
-//            //Checking user is premium or not for undo activity
-//            let activityData = viewModel.getDuplicateUserActivityData(at: index)
-////            card.labelUserNameAndAge.text = "\(activityData.name ?? ""), \(activityData.age ?? 0)"
-////
-////            let distance = activityData.preferenceDistance
-////            card.labelLocationDistance.text = "\(distance) \(Constants.label_kmAway)"
-//
-//            if let arr = activityData.userProfileMedia, arr.count > 0 {
-//                let isImageData = arr.filter({$0.mediaType == 0})
-//                let img = isImageData[0].url
-//                let strUrl = UrlProfileImage + img
-//                let imageWidth = card.imageview.frame.size.width
-//                let imageHeight = card.imageview.frame.size.height
-//                let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth)&h=\(imageHeight)&zc=1&src=\(strUrl)"
-//                let url = URL(string: baseTimbThumb)
-//                card.imageview.sd_imageIndicator = SDWebImageActivityIndicator.gray
-//                card.imageview.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_swipecard"), options: .refreshCached, context: nil)
-//            }
-//            card.buttonUserInfo.tag = index
-//            card.buttonLike.tag = index
-//            card.buttonDislike.tag = index
-//            card.buttonUndo.tag = index
-//
-//            if user_ids == "" {
-//                card.buttonUndo.isHidden =  false
-//            } else {
-//                card.buttonUndo.isHidden = true
-//            }
-//
-//            card.buttonUserInfo.addTarget(self, action: #selector(buttonActivityUserDetailsTap(_:)), for: .touchUpInside)
+        if !viewModel.userMatches.isEmpty {
+            let card = ActivityView()
+            
+            //Checking user is premium or not for undo activity
+            let activityData = viewModel.userMatches[index]
+            card.labelUserNameAndAge.text = "\(activityData.name ?? ""), \(activityData.userAge())"
+            
+            let distance = activityData.preferenceDistance
+            card.labelLocationDistance.text = "\(distance ?? 0) \(Constants.label_kmAway)"
+            
+            if let arr = activityData.userProfileMedia, arr.count > 0 {
+                let strUrl = "https://cliqued.michal.es" + (activityData.userProfileMedia?.first?.url ?? "")
+                let url = URL(string: strUrl)
+                card.imageview.sd_imageIndicator = SDWebImageActivityIndicator.gray
+                card.imageview.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_swipecard"), options: .refreshCached, context: nil)
+            }
+            
+            card.buttonUserInfo.tag = index
+            card.buttonLike.tag = index
+            card.buttonDislike.tag = index
+            card.buttonUndo.tag = index
+            
+            if user_ids == "" {
+                card.buttonUndo.isHidden =  false
+            } else {
+                card.buttonUndo.isHidden = true
+            }
+            
+            card.buttonUserInfo.addTarget(self, action: #selector(buttonActivityUserDetailsTap(_:)), for: .touchUpInside)
 //            card.buttonUndo.addTarget(self, action: #selector(buttonUndoActivityRap(_:)), for: .touchUpInside)
-//            card.buttonLike.addTarget(self, action: #selector(buttonLikeActivityTap(_:)), for: .touchUpInside)
-//            card.buttonDislike.addTarget(self, action: #selector(buttonDislikeActivityTap(_:)), for: .touchUpInside)
-//            return card
-//        } else {
-//            viewActivityCard.isHidden = true
-//            labelNoActivityAvailable.isHidden = false
+            card.buttonLike.addTarget(self, action: #selector(buttonLikeActivityTap(_:)), for: .touchUpInside)
+            card.buttonDislike.addTarget(self, action: #selector(buttonDislikeActivityTap(_:)), for: .touchUpInside)
+            return card
+        } else {
+            viewActivityCard.isHidden = true
+            labelNoActivityAvailable.isHidden = false
             return UIView()
-//        }
+        }
     }
     
     func koloda(_ koloda: KolodaView, draggedCardWithPercentage finishPercentage: CGFloat, in direction: SwipeResultDirection) {
@@ -228,37 +283,33 @@ extension HomeActivitiesVC: KolodaViewDataSource {
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection){
         
         if !isBackFromDetailScreen {
-//            if direction == .up || direction == .topLeft || direction == .topRight {
-//                if viewModel.getAllDuplicationUserActivityData().count > 0 {
-//                    let activityData = viewModel.getDuplicateUserActivityData(at: index)
-////                    viewModel.setCounterUserId(value: "\(activityData.id ?? 0)")
-//                    viewModel.setIsFollow(value: "1")
-//                    viewModel.callLikeDislikeUserAPI(isShowLoader: false)
-//
-//                    //                    if viewModel.getLikesLimit() != 0 {
-//                    //                        if !isLikeLimitFinish {
-//                    //                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-//                    //                                showGoogleAds()
-//                    //                            }
-//                    //                        }
-//                    //                    }
-//                }
-//            } else if direction == .down || direction == .bottomLeft || direction == .bottomRight {
-//                if viewModel.getAllDuplicationUserActivityData().count > 0 {
-//                    let activityData = viewModel.getDuplicateUserActivityData(at: index)
-////                    viewModel.setCounterUserId(value: "\(activityData.id ?? 0)")
-//                    viewModel.setIsFollow(value: "0")
-//                    viewModel.callLikeDislikeUserAPI(isShowLoader: false)
-//
+            if direction == .up || direction == .topLeft || direction == .topRight {
+                if viewModel.userMatches.count > 0 {
+                    let activityData = viewModel.userMatches[index]
+                    //                    viewModel.setCounterUserId(value: "\(activityData.id ?? 0)")
+                    viewModel.callLikeDislikeUserAPI(userID: viewModel.userMatches[index].id ?? 0, follow: true)
+                    
+                    //                    if viewModel.getLikesLimit() != 0 {
+                    //                        if !isLikeLimitFinish {
+                    //                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+                    //                                showGoogleAds()
+                    //                            }
+                    //                        }
+                    //                    }
+                }
+            } else if direction == .down || direction == .bottomLeft || direction == .bottomRight {
+                if viewModel.userMatches.count > 0 {
+                    viewModel.callLikeDislikeUserAPI(userID: viewModel.userMatches[index].id ?? 0, follow: false)
+                    
 //                    if viewModel.getLikesLimit() != 0 {
 //                        if !isLikeLimitFinish {
-////                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
-////                                showGoogleAds()
-////                            }
+                            //                            if Constants.loggedInUser?.isPremiumUser == isPremium.NotPremium {
+                            //                                showGoogleAds()
+                            //                            }
 //                        }
 //                    }
-//                }
-//            }
+                }
+            }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
             self?.imageviewLikeDislikeIcon.isHidden = true
@@ -288,41 +339,41 @@ extension HomeActivitiesVC: KolodaViewDataSource {
     }
     
     //MARK: Button Undo Activity Tap
-    @objc func buttonUndoActivityRap(_ sender: UIButton) {
+    @objc func buttonUndomActivityRap(_ sender: UIButton) {
 //        if Constants.loggedInUser?.isPremiumUser == isPremium.Premium {
 //            viewActivityCard.revertAction()
-//        } else{
+//        } else {
 //            showSubscriptionPlanScreen()
 //        }
     }
     
     //MARK: Button User Details Activity Tap
     @objc func buttonActivityUserDetailsTap(_ sender: UIButton) {
-//        let activityuserdetailsvc = ActivityUserDetailsVC.loadFromNib()
-//        let activityData = viewModel.getDuplicateUserActivityData(at: sender.tag)
-//        activityuserdetailsvc.objUserDetails = activityData
-//
-//        activityuserdetailsvc.callbackForIsLiked = { [weak self] isLiked in
-//            guard let self = self else { return }
-//
-//            self.isBackFromDetailScreen = true
-//            if isLiked {
-//                self.viewActivityCard.swipe(.up)
-//            } else {
-//                self.viewActivityCard.swipe(.down)
-//            }
-//        }
-//
-//        activityuserdetailsvc.callbackForBlockUser = { [weak self] isblocked in
-//            guard let self = self else { return }
-//
-//            self.isBackFromDetailScreen = true
-//            if isblocked {
-//                self.viewActivityCard.swipe(.up)
-//            }
-//        }
-//
-//        activityuserdetailsvc.hidesBottomBarWhenPushed = true
-//        self.navigationController?.pushViewController(activityuserdetailsvc, animated: true)
+        let activityuserdetailsvc = ActivityUserDetailsVC.loadFromNib()
+        let activityData = viewModel.userMatches[sender.tag]
+        activityuserdetailsvc.objUserDetails = activityData
+        
+        activityuserdetailsvc.callbackForIsLiked = { [weak self] isLiked in
+            guard let self = self else { return }
+            
+            self.isBackFromDetailScreen = true
+            if isLiked {
+                self.viewActivityCard.swipe(.up)
+            } else {
+                self.viewActivityCard.swipe(.down)
+            }
+        }
+        
+        activityuserdetailsvc.callbackForBlockUser = { [weak self] isblocked in
+            guard let self = self else { return }
+            
+            self.isBackFromDetailScreen = true
+            if isblocked {
+                self.viewActivityCard.swipe(.up)
+            }
+        }
+        
+        activityuserdetailsvc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(activityuserdetailsvc, animated: true)
     }
 }

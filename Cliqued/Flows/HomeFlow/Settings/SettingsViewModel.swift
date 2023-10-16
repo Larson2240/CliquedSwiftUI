@@ -27,7 +27,9 @@ final class SettingsViewModel: ObservableObject {
             case .success:
                 self?.clearData()
             case .failure(let error):
-                UIApplication.shared.showAlertPopup(message: error.localizedDescription)
+                if let error = error as? ApiError, let message = error.errorDescription {
+                    UIApplication.shared.showAlertPopup(message: message)
+                }
             }
         }
     }

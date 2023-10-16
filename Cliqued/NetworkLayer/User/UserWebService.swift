@@ -105,13 +105,9 @@ final class UserWebService {
             parameters["distance"] = distance
         }
         
-        if let ageFrom = user.preferenceAgeFrom {
-            parameters["ageFrom"] = ageFrom
-        }
+        parameters["ageFrom"] = user.preferenceAgeFrom ?? 45
         
-        if let ageTo = user.preferenceAgeTo {
-            parameters["ageTo"] = ageTo
-        }
+        parameters["ageTo"] = user.preferenceAgeTo ?? 100
         
         if let interestedActivityCategories = user.favouriteActivityCategories {
             parameters["favouriteActivityCategories"] = interestedActivityCategories.map { $0.id }
@@ -134,6 +130,13 @@ final class UserWebService {
         userProvider.request(.updateUser(parameters: parameters)) { result in
             switch result {
             case .success(let response):
+                if let json = try? JSONSerialization.jsonObject(with: response.data, options: .mutableContainers),
+                   let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) {
+                    print(String(decoding: jsonData, as: UTF8.self))
+                } else {
+                    print("json data malformed")
+                }
+                
                 do {
                     let model = try JSONDecoder().decode(ApiUserModel.self, from: response.data)
                     completion(.success(model.user))

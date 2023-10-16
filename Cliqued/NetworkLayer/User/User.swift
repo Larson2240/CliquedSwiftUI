@@ -13,6 +13,7 @@ struct ApiUserModel: Codable {
 }
 
 struct User: Codable {
+    var id: Int?
     var isOnline: Bool?
     var aboutMe: String?
     var preferenceAgeTo, preferenceAgeFrom: Int?
@@ -64,9 +65,9 @@ struct Address: Codable {
 }
 
 struct UserProfileMedia: Codable, Equatable, Identifiable {
-    let id, mediaType: Int
+    let id, mediaType: Int?
     let url: String
-    let position: Int
+    let position: Int?
 }
 
 struct UserSetting: Codable {
