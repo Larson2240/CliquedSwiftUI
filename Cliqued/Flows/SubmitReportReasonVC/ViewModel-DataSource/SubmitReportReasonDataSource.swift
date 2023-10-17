@@ -99,7 +99,7 @@ class SubmitReportReasonDataSource: NSObject, UITableViewDelegate, UITableViewDa
             
             if viewModel.getIsDataLoad() {
                 cell.hideAnimation()
-//                viewController.labelReasonTitle.hideSkeleton()
+                viewController.labelReasonTitle.hideSkeleton()
             } else {
                 viewModel.setIsDataLoad(value: false)
                 cell.layoutIfNeeded()
@@ -107,7 +107,7 @@ class SubmitReportReasonDataSource: NSObject, UITableViewDelegate, UITableViewDa
             }
             
             let reportData = viewModel.getReportsData(at: indexPath.row)
-            cell.labelReportReasonText.text = reportData.reasonTitle
+            cell.labelReportReasonText.text = reportData.title
             
             if Int(viewModel.getReportReasonId()) == reportData.id {
                 cell.imageviewSelectIcon.isHidden = false

@@ -8,7 +8,7 @@
 import UIKit
 
 class ActivityUserDetailsVC: UIViewController {
-
+    
     //MARK: IBOutlet
     @IBOutlet weak var buttonBack: UIButton!{
         didSet {
@@ -32,7 +32,7 @@ class ActivityUserDetailsVC: UIViewController {
             labelLocationDistance.textColor = Constants.color_white
         }
     }
-    @IBOutlet var buttonLike: UIButton!    
+    @IBOutlet var buttonLike: UIButton!
     @IBOutlet var buttonDislike: UIButton!
     
     //MARK: Variable
@@ -64,16 +64,12 @@ class ActivityUserDetailsVC: UIViewController {
     
     //MARK: Button Like Click
     @IBAction func btnLikeClick(_ sender: Any) {
-//        viewModelActivity.setIsFollow(value: "1")
-//        viewModelActivity.setCounterUserId(value: viewModel.getActivityUserId())
-//        viewModelActivity.callLikeDislikeUserAPI(isShowLoader: true)
+        viewModelActivity.callLikeDislikeUserAPI(userID: objUserDetails?.id ?? 0, follow: true)
     }
     
     //MARK: Button Dislike Click
     @IBAction func btnDislikeClick(_ sender: Any) {
-//        viewModelActivity.setIsFollow(value: "0")
-//        viewModelActivity.setCounterUserId(value: viewModel.getActivityUserId())
-//        viewModelActivity.callLikeDislikeUserAPI(isShowLoader: true)
+        viewModelActivity.callLikeDislikeUserAPI(userID: objUserDetails?.id ?? 0, follow: false)
     }
     
 }
@@ -108,7 +104,7 @@ extension ActivityUserDetailsVC {
         labelUserNameAndAge.text = "\(name), \(age)"
         
         if is_fromChatActivity {
-            let city = viewModel.getLocation().first?.city
+            let city = viewModel.getLocation()?.city
             labelLocationDistance.text = city
         } else {
             labelLocationDistance.text = "\(viewModel.getDistance()) km away"
@@ -118,28 +114,28 @@ extension ActivityUserDetailsVC {
     //MARK: Handle API response
     func handleApiResponse() {
         //If API success
-//        viewModel.isDataGet.bind { [weak self] isSuccess in
-//            guard let self = self else { return }
+        viewModel.isDataGet.bind { [weak self] isSuccess in
+            guard let self = self else { return }
+            
+            if isSuccess {
+                self.callbackForBlockUser?(true)
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+        
+        //If API success
+        viewModelActivity.likeDislikeAction = { [weak self] isSuccess in
+            guard let self = self else { return }
 //
 //            if isSuccess {
-//                self.callbackForBlockUser?(true)
-//                self.navigationController?.popViewController(animated: true)
-//            }
-//        }
-//
-//        //If API success
-//        viewModelActivity.isLikdDislikeSuccess.bind { [weak self] isSuccess in
-//            guard let self = self else { return }
-//
-//            if isSuccess {
-//                let followersData = self.viewModelActivity.getFollowersData(at: 0)
+//                let followersData = self.viewModelActivity.userMatches.first
 //                if followersData.isMeetup == self.isMeetup.Matched  {
 //                    /* comment added by srm
-//                    let matchscreenvc = MatchScreenVC.loadFromNib()
-//                    matchscreenvc.isFromUserDetailsScreen = true
-//                    matchscreenvc.arrayOfFollowers = self.viewModelActivity.getAllFollowersData()
-//                    matchscreenvc.hidesBottomBarWhenPushed = true
-//                    self.navigationController?.pushViewController(matchscreenvc, animated: true)
+//                     let matchscreenvc = MatchScreenVC.loadFromNib()
+//                     matchscreenvc.isFromUserDetailsScreen = true
+//                     matchscreenvc.arrayOfFollowers = self.viewModelActivity.getAllFollowersData()
+//                     matchscreenvc.hidesBottomBarWhenPushed = true
+//                     self.navigationController?.pushViewController(matchscreenvc, animated: true)
 //                     */
 //                } else {
 //                    if followersData.isFollow == "1" {
@@ -150,17 +146,17 @@ extension ActivityUserDetailsVC {
 //                    self.navigationController?.popViewController(animated: true)
 //                }
 //            }
-//        }
-//
-//        //Loader hide & show
-//        viewModel.isLoaderShow.bind { [weak self] isLoader in
-//            guard let self = self else { return }
-//
-//            if isLoader {
-//                self.showLoader()
-//            } else {
-//                self.dismissLoader()
-//            }
-//        }
+        }
+        
+        //Loader hide & show
+        viewModel.isLoaderShow.bind { [weak self] isLoader in
+            guard let self = self else { return }
+            
+            if isLoader {
+                self.showLoader()
+            } else {
+                self.dismissLoader()
+            }
+        }
     }
 }

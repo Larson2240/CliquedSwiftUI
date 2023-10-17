@@ -5,9 +5,10 @@
 //  Created by C211 on 19/01/23.
 //
 
-import UIKit
+import SwiftUI
 
 class ActivityUserDetailsViewModel {
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
     
     var isMessage: Dynamic<String> = Dynamic(String())
     var isLoaderShow: Dynamic<Bool> = Dynamic(true)
@@ -21,15 +22,15 @@ class ActivityUserDetailsViewModel {
     //MARK: Variable
     private struct activityUserDetails {
         var id = ""
-        var profileCollection = [UserProfileImages]()
+        var profileCollection = [UserProfileMedia]()
         var name = ""
         var age = ""
         var distance = ""
         var aboutme = ""
-        var favoriteActivity = [UserInterestedCategory]()
-        var favoriteCategoryActivity = [UserInterestedCategory]()
+        var favoriteActivity = [Activity]()
+        var favoriteCategoryActivity = [Activity]()
         var loogkingFor = ""
-        var location = [UserAddress]()
+        var location: Address?
         var height = ""
         var kids = ""
         var smoking = ""
@@ -38,51 +39,34 @@ class ActivityUserDetailsViewModel {
     
     //MARK: Bind data on screen from the user object.
     func bindActivityUserDetailsData(userData: User) {
-//        self.setActivityUserId(value: "\(userData.id ?? 0)")
-//        self.setName(value: userData.name ?? "")
+        let lookingFor = "\(loggedInUser?.preferenceRomance != nil ? Constants.btn_romance : "") \(loggedInUser?.preferenceRomance != nil && loggedInUser?.preferenceFriendship != nil ? "& " : "")\(loggedInUser?.preferenceFriendship != nil ? Constants.btn_friendship : "")"
         
-//        self.setName(value: "\(userData.name ?? "") - \(userData.gender == "1" ? "Male" : "Female")")
-//        self.setAge(value: "\(userData.age ?? 0)")
+        setActivityUserId(value: String(userData.id ?? 0))
+        setUserProfileCollection(value: userData.userProfileMedia ?? [])
+        setName(value: "\(userData.name ?? "") - \(userData.gender == 1 ? "Male" : "Female")")
+        setAge(value: "\(userData.userAge())")
+        setDistance(value: String(userData.preferenceDistance ?? 0))
+        setAboutMe(value: userData.aboutMe ?? "-")
+        setLookingFor(value: "Looking for \(lookingFor)")
+        setLocation(value: userData.userAddress)
+        setHeight(value: String(userData.height ?? 0))
+        setKids(value: userData.preferenceKids == true ? "Yes" : "No")
+        setSmoking(value: userData.preferenceSmoking == true ? "Yes" : "No")
         
-       /*
-        if userData.userPreferences?.count ?? 0 > 0 {
-            var arrayOfPreference = [UserPreferences]()
-            arrayOfPreference = userData.userPreferences ?? []
+        if let allActivities = Constants.activityCategories, let userActivities = userData.favouriteActivityCategories {
+            let parentActivities = allActivities.filter { $0.parentID == nil }
+            var finalActivities: [Activity] = []
             
-            var strTypes = ""
-            
-            let arrFriendship = arrayOfPreference.filter({$0.typesOfPreference == PreferenceTypeIds.friendship})
-          
-            for obj in arrFriendship {
-                if strTypes.isEmpty {
-                    strTypes = obj.preferenceOptionTitle!
-                } else {
-                    strTypes = "\(strTypes),\(obj.preferenceOptionTitle ?? "")"
+            for activity in userActivities {
+                guard let parentActivity = parentActivities.first(where: { $0.id == activity.parentID }) else { continue }
+                
+                if !finalActivities.contains(parentActivity) {
+                    finalActivities.append(parentActivity)
                 }
             }
             
-            let arrRomance = arrayOfPreference.filter({$0.typesOfPreference == PreferenceTypeIds.romance})
-            
-            if arrFriendship.count > 0 && arrRomance.count > 0  {
-                strTypes = "\(strTypes) - "
-            }
-            
-            for obj in arrRomance {
-                if strTypes.isEmpty {
-                    strTypes = obj.preferenceOptionTitle!
-                } else {
-                    strTypes = "\(strTypes),\(obj.preferenceOptionTitle ?? "")"
-                }
-            }
-            
-            self.setLookingFor(value: "\(userData.lookingForTitle ?? "") (\(strTypes))")
+            setFavoriteCategoryActivity(value: finalActivities)
         }
-        */
-                 
-        
-//        self.setLookingFor(value: "\(userData.lookingForTitle ?? "")")
-        
-       
     }
     
     //MARK: Call SignIn API
@@ -94,14 +78,14 @@ class ActivityUserDetailsViewModel {
 //            apiParams.isBlock : isBlock.Block,
 //            apiParams.blockType : "0"
 //        ]
-//        
+//
 //        if(Connectivity.isConnectedToInternet()){
 //            DispatchQueue.main.async { [weak self] in
 //                self?.isLoaderShow.value = true
 //            }
 //            RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.BlcokUser, parameters: params) { [weak self] response, error, message in
 //                guard let self = self else { return }
-//                
+//
 //                self.isLoaderShow.value = false
 //                if(error != nil && response == nil) {
 //                    self.isMessage.value = message ?? ""
@@ -109,7 +93,7 @@ class ActivityUserDetailsViewModel {
 //                    let json = response as? NSDictionary
 //                    let status = json?[API_STATUS] as? Int
 //                    let message = json?[API_MESSAGE] as? String
-//                    
+//
 //                    if status == SUCCESS {
 //                        self.isDataGet.value = true
 //                        self.isMessage.value = message ?? ""
@@ -144,7 +128,7 @@ extension ActivityUserDetailsViewModel {
     func getLookingFor() -> String {
         structActivityUserDetailsValue.loogkingFor
     }
-    func getLocation() -> [UserAddress] {
+    func getLocation() -> Address? {
         structActivityUserDetailsValue.location
     }
     func getHeight() -> String {
@@ -167,17 +151,15 @@ extension ActivityUserDetailsViewModel {
     func getNumberOfUserProfile() -> Int {
         structActivityUserDetailsValue.profileCollection.count
     }
-    func getUserProfileData(at Index: Int) -> UserProfileImages {
+    func getUserProfileData(at Index: Int) -> UserProfileMedia {
         structActivityUserDetailsValue.profileCollection[Index]
     }
     
     func getNumberOfFavoriteActivity() -> Int {
         structActivityUserDetailsValue.favoriteActivity.count
     }
-    func getFavoriteActivity() -> [UserInterestedCategory] {
-        structActivityUserDetailsValue.favoriteActivity
-    }
-    func getFavoriteCategoryActivity() -> [UserInterestedCategory] {
+    
+    func getFavoriteCategoryActivity() -> [Activity] {
         structActivityUserDetailsValue.favoriteCategoryActivity
     }
     
@@ -196,10 +178,9 @@ extension ActivityUserDetailsViewModel {
     func setAboutMe(value: String) {
         structActivityUserDetailsValue.aboutme = value
     }
-    func setLookingFor(value: String) {
-        structActivityUserDetailsValue.loogkingFor = value
+    func setLookingFor(value: String) {         structActivityUserDetailsValue.loogkingFor = value
     }
-    func setLocation(value: [UserAddress]) {
+    func setLocation(value: Address?) {
         structActivityUserDetailsValue.location = value
     }
     func setHeight(value: String) {
@@ -212,14 +193,11 @@ extension ActivityUserDetailsViewModel {
         structActivityUserDetailsValue.smoking = value
     }
     
-    func setUserProfileCollection(value: [UserProfileImages]) {
+    func setUserProfileCollection(value: [UserProfileMedia]) {
         structActivityUserDetailsValue.profileCollection = value
     }
     
-    func setFavoriteActivity(value: [UserInterestedCategory]) {
-        structActivityUserDetailsValue.favoriteActivity = value
-    }
-    func setFavoriteCategoryActivity(value: UserInterestedCategory) {
-        structActivityUserDetailsValue.favoriteCategoryActivity.append(value)
+    func setFavoriteCategoryActivity(value: [Activity]) {
+        structActivityUserDetailsValue.favoriteCategoryActivity = value
     }
 }

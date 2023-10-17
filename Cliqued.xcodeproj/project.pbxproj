@@ -40,6 +40,7 @@
 		0A28EC302ADAE43400D108C8 /* UserSettingsWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC2F2ADAE43400D108C8 /* UserSettingsWebService.swift */; };
 		0A28EC332ADDA3AB00D108C8 /* UserFollowingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC322ADDA3AB00D108C8 /* UserFollowingProvider.swift */; };
 		0A28EC352ADDA3B600D108C8 /* UserFollowingWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28EC342ADDA3B600D108C8 /* UserFollowingWebService.swift */; };
+		0A2DF5A92ADEBFCF005EFF8C /* ReportReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DF5A82ADEBFCF005EFF8C /* ReportReason.swift */; };
 		0A315A022A26A66000CE9709 /* StepSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 0A315A012A26A66000CE9709 /* StepSlider */; };
 		0A315A042A26BE3B00CE9709 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A315A032A26BE3B00CE9709 /* LocationViewModel.swift */; };
 		0A33A2172A431ED000EE262D /* ProfileCommonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33A2162A431ED000EE262D /* ProfileCommonCell.swift */; };
@@ -430,6 +431,7 @@
 		0A28EC2F2ADAE43400D108C8 /* UserSettingsWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsWebService.swift; sourceTree = "<group>"; };
 		0A28EC322ADDA3AB00D108C8 /* UserFollowingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowingProvider.swift; sourceTree = "<group>"; };
 		0A28EC342ADDA3B600D108C8 /* UserFollowingWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowingWebService.swift; sourceTree = "<group>"; };
+		0A2DF5A82ADEBFCF005EFF8C /* ReportReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportReason.swift; sourceTree = "<group>"; };
 		0A315A032A26BE3B00CE9709 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		0A33A2162A431ED000EE262D /* ProfileCommonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCommonCell.swift; sourceTree = "<group>"; };
 		0A33A2182A43DE5000EE262D /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
@@ -923,6 +925,7 @@
 			children = (
 				0A28EC1E2ADACAE700D108C8 /* ReportProvider.swift */,
 				0A28EC202ADACAEF00D108C8 /* ReportWebService.swift */,
+				0A2DF5A82ADEBFCF005EFF8C /* ReportReason.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -2662,6 +2665,7 @@
 				60CBDF26296D4442004CEE25 /* Dynamic.swift in Sources */,
 				0A28EC1C2ADAC61700D108C8 /* TokenWebService.swift in Sources */,
 				0A28EC172ADAC25F00D108C8 /* PasswordWebService.swift in Sources */,
+				0A2DF5A92ADEBFCF005EFF8C /* ReportReason.swift in Sources */,
 				64D586CE29A8CDA300FDA1AF /* SubscriptionPlanDataSource.swift in Sources */,
 				64D586CA29A8CDA300FDA1AF /* PlanCollectionCell.swift in Sources */,
 				6025E4AE299223BF00080812 /* ActivityCategoryClass.swift in Sources */,

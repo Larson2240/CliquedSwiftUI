@@ -110,10 +110,9 @@ class ActivityUserDetailsDataSource: NSObject, UITableViewDelegate, UITableViewD
             cell.imageviewIcon.image = UIImage(named: "ic_location_black")
             cell.labelTitle.text = Constants.label_location
             
-            if viewModel.getLocation().count > 0 {
-                let locationData = viewModel.getLocation()[0]
-//                cell.labelValue.text = "\(locationData.address ?? ""), \(locationData.city ?? ""), \(locationData.state ?? ""), \(locationData.country ?? ""), \(locationData.pincode ?? "")"
-                cell.labelValue.text = "\(locationData.city ?? ""), \(locationData.state ?? "")"
+            if let location = viewModel.getLocation() {
+                cell.labelValue.text = "\(location.address), \(location.city ), \(location.state ), \(location.country), \(location.pincode)"
+                cell.labelValue.text = "\(location.city), \(location.state)"
             } else {
                 cell.labelValue.text = "-"
             }
@@ -211,18 +210,15 @@ extension ActivityUserDetailsDataSource: UICollectionViewDelegate, UICollectionV
             let profileData = viewModel.getUserProfileData(at: indexPath.item)
             var mediaName = ""
             
-            if profileData.mediaType == mediaType.image {
-                mediaName = profileData.url ?? ""
+//            if profileData.mediaType == mediaType.image {
+                mediaName = "https://cliqued.michal.es" + profileData.url
                 cell.imageviewVideoIcon.isHidden = true
-            } else {
-                mediaName = profileData.thumbnailUrl ?? ""
-                cell.imageviewVideoIcon.isHidden = false
-            }
-            let strUrl = UrlProfileImage + mediaName
-            let imageWidth = cell.imageviewUserProfile.frame.size.width
-            let imageHeight = cell.imageviewUserProfile.frame.size.height
-            let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(strUrl)"
-            let url = URL(string: baseTimbThumb)
+//            } else {
+//                mediaName = profileData.thumbnailUrl ?? ""
+//                cell.imageviewVideoIcon.isHidden = false
+//            }
+            
+            let url = URL(string: mediaName)
             cell.imageviewUserProfile.sd_imageIndicator = SDWebImageActivityIndicator.gray
             cell.imageviewUserProfile.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_detailpage"), options: .refreshCached, context: nil)
             return cell
@@ -238,28 +234,28 @@ extension ActivityUserDetailsDataSource: UICollectionViewDelegate, UICollectionV
         if !viewModel.isCheckProfileImage() {
             let profileData = viewModel.getUserProfileData(at: indexPath.item)
             
-            if profileData.mediaType == mediaType.image {
+//            if profileData.mediaType == mediaType.image {
                 var images = [SKPhotoProtocol]()
                 for i in 0..<self.viewModel.getNumberOfUserProfile() {
-                    if self.viewModel.getUserProfileData(at: i).mediaType == mediaType.image {
-                        let photo = SKPhoto.photoWithImageURL(UrlProfileImage + (self.viewModel.getUserProfileData(at: i).url ?? ""))
+//                    if self.viewModel.getUserProfileData(at: i).mediaType == mediaType.image {
+                        let photo = SKPhoto.photoWithImageURL("https://cliqued.michal.es" + (self.viewModel.getUserProfileData(at: i).url))
                         photo.shouldCachePhotoURLImage = true
                         images.append(photo)
-                    }
+//                    }
                 }
                 let browser = SKPhotoBrowser(photos: images)
                 SKPhotoBrowserOptions.displayAction = false
                 browser.initializePageIndex(indexPath.item)
                 viewController.present(browser, animated: true, completion: {})
-            } else {
-                let videoURL = URL(string: UrlProfileImage + (profileData.url ?? ""))
-                let player = AVPlayer(url: videoURL! as URL)
-                let playerViewController = AVPlayerViewController()
-                playerViewController.player = player
-                viewController.present(playerViewController, animated: true) {
-                    playerViewController.player!.play()
-                }
-            }
+//            } else {
+//                let videoURL = URL(string: UrlProfileImage + (profileData.url ?? ""))
+//                let player = AVPlayer(url: videoURL! as URL)
+//                let playerViewController = AVPlayerViewController()
+//                playerViewController.player = player
+//                viewController.present(playerViewController, animated: true) {
+//                    playerViewController.player!.play()
+//                }
+//            }
         }
     }
     

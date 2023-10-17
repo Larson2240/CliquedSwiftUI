@@ -16,93 +16,73 @@ class SubmitReportReasonViewModel {
     
     //MARK: Variable
     private var isDataLoad: Bool = false
-    var arrayOfReportList = [ReportClass]()
+    var arrayOfReportList = [ReportReason]()
     private var isRefresh: Bool = false
     private var reportReasonId = ""
     private var reportedUserId = ""
     private let apiParams = ApiParams()
     
+    private let reportWebService = ReportWebService()
+    
     //MARK: Call Get Report List Data API
     func callGetReportListAPI() {
+        guard Connectivity.isConnectedToInternet() else {
+            isMessage.value = Constants.alert_InternetConnectivity
+            return
+        }
         
-        if(Connectivity.isConnectedToInternet()) {
-            self.arrayOfReportList.removeAll()
-            RestApiManager.sharePreference.getResponseWithoutParams(webUrl: APIName.GetMasterPreferenceAPI) { [weak self] response, error, message in
-                guard let self = self else { return }
-                
-                self.setIsDataLoad(value: true)
-                if(error != nil && response == nil) {
-                    self.isMessage.value = message ?? ""
+        self.arrayOfReportList.removeAll()
+        
+        reportWebService.getReportReasons { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let model):
+                self.arrayOfReportList = model
+            case .failure(let error):
+                if let error = error as? ApiError, let errorDesc = error.errorDescription {
+                    UIApplication.shared.showAlertPopup(message: errorDesc)
                 } else {
-                    let json = response as? NSDictionary
-                    let status = json?[API_STATUS] as? Int
-                    _ = json?[API_MESSAGE] as? String
-                
-                    if status == SUCCESS {
-                        if let reportArray = json?["report_reason"] as? NSArray {
-                            if reportArray.count > 0 {
-                                for reportInfo in reportArray {
-                                    let dicReport = reportInfo as! NSDictionary
-                                    let decoder = JSONDecoder()
-                                    do {
-                                        let jsonData = try JSONSerialization.data(withJSONObject:dicReport)
-                                        let reportData = try decoder.decode(ReportClass.self, from: jsonData)
-                                        self.arrayOfReportList.append(reportData)
-                                    } catch {
-                                        print(error.localizedDescription)
-                                    }
-                                }
-                                self.isDataGet.value = true
-                            }
-                        } else {
-                            self.isDataGet.value = true
-                        }
-                    } else {
-                        self.isMessage.value = message ?? ""
-                    }
+                    UIApplication.shared.showAlertPopup(message: error.localizedDescription)
                 }
             }
-        } else {
-            self.isMessage.value = Constants.alert_InternetConnectivity
+            
+            self.setIsDataLoad(value: true)
+            self.isDataGet.value = true
         }
     }
     
     //MARK: Call SignIn API
     func callAddReportForUserAPI() {
         
-        if getReportReasonId().isEmpty {
+        guard !getReportReasonId().isEmpty else {
             self.isMessage.value = Constants.validMsg_reportReason
-        } else {
-            let params: NSDictionary = [
-//                apiParams.userID : "\(Constants.loggedInUser?.id ?? 0)",
-                apiParams.reportedUserId : self.getReportedUserId(),
-                apiParams.reportReasonId : self.getReportReasonId()
-            ]
-            
-            if(Connectivity.isConnectedToInternet()){
-                DispatchQueue.main.async { [weak self] in
-                    self?.isLoaderShow.value = true
+            return
+        }
+        
+        guard Connectivity.isConnectedToInternet() else {
+            self.isMessage.value = Constants.alert_InternetConnectivity
+            return
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.isLoaderShow.value = true
+        }
+        
+        let parameters: [String: Any] = ["reportedUser": "/api/users/\(getReportedUserId())",
+                                         "reportReason": "/api/report_reasons/\(getReportReasonId())"]
+        
+        reportWebService.reportUser(parameters: parameters) { [weak self] result in
+            switch result {
+            case .success:
+                self?.isLoaderShow.value = false
+                self?.isSubmitReason.value = true
+            case .failure(let error):
+                if let error = error as? ApiError, let errorDesc = error.errorDescription {
+                    UIApplication.shared.showAlertPopup(message: errorDesc)
+                } else {
+                    UIApplication.shared.showAlertPopup(message: error.localizedDescription)
                 }
-                RestApiManager.sharePreference.postJSONFormDataRequest(endpoint: APIName.AddReportForUser, parameters: params) { [weak self] response, error, message in
-                    guard let self = self else { return }
-                    
-                    self.isLoaderShow.value = false
-                    if(error != nil && response == nil) {
-                        self.isMessage.value = message ?? ""
-                    } else {
-                        let json = response as? NSDictionary
-                        let status = json?[API_STATUS] as? Int
-                        let message = json?[API_MESSAGE] as? String
-                        
-                        if status == SUCCESS {
-                            self.isSubmitReason.value = true
-                        }  else {
-                            self.isMessage.value = message ?? ""
-                        }
-                    }
-                }
-            } else {
-                self.isMessage.value = Constants.alert_InternetConnectivity
             }
         }
     }
@@ -113,7 +93,7 @@ extension SubmitReportReasonViewModel {
     func getNumberOfReport() -> Int {
         arrayOfReportList.count
     }
-    func getReportsData(at index: Int) -> ReportClass {
+    func getReportsData(at index: Int) -> ReportReason {
         arrayOfReportList[index]
     }
     func isCheckEmptyData() -> Bool {

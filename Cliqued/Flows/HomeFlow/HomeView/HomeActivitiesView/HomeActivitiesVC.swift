@@ -250,7 +250,7 @@ extension HomeActivitiesVC: KolodaViewDataSource {
             }
             
             card.buttonUserInfo.addTarget(self, action: #selector(buttonActivityUserDetailsTap(_:)), for: .touchUpInside)
-//            card.buttonUndo.addTarget(self, action: #selector(buttonUndoActivityRap(_:)), for: .touchUpInside)
+            card.buttonUndo.addTarget(self, action: #selector(buttonUndomActivityRap(_:)), for: .touchUpInside)
             card.buttonLike.addTarget(self, action: #selector(buttonLikeActivityTap(_:)), for: .touchUpInside)
             card.buttonDislike.addTarget(self, action: #selector(buttonDislikeActivityTap(_:)), for: .touchUpInside)
             return card
@@ -340,6 +340,7 @@ extension HomeActivitiesVC: KolodaViewDataSource {
     
     //MARK: Button Undo Activity Tap
     @objc func buttonUndomActivityRap(_ sender: UIButton) {
+        print("")
 //        if Constants.loggedInUser?.isPremiumUser == isPremium.Premium {
 //            viewActivityCard.revertAction()
 //        } else {

@@ -44,7 +44,7 @@ final class HomeActivitiesViewModel: ObservableObject {
             UIApplication.shared.hideLoader()
             
             switch result {
-            case .success(let model):
+            case .success:
                 self?.likeDislikeAction?(true)
             case .failure(let error):
                 if let error = error as? ApiError, let message = error.errorDescription {

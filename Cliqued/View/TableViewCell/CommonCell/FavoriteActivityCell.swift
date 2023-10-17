@@ -19,7 +19,7 @@ class FavoriteActivityCell: UITableViewCell {
     @IBOutlet weak var collectionview: UICollectionView!
     @IBOutlet weak var buttonEditActivity: UIButton!
     
-    var arrayOfFavoriteActivity = [UserInterestedCategory]()
+    var arrayOfFavoriteActivity = [Activity]()
     var arrayOfCategory = [UserInterestedCategory]()
     
     @IBOutlet weak var constraintCollectionviewHeight: NSLayoutConstraint!
@@ -74,16 +74,9 @@ extension FavoriteActivityCell: UICollectionViewDelegate, UICollectionViewDataSo
             
             let favActivityData = arrayOfFavoriteActivity[indexPath.item]
             
-            cell.labelActivityName.text = favActivityData.activityCategoryTitle
+            cell.labelActivityName.text = favActivityData.title
             
-            let img = favActivityData.activityCategoryImage ?? ""
-            let strUrl = UrlActivityImage + img
-            let imageWidth = cell.imageviewActivity.frame.size.width
-            let imageHeight = cell.imageviewActivity.frame.size.height
-            let baseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(strUrl)"
-            let url = URL(string: baseTimbThumb)
-            cell.imageviewActivity.sd_imageIndicator = SDWebImageActivityIndicator.gray
-            cell.imageviewActivity.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_activity"), options: .refreshCached, context: nil)
+            cell.imageviewActivity.image = UIImage(named: favActivityData.title + "_image")
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NoDataFoundCVCell", for: indexPath) as! NoDataFoundCVCell

@@ -10,10 +10,13 @@ import SwiftUI
 struct TabBarView: View {
     @State var selectedIndex = 0
     
+    private let activityCategoryWebService = ActivityCategoryWebService()
+    
     var body: some View {
         NavigationView {
             tabBar
         }
+        .onAppear { callGetActivityDataAPI() }
         .navigationBarHidden(true)
         .navigationViewStyle(.stack)
     }
@@ -81,6 +84,19 @@ struct TabBarView: View {
         UITabBar.appearance().tintColor = Constants.color_themeColor
         UITabBar.appearance().shadowImage = UIImage()
         UITabBar.appearance().backgroundImage = UIImage()
+    }
+    
+    func callGetActivityDataAPI() {
+        guard Constants.activityCategories == nil else { return }
+        
+        activityCategoryWebService.getActivityCategories { result in
+            switch result {
+            case .success(let activityArray):
+                Constants.activityCategories = activityArray
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
