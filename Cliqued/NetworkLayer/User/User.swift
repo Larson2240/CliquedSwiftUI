@@ -23,6 +23,8 @@ struct User: Codable {
     var userSubscriptionDetails: [UserSubscriptionDetail]?
     var userProfileMedia: [UserProfileMedia]?
     var gender: Int?
+    var age: Int?
+    var distance: Int?
     var preferenceKids: Bool?
     var favouriteActivityCategories: [Activity]?
     var preferenceDistance: Int?

@@ -211,7 +211,7 @@ extension ActivityUserDetailsDataSource: UICollectionViewDelegate, UICollectionV
             var mediaName = ""
             
 //            if profileData.mediaType == mediaType.image {
-                mediaName = "https://cliqued.michal.es" + profileData.url
+                mediaName = "https://api.cliqued.app" + profileData.url
                 cell.imageviewVideoIcon.isHidden = true
 //            } else {
 //                mediaName = profileData.thumbnailUrl ?? ""
@@ -238,7 +238,7 @@ extension ActivityUserDetailsDataSource: UICollectionViewDelegate, UICollectionV
                 var images = [SKPhotoProtocol]()
                 for i in 0..<self.viewModel.getNumberOfUserProfile() {
 //                    if self.viewModel.getUserProfileData(at: i).mediaType == mediaType.image {
-                        let photo = SKPhoto.photoWithImageURL("https://cliqued.michal.es" + (self.viewModel.getUserProfileData(at: i).url))
+                        let photo = SKPhoto.photoWithImageURL("https://api.cliqued.app" + (self.viewModel.getUserProfileData(at: i).url))
                         photo.shouldCachePhotoURLImage = true
                         images.append(photo)
 //                    }

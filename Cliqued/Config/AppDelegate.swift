@@ -37,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var audioSession = AVAudioSession.sharedInstance()
     private let apiParams = ApiParams()
     private let preferenceOptionIds = PreferenceOptionIds()
+    private let notificationsViewModel = NotificationsViewModel()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -72,6 +73,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         setRootViewController()
         
         TwilioVideoSDK.audioDevice = audioDevice
+        
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+            guard granted else { return }
+            
+            DispatchQueue.main.async {
+                application.registerForRemoteNotifications()
+            }
+        }
         
         return true
     }

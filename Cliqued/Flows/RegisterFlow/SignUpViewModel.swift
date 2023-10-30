@@ -65,7 +65,9 @@ final class SignUpViewModel: NSObject, ObservableObject {
         
         UIApplication.shared.showLoader()
         
-        authWebService.login(email: email, password: password) { [weak self] result in
+        authWebService.login(email: email,
+                             password: password,
+                             rememberMe: rememberMeSelected) { [weak self] result in
             guard let self = self else { return }
             
             UIApplication.shared.hideLoader()

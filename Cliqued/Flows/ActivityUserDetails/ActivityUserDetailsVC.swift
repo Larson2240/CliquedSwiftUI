@@ -124,28 +124,26 @@ extension ActivityUserDetailsVC {
         }
         
         //If API success
-        viewModelActivity.likeDislikeAction = { [weak self] isSuccess in
+        viewModelActivity.likeDislikeAction = { [weak self] model in
             guard let self = self else { return }
-//
-//            if isSuccess {
-//                let followersData = self.viewModelActivity.userMatches.first
-//                if followersData.isMeetup == self.isMeetup.Matched  {
-//                    /* comment added by srm
-//                     let matchscreenvc = MatchScreenVC.loadFromNib()
-//                     matchscreenvc.isFromUserDetailsScreen = true
-//                     matchscreenvc.arrayOfFollowers = self.viewModelActivity.getAllFollowersData()
-//                     matchscreenvc.hidesBottomBarWhenPushed = true
-//                     self.navigationController?.pushViewController(matchscreenvc, animated: true)
-//                     */
-//                } else {
-//                    if followersData.isFollow == "1" {
-//                        self.callbackForIsLiked?(true)
-//                    } else {
-//                        self.callbackForIsLiked?(false)
-//                    }
-//                    self.navigationController?.popViewController(animated: true)
-//                }
-//            }
+            
+            let counterUserID = model.counterUser.replacingOccurrences(of: "/api/users/", with: "")
+            let followersData = self.viewModelActivity.userMatches.first(where: { $0.id == Int(counterUserID) })
+            
+            if model.match == true {
+                let matchscreenvc = MatchScreenVC.loadFromNib()
+                matchscreenvc.isFromUserDetailsScreen = true
+//                matchscreenvc.arrayOfFollowers = self.viewModelActivity.getAllFollowersData()
+                matchscreenvc.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(matchscreenvc, animated: true)
+            } else {
+                if model.follow {
+                    self.callbackForIsLiked?(true)
+                } else {
+                    self.callbackForIsLiked?(false)
+                }
+                self.navigationController?.popViewController(animated: true)
+            }
         }
         
         //Loader hide & show

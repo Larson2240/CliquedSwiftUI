@@ -386,54 +386,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FB2986E8-F1D7-4A66-90C4-597F1FCA92AB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cliqued/NetworkLayer/User/UserWebService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
-            landmarkName = "updateUser(user:completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "FB2986E8-F1D7-4A66-90C4-597F1FCA92AB - 6e8a5bf90bc7e9d8"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "141"
-                  endingLineNumber = "141"
-                  offsetFromSymbolStart = "3656">
-               </Location>
-               <Location
-                  uuid = "FB2986E8-F1D7-4A66-90C4-597F1FCA92AB - 6e8a5bf90bc7e9d8"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserWebService.updateUser(user: cliqued.User, completion: (Swift.Result&lt;cliqued.User, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/UserWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "141"
-                  endingLineNumber = "141"
-                  offsetFromSymbolStart = "1544">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "5B8AFE69-D02A-48AA-96CD-ADFA3842ABEB"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -450,258 +402,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D94769B4-1FDC-471B-A658-7AD0C12C0078"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cliqued/NetworkLayer/UserFollowing/UserFollowingWebService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "callLikeDislikeUserAPI(userID:follow:completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "D94769B4-1FDC-471B-A658-7AD0C12C0078 - 2d3babec94da423b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "cliqued.UserFollowingWebService.callLikeDislikeUserAPI(userID: Swift.Int, follow: Swift.Bool, completion: (Swift.Result&lt;Swift.Array&lt;cliqued.User&gt;, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/UserFollowing/UserFollowingWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "42"
-                  endingLineNumber = "42"
-                  offsetFromSymbolStart = "548">
-               </Location>
-               <Location
-                  uuid = "D94769B4-1FDC-471B-A658-7AD0C12C0078 - f7a8b71d40837604"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserFollowingWebService.callLikeDislikeUserAPI(userID: Swift.Int, follow: Swift.Bool, completion: (Swift.Result&lt;Swift.Array&lt;cliqued.User&gt;, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/UserFollowing/UserFollowingWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "44"
-                  endingLineNumber = "44"
-                  offsetFromSymbolStart = "176">
-               </Location>
-               <Location
-                  uuid = "D94769B4-1FDC-471B-A658-7AD0C12C0078 - e1f61d3dcf8b8273"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "cliqued.UserFollowingWebService.callLikeDislikeUserAPI(userID: Swift.Int, follow: Swift.Bool, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/UserFollowing/UserFollowingWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "42"
-                  endingLineNumber = "42"
-                  offsetFromSymbolStart = "548">
-               </Location>
-               <Location
-                  uuid = "D94769B4-1FDC-471B-A658-7AD0C12C0078 - 14837d8b7f1ded09"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserFollowingWebService.callLikeDislikeUserAPI(userID: Swift.Int, follow: Swift.Bool, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/UserFollowing/UserFollowingWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "44"
-                  endingLineNumber = "44"
-                  offsetFromSymbolStart = "148">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "82E351CD-91DD-4D41-9D66-F55DBB72B8FE"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cliqued/NetworkLayer/UserFollowing/UserFollowingWebService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "callLikeDislikeUserAPI(userID:follow:completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "82E351CD-91DD-4D41-9D66-F55DBB72B8FE - f7a8b71d408377c6"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserFollowingWebService.callLikeDislikeUserAPI(userID: Swift.Int, follow: Swift.Bool, completion: (Swift.Result&lt;Swift.Array&lt;cliqued.User&gt;, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/UserFollowing/UserFollowingWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "46"
-                  endingLineNumber = "46"
-                  offsetFromSymbolStart = "236">
-               </Location>
-               <Location
-                  uuid = "82E351CD-91DD-4D41-9D66-F55DBB72B8FE - 14837d8b7f1ded28"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.UserFollowingWebService.callLikeDislikeUserAPI(userID: Swift.Int, follow: Swift.Bool, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/UserFollowing/UserFollowingWebService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "45"
-                  endingLineNumber = "45"
-                  offsetFromSymbolStart = "204">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9012BCC8-8BD0-467F-BE9D-8E430C6F0BD7"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
-            landmarkName = "koloda(_:didSwipeCardAt:in:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "9012BCC8-8BD0-467F-BE9D-8E430C6F0BD7 - f432f95404f2af8c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "cliqued.HomeActivitiesVC.koloda(_: Koloda.KolodaView, didSwipeCardAt: Swift.Int, in: Koloda.SwipeResultDirection) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "290"
-                  endingLineNumber = "290"
-                  offsetFromSymbolStart = "764">
-               </Location>
-               <Location
-                  uuid = "9012BCC8-8BD0-467F-BE9D-8E430C6F0BD7 - f432f95404f2af8c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "cliqued.HomeActivitiesVC.koloda(_: Koloda.KolodaView, didSwipeCardAt: Swift.Int, in: Koloda.SwipeResultDirection) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "290"
-                  endingLineNumber = "290"
-                  offsetFromSymbolStart = "1484">
-               </Location>
-               <Location
-                  uuid = "9012BCC8-8BD0-467F-BE9D-8E430C6F0BD7 - f432f95404f2af8c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "cliqued.HomeActivitiesVC.koloda(_: Koloda.KolodaView, didSwipeCardAt: Swift.Int, in: Koloda.SwipeResultDirection) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "290"
-                  endingLineNumber = "290"
-                  offsetFromSymbolStart = "1520">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B05B4BC4-0986-440F-8077-90CBE3044364"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
-            landmarkName = "koloda(_:didSwipeCardAt:in:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "B05B4BC4-0986-440F-8077-90CBE3044364 - f432f95404f2ae00"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "cliqued.HomeActivitiesVC.koloda(_: Koloda.KolodaView, didSwipeCardAt: Swift.Int, in: Koloda.SwipeResultDirection) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "302"
-                  endingLineNumber = "302"
-                  offsetFromSymbolStart = "2104">
-               </Location>
-               <Location
-                  uuid = "B05B4BC4-0986-440F-8077-90CBE3044364 - f432f95404f2ae00"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "cliqued.HomeActivitiesVC.koloda(_: Koloda.KolodaView, didSwipeCardAt: Swift.Int, in: Koloda.SwipeResultDirection) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "302"
-                  endingLineNumber = "302"
-                  offsetFromSymbolStart = "2428">
-               </Location>
-               <Location
-                  uuid = "B05B4BC4-0986-440F-8077-90CBE3044364 - f432f95404f2ae00"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "cliqued.HomeActivitiesVC.koloda(_: Koloda.KolodaView, didSwipeCardAt: Swift.Int, in: Koloda.SwipeResultDirection) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "302"
-                  endingLineNumber = "302"
-                  offsetFromSymbolStart = "2488">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "27E4C5D3-3567-4EF1-88D4-895331716C4C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -709,42 +409,10 @@
             filePath = "Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "343"
-            endingLineNumber = "343"
+            startingLineNumber = "337"
+            endingLineNumber = "337"
             landmarkName = "buttonUndomActivityRap(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "27E4C5D3-3567-4EF1-88D4-895331716C4C - 492f6c4bf105fc17"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "cliqued.HomeActivitiesVC.buttonUndomActivityRap(__C.UIButton) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "348"
-                  endingLineNumber = "348"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  uuid = "27E4C5D3-3567-4EF1-88D4-895331716C4C - 492f6c4bf105fd7a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "cliqued.HomeActivitiesVC.buttonUndomActivityRap(__C.UIButton) -&gt; ()"
-                  moduleName = "cliqued"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "343"
-                  endingLineNumber = "343"
-                  offsetFromSymbolStart = "52">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -757,25 +425,9 @@
             filePath = "Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "336"
-            endingLineNumber = "336"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
             landmarkName = "buttonDislikeActivityTap(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5C638EC9-1D00-467C-B2D8-8E15E6DC3456"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cliqued/Flows/HomeFlow/HomeView/HomeActivitiesView/HomeActivitiesVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "329"
-            endingLineNumber = "329"
-            landmarkName = "buttonLikeActivityTap(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -830,47 +482,331 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F230AE37-0041-4C57-AB60-87C69C059D01"
+            uuid = "DBD0DB7D-21AD-4AD8-BCA3-DD3F41D82D96"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/NetworkLayer/User/User.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "userAge()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "DBD0DB7D-21AD-4AD8-BCA3-DD3F41D82D96 - 8a7b2e9936eca825"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "cliqued.User.userAge() -&gt; Swift.Int"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/User.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "680">
+               </Location>
+               <Location
+                  uuid = "DBD0DB7D-21AD-4AD8-BCA3-DD3F41D82D96 - 8a7b2e9936eca825"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "cliqued.User.userAge() -&gt; Swift.Int"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/User.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "736">
+               </Location>
+               <Location
+                  uuid = "DBD0DB7D-21AD-4AD8-BCA3-DD3F41D82D96 - 8a7b2e9936eca825"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "cliqued.User.userAge() -&gt; Swift.Int"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/User.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "772">
+               </Location>
+               <Location
+                  uuid = "DBD0DB7D-21AD-4AD8-BCA3-DD3F41D82D96 - 8a7b2e9936eca825"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "cliqued.User.userAge() -&gt; Swift.Int"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/User/User.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "940">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D9BC5EFC-7C86-41DF-9F1E-6F1F05EDE67C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Cliqued/Flows/ActivityUserDetails/ActivityUserDetailsVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "btnLikeClick(_:)"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
+            landmarkName = "handleApiResponse()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "F230AE37-0041-4C57-AB60-87C69C059D01 - 1869722c6bf0c8f4"
+                  uuid = "D9BC5EFC-7C86-41DF-9F1E-6F1F05EDE67C - 693c0048f3df800f"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "cliqued.ActivityUserDetailsVC.btnLikeClick(Any) -&gt; ()"
+                  symbolName = "closure #2 (cliqued.UserFollowing) -&gt; () in cliqued.ActivityUserDetailsVC.handleApiResponse() -&gt; ()"
                   moduleName = "cliqued"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/ActivityUserDetails/ActivityUserDetailsVC.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "67"
-                  endingLineNumber = "67"
-                  offsetFromSymbolStart = "52">
+                  startingLineNumber = "133"
+                  endingLineNumber = "133"
+                  offsetFromSymbolStart = "1440">
                </Location>
                <Location
-                  uuid = "F230AE37-0041-4C57-AB60-87C69C059D01 - 1869722c6bf0c8f4"
+                  uuid = "D9BC5EFC-7C86-41DF-9F1E-6F1F05EDE67C - 693c0048f3df800f"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "cliqued.ActivityUserDetailsVC.btnLikeClick(Any) -&gt; ()"
+                  symbolName = "closure #2 (cliqued.UserFollowing) -&gt; () in cliqued.ActivityUserDetailsVC.handleApiResponse() -&gt; ()"
                   moduleName = "cliqued"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Flows/ActivityUserDetails/ActivityUserDetailsVC.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "67"
-                  endingLineNumber = "67"
-                  offsetFromSymbolStart = "40">
+                  startingLineNumber = "133"
+                  endingLineNumber = "133"
+                  offsetFromSymbolStart = "1504">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1FD043ED-0DC0-475A-B1AA-4821AF4584B7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/NetworkLayer/Auth/AuthWebService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "social(socialID:loginType:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "1FD043ED-0DC0-475A-B1AA-4821AF4584B7 - b0668895e645de1f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.AuthWebService.social(socialID: Swift.String, loginType: Swift.Int, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/Auth/AuthWebService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "113"
+                  endingLineNumber = "113"
+                  offsetFromSymbolStart = "772">
+               </Location>
+               <Location
+                  uuid = "1FD043ED-0DC0-475A-B1AA-4821AF4584B7 - b0668895e645de1f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.AuthWebService.social(socialID: Swift.String, loginType: Swift.Int, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/Auth/AuthWebService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "113"
+                  endingLineNumber = "113"
+                  offsetFromSymbolStart = "1144">
+               </Location>
+               <Location
+                  uuid = "1FD043ED-0DC0-475A-B1AA-4821AF4584B7 - 495d01aed06cc37a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.String) -&gt; Swift.Bool in closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.AuthWebService.social(socialID: Swift.String, loginType: Swift.Int, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/Auth/AuthWebService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "113"
+                  endingLineNumber = "113"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "1FD043ED-0DC0-475A-B1AA-4821AF4584B7 - b0668895e645de3e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Moya.Response, Moya.MoyaError&gt;) -&gt; () in cliqued.AuthWebService.social(socialID: Swift.String, loginType: Swift.Int, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/NetworkLayer/Auth/AuthWebService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "112"
+                  endingLineNumber = "112"
+                  offsetFromSymbolStart = "284">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "81DE307F-DCC0-47BC-AECB-381B78DF018F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/Flows/OnboardingFlow/Notifications/NotificationsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "application(_:didRegisterForRemoteNotificationsWithDeviceToken:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8098D99A-C41A-4E2F-998F-1D57114BE640"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/Flows/OnboardingFlow/Notifications/NotificationsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "application(_:didFailToRegisterForRemoteNotificationsWithError:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2459D654-4B60-40A3-B148-525E5AB5A2BC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/Flows/OnboardingFlow/Notifications/NotificationsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "userNotificationCenter(_:willPresent:withCompletionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "02F45372-8A2C-4CC4-A9B8-1CBFB5886DAC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/Flows/OnboardingFlow/Notifications/NotificationsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "userNotificationCenter(_:didReceive:withCompletionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D8016E33-8A07-4C83-AB16-EEC42C1C9214"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/Utils/SocketHandler/SocketIOHandler.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "613"
+            endingLineNumber = "613"
+            landmarkName = "updateUserChatStatus(data:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "980E9C19-9981-496D-95EE-728C614CB864"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cliqued/Utils/SocketHandler/SocketIOHandler.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "612"
+            endingLineNumber = "612"
+            landmarkName = "updateUserChatStatus(data:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "980E9C19-9981-496D-95EE-728C614CB864 - 6246a7e77c502cdf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "cliqued.SocketIOHandler.updateUserChatStatus(data: __C.NSDictionary) -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Utils/SocketHandler/SocketIOHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "612"
+                  endingLineNumber = "612"
+                  offsetFromSymbolStart = "772">
+               </Location>
+               <Location
+                  uuid = "980E9C19-9981-496D-95EE-728C614CB864 - c5f6baaf8686a5e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Array&lt;Any&gt;) -&gt; () in cliqued.SocketIOHandler.updateUserChatStatus(data: __C.NSDictionary) -&gt; ()"
+                  moduleName = "cliqued"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/seraphimkovalchuk/Desktop/Projects/CliquedSwiftUI/Cliqued/Utils/SocketHandler/SocketIOHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "612"
+                  endingLineNumber = "612"
+                  offsetFromSymbolStart = "252">
                </Location>
             </Locations>
          </BreakpointContent>

@@ -5,11 +5,12 @@
 //  Created by C211 on 19/01/23.
 //
 
-import UIKit
+import SwiftUI
 import SDWebImage
 import SocketIO
 
 class MatchScreenVC: UIViewController {
+    @AppStorage("loggedInUser") var loggedInUser: User? = nil
 
     //MARK: IBOutlet
     @IBOutlet weak var imageviewBackgroundScreen: UIImageView!
@@ -61,9 +62,9 @@ class MatchScreenVC: UIViewController {
     
     //MARK: Variable
     var categoryName = ""
-    var arrayOfFollowers = [Followers]()
     var isFromActivityScreen: Bool = false
     lazy var viewModel = MatchScreenViewModel()
+    var matchedUser: User?
     var isFromUserDetailsScreen: Bool = false
     
     //MARK: viewDidLoad Method
@@ -87,35 +88,10 @@ class MatchScreenVC: UIViewController {
     
     //MARK: Button Message Now Click
     @IBAction func btnMessageNowClick(_ sender: Any) {
-        
-        if arrayOfFollowers.count > 0 {
-            
-            let objFollower = arrayOfFollowers.first
-            
-//            if objFollower?.userId == Constants.loggedInUser?.id ?? 0 {
-//                if objFollower?.receiverIsBlockedByAdmin == "1" {
-//                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_admin_chat)
-//                } else if objFollower?.receiverIsBlockedByUser == "1" {
-//                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
-//                } else {
-//                    let dict:NSMutableDictionary = NSMutableDictionary()
-//                    dict.setValue("\(objFollower?.counterUserId ?? 0)", forKey: "receiver_id")
-//                    dict.setValue("\(objFollower?.userId ?? 0)", forKey: "user_id")
-//                    APP_DELEGATE.socketIOHandler?.updateUserChatStatus(data: dict)
-//                }
-//            } else {
-//                if objFollower?.senderIsBlockedByAdmin == "1" {
-//                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_admin_chat)
-//                } else if objFollower?.senderIsBlockedByUser == "1" {
-//                    self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
-//                } else {
-//                    let dict:NSMutableDictionary = NSMutableDictionary()
-//                    dict.setValue("\(objFollower?.userId ?? 0)", forKey: "receiver_id")
-//                    dict.setValue("\(objFollower?.counterUserId ?? 0)", forKey: "user_id")
-//                    APP_DELEGATE.socketIOHandler?.updateUserChatStatus(data: dict)
-//                }
-//            }
-        }
+        let dict:NSMutableDictionary = NSMutableDictionary()
+        dict.setValue("\(loggedInUser?.id ?? 0)", forKey: "receiver_id")
+        dict.setValue("\(matchedUser?.id ?? 0)", forKey: "user_id")
+        APP_DELEGATE.socketIOHandler?.updateUserChatStatus(data: dict)
     }
     
     //MARK: Button Message Later Click
@@ -164,16 +140,16 @@ extension MatchScreenVC : SocketIOHandlerDelegate {
                 self.showAlertPopup(message: Constants_Message.title_alert_for_block_by_user_chat)
             } else {
                 let vc = MessageVC.loadFromNib()
-//                vc.hidesBottomBarWhenPushed = true
-//                vc.sender_id = Constants.loggedInUser?.id ?? 0
-//
-//                if "\(obj.senderId)" == "\(Constants.loggedInUser?.id ?? 0)" {
-//                    vc.receiver_id = Int(obj.receiverId)
-//                } else {
-//                    vc.receiver_id = Int(obj.senderId)
-//                }
+                vc.hidesBottomBarWhenPushed = true
+                vc.sender_id = String(loggedInUser?.id ?? 0)
                 
-//                vc.receiver_id = Int(obj.receiverId)
+                if "\(obj.senderId)" == "\(loggedInUser?.id ?? 0)" {
+                    vc.receiver_id = Int(obj.receiverId)
+                } else {
+                    vc.receiver_id = Int(obj.senderId)
+                }
+                
+                vc.receiver_id = Int(obj.receiverId)
                 vc.receiver_name = "\(obj.receiverName ?? "Cliqued User")"
                 vc.receiver_profile = "\(obj.receiverProfile ?? "")"
                 vc.receiver_last_seen = strLastSeen
@@ -306,61 +282,42 @@ extension MatchScreenVC {
     }
     //MARK: Bind Data
     func bindDataForScreen() {
-        let imageWidth = imageviewUser1.frame.size.width
-        let imageHeight = imageviewUser1.frame.size.height
+        if isFromActivityScreen {
+            viewModel.setIsActivity(value: "1")
+        } else {
+            viewModel.setIsActivity(value: "0")
+        }
         
-        if arrayOfFollowers.count > 0 {
-            
-            let objFollower = arrayOfFollowers.first
-            
-            //For send push notification and email
-//            if objFollower?.counterUserId == Constants.loggedInUser?.id {
-//                viewModel.setCounterUserId(value: "\(objFollower?.userId ?? 0)")
-//            } else {
-//                viewModel.setCounterUserId(value: "\(objFollower?.counterUserId ?? 0)")
-//            }
-            if isFromActivityScreen {
-                viewModel.setIsActivity(value: "1")
-            } else {
-                viewModel.setIsActivity(value: "0")
-            }
-            viewModel.callSendPushNotificationAPI()
-            //---------------------------------------
-            
-            //Setup sender image
-            if let senderImg = objFollower?.senderProfile {
-                let senderImgUrl = UrlProfileImage + senderImg
-                let senderBaseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(senderImgUrl)"
-                let senderUrl = URL(string: senderBaseTimbThumb)
-                imageviewUser1.sd_imageIndicator = SDWebImageActivityIndicator.gray
-                imageviewUser1.sd_setImage(with: senderUrl, placeholderImage: UIImage(named: "placeholder_matchuser"), options: .refreshCached, context: nil)
-            } else {
-                imageviewUser1.image = UIImage(named: "placeholder_matchuser")
-            }
-            
-            //Setup receiver image
-            if let receiverImg = objFollower?.receiverProfile {
-                let receiverImgUrl = UrlProfileImage + receiverImg
-                let receiverBaseTimbThumb = "\(URLBaseThumb)w=\(imageWidth * 3)&h=\(imageHeight * 3)&zc=1&src=\(receiverImgUrl)"
-                let receiverUrl = URL(string: receiverBaseTimbThumb)
-                imageviewUser2.sd_imageIndicator = SDWebImageActivityIndicator.gray
-                imageviewUser2.sd_setImage(with: receiverUrl, placeholderImage: UIImage(named: "placeholder_matchuser"), options: .refreshCached, context: nil)
-            }else {
-                imageviewUser2.image = UIImage(named: "placeholder_matchuser")
-            }
-            
-            
-            if isFromActivityScreen {
-                labelMessage1.isHidden = false
-                labelMessage2.isHidden = false
-                labelMessage1.text = "\(objFollower?.receiverName ?? "") \(Constants.label_activityMatchScreenTitle) \(self.categoryName)"
-                labelMessage1.adjustsFontSizeToFitWidth = true
-                labelMessage1.minimumScaleFactor = 0.5
-            } else {
-                self.imageviewBackgroundScreen.image = UIImage(named: "background")
-                labelMessage1.isHidden = false
-                labelMessage2.isHidden = true
-            }
+        viewModel.callSendPushNotificationAPI()
+        
+        if let senderImg = matchedUser?.userProfileMedia?.first {
+            let senderImgUrl = "https://api.cliqued.app" + senderImg.url
+            let senderUrl = URL(string: senderImgUrl)
+            imageviewUser1.sd_imageIndicator = SDWebImageActivityIndicator.gray
+            imageviewUser1.sd_setImage(with: senderUrl, placeholderImage: UIImage(named: "placeholder_matchuser"), options: .refreshCached, context: nil)
+        } else {
+            imageviewUser1.image = UIImage(named: "placeholder_matchuser")
+        }
+        
+        if let receiverImg = loggedInUser?.userProfileMedia?.first {
+            let receiverImgUrl = "https://api.cliqued.app" + receiverImg.url
+            let receiverUrl = URL(string: receiverImgUrl)
+            imageviewUser2.sd_imageIndicator = SDWebImageActivityIndicator.gray
+            imageviewUser2.sd_setImage(with: receiverUrl, placeholderImage: UIImage(named: "placeholder_matchuser"), options: .refreshCached, context: nil)
+        } else {
+            imageviewUser2.image = UIImage(named: "placeholder_matchuser")
+        }
+        
+        if isFromActivityScreen {
+            labelMessage1.isHidden = false
+            labelMessage2.isHidden = false
+            labelMessage1.text = "\(matchedUser?.name ?? "") \(Constants.label_activityMatchScreenTitle) \(categoryName)"
+            labelMessage1.adjustsFontSizeToFitWidth = true
+            labelMessage1.minimumScaleFactor = 0.5
+        } else {
+            self.imageviewBackgroundScreen.image = UIImage(named: "background")
+            labelMessage1.isHidden = false
+            labelMessage2.isHidden = true
         }
     }
 }

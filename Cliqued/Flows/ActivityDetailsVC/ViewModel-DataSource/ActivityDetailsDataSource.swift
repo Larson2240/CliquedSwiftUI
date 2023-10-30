@@ -125,7 +125,7 @@ class ActivityDetailsDataSource: NSObject, UITableViewDelegate, UITableViewDataS
             cell.imageviewActivity.sd_imageIndicator = SDWebImageActivityIndicator.gray
             cell.imageviewActivity.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_detailpage"), options: .refreshCached, context: nil)
             
-            let profileImgUrl = "https://cliqued.michal.es/\(loggedInUser?.userProfileMedia?.first?.url ?? "")"
+            let profileImgUrl = "https://api.cliqued.app/\(loggedInUser?.userProfileMedia?.first?.url ?? "")"
             let urlProfile = URL(string: profileImgUrl)
             cell.imageviewUser.sd_imageIndicator = SDWebImageActivityIndicator.gray
             cell.imageviewUser.sd_setImage(with: urlProfile, placeholderImage: UIImage(named: "placeholder_matchuser"), options: .refreshCached, context: nil)

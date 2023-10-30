@@ -106,7 +106,7 @@ extension AddActivityVC {
             
             if let arrMedia = objActivityDetails?.medias {
                 for i in arrMedia {
-                    guard let url = URL(string: "https://cliqued.michal.es" + i.url) else { return }
+                    guard let url = URL(string: "https://api.cliqued.app" + i.url) else { return }
 
                     UIImage.loadFrom(url: url) { image in
                         self.viewModel.setActivityMedia(value: image!)

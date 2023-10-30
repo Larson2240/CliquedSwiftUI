@@ -9,8 +9,8 @@ import Foundation
 import Moya
 
 enum AuthProvider {
-    case login(email: String, password: String)
-    case register(email: String, password: String)
+    case login(parameters: [String: Any])
+    case register(parameters: [String: Any])
     case social(socialID: String, loginType: Int)
     case logout
     case verifyOTPForRegister(token: String)
@@ -18,7 +18,7 @@ enum AuthProvider {
 
 extension AuthProvider: TargetType {
     var baseURL: URL {
-        return URL(string: "https://cliqued.michal.es/api")!
+        return URL(string: "https://api.cliqued.app/api")!
     }
     
     var path: String {
@@ -49,13 +49,11 @@ extension AuthProvider: TargetType {
     
     var task: Task {
         switch self {
-        case .login(let email, let password):
-            return .requestParameters(parameters: ["username": email, "password": password],
+        case .login(let parameters):
+            return .requestParameters(parameters: parameters,
                                       encoding: JSONEncoding.default)
-        case .register(let email, let password):
-            return .requestParameters(parameters: ["email": email,
-                                                   "password": password,
-                                                   "repeatPassword": password],
+        case .register(let parameters):
+            return .requestParameters(parameters: parameters,
                                       encoding: JSONEncoding.default)
         case .social(let socialID, let loginType):
             let deviceToken = UserDefaults.standard.string(forKey: kDeviceToken)

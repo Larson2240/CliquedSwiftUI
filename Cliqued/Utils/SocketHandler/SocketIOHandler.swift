@@ -605,8 +605,7 @@ class SocketIOHandler: NSObject {
         }
     }
     
-    func updateUserChatStatus(data:NSDictionary){
-        
+    func updateUserChatStatus(data:NSDictionary) {
         let senderId = data.value(forKey: "user_id") as? String
         let receiverId = data.value(forKey: "receiver_id") as? String
         

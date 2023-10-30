@@ -15,7 +15,7 @@ enum UserFollowingProvider {
 
 extension UserFollowingProvider: TargetType {
     var baseURL: URL {
-        return URL(string: "https://cliqued.michal.es/api")!
+        return URL(string: "https://api.cliqued.app/api")!
     }
     
     var path: String {

@@ -16,7 +16,15 @@ final class AuthWebService {
         password: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        authProvider.request(.register(email: email, password: password)) { result in
+        let deviceToken = UserDefaults.standard.string(forKey: kDeviceToken)
+        
+        let parameters: [String: Any] = ["email": email,
+                                         "password": password,
+                                         "repeatPassword": password,
+                                         "device_token": deviceToken ?? "",
+                                         "_remember_me": true]
+        
+        authProvider.request(.register(parameters: parameters)) { result in
             switch result {
             case .success(let response):
                 do {
@@ -52,9 +60,14 @@ final class AuthWebService {
     func login(
         email: String,
         password: String,
+        rememberMe: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        authProvider.request(.login(email: email, password: password)) { result in
+        let parameters: [String: Any] = ["username": email,
+                                         "password": password,
+                                         "_remember_me": rememberMe]
+        
+        authProvider.request(.login(parameters: parameters)) { result in
             switch result {
             case .success(let response):
                 do {

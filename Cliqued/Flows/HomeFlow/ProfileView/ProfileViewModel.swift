@@ -30,7 +30,7 @@ final class ProfileViewModel: ObservableObject {
             var images = [SKPhotoProtocol]()
 
             for i in 0..<media.count {
-                let photo = SKPhoto.photoWithImageURL("https://cliqued.michal.es/\(media[i].url)")
+                let photo = SKPhoto.photoWithImageURL("https://api.cliqued.app/\(media[i].url)")
                 photo.shouldCachePhotoURLImage = true
                 images.append(photo)
             }

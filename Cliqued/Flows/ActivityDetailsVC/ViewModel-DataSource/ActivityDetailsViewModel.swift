@@ -55,7 +55,7 @@ class ActivityDetailsViewModel {
         
         if activityDetails.medias.count > 0 {
             let img = activityDetails.medias[0]
-            self.setImageUrl(value: "https://cliqued.michal.es" + img.url)
+            self.setImageUrl(value: "https://api.cliqued.app" + img.url)
         }
         
         let address = activityDetails.address

@@ -105,7 +105,7 @@ extension YourActivitiesCell: UICollectionViewDelegate, UICollectionViewDataSour
             
             if obj.medias.count > 0 {
                 let img = obj.medias[0]
-                let url = URL(string: "https://cliqued.michal.es" + img.url)
+                let url = URL(string: "https://api.cliqued.app" + img.url)
                 
                 cell.imageviewActivity.sd_imageIndicator = SDWebImageActivityIndicator.gray
                 cell.imageviewActivity.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_activity"), options: .refreshCached, context: nil)
@@ -142,7 +142,7 @@ extension YourActivitiesCell: UICollectionViewDelegate, UICollectionViewDataSour
             
             if obj.medias.count > 0 {
                 let img = obj.medias[0]
-                let url = URL(string: "https://cliqued.michal.es" + img.url)
+                let url = URL(string: "https://api.cliqued.app" + img.url)
                 
                 cell.imageviewActivity.sd_imageIndicator = SDWebImageActivityIndicator.gray
                 cell.imageviewActivity.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_activity"), options: .refreshCached, context: nil)

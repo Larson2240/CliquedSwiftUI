@@ -9,7 +9,7 @@ import SwiftUI
 
 final class HomeActivitiesViewModel: ObservableObject {
     var dataReceivedAction: (() -> Void)?
-    var likeDislikeAction: ((Bool) -> Void)?
+    var likeDislikeAction: ((UserFollowing) -> Void)?
     
     var userMatches: [User] = []
     
@@ -44,16 +44,14 @@ final class HomeActivitiesViewModel: ObservableObject {
             UIApplication.shared.hideLoader()
             
             switch result {
-            case .success:
-                self?.likeDislikeAction?(true)
+            case .success(let model):
+                self?.likeDislikeAction?(model)
             case .failure(let error):
                 if let error = error as? ApiError, let message = error.errorDescription {
                     UIApplication.shared.showAlertPopup(message: message)
                 } else {
                     UIApplication.shared.showAlertPopup(message: error.localizedDescription)
                 }
-                
-                self?.likeDislikeAction?(false)
             }
             
             self?.dataReceivedAction?()

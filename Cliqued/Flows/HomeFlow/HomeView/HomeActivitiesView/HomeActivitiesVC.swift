@@ -153,27 +153,21 @@ extension HomeActivitiesVC {
 //            }
 //        }
         
-        viewModel.likeDislikeAction = { [weak self] isSuccess in
+        viewModel.likeDislikeAction = { [weak self] model in
             guard let self = self else { return }
-
-//            if isSuccess {
-//                let followersData = self.viewModel.getFollowersData(at: 0)
-//
-//                if followersData.isMeetup == self.isMeetup.Matched  {
-//                    let matchscreenvc = MatchScreenVC.loadFromNib()
-//                    matchscreenvc.arrayOfFollowers = self.viewModel.getAllFollowersData()
-//                    matchscreenvc.hidesBottomBarWhenPushed = true
-//                    self.navigationController?.pushViewController(matchscreenvc, animated: true)
-//                } else {
-//                    if self.viewModel.getLikesLimit() != 0 {
-//                        if !self.isLikeLimitFinish {
-//                            if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
-//                                self.showGoogleAds()
-//                            }
-//                        }
+            
+            if model.match == true {
+                let matchscreenvc = MatchScreenVC.loadFromNib()
+                matchscreenvc.matchedUser = viewModel.userMatches.first(where: { String($0.id ?? 0) == model.counterUser.replacingOccurrences(of: "/api/users/", with: "") })
+                matchscreenvc.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(matchscreenvc, animated: true)
+            } else {
+//                if !self.isLikeLimitFinish {
+//                    if Constants.loggedInUser?.isPremiumUser == self.isPremium.NotPremium {
+//                        self.showGoogleAds()
 //                    }
 //                }
-//            }
+            }
         }
     }
     
@@ -226,13 +220,13 @@ extension HomeActivitiesVC: KolodaViewDataSource {
             
             //Checking user is premium or not for undo activity
             let activityData = viewModel.userMatches[index]
-            card.labelUserNameAndAge.text = "\(activityData.name ?? ""), \(activityData.userAge())"
+            card.labelUserNameAndAge.text = "\(activityData.name ?? ""), \(activityData.age ?? 0)"
             
-            let distance = activityData.preferenceDistance
+            let distance = activityData.distance
             card.labelLocationDistance.text = "\(distance ?? 0) \(Constants.label_kmAway)"
             
             if let arr = activityData.userProfileMedia, arr.count > 0 {
-                let strUrl = "https://cliqued.michal.es" + (activityData.userProfileMedia?.first?.url ?? "")
+                let strUrl = "https://api.cliqued.app" + (activityData.userProfileMedia?.first?.url ?? "")
                 let url = URL(string: strUrl)
                 card.imageview.sd_imageIndicator = SDWebImageActivityIndicator.gray
                 card.imageview.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_swipecard"), options: .refreshCached, context: nil)

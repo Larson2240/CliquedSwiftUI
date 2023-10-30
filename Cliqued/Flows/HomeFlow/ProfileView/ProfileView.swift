@@ -103,7 +103,7 @@ struct ProfileView: View {
     private var pagerView: some View {
         if let userMedia = loggedInUser?.userProfileMedia {
             Pager(page: page, data: userMedia) { object in
-                WebImage(url: URL(string: "https://cliqued.michal.es/\(object.url)"))
+                WebImage(url: URL(string: "https://api.cliqued.app/\(object.url)"))
                     .placeholder {
                         placeholderImage
                     }

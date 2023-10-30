@@ -34,7 +34,7 @@ final class UserFollowingWebService {
     func callLikeDislikeUserAPI(
         userID: Int,
         follow: Bool,
-        completion: @escaping (Result<Void, Error>) -> Void
+        completion: @escaping (Result<UserFollowing, Error>) -> Void
     ) {
         let parameters: [String: Any] = ["counterUser": "/api/users/\(userID)",
                                          "follow": follow]
@@ -42,10 +42,15 @@ final class UserFollowingWebService {
         userFollowingProvider.request(.followUser(parameters: parameters)) { result in
             switch result {
             case .success(let response):
-                if response.statusCode == 200 || response.statusCode == 201 {
-                    completion(.success(Void()))
-                } else {
-                    completion(.failure(ApiError.parsing))
+                do {
+                    let model = try JSONDecoder().decode(UserFollowing.self, from: response.data)
+                    completion(.success(model))
+                } catch {
+                    if let model = try? JSONDecoder().decode(ApiErrorModel.self, from: response.data) {
+                        completion(.failure(ApiError.custom(errorDescription: model.message)))
+                    } else {
+                        completion(.failure(ApiError.parsing))
+                    }
                 }
             case .failure(let error):
                 completion(.failure(error))

@@ -65,13 +65,10 @@ extension ActivitiesVC {
     
     //MARK: Handle API response
     func handleApiResponse() {
-        
-        //Check response message
         viewModel.isMessage.bind { [weak self] message in
             self?.showAlertPopup(message: message)
         }
         
-        //If API success
         viewModel.isDataGet.bind { [weak self] isSuccess in
             guard let self = self else { return }
             
@@ -81,7 +78,6 @@ extension ActivitiesVC {
             }
         }
         
-        //Loader hide & show
         viewModel.isLoaderShow.bind { [weak self] isLoader in
             guard let self = self else { return }
             
@@ -92,15 +88,14 @@ extension ActivitiesVC {
             }
         }
     }
+    
     //MARK: Function manage if user profile not complete
     func isProfileCompleted() -> Bool {
-        
         return false
     }
     
     //MARK: Bind data on screen from the user object.
     func bindUserDetailsData() {
-        
         
     }
 }

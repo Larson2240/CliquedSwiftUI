@@ -213,7 +213,7 @@ extension DiscoverActivityVC: KolodaViewDataSource {
             
             if activityData.medias.count > 0 {
                 let img = activityData.medias[0]
-                let url = URL(string: "https://cliqued.michal.es" + img.url)
+                let url = URL(string: "https://api.cliqued.app" + img.url)
                 
                 card.imageview.sd_imageIndicator = SDWebImageActivityIndicator.gray
                 card.imageview.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder_swipecard"), options: .refreshCached, context: nil)
